@@ -7,13 +7,13 @@ public class Paquetes {
 	private String nombre;
 	private String descripcion;
 	private int cantRutas;
-	private tipoAsiento tipoAsiento;
+	private TipoAsiento tipoAsiento;
 	private int descuento;
 	private Date fechaCompra;
 	private int validez;
 	
 	
-	public Paquetes(String n, String desc, int cantRut,tipoAsiento tipoAsiento, int dto, Date fechaComp, int val) {
+	public Paquetes(String n, String desc, int cantRut,TipoAsiento tipoAsiento, int dto, Date fechaComp, int val) {
 		this.nombre = n;
 		this.descripcion = desc;
 		this.cantRutas = cantRut;
@@ -32,6 +32,9 @@ public class Paquetes {
 	}
 	public int getCantRutas() {
 		return cantRutas;
+	}
+	public TipoAsiento getTipoAsiento() {
+	    return tipoAsiento;
 	}
 	public int getDescuento() {
 		return descuento;
@@ -75,6 +78,9 @@ public class Paquetes {
 	}
 	public void setCantRutas(int cantRut) {
 		this.cantRutas = cantRut;
+	}
+	public void setTipoAsiento(TipoAsiento tipoAsiento) {
+	    this.tipoAsiento = tipoAsiento;
 	}
 	public void setDescuento(int dto) {
 		this.descuento = dto;
