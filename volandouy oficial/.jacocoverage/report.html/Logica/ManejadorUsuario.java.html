@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ManejadorUsuario.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;ProyectoSwing&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">Logica</a> &gt; <span class="el_source">ManejadorUsuario.java</span></div><h1>ManejadorUsuario.java</h1><pre class="source lang-java linenums">/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Logica;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ *
+ * @author Pablo
+ */
+public class ManejadorUsuario {
+    //Clase que conserva la colección global de los Usuarios del Sistema
+    private Map usuariosCI;
+<span class="fc" id="L17">    private static ManejadorUsuario instancia=null;</span>
+    
+<span class="fc" id="L19">    private ManejadorUsuario(){</span>
+<span class="fc" id="L20">        usuariosCI=new HashMap();</span>
+<span class="fc" id="L21">    }</span>
+    
+    public static ManejadorUsuario getinstance(){
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (instancia==null)</span>
+<span class="fc" id="L25">            instancia = new ManejadorUsuario();</span>
+<span class="fc" id="L26">        return instancia;</span>
+    }
+    
+    public void addUsuario(Usuario usu){
+<span class="fc" id="L30">        String ci = usu.getCI();</span>
+<span class="fc" id="L31">        usuariosCI.put(ci,usu);</span>
+<span class="fc" id="L32">    }</span>
+    
+    public Usuario obtenerUsuario(String ci){
+<span class="fc" id="L35">        return ((Usuario) usuariosCI.get(ci));</span>
+    }
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.2.201409121644</span></div></body></html>
