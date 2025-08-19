@@ -7,7 +7,7 @@
 /Sistema.class
 /ISistema.class
 /Aerolinea.class
-/Cliente.class
-/Paquetes.class
-/VueloEspecifico.class
-/Rutas.class
+/Reserva.class
+/TipoAsiento.class
+/Equipaje.class
+/Pasaje.class

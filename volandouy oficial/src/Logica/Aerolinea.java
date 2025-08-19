@@ -2,24 +2,42 @@ package Logica;
 
 public class Aerolinea extends Usuario {
 	
-	private int id;
-	private String nombre;
-
+	private String descGeneral;
+	private String linkWeb;
 	
-		public Aerolinea(String n, String nick, String email, int id, String nombre) {
+		public Aerolinea(String n, String nick, String email, String descGeneral, String linkWeb) {
 		super(n, nick, email);
+		this.setLinkWeb(linkWeb);
+		this.setDescGeneral(descGeneral);
 		
-		// TODO Auto-generated constructor stub
+		// Getters
+	}
+
+	public String getDescGeneral() {
+		return descGeneral;
 	}
 
 
+	public String getLinkWeb() {
+		return linkWeb;
+	}
+
+		//Setters
+	
+	public void setLinkWeb(String linkWeb) {
+		this.linkWeb = linkWeb;
+	}
+	
+	public void setDescGeneral(String descGeneral) {
+		this.descGeneral = descGeneral;
+	}
+	
+	
+		//Metodos
+	
 	@Override
     public String toString() {
-        return nombre; // útil para mostrar en el ComboBox
+        return this.getNombre(); // útil para mostrar en el ComboBox
     }
-	
-	
-	
-	
 		
 }
