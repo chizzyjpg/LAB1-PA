@@ -7,13 +7,13 @@ public class Paquetes {
 	private String nombre;
 	private String descripcion;
 	private int cantRutas;
-	private Tipo_Asiento tipoAsiento;
+	private tipoAsiento tipoAsiento;
 	private int descuento;
 	private Date fechaCompra;
 	private int validez;
 	
 	
-	public Paquetes(String n, String desc, int cantRut,Tipo_Asiento tipoAsiento, int dto, Date fechaComp, int val) {
+	public Paquetes(String n, String desc, int cantRut,tipoAsiento tipoAsiento, int dto, Date fechaComp, int val) {
 		this.nombre = n;
 		this.descripcion = desc;
 		this.cantRutas = cantRut;
