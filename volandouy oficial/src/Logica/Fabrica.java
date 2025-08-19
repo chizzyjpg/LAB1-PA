@@ -16,9 +16,9 @@ public static Fabrica getInstance(){
     return instancia;
 }
     
-public IControladorUsuario getIControladorUsuario() {
-    IControladorUsuario IG = new ControladorUsuario();
-    return IG;
+public ISistema getISistema() {
+    ISistema sis = new Sistema();
+    return sis;
 }
     
 }

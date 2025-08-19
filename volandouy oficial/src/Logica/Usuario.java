@@ -2,16 +2,16 @@
 package Logica;
 
 
-public class Usuario {
+public abstract class Usuario {
     
     private String nombre;
-    private String apellido;
-    private String cedulaIdentidad;
+    private String nickname;
+    private String email;
     
-    public Usuario(String n, String ap, String ci){
+    public Usuario(String n, String nick, String email){
         this.nombre = n;
-        this.apellido = ap;
-        this.cedulaIdentidad = ci;
+        this.nickname = nick;
+        this.email = email;
     }
     
     //Getters
@@ -19,23 +19,23 @@ public class Usuario {
     public String getNombre(){
         return nombre;
     }
-    public String getApellido(){
-        return apellido;
+    public String getNickname(){
+        return nickname;
     }
-    public String getCI(){
-        return cedulaIdentidad;
+    public String getEmail(){
+        return email;
     }
     
     // Setters
     
-    public void setNombre(String n){
-        nombre = n;
+    public void setNombre(String nombre){
+        this.nombre = nombre;
     }
-    public void setApellido(String ap){
-        apellido = ap;
+    public void setNickname(String nickname){
+        this.nickname = nickname;
     }
-    public void setCI(String ci){
-        cedulaIdentidad = ci;
+    public void setEmail(String email){
+        this.email = email;
     }
    
     

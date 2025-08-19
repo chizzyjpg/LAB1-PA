@@ -7,7 +7,7 @@ import java.util.Map;
 
 
 
-
+/*
 public class ManejadorUsuario {
     //Clase que conserva la colección global de los Usuarios del Sistema
 	private Map<String, Usuario> usuariosCI;
@@ -36,3 +36,4 @@ public class ManejadorUsuario {
     }
     
 }
+*/
