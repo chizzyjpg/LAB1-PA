@@ -40,7 +40,7 @@ public class Menu extends JFrame {
 	 */
 	public Menu() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 776, 575);
+		setBounds(100, 100, 907, 719);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -53,6 +53,8 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				RegistroUsuario internal = new RegistroUsuario();
 	            desktopPane.add(internal);
+	            desktopPane.revalidate();
+	            desktopPane.repaint();
 	            internal.setVisible(true);
 	            try {
 	                internal.setSelected(true);
@@ -72,7 +74,9 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				/*RegistroCiudad nuevaCiudad = new RegistroCiudad();
 				nuevaCiudad.setVisible(true);
-				desktopPane.add(nuevaCiudad);*/
+				desktopPane.add(nuevaCiudad);
+				desktopPane.revalidate();
+	            desktopPane.repaint();*/
 				
 			}
 		});
