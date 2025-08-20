@@ -3,6 +3,10 @@ package Logica;
 
 
 public interface ISistema {
-    public abstract void registrarUsuario(String n, String ap, String ci);
-    public abstract DataUsuario verInfoUsuario(String ci);
+	void registrarUsuario(DataUsuario data); // DataCliente o DataAerolinea
+    boolean existeNickname(String nickname);
+    boolean existeNombre(String nombre);
+
+    DataCliente verInfoCliente(String nickname);      // null si no existe o no es cliente
+    DataAerolinea verInfoAerolinea(String nickname); // null si no existe o no es aerolínea
 }

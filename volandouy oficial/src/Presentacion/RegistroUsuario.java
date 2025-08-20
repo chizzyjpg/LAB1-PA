@@ -23,6 +23,11 @@ import java.awt.BorderLayout;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+
+import Logica.DataAerolinea;
+import Logica.DataCliente;
+import Logica.Sistema;
+import Logica.ISistema;
 import Logica.TipoAsiento;
 import Logica.TipoDocumento;
 import java.awt.FlowLayout;
@@ -30,6 +35,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.awt.event.ActionEvent;
 
 public class RegistroUsuario extends JInternalFrame {
@@ -51,33 +58,34 @@ public class RegistroUsuario extends JInternalFrame {
 	private JPanel panelCliente;
 	private JPanel panelAerolinea;
 	private JTextArea textAreaDescripcion;
-
+	private final ISistema sistema;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RegistroUsuario frame = new RegistroUsuario();
+					RegistroUsuario frame = new RegistroUsuario(sistema);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public RegistroUsuario() {
-		super("Registro de Usuario", true, true, true, true);
+	public RegistroUsuario(ISistema sistema) {
+		super("Registro de Usuario", true, true, true, false);
 		 setSize(620, 500);
 		 setVisible(true);
+		 setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+		 this.sistema = sistema;
 		
-		setTitle("RegistrarUsuario");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Registrar Usuario");
 		setBounds(100, 100, 609, 497);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -109,7 +117,6 @@ public class RegistroUsuario extends JInternalFrame {
 		panelUsuario.add(lblNombre, "cell 0 1,alignx trailing");
 		
 		textFieldNombre = new JTextField();
-		textFieldNombre.setEnabled(false);
 		textFieldNombre.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		panelUsuario.add(textFieldNombre, "cell 1 1,growx");
 		textFieldNombre.setColumns(10);
@@ -223,7 +230,7 @@ public class RegistroUsuario extends JInternalFrame {
 		contentPane.add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton btnCancelar = new JButton("Cancelar");
+		JButton btnCancelar = new JButton("CANCELAR");
 		btnCancelar.setBackground(new Color(241, 43, 14));
 		btnCancelar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		panel.add(btnCancelar);
@@ -231,7 +238,7 @@ public class RegistroUsuario extends JInternalFrame {
 			dispose();
 		});
 		
-		JButton btnGuardar = new JButton("Guardar");
+		JButton btnGuardar = new JButton("GUARDAR");
 		btnGuardar.setBackground(new Color(5, 250, 79));
 		btnGuardar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		
@@ -240,6 +247,18 @@ public class RegistroUsuario extends JInternalFrame {
 		    String nickname = textFieldNickname.getText().trim();
 		    String nombre   = textFieldNombre.getText().trim();
 		    String email    = textFieldEmail.getText().trim();
+		    
+		    if (nickname.isEmpty() || nombre.isEmpty() || email.isEmpty() ) {
+	            JOptionPane.showMessageDialog(this, "Complete todos los campos.", "Validación", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+		    
+		    String emailVerificacion = textFieldEmail.getText().trim();
+		    if (!emailValido(emailVerificacion)) {
+		        JOptionPane.showMessageDialog(RegistroUsuario.this,"Email inválido. Ejemplo: nombre@dominio.com", "Validación", JOptionPane.ERROR_MESSAGE);
+		        textFieldEmail.requestFocus();
+		        return;
+		    }
 
 		    if (rdbtnCliente.isSelected()) {
 		        String apellido = textFieldApellido.getText().trim();
@@ -248,7 +267,12 @@ public class RegistroUsuario extends JInternalFrame {
 		        TipoDocumento tipo   = (TipoDocumento) comboBox.getSelectedItem();
 		        String nDoc     = textFieldNumeroDocumento.getText().trim();
 		        
-		        if (nickname.isEmpty() || nombre.isEmpty() || email.isEmpty() || apellido.isEmpty() || fUtil == null || nac.isEmpty() || tipo == null || nDoc.isEmpty()) {
+		        LocalDate hoy = LocalDate.now();
+		        LocalDate minFecha = hoy.minusYears(120);
+
+
+		        
+		        if (fUtil == null || nac.isEmpty() || tipo == null || nDoc.isEmpty()) {
 		            JOptionPane.showMessageDialog(this, "Complete todos los campos de Cliente.", "Validación", JOptionPane.ERROR_MESSAGE);
 		            return;
 		        }
@@ -257,18 +281,70 @@ public class RegistroUsuario extends JInternalFrame {
 		                .atZone(java.time.ZoneId.systemDefault())
 		                .toLocalDate();
 		        
+		        LocalDate fechaNacimiento = fUtil.toInstant()
+		                .atZone(ZoneId.systemDefault())
+		                .toLocalDate();
+		        
+		         if (fechaNacimiento.isAfter(hoy) || fechaNacimiento.isBefore(minFecha)) {
+		            JOptionPane.showMessageDialog(this, "Fecha de Nacimiento no valida", "Validación", JOptionPane.ERROR_MESSAGE);
+		            return;
+		         }
+		        
 		        // TODO: guardar en tu servicio/DAO.
 		        // usuarioService.registrarCliente(nick, nombre, email, apellido, fechaNac, nacionalidad, tipo.name(), nroDoc);
 		        
 		        JOptionPane.showMessageDialog(this, "Cliente guardado.");
 		        limpiarFormulario(); // ⬅ limpiar al final
 		            
-		            
 		        // validar y registrar Cliente...
+		        
+		        
+		        DataCliente data = new DataCliente(
+		        		nombre,
+		        		nickname,
+		                email,
+		                apellido,
+		                fUtil,
+		                nac,
+		                tipo,
+		                nDoc
+		               
+		        );
+
+		        try {
+		            sistema.registrarUsuario(data);
+		            JOptionPane.showMessageDialog(this, "Cliente registrado con éxito");
+		        } catch (IllegalArgumentException ex) {
+		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
+		        }
+		        
+		        
+		        
+		        
+		        
 		    } else { // Aerolínea
 		        String descripcion = textAreaDescripcion.getText().trim();
 		        String sitio       = textFieldSitioWeb.getText().trim(); // opcional
 		        // validar y registrar Aerolínea...
+		        
+		        DataAerolinea data = new DataAerolinea(
+		                nombre,
+		                nickname,
+		                email,
+		                descripcion,
+		                sitio
+		        );
+
+		        try {
+		            sistema.registrarUsuario(data);
+		            JOptionPane.showMessageDialog(this, "Cliente registrado con éxito");
+		        } catch (IllegalArgumentException ex) {
+		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
+		        }
+		        
+		        
+		        
+		        
 		        
 		        if (descripcion.isEmpty()) {
 		            JOptionPane.showMessageDialog(this, "La descripción de la aerolínea es obligatoria.", "Validación", JOptionPane.ERROR_MESSAGE);
@@ -322,5 +398,12 @@ public class RegistroUsuario extends JInternalFrame {
 
 	}
 	
+	private static final java.util.regex.Pattern EMAIL_RX =
+	        java.util.regex.Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+	
+	private boolean emailValido(String emailRaw) {
+	    String email = emailRaw == null ? "" : emailRaw.trim();
+	    return EMAIL_RX.matcher(email).matches();
+	}
 	
 }
