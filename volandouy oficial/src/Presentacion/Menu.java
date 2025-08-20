@@ -40,7 +40,7 @@ public class Menu extends JFrame {
 	 */
 	public Menu() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 711, 511);
+		setBounds(100, 100, 776, 575);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -51,8 +51,18 @@ public class Menu extends JFrame {
 		JMenuItem mntmNewMenuItem = new JMenuItem("Reg. Usuario");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistroUsuario frame = new RegistroUsuario();
-		        frame.setVisible(true);
+				RegistroUsuario internal = new RegistroUsuario();
+	            desktopPane.add(internal);
+	            internal.setVisible(true);
+	            try {
+	                internal.setSelected(true);
+	            } catch (java.beans.PropertyVetoException ex) {
+	                ex.printStackTrace();
+	            }
+	            
+	            mnNewMenu.add(mntmNewMenuItem);
+	            menuBar.add(mnNewMenu);
+	            setJMenuBar(menuBar);
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem);
@@ -63,9 +73,9 @@ public class Menu extends JFrame {
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Reg. Ciudad");
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistroCiudad nuevaCiudad = new RegistroCiudad();
+				/*RegistroCiudad nuevaCiudad = new RegistroCiudad();
 				nuevaCiudad.setVisible(true);
-				desktopPane.add(nuevaCiudad);
+				desktopPane.add(nuevaCiudad);*/
 				
 			}
 		});
