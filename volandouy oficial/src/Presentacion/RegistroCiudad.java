@@ -118,7 +118,7 @@ public class RegistroCiudad extends JInternalFrame {
 				String nomAeropuerto = textFieldAeropuerto.getText().trim();
 				String Descripcion = textAreaDesc.getText().trim();
 				String web = textFieldWeb.getText().trim();
-				java.util.Date fecha = fechaAlta.getDate();				//agregar validacion fecha
+				java.util.Date fecha = fechaAlta.getDate();
 				
 				if(nomCiudad.isEmpty()) {
 					JOptionPane.showMessageDialog(RegistroCiudad.this, "La Ciudad NO puede estar vacía", "Error Ciudad" , JOptionPane.ERROR_MESSAGE);
