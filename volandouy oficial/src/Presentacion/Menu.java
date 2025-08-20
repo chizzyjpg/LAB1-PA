@@ -70,9 +70,9 @@ public class Menu extends JFrame {
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Reg. Ciudad");
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*RegistroCiudad nuevaCiudad = new RegistroCiudad();
+				RegistroCiudad nuevaCiudad = new RegistroCiudad();
 				nuevaCiudad.setVisible(true);
-				desktopPane.add(nuevaCiudad);*/
+				desktopPane.add(nuevaCiudad);
 				
 			}
 		});
