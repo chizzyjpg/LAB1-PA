@@ -10,11 +10,14 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JDesktopPane;
+import java.awt.BorderLayout;
 
 public class Menu extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JDesktopPane desktopPane;
 
 	/**
 	 * Launch the application.
@@ -58,6 +61,14 @@ public class Menu extends JFrame {
 		mnNewMenu.add(mntmNewMenuItem_1);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Reg. Ciudad");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistroCiudad nuevaCiudad = new RegistroCiudad();
+				nuevaCiudad.setVisible(true);
+				desktopPane.add(nuevaCiudad);
+				
+			}
+		});
 		mnNewMenu.add(mntmNewMenuItem_2);
 		
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Reg. Vuelo");
@@ -101,10 +112,15 @@ public class Menu extends JFrame {
 		
 		JMenuItem mntmNewMenuItem_12 = new JMenuItem("Paquete");
 		mnNewMenu_3.add(mntmNewMenuItem_12);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-
+		
+		desktopPane = new JDesktopPane();
+		contentPane.setLayout(new BorderLayout()); //aseguro BorderLayout
+		contentPane.add(desktopPane, BorderLayout.CENTER);
+	
 	}
 
 }
