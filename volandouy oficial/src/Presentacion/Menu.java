@@ -60,9 +60,6 @@ public class Menu extends JFrame {
 	                ex.printStackTrace();
 	            }
 	            
-	            mnNewMenu.add(mntmNewMenuItem);
-	            menuBar.add(mnNewMenu);
-	            setJMenuBar(menuBar);
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem);
