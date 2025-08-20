@@ -7,10 +7,10 @@ public class Cliente extends Usuario{
 	private String apellido;
 	private Date fechaNac;
 	private String nacionalidad;
-	private String tipoDocumento;
+	private TipoDocumento tipoDocumento;
 	private String numDocumento;
 	
-	public Cliente(String n, String nick, String email, String ap, Date fechaNac, String nac, String tipoDoc, String numDoc) {
+	public Cliente(String n, String nick, String email, String ap, Date fechaNac, String nac, TipoDocumento tipoDoc, String numDoc) {
 		super(n, nick, email);
 		this.apellido = ap;
 		this.fechaNac = fechaNac;
@@ -26,13 +26,13 @@ public class Cliente extends Usuario{
 	public Date getFechaNac() {
 		return fechaNac;
 	}
-	public String nacionalidad() {
+	public String getNacionalidad() {
 		return nacionalidad;
 	}
-	public String tipoDocumento() {
+	public TipoDocumento getTipoDocumento() {
 		return tipoDocumento;
 	}
-	public String numDocumento() {
+	public String getNumDocumento() {
 		return numDocumento;
 	}
 	
@@ -46,7 +46,7 @@ public class Cliente extends Usuario{
 	public void setNacionalidad(String nac) {
 		this.nacionalidad = nac;
 	}
-	public void setTipoDocumento(String tipoDoc) {
+	public void setTipoDocumento(TipoDocumento tipoDoc) {
 		this.tipoDocumento = tipoDoc;
 	}
 	public void setNumDocumento(String numDoc) {

@@ -23,6 +23,11 @@ import java.awt.BorderLayout;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+
+import Logica.DataAerolinea;
+import Logica.DataCliente;
+import Logica.Sistema;
+import Logica.ISistema;
 import Logica.TipoAsiento;
 import Logica.TipoDocumento;
 import java.awt.FlowLayout;
@@ -53,31 +58,32 @@ public class RegistroUsuario extends JInternalFrame {
 	private JPanel panelCliente;
 	private JPanel panelAerolinea;
 	private JTextArea textAreaDescripcion;
-
+	private final ISistema sistema;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RegistroUsuario frame = new RegistroUsuario();
+					RegistroUsuario frame = new RegistroUsuario(sistema);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public RegistroUsuario() {
+	public RegistroUsuario(ISistema sistema) {
 		super("Registro de Usuario", true, true, true, false);
 		 setSize(620, 500);
 		 setVisible(true);
 		 setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+		 this.sistema = sistema;
 		
 		setTitle("Registrar Usuario");
 		setBounds(100, 100, 609, 497);
@@ -292,10 +298,53 @@ public class RegistroUsuario extends JInternalFrame {
 		            
 		        // validar y registrar Cliente...
 		        
+		        
+		        DataCliente data = new DataCliente(
+		        		nombre,
+		        		nickname,
+		                email,
+		                apellido,
+		                fUtil,
+		                nac,
+		                tipo,
+		                nDoc
+		               
+		        );
+
+		        try {
+		            sistema.registrarUsuario(data);
+		            JOptionPane.showMessageDialog(this, "Cliente registrado con éxito");
+		        } catch (IllegalArgumentException ex) {
+		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
+		        }
+		        
+		        
+		        
+		        
+		        
 		    } else { // Aerolínea
 		        String descripcion = textAreaDescripcion.getText().trim();
 		        String sitio       = textFieldSitioWeb.getText().trim(); // opcional
 		        // validar y registrar Aerolínea...
+		        
+		        DataAerolinea data = new DataAerolinea(
+		                nombre,
+		                nickname,
+		                email,
+		                descripcion,
+		                sitio
+		        );
+
+		        try {
+		            sistema.registrarUsuario(data);
+		            JOptionPane.showMessageDialog(this, "Cliente registrado con éxito");
+		        } catch (IllegalArgumentException ex) {
+		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
+		        }
+		        
+		        
+		        
+		        
 		        
 		        if (descripcion.isEmpty()) {
 		            JOptionPane.showMessageDialog(this, "La descripción de la aerolínea es obligatoria.", "Validación", JOptionPane.ERROR_MESSAGE);

@@ -12,13 +12,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JDesktopPane;
 import java.awt.BorderLayout;
+import Logica.ISistema;
+import Logica.Sistema;
 
 public class Menu extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JDesktopPane desktopPane;
-
+    private final ISistema sistema;     // trabajá contra la interfaz
 	/**
 	 * Launch the application.
 	 */
@@ -39,6 +41,8 @@ public class Menu extends JFrame {
 	 * Create the frame.
 	 */
 	public Menu() {
+        this.sistema = new Sistema();   // una sola instancia para toda la app
+        //initComponents();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 907, 719);
 		
@@ -51,7 +55,7 @@ public class Menu extends JFrame {
 		JMenuItem mntmNewMenuItem = new JMenuItem("Reg. Usuario");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistroUsuario internal = new RegistroUsuario();
+				RegistroUsuario internal = new RegistroUsuario(sistema);
 	            desktopPane.add(internal);
 	            desktopPane.revalidate();
 	            desktopPane.repaint();
