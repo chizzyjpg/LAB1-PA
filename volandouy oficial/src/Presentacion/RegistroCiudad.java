@@ -161,7 +161,7 @@ public class RegistroCiudad extends JInternalFrame {
 				
 			}
 		});
-		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnAceptar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		btnAceptar.setBounds(299, 409, 89, 23);
 		getContentPane().add(btnAceptar);
 		
@@ -174,7 +174,7 @@ public class RegistroCiudad extends JInternalFrame {
 		});
 		getContentPane().add(btnCancelar);
 		setVisible(true);
-		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnCancelar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		btnCancelar.setBounds(189, 409, 100, 23);
 		getContentPane().add(btnCancelar);
 		
