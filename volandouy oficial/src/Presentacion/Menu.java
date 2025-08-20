@@ -71,6 +71,13 @@ public class Menu extends JFrame {
 		mnNewMenu.add(mntmNewMenuItem);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Categoría ");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistroCategoria cat = new RegistroCategoria();
+				cat.setVisible(true);
+				desktopPane.add(cat);
+			}
+		});
 		mnNewMenu.add(mntmNewMenuItem_1);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Reg. Ciudad");
@@ -90,6 +97,13 @@ public class Menu extends JFrame {
 		mnNewMenu.add(mntmNewMenuItem_3);
 		
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Reg. Ruta de Vuelo");
+		mntmNewMenuItem_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistrarRutaVuelo rutaNueva = new RegistrarRutaVuelo();
+				rutaNueva.setVisible(true);
+				desktopPane.add(rutaNueva);
+			}
+		});
 		mnNewMenu.add(mntmNewMenuItem_4);
 		
 		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Reg. Paq. Rutas de Vuelo");
