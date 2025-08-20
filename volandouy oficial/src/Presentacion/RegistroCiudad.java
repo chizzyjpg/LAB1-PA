@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
+import java.awt.Color;
 
 public class RegistroCiudad extends JInternalFrame {
 
@@ -109,6 +110,7 @@ public class RegistroCiudad extends JInternalFrame {
 		getContentPane().add(fechaAlta);
 
 		JButton btnAceptar = new JButton("ACEPTAR");
+		btnAceptar.setBackground(new Color(5, 250, 79));
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nomCiudad = textFieldNomCiudad.getText().trim();
@@ -160,10 +162,11 @@ public class RegistroCiudad extends JInternalFrame {
 			}
 		});
 		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnAceptar.setBounds(200, 409, 89, 23);
+		btnAceptar.setBounds(299, 409, 89, 23);
 		getContentPane().add(btnAceptar);
 		
 		JButton btnCancelar = new JButton("CANCELAR");
+		btnCancelar.setBackground(new Color(241, 43, 14));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -172,7 +175,7 @@ public class RegistroCiudad extends JInternalFrame {
 		getContentPane().add(btnCancelar);
 		setVisible(true);
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnCancelar.setBounds(299, 409, 100, 23);
+		btnCancelar.setBounds(189, 409, 100, 23);
 		getContentPane().add(btnCancelar);
 		
 
