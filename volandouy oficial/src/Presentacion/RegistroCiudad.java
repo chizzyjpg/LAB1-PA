@@ -12,6 +12,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import com.toedter.calendar.JDateChooser;
 
 public class RegistroCiudad extends JInternalFrame {
 
@@ -103,6 +104,10 @@ public class RegistroCiudad extends JInternalFrame {
 		lblNewLabel_4_1.setBounds(10, 253, 79, 14);
 		getContentPane().add(lblNewLabel_4_1);
 		
+		JDateChooser fechaAlta = new JDateChooser();
+		fechaAlta.setBounds(154, 247, 135, 20);
+		getContentPane().add(fechaAlta);
+
 		JButton btnAceptar = new JButton("ACEPTAR");
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,7 +116,7 @@ public class RegistroCiudad extends JInternalFrame {
 				String nomAeropuerto = textFieldAeropuerto.getText().trim();
 				String Descripcion = textAreaDesc.getText().trim();
 				String web = textFieldWeb.getText().trim();
-				//agregar validacion fecha
+				java.util.Date fecha = fechaAlta.getDate();				//agregar validacion fecha
 				
 				if(nomCiudad.isEmpty()) {
 					JOptionPane.showMessageDialog(RegistroCiudad.this, "La Ciudad NO puede estar vacía", "Error Ciudad" , JOptionPane.ERROR_MESSAGE);
@@ -138,7 +143,12 @@ public class RegistroCiudad extends JInternalFrame {
 					return;
 				}
 				
-				JOptionPane.showMessageDialog(RegistroCiudad.this, "Ciudad registrada correctamente:\nNombre: " + nomCiudad + "\nPaís: " + nomPais, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
+				if(fecha == null) {
+					JOptionPane.showMessageDialog(RegistroCiudad.this, "La Fecha NO puede estar vacía", "Error Fecha" , JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				JOptionPane.showMessageDialog(RegistroCiudad.this, "Ciudad registrada correctamente!\nNombre: " + nomCiudad + "\nPaís: " + nomPais, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
+				
 				
 				//LIMPIA CAMPOS
 				textFieldNomCiudad.setText("");
@@ -164,6 +174,7 @@ public class RegistroCiudad extends JInternalFrame {
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnCancelar.setBounds(299, 409, 100, 23);
 		getContentPane().add(btnCancelar);
+		
 
 	}
 }
