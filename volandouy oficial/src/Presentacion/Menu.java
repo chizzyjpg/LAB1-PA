@@ -8,11 +8,16 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JDesktopPane;
+import java.awt.BorderLayout;
 
 public class Menu extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JDesktopPane desktopPane;
 
 	/**
 	 * Launch the application.
@@ -35,7 +40,7 @@ public class Menu extends JFrame {
 	 */
 	public Menu() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 776, 575);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -44,12 +49,33 @@ public class Menu extends JFrame {
 		menuBar.add(mnNewMenu);
 		
 		JMenuItem mntmNewMenuItem = new JMenuItem("Reg. Usuario");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistroUsuario internal = new RegistroUsuario();
+	            desktopPane.add(internal);
+	            internal.setVisible(true);
+	            try {
+	                internal.setSelected(true);
+	            } catch (java.beans.PropertyVetoException ex) {
+	                ex.printStackTrace();
+	            }
+	            
+			}
+		});
 		mnNewMenu.add(mntmNewMenuItem);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Categoría ");
 		mnNewMenu.add(mntmNewMenuItem_1);
 		
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Reg. Ciudad");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistroCiudad nuevaCiudad = new RegistroCiudad();
+				nuevaCiudad.setVisible(true);
+				desktopPane.add(nuevaCiudad);
+				
+			}
+		});
 		mnNewMenu.add(mntmNewMenuItem_2);
 		
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Reg. Vuelo");
@@ -93,10 +119,15 @@ public class Menu extends JFrame {
 		
 		JMenuItem mntmNewMenuItem_12 = new JMenuItem("Paquete");
 		mnNewMenu_3.add(mntmNewMenuItem_12);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-
+		
+		desktopPane = new JDesktopPane();
+		contentPane.setLayout(new BorderLayout()); //aseguro BorderLayout
+		contentPane.add(desktopPane, BorderLayout.CENTER);
+	
 	}
 
 }
