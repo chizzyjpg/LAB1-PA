@@ -80,7 +80,7 @@ public class Menu extends JFrame {
 				nuevaCiudad.setVisible(true);
 				desktopPane.add(nuevaCiudad);
 				desktopPane.revalidate();
-	      desktopPane.repaint();
+				desktopPane.repaint();
 
 			}
 		});
@@ -135,6 +135,8 @@ public class Menu extends JFrame {
 		desktopPane = new JDesktopPane();
 		contentPane.setLayout(new BorderLayout()); //aseguro BorderLayout
 		contentPane.add(desktopPane, BorderLayout.CENTER);
+		desktopPane.revalidate();
+		desktopPane.repaint();
 	
 	}
 

@@ -54,7 +54,7 @@ public class RegistroUsuario extends JInternalFrame {
 	private JDateChooser dcFechaNac;
 	private JRadioButton rdbtnCliente;
 	private JRadioButton rdbtnAerolinea;
-	private JComboBox comboBox;
+	private JComboBox <TipoDocumento> comboBox;
 	private JPanel panelCliente;
 	private JPanel panelAerolinea;
 	private JTextArea textAreaDescripcion;
@@ -186,7 +186,7 @@ public class RegistroUsuario extends JInternalFrame {
 		lblTipoDeDocumento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		panelCliente.add(lblTipoDeDocumento, "cell 0 3,alignx trailing");
 		
-		comboBox = new JComboBox();
+		comboBox = new JComboBox<>(TipoDocumento.values());
 		comboBox.setModel(new DefaultComboBoxModel(TipoDocumento.values()));
 		comboBox.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		panelCliente.add(comboBox, "cell 1 3,growx");
@@ -263,61 +263,49 @@ public class RegistroUsuario extends JInternalFrame {
 		    if (rdbtnCliente.isSelected()) {
 		        String apellido = textFieldApellido.getText().trim();
 		        java.util.Date fUtil = dcFechaNac.getDate();
-		        String nac      = textFieldNacionalidad.getText().trim();
-		        TipoDocumento tipo   = (TipoDocumento) comboBox.getSelectedItem();
-		        String nDoc     = textFieldNumeroDocumento.getText().trim();
-		        
-		        LocalDate hoy = LocalDate.now();
-		        LocalDate minFecha = hoy.minusYears(120);
+		        String nac = textFieldNacionalidad.getText().trim();
+		        TipoDocumento tipo = (TipoDocumento) comboBox.getSelectedItem();
+		        String nDoc = textFieldNumeroDocumento.getText().trim();
 
-
-		        
-		        if (fUtil == null || nac.isEmpty() || tipo == null || nDoc.isEmpty()) {
+		        if (textFieldNickname.getText().trim().isEmpty()
+		            || textFieldNombre.getText().trim().isEmpty()
+		            || textFieldEmail.getText().trim().isEmpty()
+		            || fUtil == null || nac.isEmpty() || tipo == null || nDoc.isEmpty()) {
 		            JOptionPane.showMessageDialog(this, "Complete todos los campos de Cliente.", "Validación", JOptionPane.ERROR_MESSAGE);
 		            return;
 		        }
-		        
-		        java.time.LocalDate fechaNac = fUtil.toInstant()
-		                .atZone(java.time.ZoneId.systemDefault())
-		                .toLocalDate();
-		        
+
+		        LocalDate hoy = LocalDate.now();
+		        LocalDate minFecha = hoy.minusYears(120);
+
+		        // una sola conversión a LocalDate
 		        LocalDate fechaNacimiento = fUtil.toInstant()
 		                .atZone(ZoneId.systemDefault())
 		                .toLocalDate();
-		        
-		         if (fechaNacimiento.isAfter(hoy) || fechaNacimiento.isBefore(minFecha)) {
-		            JOptionPane.showMessageDialog(this, "Fecha de Nacimiento no valida", "Validación", JOptionPane.ERROR_MESSAGE);
+
+		        if (fechaNacimiento.isAfter(hoy) || fechaNacimiento.isBefore(minFecha)) {
+		            JOptionPane.showMessageDialog(this, "Fecha de Nacimiento no válida", "Validación", JOptionPane.ERROR_MESSAGE);
 		            return;
-		         }
-		        
-		        // TODO: guardar en tu servicio/DAO.
-		        // usuarioService.registrarCliente(nick, nombre, email, apellido, fechaNac, nacionalidad, tipo.name(), nroDoc);
-		        
-		        JOptionPane.showMessageDialog(this, "Cliente guardado.");
-		        limpiarFormulario(); // ⬅ limpiar al final
-		            
-		        // validar y registrar Cliente...
-		        
-		        
+		        }
+
+		        // ... acá armás tu DataCliente usando fUtil para la fecha
 		        DataCliente data = new DataCliente(
-		        		nombre,
-		        		nickname,
-		                email,
+		                textFieldNombre.getText().trim(),
+		                textFieldNickname.getText().trim(),
+		                textFieldEmail.getText().trim(),
 		                apellido,
-		                fUtil,
+		                fUtil,           // se mantiene como java.util.Date para el DTO
 		                nac,
 		                tipo,
 		                nDoc
-		               
 		        );
 
 		        try {
-		            sistema.registrarUsuario(data);
+		            sistema.registrarUsuario(data); // usar la instancia inyectada
 		            JOptionPane.showMessageDialog(this, "Cliente registrado con éxito");
 		        } catch (IllegalArgumentException ex) {
 		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
-		        }
-		        
+		        }       
 		        
 		        
 		        
