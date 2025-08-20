@@ -2,6 +2,7 @@ package Logica;
 
 public enum TipoDocumento {
 	CEDULA,
-	PASAPORTE
+	PASAPORTE,
+	OTRO
 
 }
