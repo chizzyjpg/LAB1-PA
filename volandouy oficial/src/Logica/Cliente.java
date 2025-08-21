@@ -1,5 +1,6 @@
 package Logica;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,5 +64,15 @@ public class Cliente extends Usuario{
 	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
+	
+	@Override
+	public String toString() {
+	    String f = getFechaNac() == null ? "null" :
+	            new SimpleDateFormat("yyyy-MM-dd").format(getFechaNac());
+	    return String.format("Cliente[nick=%s, nombre=%s %s, email=%s, fechaNac=%s, nac=%s, doc=%s %s]",
+	            getNickname(), getNombre(), getApellido(), getEmail(),
+	            f, getNacionalidad(), getTipoDocumento(), getNumDocumento());
+	}
+	
 }
 

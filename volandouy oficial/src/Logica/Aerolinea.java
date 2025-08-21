@@ -39,15 +39,19 @@ public class Aerolinea extends Usuario {
 	
 		//Metodos
 	
-	@Override
+	/*@Override
     public String toString() {
         return this.getNombre(); // útil para mostrar en el ComboBox
-    }
+    }*/
 	
 	public void agregarRuta(Ruta r) {
 		rutas.put(r.getNombre(), r);
 	}
 	
-	
+	@Override
+	public String toString() {
+	    return String.format("Aerolinea[nick=%s, nombre=%s, email=%s, web=%s]",
+	            getNickname(), getNombre(), getEmail(), getLinkWeb());
+	}
 		
 }

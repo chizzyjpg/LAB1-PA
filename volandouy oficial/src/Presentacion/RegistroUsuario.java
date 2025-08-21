@@ -58,7 +58,7 @@ public class RegistroUsuario extends JInternalFrame {
 	private JPanel panelCliente;
 	private JPanel panelAerolinea;
 	private JTextArea textAreaDescripcion;
-	private final ISistema sistema;
+	//private final ISistema sistema;
 	/**
 	 * Launch the application.
 	 */
@@ -83,7 +83,7 @@ public class RegistroUsuario extends JInternalFrame {
 		 setSize(620, 500);
 		 setVisible(true);
 		 setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
-		 this.sistema = sistema;
+		 //this.sistema = sistema;
 		
 		setTitle("Registrar Usuario");
 		setBounds(100, 100, 609, 497);
