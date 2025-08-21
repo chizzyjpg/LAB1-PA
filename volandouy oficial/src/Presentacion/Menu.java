@@ -140,13 +140,13 @@ public class Menu extends JFrame {
 		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Usuario");
 		mntmNewMenuItem_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ConsultaUsuario ConUsu = new ConsultaUsuario();
-				ConUsu.setVisible(true);
+				ConsultaUsuario ConUsu = new ConsultaUsuario(sistema);
 				desktopPane.add(ConUsu);
 				desktopPane.revalidate();
 				desktopPane.repaint();
+				ConUsu.setVisible(true);
 
-			}
+			} 
 		});
 		
 		mnNewMenu_1.add(mntmNewMenuItem_6);
