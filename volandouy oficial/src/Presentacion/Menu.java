@@ -76,6 +76,9 @@ public class Menu extends JFrame {
 				RegistroCategoria cat = new RegistroCategoria();
 				cat.setVisible(true);
 				desktopPane.add(cat);
+				desktopPane.revalidate();
+				desktopPane.repaint();
+
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem_1);
@@ -102,6 +105,9 @@ public class Menu extends JFrame {
 				RegistrarRutaVuelo rutaNueva = new RegistrarRutaVuelo();
 				rutaNueva.setVisible(true);
 				desktopPane.add(rutaNueva);
+				desktopPane.revalidate();
+				desktopPane.repaint();
+
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem_4);

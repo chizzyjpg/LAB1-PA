@@ -57,6 +57,7 @@ public class RegistroCiudad extends JInternalFrame {
 		getContentPane().add(lblNewLabel);
 		
 		textFieldNomCiudad = new JTextField();
+		textFieldNomCiudad.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldNomCiudad.setBounds(154, 37, 460, 20);
 		getContentPane().add(textFieldNomCiudad);
 		textFieldNomCiudad.setColumns(10);
@@ -67,6 +68,7 @@ public class RegistroCiudad extends JInternalFrame {
 		getContentPane().add(lblNewLabel_1);
 		
 		textFieldPais = new JTextField();
+		textFieldPais.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldPais.setColumns(10);
 		textFieldPais.setBounds(154, 65, 460, 20);
 		getContentPane().add(textFieldPais);
@@ -77,6 +79,7 @@ public class RegistroCiudad extends JInternalFrame {
 		getContentPane().add(lblNewLabel_2);
 		
 		textFieldAeropuerto = new JTextField();
+		textFieldAeropuerto.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldAeropuerto.setColumns(10);
 		textFieldAeropuerto.setBounds(154, 96, 460, 20);
 		getContentPane().add(textFieldAeropuerto);
@@ -96,6 +99,7 @@ public class RegistroCiudad extends JInternalFrame {
 		getContentPane().add(lblNewLabel_4);
 		
 		textFieldWeb = new JTextField();
+		textFieldWeb.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldWeb.setColumns(10);
 		textFieldWeb.setBounds(154, 216, 460, 20);
 		getContentPane().add(textFieldWeb);

@@ -51,6 +51,8 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public RegistrarRutaVuelo() {
+		getContentPane().setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		setClosable(true);
 		setTitle("Registrar Ruta de Vuelo");
 		setBounds(100, 100, 560, 523);
 		getContentPane().setLayout(null);
@@ -61,6 +63,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		getContentPane().add(lblAerolinea);
 		
 		JComboBox comboBoxAerolinea = new JComboBox();
+		comboBoxAerolinea.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBoxAerolinea.setBounds(155, 25, 145, 22);
 		getContentPane().add(comboBoxAerolinea);
 		
@@ -70,6 +73,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		getContentPane().add(lblNombre);
 		
 		textFieldNombre = new JTextField();
+		textFieldNombre.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldNombre.setBounds(155, 58, 145, 20);
 		getContentPane().add(textFieldNombre);
 		textFieldNombre.setColumns(10);
@@ -103,6 +107,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		getContentPane().add(lblCostoTurista);
 		
 		textFieldTurista = new JTextField();
+		textFieldTurista.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldTurista.setColumns(10);
 		textFieldTurista.setBounds(155, 216, 145, 20);
 		getContentPane().add(textFieldTurista);
@@ -113,6 +118,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		getContentPane().add(lblCostoEjecutivo);
 		
 		textFieldEjecutivo = new JTextField();
+		textFieldEjecutivo.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldEjecutivo.setColumns(10);
 		textFieldEjecutivo.setBounds(155, 244, 145, 20);
 		getContentPane().add(textFieldEjecutivo);
@@ -123,6 +129,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		getContentPane().add(lblCostoEquipajeExtra);
 		
 		textFieldEquipajeExtra = new JTextField();
+		textFieldEquipajeExtra.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldEquipajeExtra.setColumns(10);
 		textFieldEquipajeExtra.setBounds(155, 275, 145, 20);
 		getContentPane().add(textFieldEquipajeExtra);
@@ -133,6 +140,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		getContentPane().add(lblCiudadOrigen);
 		
 		textFieldCiudadOrigen = new JTextField();
+		textFieldCiudadOrigen.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldCiudadOrigen.setColumns(10);
 		textFieldCiudadOrigen.setBounds(155, 305, 145, 20);
 		getContentPane().add(textFieldCiudadOrigen);
@@ -143,6 +151,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		getContentPane().add(lblCiudadDestino);
 		
 		textFieldCiudadDestino = new JTextField();
+		textFieldCiudadDestino.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldCiudadDestino.setColumns(10);
 		textFieldCiudadDestino.setBounds(155, 341, 145, 20);
 		getContentPane().add(textFieldCiudadDestino);
@@ -171,7 +180,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 				dispose();
 			}
 		});
-		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnCancelar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		btnCancelar.setBackground(new Color(241, 43, 14));
 		btnCancelar.setBounds(155, 451, 100, 23);
 		getContentPane().add(btnCancelar);
@@ -244,7 +253,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 				
 			}
 		});
-		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnAceptar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		btnAceptar.setBackground(new Color(5, 250, 79));
 		btnAceptar.setBounds(265, 451, 89, 23);
 		getContentPane().add(btnAceptar);
