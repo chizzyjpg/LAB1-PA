@@ -38,5 +38,10 @@ public abstract class Usuario {
         this.email = email;
     }
    
-    
+    @Override
+    public String toString() {
+        return String.format("%s[nick=%s, nombre=%s, email=%s]",
+                getClass().getSimpleName(),
+                getNickname(), getNombre(), getEmail());
+    }
 }
