@@ -44,7 +44,7 @@ public class RegistroPaqueteRuta extends JInternalFrame {
 		setClosable(true);
 		getContentPane().setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		setTitle("Registro Paquete de Rutas de Vuelo");
-		setBounds(100, 100, 450, 452);
+		setBounds(100, 100, 419, 345);
 		getContentPane().setLayout(new MigLayout("", "[][grow][][grow]", "[][][grow][][][grow][]"));
 		setBounds(100, 100, 450, 374);
 		getContentPane().setLayout(new MigLayout("", "[][][][grow]", "[][][grow][][]"));
@@ -55,7 +55,7 @@ public class RegistroPaqueteRuta extends JInternalFrame {
 		
 		textField = new JTextField();
 		lblNewLabel.setLabelFor(textField);
-		getContentPane().add(textField, "cell 3 1,growx");
+		getContentPane().add(textField, "cell 3 1");
 		textField.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("Descripción:");
@@ -63,7 +63,7 @@ public class RegistroPaqueteRuta extends JInternalFrame {
 		
 		JTextArea textArea = new JTextArea();
 		lblNewLabel_1.setLabelFor(textArea);
-		getContentPane().add(textArea, "cell 3 2,grow");
+		getContentPane().add(textArea, "cell 3 2");
 		
 		JLabel lblNewLabel_2 = new JLabel("Validez:");
 		lblNewLabel_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
@@ -79,7 +79,7 @@ public class RegistroPaqueteRuta extends JInternalFrame {
 		
 		textField_1 = new JTextField();
 		lblNewLabel_3.setLabelFor(textField_1);
-		getContentPane().add(textField_1, "cell 3 4,growx");
+		getContentPane().add(textField_1, "cell 3 4");
 		textField_1.setColumns(10);
 		
 		JLabel lblNewLabel_4 = new JLabel("Fecha de Alta");
@@ -88,17 +88,17 @@ public class RegistroPaqueteRuta extends JInternalFrame {
 		
 		JDateChooser dateChooser = new JDateChooser();
 		lblNewLabel_4.setLabelFor(dateChooser);
-		getContentPane().add(dateChooser, "cell 3 5,grow");
-		btnNewButton.setBackground(Color.GREEN);
-		btnNewButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		btnNewButton.setForeground(Color.BLACK);
-		getContentPane().add(btnNewButton, "flowx,cell 3 6");
+		getContentPane().add(dateChooser, "cell 3 5");
 		
 		JButton btnNewButton_1 = new JButton("CERRAR");
 		btnNewButton_1.setBackground(Color.RED);
 		btnNewButton_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		btnNewButton_1.setForeground(Color.BLACK);
 		getContentPane().add(btnNewButton_1, "cell 3 6");
+		btnNewButton.setBackground(Color.GREEN);
+		btnNewButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		btnNewButton.setForeground(Color.BLACK);
+		getContentPane().add(btnNewButton, "cell 3 6");
 
 	}
 
