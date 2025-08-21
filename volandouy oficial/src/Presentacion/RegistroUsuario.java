@@ -58,7 +58,7 @@ public class RegistroUsuario extends JInternalFrame {
 	private JPanel panelCliente;
 	private JPanel panelAerolinea;
 	private JTextArea textAreaDescripcion;
-	private final ISistema sistema;
+	//private final ISistema sistema;
 	/**
 	 * Launch the application.
 	 */
@@ -83,7 +83,7 @@ public class RegistroUsuario extends JInternalFrame {
 		 setSize(620, 500);
 		 setVisible(true);
 		 setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
-		 this.sistema = sistema;
+		 //this.sistema = sistema;
 		
 		setTitle("Registrar Usuario");
 		setBounds(100, 100, 609, 497);
@@ -133,7 +133,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblEmail = new JLabel("Email");
 		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEmail.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblEmail.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelUsuario.add(lblEmail, "cell 0 3,alignx trailing");
 		
 		textFieldEmail = new JTextField();
@@ -238,7 +238,7 @@ public class RegistroUsuario extends JInternalFrame {
 			dispose();
 		});
 		
-		JButton btnGuardar = new JButton("GUARDAR");
+		JButton btnGuardar = new JButton("ACEPTAR");
 		btnGuardar.setBackground(new Color(5, 250, 79));
 		btnGuardar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		

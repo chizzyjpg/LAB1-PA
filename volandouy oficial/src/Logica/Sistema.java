@@ -1,7 +1,11 @@
 
 package Logica;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -9,9 +13,15 @@ public class Sistema implements ISistema {
     
 
     // “Persistencia” en memoria por ahora.
-    private final Map<String, Usuario> usuariosPorNickname = new HashMap<>();
+    private final Map<String, Usuario> usuariosPorNickname = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por nickname
 
     public Sistema() {}
+    
+    
+ // Normaliza claves para que "Juan", "juAN" y "juan" choquen correctamente
+    private static String canonical(String s) {
+        return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
+    }
 
     @Override
     public void registrarUsuario(DataUsuario data) {
@@ -21,50 +31,54 @@ public class Sistema implements ISistema {
         if (existeNickname(data.getNickname())) {
             throw new IllegalArgumentException("El nickname ya está en uso");
         }
-        if (existeNombre(data.getNombre())) {
-            throw new IllegalArgumentException("El nombre ya está en uso");
+        if (existeEmail(data.getEmail())) {
+            throw new IllegalArgumentException("El email ya está en uso");
         }
 
         // DTO -> Entidad (polimórfico)
         Usuario entity = ManejadorUsuario.toEntity(data);
 
-        // Guardamos por nickname (clave)
-        usuariosPorNickname.put(entity.getNickname(), entity);
+        // Clave canónica
+        String key = canonical(entity.getNickname());
+        usuariosPorNickname.put(key, entity);
     }
 
     @Override
     public boolean existeNickname(String nickname) {
         if (nickname == null) return false;
-        return usuariosPorNickname.containsKey(nickname.toLowerCase())
-            || usuariosPorNickname.containsKey(nickname); // por si no normalizás
+        return usuariosPorNickname.containsKey(canonical(nickname));
     }
 
     @Override
-    public boolean existeNombre(String nombre) {
-        if (nombre == null) return false;
+    public boolean existeEmail(String email) {
+        if (email == null) return false;
         return usuariosPorNickname.values().stream()
                 .anyMatch(u -> u.getNombre() != null
-                        && u.getNombre().equalsIgnoreCase(nombre));
+                        && u.getNombre().equalsIgnoreCase(email));
     }
 
     @Override
     public DataCliente verInfoCliente(String nickname) {
-        Usuario u = usuariosPorNickname.get(nickname);
+        Usuario u = usuariosPorNickname.get(canonical(nickname));
         if (u instanceof Cliente c) {
-            // Entidad -> DTO
-            DataUsuario dto = ManejadorUsuario.toDTO(c);
-            return (DataCliente) dto; // seguro, porque c es Cliente
+        	return (DataCliente) ManejadorUsuario.toDTO(c);
         }
         return null;
     }
 
     @Override
     public DataAerolinea verInfoAerolinea(String nickname) {
-        Usuario u = usuariosPorNickname.get(nickname);
+        Usuario u = usuariosPorNickname.get(canonical(nickname));
         if (u instanceof Aerolinea a) {
-            DataUsuario dto = ManejadorUsuario.toDTO(a);
-            return (DataAerolinea) dto;
+            return (DataAerolinea) ManejadorUsuario.toDTO(a);
         }
         return null;
     }
+    
+    @Override
+    public List<DataUsuario> listarUsuarios() {
+        return ManejadorUsuario.toDTOs(new ArrayList<>(usuariosPorNickname.values()));
+    }
+
+    
 }

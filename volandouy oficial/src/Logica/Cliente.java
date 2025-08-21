@@ -1,6 +1,9 @@
 package Logica;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Cliente extends Usuario{
 
@@ -10,6 +13,8 @@ public class Cliente extends Usuario{
 	private TipoDocumento tipoDocumento;
 	private String numDocumento;
 	
+	private List<Reserva> reservas;
+	
 	public Cliente(String n, String nick, String email, String ap, Date fechaNac, String nac, TipoDocumento tipoDoc, String numDoc) {
 		super(n, nick, email);
 		this.apellido = ap;
@@ -17,6 +22,7 @@ public class Cliente extends Usuario{
 		this.nacionalidad = nac;
 		this.tipoDocumento = tipoDoc;
 		this.numDocumento = numDoc;
+		this.reservas = new ArrayList<>();
 	}
 
 	//Getters
@@ -35,6 +41,9 @@ public class Cliente extends Usuario{
 	public String getNumDocumento() {
 		return numDocumento;
 	}
+	public List<Reserva> getReservas(){
+		return reservas;
+	}
 	
 	//Setters
 	public void setApellido(String ap) {
@@ -52,5 +61,18 @@ public class Cliente extends Usuario{
 	public void setNumDocumento(String numDoc) {
 		this.numDocumento = numDoc;
 	}
+	public void setReservas(List<Reserva> reservas) {
+		this.reservas = reservas;
+	}
+	
+	@Override
+	public String toString() {
+	    String f = getFechaNac() == null ? "null" :
+	            new SimpleDateFormat("yyyy-MM-dd").format(getFechaNac());
+	    return String.format("Cliente[nick=%s, nombre=%s %s, email=%s, fechaNac=%s, nac=%s, doc=%s %s]",
+	            getNickname(), getNombre(), getApellido(), getEmail(),
+	            f, getNacionalidad(), getTipoDocumento(), getNumDocumento());
+	}
+	
 }
 
