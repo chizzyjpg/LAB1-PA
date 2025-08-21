@@ -1,15 +1,19 @@
 package Logica;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Aerolinea extends Usuario {
 	
 	private String descGeneral;
 	private String linkWeb;
+	private Map<String, Ruta> rutas;
 	
 		public Aerolinea(String n, String nick, String email, String descGeneral, String linkWeb) {
 		super(n, nick, email);
 		this.setLinkWeb(linkWeb);
 		this.setDescGeneral(descGeneral);
-		
+		this.rutas = new HashMap<>();
 		// Getters
 	}
 
@@ -39,5 +43,11 @@ public class Aerolinea extends Usuario {
     public String toString() {
         return this.getNombre(); // útil para mostrar en el ComboBox
     }
+	
+	public void agregarRuta(Ruta r) {
+		rutas.put(r.getNombre(), r);
+	}
+	
+	
 		
 }

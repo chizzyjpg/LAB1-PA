@@ -2,7 +2,7 @@ package Logica;
 
 import java.util.Date;
 
-public class Rutas {
+public class Ruta {
 
 	private String nombre;
 	private String descripcion;
@@ -14,7 +14,7 @@ public class Rutas {
 	private int costoEquipajeExtra;
 	private String categorias;
 	
-	public Rutas(String n, String desc, String ciudadOr, String ciudadDe, int hora, Date fechaAlta, int costoBase, int costoEquipajeExtra, String cat) {
+	public Ruta(String n, String desc, String ciudadOr, String ciudadDe, int hora, Date fechaAlta, int costoBase, int costoEquipajeExtra, String cat) {
 		this.nombre = n;
 		this.descripcion = desc;
 		this.ciudadOrigen = ciudadOr;
