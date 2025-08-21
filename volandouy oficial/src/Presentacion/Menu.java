@@ -137,6 +137,16 @@ public class Menu extends JFrame {
 		
 		JMenuItem mntmNewMenuItem_7 = new JMenuItem("Ruta de Vuelo");
 		mnNewMenu_1.add(mntmNewMenuItem_7);
+		mntmNewMenuItem_7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ConsultaVuelo ConVue = new ConsultaVuelo();
+				ConVue.setVisible(true);
+				desktopPane.add(ConVue);
+				desktopPane.revalidate();
+				desktopPane.repaint();
+
+			}
+		});
 		
 		JMenuItem mntmNewMenuItem_8 = new JMenuItem("Vuelo");
 		mnNewMenu_1.add(mntmNewMenuItem_8);
