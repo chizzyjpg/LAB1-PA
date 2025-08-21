@@ -122,6 +122,17 @@ public class Menu extends JFrame {
 		menuBar.add(mnNewMenu_1);
 		
 		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Usuario");
+		mntmNewMenuItem_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ConsultaUsuario ConUsu = new ConsultaUsuario();
+				ConUsu.setVisible(true);
+				desktopPane.add(ConUsu);
+				desktopPane.revalidate();
+				desktopPane.repaint();
+
+			}
+		});
+		
 		mnNewMenu_1.add(mntmNewMenuItem_6);
 		
 		JMenuItem mntmNewMenuItem_7 = new JMenuItem("Ruta de Vuelo");
