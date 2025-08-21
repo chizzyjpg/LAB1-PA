@@ -148,7 +148,7 @@ public class RegistroVuelo extends JInternalFrame {
 		btnCancelar.setBackground(Color.RED);
 		btnCancelar.setForeground(Color.BLACK);
 		btnCancelar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		btnCancelar.setBounds(505, 491, 100, 23);
+		btnCancelar.setBounds(380, 491, 100, 23);
 
 		// Acción al hacer clic
 		btnCancelar.addActionListener(new ActionListener() {
@@ -170,12 +170,6 @@ public class RegistroVuelo extends JInternalFrame {
 
 		
 		getContentPane().add(dateChooser_1);
-		
-		JButton btnNewButton = new JButton("Cancelar");
-		btnNewButton.setForeground(new Color(128, 0, 0));
-		btnNewButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		btnNewButton.setBounds(516, 491, 89, 23);
-		getContentPane().add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("ACEPTAR");
 		btnNewButton_1.setBackground(Color.GREEN);
@@ -209,7 +203,7 @@ public class RegistroVuelo extends JInternalFrame {
 		    }
 		});
 
-		btnNewButton_1.setBounds(406, 491, 89, 23);
+		btnNewButton_1.setBounds(490, 491, 89, 23);
 		getContentPane().add(btnNewButton_1);
 		
 		JLabel lblNewLabel_8 = new JLabel("New label");

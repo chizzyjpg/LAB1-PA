@@ -41,11 +41,9 @@ public class RegistroPaqueteRuta extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public RegistroPaqueteRuta() {
+		setClosable(true);
 		getContentPane().setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		setResizable(true);
-		setMaximizable(true);
-		setIconifiable(true);
-		setTitle("Registro Paquete Vuelo Ruta");
+		setTitle("Registro Paquete de Rutas de Vuelo");
 		setBounds(100, 100, 450, 452);
 		getContentPane().setLayout(new MigLayout("", "[][grow][][grow]", "[][][grow][][][grow][]"));
 		setBounds(100, 100, 450, 374);
