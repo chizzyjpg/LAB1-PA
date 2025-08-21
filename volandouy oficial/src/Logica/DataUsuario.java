@@ -2,22 +2,16 @@
 package Logica;
 
 
-public class DataUsuario {
+public abstract class DataUsuario {
     
     private String nombre;
-    private String apellido;
-    private String cedulaIdentidad;
+    private String nickname;
+    private String email;
     
-    public DataUsuario(){
-        this.nombre = "Fulano";
-        this.apellido = "Detal";
-        this.cedulaIdentidad = "1.111.111-1";
-    }
-    
-    public DataUsuario(String n, String ap, String ci){
-        this.nombre = n;
-        this.apellido = ap;
-        this.cedulaIdentidad = ci;
+    public DataUsuario(String nombre, String nickname, String email){
+        this.nombre = nombre;
+        this.nickname = nickname;
+        this.email = email;
     }
     
     //Getters
@@ -25,11 +19,11 @@ public class DataUsuario {
     public String getNombre(){
         return nombre;
     }
-    public String getApellido(){
-        return apellido;
+    public String getNickname(){
+        return nickname;
     }
-    public String getCI(){
-        return cedulaIdentidad;
+    public String getEmail(){
+        return email;
     }
     
 }

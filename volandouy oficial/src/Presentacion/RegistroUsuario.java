@@ -23,6 +23,11 @@ import java.awt.BorderLayout;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+
+import Logica.DataAerolinea;
+import Logica.DataCliente;
+import Logica.Sistema;
+import Logica.ISistema;
 import Logica.TipoAsiento;
 import Logica.TipoDocumento;
 import java.awt.FlowLayout;
@@ -30,6 +35,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import com.toedter.calendar.JDateChooser;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.awt.event.ActionEvent;
 
 public class RegistroUsuario extends JInternalFrame {
@@ -47,37 +54,38 @@ public class RegistroUsuario extends JInternalFrame {
 	private JDateChooser dcFechaNac;
 	private JRadioButton rdbtnCliente;
 	private JRadioButton rdbtnAerolinea;
-	private JComboBox comboBox;
+	private JComboBox <TipoDocumento> comboBox;
 	private JPanel panelCliente;
 	private JPanel panelAerolinea;
 	private JTextArea textAreaDescripcion;
-
+	private final ISistema sistema;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RegistroUsuario frame = new RegistroUsuario();
+					RegistroUsuario frame = new RegistroUsuario(sistema);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public RegistroUsuario() {
-		super("Registro de Usuario", true, true, true, true);
+	public RegistroUsuario(ISistema sistema) {
+		super("Registro de Usuario", true, true, true, false);
 		 setSize(620, 500);
 		 setVisible(true);
+		 setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+		 this.sistema = sistema;
 		
-		setTitle("RegistrarUsuario");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Registrar Usuario");
 		setBounds(100, 100, 609, 497);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -89,34 +97,33 @@ public class RegistroUsuario extends JInternalFrame {
 		panelUsuario.setLayout(new MigLayout("", "[][grow][]", "[][][][]"));
 		
 		JLabel lblTipo = new JLabel("Tipo:");
-		lblTipo.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblTipo.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelUsuario.add(lblTipo, "cell 0 0");
 		
 		rdbtnCliente = new JRadioButton("Cliente");
 		buttonGroup.add(rdbtnCliente);
 		rdbtnCliente.setSelected(true);
-		rdbtnCliente.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		rdbtnCliente.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelUsuario.add(rdbtnCliente, "cell 1 0,alignx center");
 		
 		rdbtnAerolinea = new JRadioButton("Aerolínea");
 		buttonGroup.add(rdbtnAerolinea);
-		rdbtnAerolinea.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		rdbtnAerolinea.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelUsuario.add(rdbtnAerolinea, "cell 2 0,alignx center");
 		
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNombre.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblNombre.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelUsuario.add(lblNombre, "cell 0 1,alignx trailing");
 		
 		textFieldNombre = new JTextField();
-		textFieldNombre.setEnabled(false);
 		textFieldNombre.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		panelUsuario.add(textFieldNombre, "cell 1 1,growx");
 		textFieldNombre.setColumns(10);
 		
 		JLabel lblNickname = new JLabel("Nickname");
 		lblNickname.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNickname.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblNickname.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelUsuario.add(lblNickname, "cell 0 2,alignx trailing");
 		
 		textFieldNickname = new JTextField();
@@ -144,7 +151,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblApellido = new JLabel("Apellido");
 		lblApellido.setHorizontalAlignment(SwingConstants.CENTER);
-		lblApellido.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblApellido.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelCliente.add(lblApellido, "cell 0 0,alignx trailing");
 		
 		textFieldApellido = new JTextField();
@@ -154,7 +161,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblFechaDeNacimiento = new JLabel("Fecha de Nacimiento");
 		lblFechaDeNacimiento.setHorizontalAlignment(SwingConstants.CENTER);
-		lblFechaDeNacimiento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblFechaDeNacimiento.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelCliente.add(lblFechaDeNacimiento, "cell 0 1,alignx trailing");
 		
 		dcFechaNac = new JDateChooser();
@@ -166,7 +173,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblNacionalidad = new JLabel("País de Nacimiento");
 		lblNacionalidad.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNacionalidad.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblNacionalidad.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelCliente.add(lblNacionalidad, "cell 0 2,alignx trailing");
 		
 		textFieldNacionalidad = new JTextField();
@@ -176,17 +183,17 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblTipoDeDocumento = new JLabel("Tipo de Documento");
 		lblTipoDeDocumento.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTipoDeDocumento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblTipoDeDocumento.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelCliente.add(lblTipoDeDocumento, "cell 0 3,alignx trailing");
 		
-		comboBox = new JComboBox();
+		comboBox = new JComboBox<>(TipoDocumento.values());
 		comboBox.setModel(new DefaultComboBoxModel(TipoDocumento.values()));
 		comboBox.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		panelCliente.add(comboBox, "cell 1 3,growx");
 		
 		JLabel lblNmeroDeDocumento = new JLabel("Número de Documento");
 		lblNmeroDeDocumento.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNmeroDeDocumento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblNmeroDeDocumento.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelCliente.add(lblNmeroDeDocumento, "cell 0 4,alignx trailing,aligny center");
 		
 		textFieldNumeroDocumento = new JTextField();
@@ -200,7 +207,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblDescripcin = new JLabel("Descripción:");
 		lblDescripcin.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDescripcin.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblDescripcin.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelAerolinea.add(lblDescripcin, "cell 0 0,alignx trailing");
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -211,7 +218,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblSitioWeb = new JLabel("Sitio Web");
 		lblSitioWeb.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSitioWeb.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblSitioWeb.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelAerolinea.add(lblSitioWeb, "cell 0 1,alignx trailing");
 		
 		textFieldSitioWeb = new JTextField();
@@ -223,7 +230,7 @@ public class RegistroUsuario extends JInternalFrame {
 		contentPane.add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton btnCancelar = new JButton("Cancelar");
+		JButton btnCancelar = new JButton("CANCELAR");
 		btnCancelar.setBackground(new Color(241, 43, 14));
 		btnCancelar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		panel.add(btnCancelar);
@@ -231,7 +238,7 @@ public class RegistroUsuario extends JInternalFrame {
 			dispose();
 		});
 		
-		JButton btnGuardar = new JButton("Guardar");
+		JButton btnGuardar = new JButton("GUARDAR");
 		btnGuardar.setBackground(new Color(5, 250, 79));
 		btnGuardar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		
@@ -240,35 +247,92 @@ public class RegistroUsuario extends JInternalFrame {
 		    String nickname = textFieldNickname.getText().trim();
 		    String nombre   = textFieldNombre.getText().trim();
 		    String email    = textFieldEmail.getText().trim();
+		    
+		    if (nickname.isEmpty() || nombre.isEmpty() || email.isEmpty() ) {
+	            JOptionPane.showMessageDialog(this, "Complete todos los campos.", "Validación", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+		    
+		    String emailVerificacion = textFieldEmail.getText().trim();
+		    if (!emailValido(emailVerificacion)) {
+		        JOptionPane.showMessageDialog(RegistroUsuario.this,"Email inválido. Ejemplo: nombre@dominio.com", "Validación", JOptionPane.ERROR_MESSAGE);
+		        textFieldEmail.requestFocus();
+		        return;
+		    }
 
 		    if (rdbtnCliente.isSelected()) {
 		        String apellido = textFieldApellido.getText().trim();
 		        java.util.Date fUtil = dcFechaNac.getDate();
-		        String nac      = textFieldNacionalidad.getText().trim();
-		        TipoDocumento tipo   = (TipoDocumento) comboBox.getSelectedItem();
-		        String nDoc     = textFieldNumeroDocumento.getText().trim();
-		        
-		        if (nickname.isEmpty() || nombre.isEmpty() || email.isEmpty() || apellido.isEmpty() || fUtil == null || nac.isEmpty() || tipo == null || nDoc.isEmpty()) {
+		        String nac = textFieldNacionalidad.getText().trim();
+		        TipoDocumento tipo = (TipoDocumento) comboBox.getSelectedItem();
+		        String nDoc = textFieldNumeroDocumento.getText().trim();
+
+		        if (textFieldNickname.getText().trim().isEmpty()
+		            || textFieldNombre.getText().trim().isEmpty()
+		            || textFieldEmail.getText().trim().isEmpty()
+		            || fUtil == null || nac.isEmpty() || tipo == null || nDoc.isEmpty()) {
 		            JOptionPane.showMessageDialog(this, "Complete todos los campos de Cliente.", "Validación", JOptionPane.ERROR_MESSAGE);
 		            return;
 		        }
-		        
-		        java.time.LocalDate fechaNac = fUtil.toInstant()
-		                .atZone(java.time.ZoneId.systemDefault())
+
+		        LocalDate hoy = LocalDate.now();
+		        LocalDate minFecha = hoy.minusYears(120);
+
+		        // una sola conversión a LocalDate
+		        LocalDate fechaNacimiento = fUtil.toInstant()
+		                .atZone(ZoneId.systemDefault())
 		                .toLocalDate();
+
+		        if (fechaNacimiento.isAfter(hoy) || fechaNacimiento.isBefore(minFecha)) {
+		            JOptionPane.showMessageDialog(this, "Fecha de Nacimiento no válida", "Validación", JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+
+		        // ... acá armás tu DataCliente usando fUtil para la fecha
+		        DataCliente data = new DataCliente(
+		                textFieldNombre.getText().trim(),
+		                textFieldNickname.getText().trim(),
+		                textFieldEmail.getText().trim(),
+		                apellido,
+		                fUtil,           // se mantiene como java.util.Date para el DTO
+		                nac,
+		                tipo,
+		                nDoc
+		        );
+
+		        try {
+		            sistema.registrarUsuario(data); // usar la instancia inyectada
+		            JOptionPane.showMessageDialog(this, "Cliente registrado con éxito");
+		        } catch (IllegalArgumentException ex) {
+		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
+		        }       
 		        
-		        // TODO: guardar en tu servicio/DAO.
-		        // usuarioService.registrarCliente(nick, nombre, email, apellido, fechaNac, nacionalidad, tipo.name(), nroDoc);
 		        
-		        JOptionPane.showMessageDialog(this, "Cliente guardado.");
-		        limpiarFormulario(); // ⬅ limpiar al final
-		            
-		            
-		        // validar y registrar Cliente...
+		        
+		        
 		    } else { // Aerolínea
 		        String descripcion = textAreaDescripcion.getText().trim();
 		        String sitio       = textFieldSitioWeb.getText().trim(); // opcional
 		        // validar y registrar Aerolínea...
+		        
+		        DataAerolinea data = new DataAerolinea(
+		                nombre,
+		                nickname,
+		                email,
+		                descripcion,
+		                sitio
+		        );
+
+		        try {
+		            sistema.registrarUsuario(data);
+		            JOptionPane.showMessageDialog(this, "Cliente registrado con éxito");
+		        } catch (IllegalArgumentException ex) {
+		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
+		        }
+		        
+		        
+		        
+		        
 		        
 		        if (descripcion.isEmpty()) {
 		            JOptionPane.showMessageDialog(this, "La descripción de la aerolínea es obligatoria.", "Validación", JOptionPane.ERROR_MESSAGE);
@@ -322,5 +386,12 @@ public class RegistroUsuario extends JInternalFrame {
 
 	}
 	
+	private static final java.util.regex.Pattern EMAIL_RX =
+	        java.util.regex.Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+	
+	private boolean emailValido(String emailRaw) {
+	    String email = emailRaw == null ? "" : emailRaw.trim();
+	    return EMAIL_RX.matcher(email).matches();
+	}
 	
 }

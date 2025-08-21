@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
+import java.awt.Color;
 
 public class RegistroCiudad extends JInternalFrame {
 
@@ -56,6 +57,7 @@ public class RegistroCiudad extends JInternalFrame {
 		getContentPane().add(lblNewLabel);
 		
 		textFieldNomCiudad = new JTextField();
+		textFieldNomCiudad.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldNomCiudad.setBounds(154, 37, 460, 20);
 		getContentPane().add(textFieldNomCiudad);
 		textFieldNomCiudad.setColumns(10);
@@ -66,6 +68,7 @@ public class RegistroCiudad extends JInternalFrame {
 		getContentPane().add(lblNewLabel_1);
 		
 		textFieldPais = new JTextField();
+		textFieldPais.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldPais.setColumns(10);
 		textFieldPais.setBounds(154, 65, 460, 20);
 		getContentPane().add(textFieldPais);
@@ -76,6 +79,7 @@ public class RegistroCiudad extends JInternalFrame {
 		getContentPane().add(lblNewLabel_2);
 		
 		textFieldAeropuerto = new JTextField();
+		textFieldAeropuerto.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldAeropuerto.setColumns(10);
 		textFieldAeropuerto.setBounds(154, 96, 460, 20);
 		getContentPane().add(textFieldAeropuerto);
@@ -95,6 +99,7 @@ public class RegistroCiudad extends JInternalFrame {
 		getContentPane().add(lblNewLabel_4);
 		
 		textFieldWeb = new JTextField();
+		textFieldWeb.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldWeb.setColumns(10);
 		textFieldWeb.setBounds(154, 216, 460, 20);
 		getContentPane().add(textFieldWeb);
@@ -109,6 +114,7 @@ public class RegistroCiudad extends JInternalFrame {
 		getContentPane().add(fechaAlta);
 
 		JButton btnAceptar = new JButton("ACEPTAR");
+		btnAceptar.setBackground(new Color(5, 250, 79));
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nomCiudad = textFieldNomCiudad.getText().trim();
@@ -116,7 +122,7 @@ public class RegistroCiudad extends JInternalFrame {
 				String nomAeropuerto = textFieldAeropuerto.getText().trim();
 				String Descripcion = textAreaDesc.getText().trim();
 				String web = textFieldWeb.getText().trim();
-				java.util.Date fecha = fechaAlta.getDate();				//agregar validacion fecha
+				java.util.Date fecha = fechaAlta.getDate();
 				
 				if(nomCiudad.isEmpty()) {
 					JOptionPane.showMessageDialog(RegistroCiudad.this, "La Ciudad NO puede estar vacía", "Error Ciudad" , JOptionPane.ERROR_MESSAGE);
@@ -159,11 +165,12 @@ public class RegistroCiudad extends JInternalFrame {
 				
 			}
 		});
-		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnAceptar.setBounds(200, 409, 89, 23);
+		btnAceptar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		btnAceptar.setBounds(299, 409, 89, 23);
 		getContentPane().add(btnAceptar);
 		
 		JButton btnCancelar = new JButton("CANCELAR");
+		btnCancelar.setBackground(new Color(241, 43, 14));
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -171,8 +178,8 @@ public class RegistroCiudad extends JInternalFrame {
 		});
 		getContentPane().add(btnCancelar);
 		setVisible(true);
-		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnCancelar.setBounds(299, 409, 100, 23);
+		btnCancelar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		btnCancelar.setBounds(189, 409, 100, 23);
 		getContentPane().add(btnCancelar);
 		
 
