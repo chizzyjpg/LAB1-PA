@@ -307,7 +307,7 @@ public class RegistroUsuario extends JInternalFrame {
 		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
 		        }       
 		        
-		        
+		        limpiarFormulario();
 		        
 		        
 		    } else { // Aerolínea

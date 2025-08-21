@@ -138,7 +138,7 @@ public class Menu extends JFrame {
 		menuBar.add(mnNewMenu_1);
 		
 		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Usuario");
-		mntmNewMenuItem_6.addActionListener(new ActionListener() {
+		/*mntmNewMenuItem_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ConsultaUsuario ConUsu = new ConsultaUsuario(sistema);
 				desktopPane.add(ConUsu);
@@ -147,7 +147,7 @@ public class Menu extends JFrame {
 				ConUsu.setVisible(true);
 
 			} 
-		});
+		});*/
 		
 		mnNewMenu_1.add(mntmNewMenuItem_6);
 		
