@@ -97,6 +97,14 @@ public class Menu extends JFrame {
 		mnNewMenu.add(mntmNewMenuItem_2);
 		
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Reg. Vuelo");
+		mntmNewMenuItem_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistroVuelo nuevoVuelo = new RegistroVuelo();
+				nuevoVuelo.setVisible(true);
+				desktopPane.add(nuevoVuelo);
+				
+			}
+		});
 		mnNewMenu.add(mntmNewMenuItem_3);
 		
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Reg. Ruta de Vuelo");
@@ -113,6 +121,14 @@ public class Menu extends JFrame {
 		mnNewMenu.add(mntmNewMenuItem_4);
 		
 		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Reg. Paq. Rutas de Vuelo");
+		mntmNewMenuItem_5.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        // instanciás tu InternalFrame correcto
+		        RegistroPaqueteRuta nuevoPaqRutasDeVuelo = new RegistroPaqueteRuta();
+		        nuevoPaqRutasDeVuelo.setVisible(true);
+		        desktopPane.add(nuevoPaqRutasDeVuelo);
+		    }
+		});
 		mnNewMenu.add(mntmNewMenuItem_5);
 		
 		JMenuItem mntmNewMenuItem_13 = new JMenuItem("Reg. Rutas de Vuelo a Paq.");
