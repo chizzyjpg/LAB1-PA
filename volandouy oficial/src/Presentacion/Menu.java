@@ -12,15 +12,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JDesktopPane;
 import java.awt.BorderLayout;
+
+import Logica.Fabrica;
 import Logica.ISistema;
-import Logica.Sistema;
 
 public class Menu extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JDesktopPane desktopPane;
-    private final ISistema sistema;     // trabajá contra la interfaz
+    private final ISistema sistema = Fabrica.getInstance().getSistema();     // trabajá contra la interfaz
 	/**
 	 * Launch the application.
 	 */
@@ -41,7 +42,7 @@ public class Menu extends JFrame {
 	 * Create the frame.
 	 */
 	public Menu() {
-        this.sistema = new Sistema();   // una sola instancia para toda la app
+        //this.sistema = new Sistema();   // una sola instancia para toda la app
         //initComponents();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 907, 719);
@@ -76,6 +77,9 @@ public class Menu extends JFrame {
 				RegistroCategoria cat = new RegistroCategoria();
 				cat.setVisible(true);
 				desktopPane.add(cat);
+				desktopPane.revalidate();
+				desktopPane.repaint();
+
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem_1);
@@ -94,6 +98,14 @@ public class Menu extends JFrame {
 		mnNewMenu.add(mntmNewMenuItem_2);
 		
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Reg. Vuelo");
+		mntmNewMenuItem_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistroVuelo nuevoVuelo = new RegistroVuelo();
+				nuevoVuelo.setVisible(true);
+				desktopPane.add(nuevoVuelo);
+				
+			}
+		});
 		mnNewMenu.add(mntmNewMenuItem_3);
 		
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Reg. Ruta de Vuelo");
@@ -102,11 +114,22 @@ public class Menu extends JFrame {
 				RegistrarRutaVuelo rutaNueva = new RegistrarRutaVuelo();
 				rutaNueva.setVisible(true);
 				desktopPane.add(rutaNueva);
+				desktopPane.revalidate();
+				desktopPane.repaint();
+
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem_4);
 		
 		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Reg. Paq. Rutas de Vuelo");
+		mntmNewMenuItem_5.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        // instanciás tu InternalFrame correcto
+		        RegistroPaqueteRuta nuevoPaqRutasDeVuelo = new RegistroPaqueteRuta();
+		        nuevoPaqRutasDeVuelo.setVisible(true);
+		        desktopPane.add(nuevoPaqRutasDeVuelo);
+		    }
+		});
 		mnNewMenu.add(mntmNewMenuItem_5);
 		
 		JMenuItem mntmNewMenuItem_13 = new JMenuItem("Reg. Rutas de Vuelo a Paq.");
@@ -125,10 +148,31 @@ public class Menu extends JFrame {
 		menuBar.add(mnNewMenu_1);
 		
 		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Usuario");
+		mntmNewMenuItem_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ConsultaUsuario ConUsu = new ConsultaUsuario(sistema);
+				desktopPane.add(ConUsu);
+				desktopPane.revalidate();
+				desktopPane.repaint();
+				ConUsu.setVisible(true);
+
+			} 
+		});
+		
 		mnNewMenu_1.add(mntmNewMenuItem_6);
 		
 		JMenuItem mntmNewMenuItem_7 = new JMenuItem("Ruta de Vuelo");
 		mnNewMenu_1.add(mntmNewMenuItem_7);
+//		mntmNewMenuItem_7.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				ConsultaVuelo ConVue = new ConsultaVuelo();
+//				ConVue.setVisible(true);
+//				desktopPane.add(ConVue);
+//				desktopPane.revalidate();
+//				desktopPane.repaint();
+//
+//			}
+//		});
 		
 		JMenuItem mntmNewMenuItem_8 = new JMenuItem("Vuelo");
 		mnNewMenu_1.add(mntmNewMenuItem_8);

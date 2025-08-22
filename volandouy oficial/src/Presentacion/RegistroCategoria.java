@@ -52,6 +52,7 @@ public class RegistroCategoria extends JInternalFrame {
 		getContentPane().add(lblNewLabel);
 		
 		textFieldCategoria = new JTextField();
+		textFieldCategoria.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldCategoria.setBounds(175, 29, 235, 20);
 		getContentPane().add(textFieldCategoria);
 		textFieldCategoria.setColumns(10);
@@ -62,7 +63,7 @@ public class RegistroCategoria extends JInternalFrame {
 				dispose();
 			}
 		});
-		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnCancelar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		btnCancelar.setBackground(new Color(241, 43, 14));
 		btnCancelar.setBounds(90, 80, 100, 23);
 		getContentPane().add(btnCancelar);
@@ -80,7 +81,7 @@ public class RegistroCategoria extends JInternalFrame {
 				JOptionPane.showMessageDialog(RegistroCategoria.this, "Categoría registrada correctamente!\nNombre: " + cat, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		btnAceptar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btnAceptar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		btnAceptar.setBackground(new Color(5, 250, 79));
 		btnAceptar.setBounds(200, 80, 89, 23);
 		getContentPane().add(btnAceptar);

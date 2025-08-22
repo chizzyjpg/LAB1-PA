@@ -58,7 +58,7 @@ public class RegistroUsuario extends JInternalFrame {
 	private JPanel panelCliente;
 	private JPanel panelAerolinea;
 	private JTextArea textAreaDescripcion;
-	private final ISistema sistema;
+	//private final ISistema sistema;
 	/**
 	 * Launch the application.
 	 */
@@ -83,7 +83,7 @@ public class RegistroUsuario extends JInternalFrame {
 		 setSize(620, 500);
 		 setVisible(true);
 		 setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
-		 this.sistema = sistema;
+		 //this.sistema = sistema;
 		
 		setTitle("Registrar Usuario");
 		setBounds(100, 100, 609, 497);
@@ -97,23 +97,23 @@ public class RegistroUsuario extends JInternalFrame {
 		panelUsuario.setLayout(new MigLayout("", "[][grow][]", "[][][][]"));
 		
 		JLabel lblTipo = new JLabel("Tipo:");
-		lblTipo.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblTipo.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelUsuario.add(lblTipo, "cell 0 0");
 		
 		rdbtnCliente = new JRadioButton("Cliente");
 		buttonGroup.add(rdbtnCliente);
 		rdbtnCliente.setSelected(true);
-		rdbtnCliente.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		rdbtnCliente.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelUsuario.add(rdbtnCliente, "cell 1 0,alignx center");
 		
 		rdbtnAerolinea = new JRadioButton("Aerolínea");
 		buttonGroup.add(rdbtnAerolinea);
-		rdbtnAerolinea.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		rdbtnAerolinea.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelUsuario.add(rdbtnAerolinea, "cell 2 0,alignx center");
 		
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNombre.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblNombre.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelUsuario.add(lblNombre, "cell 0 1,alignx trailing");
 		
 		textFieldNombre = new JTextField();
@@ -123,7 +123,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblNickname = new JLabel("Nickname");
 		lblNickname.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNickname.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblNickname.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelUsuario.add(lblNickname, "cell 0 2,alignx trailing");
 		
 		textFieldNickname = new JTextField();
@@ -133,7 +133,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblEmail = new JLabel("Email");
 		lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEmail.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblEmail.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelUsuario.add(lblEmail, "cell 0 3,alignx trailing");
 		
 		textFieldEmail = new JTextField();
@@ -151,7 +151,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblApellido = new JLabel("Apellido");
 		lblApellido.setHorizontalAlignment(SwingConstants.CENTER);
-		lblApellido.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblApellido.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelCliente.add(lblApellido, "cell 0 0,alignx trailing");
 		
 		textFieldApellido = new JTextField();
@@ -161,7 +161,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblFechaDeNacimiento = new JLabel("Fecha de Nacimiento");
 		lblFechaDeNacimiento.setHorizontalAlignment(SwingConstants.CENTER);
-		lblFechaDeNacimiento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblFechaDeNacimiento.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelCliente.add(lblFechaDeNacimiento, "cell 0 1,alignx trailing");
 		
 		dcFechaNac = new JDateChooser();
@@ -173,7 +173,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblNacionalidad = new JLabel("País de Nacimiento");
 		lblNacionalidad.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNacionalidad.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblNacionalidad.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelCliente.add(lblNacionalidad, "cell 0 2,alignx trailing");
 		
 		textFieldNacionalidad = new JTextField();
@@ -183,7 +183,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblTipoDeDocumento = new JLabel("Tipo de Documento");
 		lblTipoDeDocumento.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTipoDeDocumento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblTipoDeDocumento.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelCliente.add(lblTipoDeDocumento, "cell 0 3,alignx trailing");
 		
 		comboBox = new JComboBox<>(TipoDocumento.values());
@@ -193,7 +193,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblNmeroDeDocumento = new JLabel("Número de Documento");
 		lblNmeroDeDocumento.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNmeroDeDocumento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblNmeroDeDocumento.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelCliente.add(lblNmeroDeDocumento, "cell 0 4,alignx trailing,aligny center");
 		
 		textFieldNumeroDocumento = new JTextField();
@@ -207,7 +207,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblDescripcin = new JLabel("Descripción:");
 		lblDescripcin.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDescripcin.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblDescripcin.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelAerolinea.add(lblDescripcin, "cell 0 0,alignx trailing");
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -218,7 +218,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JLabel lblSitioWeb = new JLabel("Sitio Web");
 		lblSitioWeb.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSitioWeb.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblSitioWeb.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
 		panelAerolinea.add(lblSitioWeb, "cell 0 1,alignx trailing");
 		
 		textFieldSitioWeb = new JTextField();
@@ -238,7 +238,7 @@ public class RegistroUsuario extends JInternalFrame {
 			dispose();
 		});
 		
-		JButton btnGuardar = new JButton("GUARDAR");
+		JButton btnGuardar = new JButton("ACEPTAR");
 		btnGuardar.setBackground(new Color(5, 250, 79));
 		btnGuardar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		
@@ -307,7 +307,7 @@ public class RegistroUsuario extends JInternalFrame {
 		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
 		        }       
 		        
-		        
+		        limpiarFormulario();
 		        
 		        
 		    } else { // Aerolínea
@@ -325,7 +325,7 @@ public class RegistroUsuario extends JInternalFrame {
 
 		        try {
 		            sistema.registrarUsuario(data);
-		            JOptionPane.showMessageDialog(this, "Cliente registrado con éxito");
+		            JOptionPane.showMessageDialog(this, "Aerolínea registrada con éxito");
 		        } catch (IllegalArgumentException ex) {
 		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
 		        }
@@ -342,7 +342,7 @@ public class RegistroUsuario extends JInternalFrame {
 		         // TODO: guardar en tu servicio/DAO.
 		         // usuarioService.registrarAerolinea(nick, nombre, email, descripcion, sitioWeb.isEmpty()? null : sitioWeb);
 		        
-		        JOptionPane.showMessageDialog(this, "Aerolínea guardada.");
+		        //JOptionPane.showMessageDialog(this, "Aerolínea guardada.");
 		        limpiarFormulario(); // ⬅ limpiar al final
 
 		        }

@@ -1,20 +1,47 @@
 package Logica;
 
 import java.util.Date;
+import jakarta.persistence.*;
 
-public class Rutas {
+@Entity
+@Table(name = "Ruta")
+public class Ruta {
 
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)	
+	private int idRuta;
+	
+	@ManyToMany(mappedBy = "aerolinea")
+	
+	@Column(name = "Nombre", nullable = false, length = 50)
 	private String nombre;
+	
+	@Column(name = "Descripcion", nullable = false, length = 200)
 	private String descripcion;
+	
+	@Column(name = "ciudadOrigen", nullable = false, length = 50)
 	private String ciudadOrigen;
+	
+	@Column(name = "ciudadDestino", nullable = false, length = 50)
 	private String ciudadDestino;
+	
+	@Column(name = "Hora", nullable = false)
 	private int hora;
+	
+	@Column(name = "fechaAlta", nullable = false)
 	private Date fechaAlta;
+	
+	@Column(name = "costoBase", nullable = false)
 	private int costoBase;
+	
+	@Column(name = "costoEquipajeExtra", nullable = false)
 	private int costoEquipajeExtra;
+	
+	@Column(name = "Categorias", nullable = false, length = 100)
 	private String categorias;
 	
-	public Rutas(String n, String desc, String ciudadOr, String ciudadDe, int hora, Date fechaAlta, int costoBase, int costoEquipajeExtra, String cat) {
+	protected Ruta() {}
+	
+	public Ruta(String n, String desc, String ciudadOr, String ciudadDe, int hora, Date fechaAlta, int costoBase, int costoEquipajeExtra, String cat) {
 		this.nombre = n;
 		this.descripcion = desc;
 		this.ciudadOrigen = ciudadOr;
@@ -83,4 +110,12 @@ public class Rutas {
 	public void setCategorias(String cat) {
 		this.categorias = cat;
 	}
+	
+	@Override public String toString() {
+		return "Rutas [idRuta=" + idRuta + ", nombre=" + nombre + ", descripcion=" + descripcion 
+				+ ", ciudadOrigen=" + ciudadOrigen + ", ciudadDestino=" + ciudadDestino 
+				+ ", hora=" + hora + ", fechaAlta=" + fechaAlta 
+				+ ", costoBase=" + costoBase + ", costoEquipajeExtra=" + costoEquipajeExtra 
+				+ ", categorias=" + categorias + "]";
+		}
 }

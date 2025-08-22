@@ -1,42 +1,58 @@
-
 package Logica;
 
+import jakarta.persistence.*;
 
-public abstract class Usuario {
-    
-    private String nombre;
+@Entity
+@Table(name = "Usuario")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Usuario {
+
+    @Id
+    @Column(name = "nickname", length = 50, nullable = false)
     private String nickname;
+
+    @Column(name = "Nombre", nullable = false, length = 40)
+    private String nombre;
+
+    @Column(name = "Email", nullable = false, length = 40)
     private String email;
-    
-    public Usuario(String n, String nick, String email){
-        this.nombre = n;
-        this.nickname = nick;
-        this.email = email;
-    }
-    
-    //Getters
-    
-    public String getNombre(){
-        return nombre;
-    }
-    public String getNickname(){
-        return nickname;
-    }
-    public String getEmail(){
-        return email;
-    }
-    
-    // Setters
-    
-    public void setNombre(String nombre){
-        this.nombre = nombre;
-    }
-    public void setNickname(String nickname){
+
+    // Constructor vacío requerido por JPA
+    protected Usuario() {}
+
+    public Usuario(String nickname, String nombre, String email) {
         this.nickname = nickname;
-    }
-    public void setEmail(String email){
+        this.nombre = nombre;
         this.email = email;
     }
-   
-    
+
+    //Getters
+    public String getNickname() {
+		return nickname;
+	}
+    public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+	
+	//Setters
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	@Override public String toString() {
+		return "Usuario [nickname=" + nickname + ", nombre=" + nombre + ", email=" + email + "]";
+	}
+	
 }
