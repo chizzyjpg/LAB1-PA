@@ -313,13 +313,16 @@ public class ConsultaUsuario extends JInternalFrame {
         this.sistema = sistema;                    // <-- NUEVO
         setSize(455, 140);
         setMinimumSize(new Dimension(455, 140));
-        setLayout(new BorderLayout());
+        getContentPane().setLayout(new BorderLayout());
 
         // 1) Panel superior (combo + botones)
         JPanel panelTop = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panelTop.add(new JLabel("Usuario:"));
+        JLabel label = new JLabel("Usuario:");
+        label.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        panelTop.add(label);
 
         comboUsuarios = new JComboBox<>();
+        comboUsuarios.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         comboUsuarios.setPreferredSize(new Dimension(260, 26));
         comboUsuarios.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(
@@ -346,23 +349,24 @@ public class ConsultaUsuario extends JInternalFrame {
         panelTop.add(comboUsuarios);
 
         btnConsultar = new JButton("Consultar");
+        btnConsultar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         panelTop.add(btnConsultar);
 
         btnRefrescar = new JButton("Refrescar");   // <-- NUEVO
         panelTop.add(btnRefrescar);
 
-        add(panelTop, BorderLayout.NORTH);
+        getContentPane().add(panelTop, BorderLayout.NORTH);
 
         // 2) Área de detalle
         areaDatos = new JTextArea(14, 52);
         areaDatos.setEditable(false);
         areaDatos.setLineWrap(true);
         areaDatos.setWrapStyleWord(true);
-        areaDatos.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        areaDatos.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
 
         scrollDatos = new JScrollPane(areaDatos);
         scrollDatos.setVisible(false);
-        add(scrollDatos, BorderLayout.CENTER);
+        getContentPane().add(scrollDatos, BorderLayout.CENTER);
 
         // 3) Acciones
         btnConsultar.addActionListener(e -> consultarSeleccion());

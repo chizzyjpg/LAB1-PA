@@ -26,10 +26,10 @@ import javax.swing.JOptionPane;
 public class RegistroVuelo extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField textNombre;
+	private JTextField textDuracion;
+	private JTextField textCantTurista;
+	private JTextField textMaxEjecutivo;
 	
 
 	/**
@@ -67,6 +67,7 @@ public class RegistroVuelo extends JInternalFrame {
 		getContentPane().add(lblNewLabel);
 		
 		JComboBox comboBox = new JComboBox();
+		comboBox.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBox.setBounds(147, 25, 339, 22);
 		lblNewLabel.setLabelFor(comboBox);
 		getContentPane().add(comboBox);
@@ -77,6 +78,7 @@ public class RegistroVuelo extends JInternalFrame {
 		getContentPane().add(lblNewLabel_1);
 		
 		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBox_1.setBounds(147, 83, 339, 22);
 		lblNewLabel_1.setLabelFor(comboBox_1);
 		getContentPane().add(comboBox_1);
@@ -86,11 +88,12 @@ public class RegistroVuelo extends JInternalFrame {
 		lblNewLabel_2.setBounds(271, 116, 89, 14);
 		getContentPane().add(lblNewLabel_2);
 		
-		textField = new JTextField();
-		textField.setBounds(147, 141, 339, 20);
-		lblNewLabel_2.setLabelFor(textField);
-		getContentPane().add(textField);
-		textField.setColumns(10);
+		textNombre = new JTextField();
+		textNombre.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		textNombre.setBounds(147, 141, 339, 20);
+		lblNewLabel_2.setLabelFor(textNombre);
+		getContentPane().add(textNombre);
+		textNombre.setColumns(10);
 		
 		JLabel lblNewLabel_3 = new JLabel("Fecha de Vuelo");
 		lblNewLabel_3.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
@@ -106,34 +109,36 @@ public class RegistroVuelo extends JInternalFrame {
 		getContentPane().add(lblNewLabel_4);
 		lblNewLabel_4.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblNewLabel_4.setLabelFor(textField_1);
-		textField_1.setBounds(257, 281, 86, 20);
-		getContentPane().add(textField_1);
-		textField_1.setColumns(10);
+		textDuracion = new JTextField();
+		textDuracion.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblNewLabel_4.setLabelFor(textDuracion);
+		textDuracion.setBounds(257, 281, 86, 20);
+		getContentPane().add(textDuracion);
+		textDuracion.setColumns(10);
 		
 		JLabel lblNewLabel_5 = new JLabel("cant.Turista");
 		lblNewLabel_5.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblNewLabel_5.setBounds(123, 323, 62, 14);
 		getContentPane().add(lblNewLabel_5);
 		
-		textField_2 = new JTextField();
-		lblNewLabel_5.setLabelFor(textField_2);
-		textField_2.setBounds(257, 321, 86, 20);
-		getContentPane().add(textField_2);
-		textField_2.setColumns(10);
+		textCantTurista = new JTextField();
+		textCantTurista.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblNewLabel_5.setLabelFor(textCantTurista);
+		textCantTurista.setBounds(257, 321, 86, 20);
+		getContentPane().add(textCantTurista);
+		textCantTurista.setColumns(10);
 		
 		JLabel lblNewLabel_6 = new JLabel("Max. ejecutivos");
 		lblNewLabel_6.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblNewLabel_6.setBounds(123, 371, 83, 14);
 		getContentPane().add(lblNewLabel_6);
 		
-		textField_3 = new JTextField();
-		lblNewLabel_6.setLabelFor(textField_3);
-		textField_3.setBounds(257, 369, 86, 20);
-		getContentPane().add(textField_3);
-		textField_3.setColumns(10);
+		textMaxEjecutivo = new JTextField();
+		textMaxEjecutivo.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblNewLabel_6.setLabelFor(textMaxEjecutivo);
+		textMaxEjecutivo.setBounds(257, 369, 86, 20);
+		getContentPane().add(textMaxEjecutivo);
+		textMaxEjecutivo.setColumns(10);
 		
 		JLabel lblNewLabel_7 = new JLabel("Fecha de Alta");
 		lblNewLabel_7.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
@@ -155,10 +160,10 @@ public class RegistroVuelo extends JInternalFrame {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
 		        // limpiar los campos
-		        textField.setText("");
-		        textField_1.setText("");
-		        textField_2.setText("");
-		        textField_3.setText("");
+		        textNombre.setText("");
+		        textDuracion.setText("");
+		        textCantTurista.setText("");
+		        textMaxEjecutivo.setText("");
 
 		        // cerrar la ventana
 		        dispose();
@@ -178,10 +183,10 @@ public class RegistroVuelo extends JInternalFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        // Validar que todos los campos tengan texto
-		        if (textField.getText().trim().isEmpty() ||
-		            textField_1.getText().trim().isEmpty() ||
-		            textField_2.getText().trim().isEmpty() ||
-		            textField_3.getText().trim().isEmpty()) {
+		        if (textNombre.getText().trim().isEmpty() ||
+		            textDuracion.getText().trim().isEmpty() ||
+		            textCantTurista.getText().trim().isEmpty() ||
+		            textMaxEjecutivo.getText().trim().isEmpty()) {
 		            
 		            JOptionPane.showMessageDialog(null,
 		                "Debe completar todos los campos.",
@@ -194,10 +199,12 @@ public class RegistroVuelo extends JInternalFrame {
 		                    JOptionPane.INFORMATION_MESSAGE);
 
 		                // Limpiar campos
-		                textField.setText("");
-		                textField_1.setText("");
-		                textField_2.setText("");
-		                textField_3.setText("");
+		                textNombre.setText("");
+		                textDuracion.setText("");
+		                textCantTurista.setText("");
+		                textMaxEjecutivo.setText("");
+		                dateChooser.setDate(null);
+		                dateChooser_1.setDate(null);
 		            }
 
 		    }
