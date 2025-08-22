@@ -1,19 +1,40 @@
 package Logica;
 
+import java.util.Collection;
+import java.util.Date;
+import jakarta.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Cliente extends Usuario{
 
+@Entity
+@Table(name = "Cliente")
+@PrimaryKeyJoinColumn(name = "nickname")
+public class Cliente extends Usuario{
+	
+	@OneToMany(mappedBy = "reserva")
+	private List<Reserva> reservas;
+	//private Collection<Reserva> reservas;
+	
+	@Column(name = "Apellido", nullable = false, length = 40)
 	private String apellido;
+	
+	@Column(name = "fechaNacimiento", nullable = false)
 	private Date fechaNac;
+	
+	@Column(name = "Nacionalidad", nullable = false, length = 40)
 	private String nacionalidad;
+	
+	@Column(name = "TipoDocumento", nullable = false)
 	private TipoDocumento tipoDocumento;
+	
+	@Column(name = "NumDocumento", nullable = false, length = 20)
 	private String numDocumento;
 	
-	private List<Reserva> reservas;
+
+	protected Cliente() {}
 	
 	public Cliente(String n, String nick, String email, String ap, Date fechaNac, String nac, TipoDocumento tipoDoc, String numDoc) {
 		super(n, nick, email);
@@ -61,18 +82,15 @@ public class Cliente extends Usuario{
 	public void setNumDocumento(String numDoc) {
 		this.numDocumento = numDoc;
 	}
+	
 	public void setReservas(List<Reserva> reservas) {
 		this.reservas = reservas;
 	}
-	
-	@Override
-	public String toString() {
-	    String f = getFechaNac() == null ? "null" :
-	            new SimpleDateFormat("yyyy-MM-dd").format(getFechaNac());
-	    return String.format("Cliente[nick=%s, nombre=%s %s, email=%s, fechaNac=%s, nac=%s, doc=%s %s]",
-	            getNickname(), getNombre(), getApellido(), getEmail(),
-	            f, getNacionalidad(), getTipoDocumento(), getNumDocumento());
+
+	@Override public String toString() {
+		return "Cliente [nickname=" + getNickname() + ", nombre=" + getNombre() + ", email=" + getEmail() +
+				", apellido=" + apellido + ", fechaNac=" + fechaNac + ", nacionalidad=" + nacionalidad +
+				", tipoDocumento=" + tipoDocumento + ", numDocumento=" + numDocumento + "]";
 	}
-	
 }
 
