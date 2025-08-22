@@ -15,6 +15,9 @@ public class Ruta {
 	
 	@ManyToMany(mappedBy = "aerolinea")
 	
+	@ManyToOne
+	private List<Categoria> categorias;
+	
 	@Column(name = "Nombre", nullable = false, length = 50)
 	private String nombre;
 	
@@ -39,8 +42,7 @@ public class Ruta {
 	@Column(name = "costoEquipajeExtra", nullable = false)
 	private int costoEquipajeExtra;
 	
-	@Column(name = "Categorias", nullable = false, length = 100)
-	private List<Categoria> categorias;
+	
 	
 	
 	protected Ruta() {}
