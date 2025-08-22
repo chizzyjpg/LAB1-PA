@@ -15,7 +15,8 @@ import java.util.List;
 public class Cliente extends Usuario{
 	
 	@OneToMany(mappedBy = "reserva")
-	private Collection<Reserva> reservas;
+	private List<Reserva> reservas;
+	//private Collection<Reserva> reservas;
 	
 	@Column(name = "Apellido", nullable = false, length = 40)
 	private String apellido;
@@ -32,7 +33,6 @@ public class Cliente extends Usuario{
 	@Column(name = "NumDocumento", nullable = false, length = 20)
 	private String numDocumento;
 	
-	private List<Reserva> reservas;
 
 	protected Cliente() {}
 	

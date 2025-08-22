@@ -29,7 +29,7 @@ public class VueloEspecifico {
 	private Date fechaAlta;
 	
 	@ManyToOne
-	private Rutas ruta;
+	private Ruta ruta;
 	
 	protected VueloEspecifico() {}
 	

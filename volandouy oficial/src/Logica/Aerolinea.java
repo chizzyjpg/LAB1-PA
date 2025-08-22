@@ -10,15 +10,17 @@ import java.util.Map;
 @PrimaryKeyJoinColumn(name = "nickname")
 public class Aerolinea extends Usuario {
 	
+	private Map<String, Ruta> rutasMap;
+
 	@ManyToMany
-	private Collection<Rutas> rutas;
+	private Collection<Ruta> rutas;
 	
 	@Column(name = "descGeneral", nullable = false, length = 200)
 	private String descGeneral;
 	
 	@Column(name = "linkWeb", nullable = false, length = 50)
 	private String linkWeb;
-	private Map<String, Ruta> rutas;
+	
 
 	protected Aerolinea() {}
 
@@ -26,7 +28,7 @@ public class Aerolinea extends Usuario {
 		super(n, nick, email);
 		this.setLinkWeb(linkWeb);
 		this.setDescGeneral(descGeneral);
-		this.rutas = new HashMap<>();
+		this.rutasMap = new HashMap<>();
 		// Getters
 	}
 
@@ -53,7 +55,7 @@ public class Aerolinea extends Usuario {
 	
 		//Metodos
 	public void agregarRuta(Ruta r) {
-		rutas.put(r.getNombre(), r);
+		rutasMap.put(r.getNombre(), r);
 	}
 	
 	@Override public String toString() {
