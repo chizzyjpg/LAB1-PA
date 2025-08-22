@@ -3,3 +3,7 @@ Prueba Lucas/src/.project
 volandouy oficial/src/Logica/Equipaje.class
 volandouy oficial/src/Logica/Pasaje.class
 volandouy oficial/src/Logica/Equipaje.class
+volandouy oficial/src/Logica/*.class
+Prueba Lucas/src/bin/.project
+volandouy oficial/target/*
+/volandouy oficial/target

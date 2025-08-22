@@ -1,15 +1,37 @@
 package Logica;
 
 import java.util.Date;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "VueloEspecifico")
 public class VueloEspecifico {
 
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	private int idVueloEspecifico;
+	
+	@Column(name = "Nombre", nullable = false, length = 50)
 	private String nombre;
+	
+	@Column(name = "Fecha", nullable = false)
 	private Date fecha;
+	
+	@Column(name = "Duracion", nullable = false)
 	private int duracion;
+	
+	@Column(name = "MaxAsientosTur", nullable = false)
 	private int maxAsientosTur;
+	
+	@Column(name = "MaxAsientosEjec", nullable = false)
 	private int maxAsientosEjec;
+	
+	@Column(name = "fechaAlta", nullable = false)
 	private Date fechaAlta;
+	
+	@ManyToOne
+	private Ruta ruta;
+	
+	protected VueloEspecifico() {}
 	
 	public VueloEspecifico(String n, Date fecha, int dur, int maxTur, int maxEjec, Date fechaAlta) {
 		this.nombre = n;
@@ -58,5 +80,11 @@ public class VueloEspecifico {
 	}
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
+	}
+	
+	@Override public String toString() {
+		return "VueloEspecifico [idVueloEspecifico=" + idVueloEspecifico + ", nombre=" + nombre + ", fecha=" + fecha
+				+ ", duracion=" + duracion + ", maxAsientosTur=" + maxAsientosTur + ", maxAsientosEjec="
+				+ maxAsientosEjec + ", fechaAlta=" + fechaAlta + "]";
 	}
 }

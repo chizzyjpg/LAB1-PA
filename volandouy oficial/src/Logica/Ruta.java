@@ -1,20 +1,53 @@
 package Logica;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class Rutas {
+import jakarta.persistence.*;
 
-	private String nombre;
-	private String descripcion;
-	private String ciudadOrigen;
-	private String ciudadDestino;
-	private int hora;
-	private Date fechaAlta;
-	private int costoBase;
-	private int costoEquipajeExtra;
-	private String categorias;
+@Entity
+@Table(name = "Ruta")
+public class Ruta {
+
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)	
+	private int idRuta;
 	
-	public Rutas(String n, String desc, String ciudadOr, String ciudadDe, int hora, Date fechaAlta, int costoBase, int costoEquipajeExtra, String cat) {
+	@ManyToMany(mappedBy = "aerolinea")
+	
+	@ManyToOne
+	private List<Categoria> categorias;
+	
+	@Column(name = "Nombre", nullable = false, length = 50)
+	private String nombre;
+	
+	@Column(name = "Descripcion", nullable = false, length = 200)
+	private String descripcion;
+	
+	@Column(name = "ciudadOrigen", nullable = false, length = 50)
+	private String ciudadOrigen;
+	
+	@Column(name = "ciudadDestino", nullable = false, length = 50)
+	private String ciudadDestino;
+	
+	@Column(name = "Hora", nullable = false)
+	private int hora;
+	
+	@Column(name = "fechaAlta", nullable = false)
+	private Date fechaAlta;
+	
+	@Column(name = "costoBase", nullable = false)
+	private int costoBase;
+	
+	@Column(name = "costoEquipajeExtra", nullable = false)
+	private int costoEquipajeExtra;
+	
+	
+	
+	
+	protected Ruta() {}
+	
+	public Ruta(String n, String desc, String ciudadOr, String ciudadDe, int hora, Date fechaAlta, int costoBase, int costoEquipajeExtra) {
 		this.nombre = n;
 		this.descripcion = desc;
 		this.ciudadOrigen = ciudadOr;
@@ -23,7 +56,7 @@ public class Rutas {
 		this.fechaAlta = fechaAlta;
 		this.costoBase = costoBase;
 		this.costoEquipajeExtra = costoEquipajeExtra;
-		this.categorias = cat;
+		this.categorias = new ArrayList<>();
 	}
 	
 	//Getters
@@ -51,7 +84,7 @@ public class Rutas {
 	public int getCostoEquipajeExtra() {
 		return costoEquipajeExtra;
 	}
-	public String getCategorias() {
+	public List<Categoria> getCategorias() {
 		return categorias;
 	}
 	
@@ -80,7 +113,15 @@ public class Rutas {
 	public void setCostoEquipajeExtra(int costoEquipajeExtra) {
 		this.costoEquipajeExtra = costoEquipajeExtra;
 	}
-	public void setCategorias(String cat) {
+	public void setCategorias(List<Categoria> cat) {
 		this.categorias = cat;
 	}
+	
+	@Override public String toString() {
+		return "Rutas [idRuta=" + idRuta + ", nombre=" + nombre + ", descripcion=" + descripcion 
+				+ ", ciudadOrigen=" + ciudadOrigen + ", ciudadDestino=" + ciudadDestino 
+				+ ", hora=" + hora + ", fechaAlta=" + fechaAlta 
+				+ ", costoBase=" + costoBase + ", costoEquipajeExtra=" + costoEquipajeExtra 
+				+ ", categorias=" + categorias + "]";
+		}
 }

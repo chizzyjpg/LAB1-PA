@@ -90,6 +90,7 @@ public class RegistroCiudad extends JInternalFrame {
 		getContentPane().add(lblNewLabel_3);
 		
 		JTextArea textAreaDesc = new JTextArea();
+		textAreaDesc.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textAreaDesc.setBounds(154, 127, 460, 78);
 		getContentPane().add(textAreaDesc);
 		

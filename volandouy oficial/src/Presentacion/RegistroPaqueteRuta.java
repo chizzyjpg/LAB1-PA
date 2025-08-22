@@ -13,13 +13,15 @@ import java.awt.Font;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class RegistroPaqueteRuta extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField textField;
 	private JTextField textField_1;
-	private final JButton btnNewButton = new JButton("ACEPTAR");
+	private final JButton brnAceptar = new JButton("ACEPTAR");
 
 	/**
 	 * Launch the application.
@@ -54,18 +56,20 @@ public class RegistroPaqueteRuta extends JInternalFrame {
 		getContentPane().add(lblNewLabel, "cell 1 1");
 		
 		textField = new JTextField();
+		textField.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblNewLabel.setLabelFor(textField);
 		getContentPane().add(textField, "cell 3 1");
 		textField.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("Descripción:");
+		lblNewLabel_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		getContentPane().add(lblNewLabel_1, "cell 1 2");
 		
 		JTextArea textArea = new JTextArea();
-		lblNewLabel_1.setLabelFor(textArea);
-		getContentPane().add(textArea, "cell 3 2");
+		textArea.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		getContentPane().add(textArea, "cell 3 2,grow");
 		
-		JLabel lblNewLabel_2 = new JLabel("Validez:");
+		JLabel lblNewLabel_2 = new JLabel("Validez en días:");
 		lblNewLabel_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		getContentPane().add(lblNewLabel_2, "cell 1 3");
 		
@@ -78,6 +82,7 @@ public class RegistroPaqueteRuta extends JInternalFrame {
 		getContentPane().add(lblNewLabel_3, "cell 1 4");
 		
 		textField_1 = new JTextField();
+		textField_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblNewLabel_3.setLabelFor(textField_1);
 		getContentPane().add(textField_1, "cell 3 4");
 		textField_1.setColumns(10);
@@ -88,17 +93,21 @@ public class RegistroPaqueteRuta extends JInternalFrame {
 		
 		JDateChooser dateChooser = new JDateChooser();
 		lblNewLabel_4.setLabelFor(dateChooser);
-		getContentPane().add(dateChooser, "cell 3 5");
+		getContentPane().add(dateChooser, "cell 3 5,aligny center");
 		
-		JButton btnNewButton_1 = new JButton("CERRAR");
-		btnNewButton_1.setBackground(Color.RED);
-		btnNewButton_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		btnNewButton_1.setForeground(Color.BLACK);
-		getContentPane().add(btnNewButton_1, "cell 3 6");
-		btnNewButton.setBackground(Color.GREEN);
-		btnNewButton.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		btnNewButton.setForeground(Color.BLACK);
-		getContentPane().add(btnNewButton, "cell 3 6");
+		JButton btnCerrar = new JButton("CERRAR");
+		btnCerrar.addActionListener(e -> {
+			dispose();
+		});
+			
+		btnCerrar.setBackground(Color.RED);
+		btnCerrar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		btnCerrar.setForeground(Color.BLACK);
+		getContentPane().add(btnCerrar, "cell 3 6");
+		brnAceptar.setBackground(Color.GREEN);
+		brnAceptar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		brnAceptar.setForeground(Color.BLACK);
+		getContentPane().add(brnAceptar, "cell 3 6");
 
 	}
 
