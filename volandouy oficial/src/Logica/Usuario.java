@@ -3,17 +3,18 @@ package Logica;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "Usuario")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario {
 
     @Id
     @Column(name = "nickname", length = 50, nullable = false)
     private String nickname;
 
-    @Column(name = "nombre", nullable = false, length = 40)
+    @Column(name = "Nombre", nullable = false, length = 40)
     private String nombre;
 
-    @Column(name = "email", nullable = false, length = 40)
+    @Column(name = "Email", nullable = false, length = 40)
     private String email;
 
     // Constructor vacío requerido por JPA

@@ -1,14 +1,34 @@
 package Logica;
 
+import java.util.Collection;
 import java.util.Date;
+import jakarta.persistence.*;
 
+
+@Entity
+@Table(name = "Cliente")
+@PrimaryKeyJoinColumn(name = "nickname")
 public class Cliente extends Usuario{
-
+	
+	@OneToMany(mappedBy = "reserva")
+	private Collection<Reserva> reservas;
+	
+	@Column(name = "Apellido", nullable = false, length = 40)
 	private String apellido;
+	
+	@Column(name = "fechaNacimiento", nullable = false)
 	private Date fechaNac;
+	
+	@Column(name = "Nacionalidad", nullable = false, length = 40)
 	private String nacionalidad;
+	
+	@Column(name = "TipoDocumento", nullable = false)
 	private TipoDocumento tipoDocumento;
+	
+	@Column(name = "NumDocumento", nullable = false, length = 20)
 	private String numDocumento;
+	
+	protected Cliente() {}
 	
 	public Cliente(String n, String nick, String email, String ap, Date fechaNac, String nac, TipoDocumento tipoDoc, String numDoc) {
 		super(n, nick, email);
@@ -51,6 +71,12 @@ public class Cliente extends Usuario{
 	}
 	public void setNumDocumento(String numDoc) {
 		this.numDocumento = numDoc;
+	}
+	
+	@Override public String toString() {
+		return "Cliente [nickname=" + getNickname() + ", nombre=" + getNombre() + ", email=" + getEmail() +
+				", apellido=" + apellido + ", fechaNac=" + fechaNac + ", nacionalidad=" + nacionalidad +
+				", tipoDocumento=" + tipoDocumento + ", numDocumento=" + numDocumento + "]";
 	}
 }
 
