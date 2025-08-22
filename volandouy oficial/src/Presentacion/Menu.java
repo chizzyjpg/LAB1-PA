@@ -176,6 +176,13 @@ public class Menu extends JFrame {
 		
 		JMenuItem mntmNewMenuItem_10 = new JMenuItem("Modificar Datos de Usuario");
 		mnNewMenu_2.add(mntmNewMenuItem_10);
+		mnNewMenu_2.add(mntmNewMenuItem_10);
+		mntmNewMenuItem_10.addActionListener(e -> {
+		    ModificarUsuario frm = new ModificarUsuario(sistema);
+		    desktopPane.add(frm);
+		    frm.setVisible(true);
+		    frm.toFront();
+		});
 		
 		JMenu mnNewMenu_3 = new JMenu("Reservas");
 		menuBar.add(mnNewMenu_3);

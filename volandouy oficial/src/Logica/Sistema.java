@@ -18,12 +18,23 @@ public class Sistema implements ISistema {
     public Sistema() {}
     
     
- // Normaliza claves para que "Juan", "juAN" y "juan" choquen correctamente
+    // ======================
+    //  REGISTRAR USUARIOS
+    // ======================
+    
+    
+ // Normaliza claves para que "Juan", "juAN" y "juan" choquen correctamente ////// HELPERS
+    
+    
     private static String canonical(String s) {
         return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
     }
     private static String canonicalEmail(String s) {
         return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
+    }
+    
+    private static java.util.Date copia(java.util.Date d) {
+        return (d == null) ? null : new java.util.Date(d.getTime());
     }
 
     @Override
@@ -84,5 +95,63 @@ public class Sistema implements ISistema {
         return ManejadorUsuario.toDTOs(new ArrayList<>(usuariosPorNickname.values()));
     }
 
+    
+    // ======================
+    //  MODIFICAR USUARIOS
+    // ======================
+    
+    @Override
+    public void modificarCliente(String nickname, DataCliente nuevos) {
+        if (nuevos == null) throw new IllegalArgumentException("Datos de cliente no pueden ser nulos");
+
+        String key = canonical(nickname);
+        Usuario u = usuariosPorNickname.get(key);
+        if (!(u instanceof Cliente c))
+            throw new IllegalArgumentException("No existe un cliente con ese nickname");
+
+        // Validar que NO se cambie email ni nickname (según caso de uso)
+        String emailActual = c.getEmail();
+        String emailNuevo  = nuevos.getEmail();
+        if (emailNuevo != null && !canonicalEmail(emailNuevo).equals(canonicalEmail(emailActual))) {
+            throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
+        }
+        if (nuevos.getNickname() != null && !canonical(nuevos.getNickname()).equals(key)) {
+            throw new IllegalArgumentException("No se permite modificar el nickname.");
+        }
+
+        // Actualizar SOLO campos básicos permitidos
+        c.setNombre(nuevos.getNombre());
+        c.setApellido(nuevos.getApellido());
+        c.setFechaNac(copia(nuevos.getFechaNac()));
+        c.setNacionalidad(nuevos.getNacionalidad());
+        c.setTipoDocumento(nuevos.getTipoDocumento());
+        c.setNumDocumento(nuevos.getNumDocumento());
+    }
+
+    @Override
+    public void modificarAerolinea(String nickname, DataAerolinea nuevos) {
+        if (nuevos == null) throw new IllegalArgumentException("Datos de aerolínea no pueden ser nulos");
+
+        String key = canonical(nickname);
+        Usuario u = usuariosPorNickname.get(key);
+        if (!(u instanceof Aerolinea a))
+            throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+
+        // Validar que NO se cambie email ni nickname
+        String emailActual = a.getEmail();
+        String emailNuevo  = nuevos.getEmail();
+        if (emailNuevo != null && !canonicalEmail(emailNuevo).equals(canonicalEmail(emailActual))) {
+            throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
+        }
+        if (nuevos.getNickname() != null && !canonical(nuevos.getNickname()).equals(key)) {
+            throw new IllegalArgumentException("No se permite modificar el nickname.");
+        }
+
+        // Actualizar SOLO campos básicos permitidos
+        a.setNombre(nuevos.getNombre());
+        a.setDescGeneral(nuevos.getDescripcion());
+        a.setLinkWeb(nuevos.getSitioWeb());
+    }
+    
     
 }

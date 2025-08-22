@@ -13,6 +13,9 @@ public interface ISistema {
     DataCliente verInfoCliente(String nickname);      // null si no existe o no es cliente
     DataAerolinea verInfoAerolinea(String nickname); // null si no existe o no es aerolínea
     
+    void modificarCliente(String nickname, DataCliente nuevosDatos);
+    void modificarAerolinea(String nickname, DataAerolinea nuevosDatos);
+    
     /*List<DataRutaResumen> listarRutasDeAerolinea(String nickAerolinea);
     List<DataReservaResumen> listarReservasDeCliente(String nickCliente);
     List<DataPaqueteResumen> listarPaquetesDeCliente(String nickCliente);
