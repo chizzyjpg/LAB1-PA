@@ -8,6 +8,10 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JTextField;
+
+import Logica.DataCategoria;
+import Logica.ISistema;
+
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -18,26 +22,7 @@ public class RegistroCategoria extends JInternalFrame {
 	private static final long serialVersionUID = 1L;
 	private JTextField textFieldCategoria;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegistroCategoria frame = new RegistroCategoria();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-	public RegistroCategoria() {
+	public RegistroCategoria(ISistema sistema) {
 		setTitle("Registrar Categoría");
 		setResizable(true);
 		setMaximizable(true);
@@ -75,10 +60,25 @@ public class RegistroCategoria extends JInternalFrame {
 				
 				if(cat.isEmpty()) {
 					JOptionPane.showMessageDialog(RegistroCategoria.this, "La Categoría NO puede estar vacía", "Error Categoría" , JOptionPane.ERROR_MESSAGE);
+					textFieldCategoria.requestFocusInWindow();
 					return;
 				}
-			
-				JOptionPane.showMessageDialog(RegistroCategoria.this, "Categoría registrada correctamente!\nNombre: " + cat, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
+				
+				try {
+					sistema.registrarCategoria(new DataCategoria(cat));
+					JOptionPane.showMessageDialog(RegistroCategoria.this, "Categoría registrada correctamente!\nNombre: " + cat, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE); 
+		            textFieldCategoria.setText("");
+		            textFieldCategoria.requestFocusInWindow();
+		            
+		            
+				}catch (IllegalArgumentException ex) {
+            // el Sistema también valida nombre duplicado / vacío
+		            JOptionPane.showMessageDialog(RegistroCategoria.this, ex.getMessage(),
+		                    "Validación", JOptionPane.ERROR_MESSAGE);
+		            textFieldCategoria.requestFocusInWindow();
+		            textFieldCategoria.selectAll();
+				}
+				
 			}
 		});
 		btnAceptar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
@@ -87,4 +87,5 @@ public class RegistroCategoria extends JInternalFrame {
 		getContentPane().add(btnAceptar);
 
 	}
+	
 }
