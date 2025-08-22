@@ -22,6 +22,9 @@ public class Sistema implements ISistema {
     private static String canonical(String s) {
         return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
     }
+    private static String canonicalEmail(String s) {
+        return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
+    }
 
     @Override
     public void registrarUsuario(DataUsuario data) {
@@ -52,9 +55,10 @@ public class Sistema implements ISistema {
     @Override
     public boolean existeEmail(String email) {
         if (email == null) return false;
+        String e = canonicalEmail(email);
         return usuariosPorNickname.values().stream()
-                .anyMatch(u -> u.getNombre() != null
-                        && u.getNombre().equalsIgnoreCase(email));
+                .anyMatch(u -> u.getEmail() != null
+                        && canonicalEmail(u.getEmail()).equals(e));
     }
 
     @Override
