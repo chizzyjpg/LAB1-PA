@@ -39,6 +39,12 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.awt.event.ActionEvent;
 
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+
+
 public class RegistroUsuario extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -200,6 +206,10 @@ public class RegistroUsuario extends JInternalFrame {
 		textFieldNumeroDocumento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldNumeroDocumento.setColumns(10);
 		panelCliente.add(textFieldNumeroDocumento, "cell 1 4,growx");
+		// Aplica filtro: solo dígitos en Número de Documento
+		((AbstractDocument) textFieldNumeroDocumento.getDocument())
+		        .setDocumentFilter(new SoloDigitosFilter());
+
 		
 		panelAerolinea = new JPanel();
 		panelCards.add(panelAerolinea, "AEROLINEA");
@@ -393,5 +403,25 @@ public class RegistroUsuario extends JInternalFrame {
 	    String email = emailRaw == null ? "" : emailRaw.trim();
 	    return EMAIL_RX.matcher(email).matches();
 	}
+	
+	/** Filtro para permitir solo dígitos en un JTextField. */
+	private static class SoloDigitosFilter extends DocumentFilter {
+	    @Override
+	    public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+	            throws BadLocationException {
+	        if (string == null) return;
+	        String solo = string.replaceAll("\\D", ""); // elimina no-dígitos
+	        if (solo.isEmpty()) return;
+	        super.insertString(fb, offset, solo, attr);
+	    }
+	    @Override
+	    public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+	            throws BadLocationException {
+	        if (text == null) return;
+	        String solo = text.replaceAll("\\D", "");
+	        super.replace(fb, offset, length, solo, attrs);
+	    }
+	}
+
 	
 }

@@ -6,6 +6,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/lucas/Downloads/OpenJDK17U-jdk_x64_windows_hotspot_17.0.14_7.zip"/>
+	<classpathentry kind="lib" path="lib/jcalender/lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="src/com.miglayout.swing_11.4.2.jar"/>
+	<classpathentry kind="lib" path="src/com.miglayout.core_11.4.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
