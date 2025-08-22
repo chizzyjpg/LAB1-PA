@@ -52,6 +52,7 @@ public class RegistroRutaVueloaPaquete extends JInternalFrame {
 		getContentPane().add(lblPaquetes);
 		
 		JComboBox comboBoxPaquetes = new JComboBox();
+		comboBoxPaquetes.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBoxPaquetes.setBounds(186, 10, 166, 22);
 		getContentPane().add(comboBoxPaquetes);
 		
@@ -61,6 +62,7 @@ public class RegistroRutaVueloaPaquete extends JInternalFrame {
 		getContentPane().add(lblAerolneas);
 		
 		JComboBox comboBoxAerolineas = new JComboBox();
+		comboBoxAerolineas.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBoxAerolineas.setBounds(186, 44, 166, 22);
 		getContentPane().add(comboBoxAerolineas);
 		
@@ -70,6 +72,7 @@ public class RegistroRutaVueloaPaquete extends JInternalFrame {
 		getContentPane().add(lblRutasDeVuelo);
 		
 		JComboBox comboBoxRutas = new JComboBox();
+		comboBoxRutas.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBoxRutas.setBounds(186, 76, 166, 22);
 		getContentPane().add(comboBoxRutas);
 		
@@ -79,6 +82,7 @@ public class RegistroRutaVueloaPaquete extends JInternalFrame {
 		getContentPane().add(lblCantidadDeCupos);
 		
 		JSpinner spinnerCupos = new JSpinner();
+		spinnerCupos.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		spinnerCupos.setBounds(186, 109, 30, 20);
 		getContentPane().add(spinnerCupos);
 		
@@ -88,6 +92,7 @@ public class RegistroRutaVueloaPaquete extends JInternalFrame {
 		getContentPane().add(lblTipoDeAsiento);
 		
 		JComboBox comboBoxAsiento = new JComboBox();
+		comboBoxAsiento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBoxAsiento.setBounds(186, 140, 166, 22);
 		getContentPane().add(comboBoxAsiento);
 		comboBoxAsiento.addItem("Turista");

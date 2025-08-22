@@ -43,11 +43,13 @@ public class ModificarUsuario extends JInternalFrame {
     }
 
     private void initUI() {
-        setLayout(new BorderLayout(8, 8));
+        getContentPane().setLayout(new BorderLayout(8, 8));
 
         // ——— TOP: combo + botones ———
         JPanel top = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        top.add(new JLabel("Usuario:"));
+        JLabel label = new JLabel("Usuario:");
+        label.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        top.add(label);
 
         comboUsuarios = new JComboBox<>();
         comboUsuarios.setPreferredSize(new Dimension(300, 28));
@@ -67,24 +69,37 @@ public class ModificarUsuario extends JInternalFrame {
         top.add(comboUsuarios);
 
         btnGuardar = new JButton("Guardar cambios");
+        btnGuardar.setBackground(Color.GREEN);
+        btnGuardar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         btnCerrar  = new JButton("Cerrar");
+        btnCerrar.setBackground(Color.RED);
+        btnCerrar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         btnCerrar.addActionListener(e -> dispose());
         top.add(btnGuardar);
         top.add(btnCerrar);
 
-        add(top, BorderLayout.NORTH);
+        getContentPane().add(top, BorderLayout.NORTH);
 
         // ——— CENTER: formulario ———
 
         // comunes
         txtNick   = new JTextField();
+        txtNick.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         txtEmail  = new JTextField();
+        txtEmail.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         txtNombre = new JTextField();
+        txtNombre.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 
         JPanel formCommon = new JPanel(new GridLayout(0, 2, 6, 8));
-        formCommon.add(new JLabel("Nickname:")); formCommon.add(txtNick);
-        formCommon.add(new JLabel("Email:"));    formCommon.add(txtEmail);
-        formCommon.add(new JLabel("Nombre:"));   formCommon.add(txtNombre);
+        JLabel label_1 = new JLabel("Nickname:");
+        label_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        formCommon.add(label_1); formCommon.add(txtNick);
+        JLabel label_2 = new JLabel("Email:");
+        label_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        formCommon.add(label_2);    formCommon.add(txtEmail);
+        JLabel label_3 = new JLabel("Nombre:");
+        label_3.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        formCommon.add(label_3);   formCommon.add(txtNombre);
 
         txtNick.setEnabled(false);   // no editable
         txtEmail.setEnabled(false);  // no editable
@@ -105,7 +120,9 @@ public class ModificarUsuario extends JInternalFrame {
 
         // aerolínea
         areaDesc = new JTextArea(5, 30);
+        areaDesc.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
         txtSitio = new JTextField();
+        txtSitio.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 
         JPanel pnlAero = new JPanel(new GridBagLayout());
         Insets PAD = new Insets(4,4,4,4);
@@ -113,7 +130,9 @@ public class ModificarUsuario extends JInternalFrame {
 
         c = new GridBagConstraints();
         c.gridx=0; c.gridy=0; c.insets=PAD; c.anchor=GridBagConstraints.EAST;
-        pnlAero.add(new JLabel("Descripción:"), c);
+        JLabel label_4 = new JLabel("Descripción:");
+        label_4.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        pnlAero.add(label_4, c);
 
         c = new GridBagConstraints();
         c.gridx=1; c.gridy=0; c.insets=PAD; c.fill=GridBagConstraints.BOTH; c.weightx=1; c.weighty=1;
@@ -121,7 +140,9 @@ public class ModificarUsuario extends JInternalFrame {
 
         c = new GridBagConstraints();
         c.gridx=0; c.gridy=1; c.insets=PAD; c.anchor=GridBagConstraints.EAST;
-        pnlAero.add(new JLabel("Sitio web:"), c);
+        JLabel label_5 = new JLabel("Sitio web:");
+        label_5.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        pnlAero.add(label_5, c);
 
         c = new GridBagConstraints();
         c.gridx=1; c.gridy=1; c.insets=PAD; c.fill=GridBagConstraints.HORIZONTAL; c.weightx=1;
@@ -136,7 +157,7 @@ public class ModificarUsuario extends JInternalFrame {
         center.add(formCommon, BorderLayout.NORTH);
         center.add(cards,      BorderLayout.CENTER);
 
-        add(center, BorderLayout.CENTER);
+        getContentPane().add(center, BorderLayout.CENTER);
 
         // acción guardar
         btnGuardar.addActionListener(e -> guardar());
