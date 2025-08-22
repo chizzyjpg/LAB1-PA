@@ -7,3 +7,6 @@ volandouy oficial/src/Logica/*.class
 Prueba Lucas/src/bin/.project
 volandouy oficial/target/*
 /volandouy oficial/target
+/*.class
+/*.project
+/volandouy oficial/target
