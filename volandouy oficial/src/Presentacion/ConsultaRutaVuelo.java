@@ -91,6 +91,7 @@ public class ConsultaRutaVuelo extends JInternalFrame {
 				}
 				// Si todas las validaciones pasan, proceder con la acción
 				JOptionPane.showMessageDialog(ConsultaRutaVuelo.this, "Ruta de vuelo seleccionada: " + ruta + " de la aerolínea: " + aerolinea, "Información", JOptionPane.INFORMATION_MESSAGE);
+
 				
 			}
 		});
