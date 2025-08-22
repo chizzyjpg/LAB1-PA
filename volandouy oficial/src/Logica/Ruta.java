@@ -1,6 +1,9 @@
 package Logica;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -37,11 +40,12 @@ public class Ruta {
 	private int costoEquipajeExtra;
 	
 	@Column(name = "Categorias", nullable = false, length = 100)
-	private String categorias;
+	private List<Categoria> categorias;
+	
 	
 	protected Ruta() {}
 	
-	public Ruta(String n, String desc, String ciudadOr, String ciudadDe, int hora, Date fechaAlta, int costoBase, int costoEquipajeExtra, String cat) {
+	public Ruta(String n, String desc, String ciudadOr, String ciudadDe, int hora, Date fechaAlta, int costoBase, int costoEquipajeExtra) {
 		this.nombre = n;
 		this.descripcion = desc;
 		this.ciudadOrigen = ciudadOr;
@@ -50,7 +54,7 @@ public class Ruta {
 		this.fechaAlta = fechaAlta;
 		this.costoBase = costoBase;
 		this.costoEquipajeExtra = costoEquipajeExtra;
-		this.categorias = cat;
+		this.categorias = new ArrayList<>();
 	}
 	
 	//Getters
@@ -78,7 +82,7 @@ public class Ruta {
 	public int getCostoEquipajeExtra() {
 		return costoEquipajeExtra;
 	}
-	public String getCategorias() {
+	public List<Categoria> getCategorias() {
 		return categorias;
 	}
 	
@@ -107,7 +111,7 @@ public class Ruta {
 	public void setCostoEquipajeExtra(int costoEquipajeExtra) {
 		this.costoEquipajeExtra = costoEquipajeExtra;
 	}
-	public void setCategorias(String cat) {
+	public void setCategorias(List<Categoria> cat) {
 		this.categorias = cat;
 	}
 	
