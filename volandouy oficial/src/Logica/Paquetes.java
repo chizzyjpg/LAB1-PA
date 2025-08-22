@@ -1,15 +1,35 @@
 package Logica;
 
 import java.util.Date;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "Paquete")
 public class Paquetes {
-
+	
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+	private int idPaquete;
+	
+	@Column(name = "Nombre", nullable = false, length = 50)
 	private String nombre;
+	
+	@Column(name = "Descripcion", nullable = false, length = 200)
 	private String descripcion;
+	
+	@Column(name = "cantRutas", nullable = false)
 	private int cantRutas;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipoAsiento", nullable = false)
 	private TipoAsiento tipoAsiento;
+	
+	@Column(name = "descuento", nullable = false)
 	private int descuento;
+	
+	@Column(name = "fechaCompra", nullable = false)
 	private Date fechaCompra;
+	
+	@Column(name = "Validez", nullable = false)
 	private int validez;
 	
 	
@@ -90,5 +110,12 @@ public class Paquetes {
 	}
 	public void setValidez(int val) {
 		this.validez = val;
+	}
+	
+	@Override public String toString() {
+		return "Paquete [idPaquete=" + idPaquete + ", nombre=" + nombre + ", descripcion=" + descripcion 
+				+ ", cantRutas=" + cantRutas + ", tipoAsiento=" + tipoAsiento 
+				+ ", descuento=" + descuento + ", fechaCompra=" + fechaCompra 
+				+ ", validez=" + validez + "]";
 	}
 }

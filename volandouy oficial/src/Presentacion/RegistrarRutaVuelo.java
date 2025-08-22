@@ -84,6 +84,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		getContentPane().add(lblDesc);
 		
 		JTextArea textAreaDesc = new JTextArea();
+		textAreaDesc.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textAreaDesc.setBounds(155, 91, 379, 78);
 		getContentPane().add(textAreaDesc);
 		
