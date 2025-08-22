@@ -325,7 +325,7 @@ public class RegistroUsuario extends JInternalFrame {
 
 		        try {
 		            sistema.registrarUsuario(data);
-		            JOptionPane.showMessageDialog(this, "Cliente registrado con éxito");
+		            JOptionPane.showMessageDialog(this, "Aerolínea registrada con éxito");
 		        } catch (IllegalArgumentException ex) {
 		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
 		        }
@@ -342,7 +342,7 @@ public class RegistroUsuario extends JInternalFrame {
 		         // TODO: guardar en tu servicio/DAO.
 		         // usuarioService.registrarAerolinea(nick, nombre, email, descripcion, sitioWeb.isEmpty()? null : sitioWeb);
 		        
-		        JOptionPane.showMessageDialog(this, "Aerolínea guardada.");
+		        //JOptionPane.showMessageDialog(this, "Aerolínea guardada.");
 		        limpiarFormulario(); // ⬅ limpiar al final
 
 		        }
