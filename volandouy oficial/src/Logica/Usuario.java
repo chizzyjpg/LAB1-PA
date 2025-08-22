@@ -20,7 +20,7 @@ public class Usuario {
     // Constructor vacío requerido por JPA
     protected Usuario() {}
 
-    public Usuario(String nickname, String nombre, String email) {
+    public Usuario(String nombre, String nickname, String email) {
         this.nickname = nickname;
         this.nombre = nombre;
         this.email = email;
