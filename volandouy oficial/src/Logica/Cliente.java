@@ -3,6 +3,10 @@ package Logica;
 import java.util.Collection;
 import java.util.Date;
 import jakarta.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -28,6 +32,8 @@ public class Cliente extends Usuario{
 	@Column(name = "NumDocumento", nullable = false, length = 20)
 	private String numDocumento;
 	
+	private List<Reserva> reservas;
+
 	protected Cliente() {}
 	
 	public Cliente(String n, String nick, String email, String ap, Date fechaNac, String nac, TipoDocumento tipoDoc, String numDoc) {
@@ -37,6 +43,7 @@ public class Cliente extends Usuario{
 		this.nacionalidad = nac;
 		this.tipoDocumento = tipoDoc;
 		this.numDocumento = numDoc;
+		this.reservas = new ArrayList<>();
 	}
 
 	//Getters
@@ -54,6 +61,9 @@ public class Cliente extends Usuario{
 	}
 	public String getNumDocumento() {
 		return numDocumento;
+	}
+	public List<Reserva> getReservas(){
+		return reservas;
 	}
 	
 	//Setters
@@ -73,6 +83,10 @@ public class Cliente extends Usuario{
 		this.numDocumento = numDoc;
 	}
 	
+	public void setReservas(List<Reserva> reservas) {
+		this.reservas = reservas;
+	}
+
 	@Override public String toString() {
 		return "Cliente [nickname=" + getNickname() + ", nombre=" + getNombre() + ", email=" + getEmail() +
 				", apellido=" + apellido + ", fechaNac=" + fechaNac + ", nacionalidad=" + nacionalidad +

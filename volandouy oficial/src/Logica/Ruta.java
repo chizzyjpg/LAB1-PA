@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Ruta")
-public class Rutas {
+public class Ruta {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)	
 	private int idRuta;
@@ -39,9 +39,9 @@ public class Rutas {
 	@Column(name = "Categorias", nullable = false, length = 100)
 	private String categorias;
 	
-	protected Rutas() {}
+	protected Ruta() {}
 	
-	public Rutas(String n, String desc, String ciudadOr, String ciudadDe, int hora, Date fechaAlta, int costoBase, int costoEquipajeExtra, String cat) {
+	public Ruta(String n, String desc, String ciudadOr, String ciudadDe, int hora, Date fechaAlta, int costoBase, int costoEquipajeExtra, String cat) {
 		this.nombre = n;
 		this.descripcion = desc;
 		this.ciudadOrigen = ciudadOr;
