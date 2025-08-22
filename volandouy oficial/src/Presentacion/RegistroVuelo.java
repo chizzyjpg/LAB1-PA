@@ -34,7 +34,7 @@ public class RegistroVuelo extends JInternalFrame {
 	private static final long serialVersionUID = 1L;
 	private JTextField textNombre;
 	private JTextField textDuracion;
-	private JTextField textCantTurista;
+	private JTextField textCantidadTurista;
 	private JTextField textMaxEjecutivo;
 	
 
@@ -122,21 +122,21 @@ public class RegistroVuelo extends JInternalFrame {
 		getContentPane().add(textDuracion);
 		textDuracion.setColumns(10);
 		
-		JLabel lblNewLabel_5 = new JLabel("cant.Turista");
+		JLabel lblNewLabel_5 = new JLabel("Cantidad Turista");
 		lblNewLabel_5.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblNewLabel_5.setBounds(123, 323, 62, 14);
+		lblNewLabel_5.setBounds(123, 323, 108, 14);
 		getContentPane().add(lblNewLabel_5);
 		
-		textCantTurista = new JTextField();
-		textCantTurista.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblNewLabel_5.setLabelFor(textCantTurista);
-		textCantTurista.setBounds(257, 321, 86, 20);
-		getContentPane().add(textCantTurista);
-		textCantTurista.setColumns(10);
+		textCantidadTurista = new JTextField();
+		textCantidadTurista.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblNewLabel_5.setLabelFor(textCantidadTurista);
+		textCantidadTurista.setBounds(257, 321, 86, 20);
+		getContentPane().add(textCantidadTurista);
+		textCantidadTurista.setColumns(10);
 		
-		JLabel lblNewLabel_6 = new JLabel("Max. ejecutivos");
+		JLabel lblNewLabel_6 = new JLabel("Cantidad Ejecutivos");
 		lblNewLabel_6.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblNewLabel_6.setBounds(123, 371, 83, 14);
+		lblNewLabel_6.setBounds(123, 371, 108, 14);
 		getContentPane().add(lblNewLabel_6);
 		
 
@@ -145,12 +145,14 @@ public class RegistroVuelo extends JInternalFrame {
 		lblNewLabel_6.setLabelFor(textMaxEjecutivo);
 		textMaxEjecutivo.setBounds(257, 369, 86, 20);
 		getContentPane().add(textMaxEjecutivo);
+/*
+ * */
 		// Solo números en Duración, Cant. Turista y Max. Ejecutivos
-		((AbstractDocument) textField_1.getDocument())
+		((AbstractDocument) textDuracion.getDocument())
 		        .setDocumentFilter(new SoloDigitosFilter());
-		((AbstractDocument) textField_2.getDocument())
+		((AbstractDocument) textCantidadTurista.getDocument())
 		        .setDocumentFilter(new SoloDigitosFilter());
-		((AbstractDocument) textField_3.getDocument())
+		((AbstractDocument) textMaxEjecutivo.getDocument())
 		        .setDocumentFilter(new SoloDigitosFilter());
 
 		textMaxEjecutivo.setColumns(10);
@@ -177,7 +179,7 @@ public class RegistroVuelo extends JInternalFrame {
 		        // limpiar los campos
 		        textNombre.setText("");
 		        textDuracion.setText("");
-		        textCantTurista.setText("");
+		        textCantidadTurista.setText("");
 		        textMaxEjecutivo.setText("");
 
 		        // cerrar la ventana
@@ -200,7 +202,7 @@ public class RegistroVuelo extends JInternalFrame {
 		        // Validar que todos los campos tengan texto
 		        if (textNombre.getText().trim().isEmpty() ||
 		            textDuracion.getText().trim().isEmpty() ||
-		            textCantTurista.getText().trim().isEmpty() ||
+		            textCantidadTurista.getText().trim().isEmpty() ||
 		            textMaxEjecutivo.getText().trim().isEmpty()) {
 		            
 		            JOptionPane.showMessageDialog(null,
@@ -216,7 +218,7 @@ public class RegistroVuelo extends JInternalFrame {
 		                // Limpiar campos
 		                textNombre.setText("");
 		                textDuracion.setText("");
-		                textCantTurista.setText("");
+		                textCantidadTurista.setText("");
 		                textMaxEjecutivo.setText("");
 		                dateChooser.setDate(null);
 		                dateChooser_1.setDate(null);
