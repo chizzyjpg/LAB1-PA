@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.0">
+  <persistence-unit name="demo-jpa" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+	
+	<!--  
+    <class>edu.utec.jpademo.domain.Vacuna</class>
+    <class>edu.utec.jpademo.domain.Lote</class>
+    <class>edu.utec.jpademo.domain.Vacunatorio</class>
+    <class>edu.utec.jpademo.domain.Campania</class>
+	-->
+    <properties>
+      <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/pa2025"/>
+
+
+      <!-- esquema -->
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <!-- logs -->
+      <property name="hibernate.show_sql" value="false"/>
+	  <property name="hibernate.format_sql" value="false"/>
+	  <property name="hibernate.use_sql_comments" value="false"/>
+    </properties>
+  </persistence-unit>
+</persistence>
