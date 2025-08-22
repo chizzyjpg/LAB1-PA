@@ -21,6 +21,12 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+
+
 
 
 public class RegistroVuelo extends JInternalFrame {
@@ -133,6 +139,14 @@ public class RegistroVuelo extends JInternalFrame {
 		lblNewLabel_6.setLabelFor(textField_3);
 		textField_3.setBounds(257, 369, 86, 20);
 		getContentPane().add(textField_3);
+		// Solo números en Duración, Cant. Turista y Max. Ejecutivos
+		((AbstractDocument) textField_1.getDocument())
+		        .setDocumentFilter(new SoloDigitosFilter());
+		((AbstractDocument) textField_2.getDocument())
+		        .setDocumentFilter(new SoloDigitosFilter());
+		((AbstractDocument) textField_3.getDocument())
+		        .setDocumentFilter(new SoloDigitosFilter());
+
 		textField_3.setColumns(10);
 		
 		JLabel lblNewLabel_7 = new JLabel("Fecha de Alta");
@@ -213,4 +227,23 @@ public class RegistroVuelo extends JInternalFrame {
 
 
 	}
+	/** Filtro para permitir solo dígitos en un JTextField. */
+	private static class SoloDigitosFilter extends DocumentFilter {
+	    @Override
+	    public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+	            throws BadLocationException {
+	        if (string == null) return;
+	        String solo = string.replaceAll("\\D", ""); // elimina no-dígitos
+	        if (solo.isEmpty()) return;
+	        super.insertString(fb, offset, solo, attr);
+	    }
+	    @Override
+	    public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+	            throws BadLocationException {
+	        if (text == null) return;
+	        String solo = text.replaceAll("\\D", "");
+	        super.replace(fb, offset, length, solo, attrs);
+	    }
+	}
+
 }
