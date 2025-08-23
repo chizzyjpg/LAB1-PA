@@ -10,22 +10,20 @@ import jakarta.persistence.*;
 @Table(name = "Ruta")
 public class Ruta {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int idRuta;
 
-    // ---------- Datos básicos ----------
     @Column(name = "Nombre", nullable = false, length = 50, unique = true)
     private String nombre;
 
     @Column(name = "Descripcion", nullable = false, length = 200)
     private String descripcion;
 
-    // ---------- Ciudad origen/destino con PK compuesta (nombre, pais) ----------
+    // Ciudad con PK compuesta (nombre, pais)
     @ManyToOne(optional = false)
     @JoinColumns({
-        @JoinColumn(name = "origen_nombre", referencedColumnName = "nombre", nullable = false),
-        @JoinColumn(name = "origen_pais",   referencedColumnName = "pais",   nullable = false)
+        @JoinColumn(name = "origen_nombre",  referencedColumnName = "nombre", nullable = false),
+        @JoinColumn(name = "origen_pais",    referencedColumnName = "pais",   nullable = false)
     })
     private Ciudad origen;
 
@@ -48,26 +46,20 @@ public class Ruta {
 
     @Column(name = "costoEquipajeExtra", nullable = false)
     private int costoEquipajeExtra;
+    
+    @ManyToOne
+    @JoinColumn(name = "aerolinea_nickname", referencedColumnName = "nickname", nullable = false)
+    private Aerolinea aerolinea;
 
-    // ---------- Categorías ----------
-    // Si Categoria es un enum:
+    // si Categoria es enum:
     @ElementCollection(targetClass = Categoria.class)
     @CollectionTable(name = "ruta_categoria", joinColumns = @JoinColumn(name = "ruta_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "categoria", length = 40, nullable = false)
     private List<Categoria> categorias = new ArrayList<>();
 
-    // Si Categoria fuera ENTIDAD, cambia lo anterior por:
-    // @ManyToMany
-    // @JoinTable(name="ruta_categoria",
-    //   joinColumns=@JoinColumn(name="ruta_id"),
-    //   inverseJoinColumns=@JoinColumn(name="categoria_id"))
-    // private List<Categoria> categorias = new ArrayList<>();
+    protected Ruta() {}
 
-    // ---------- Constructores ----------
-    protected Ruta() {} // JPA
-
-    // Constructor principal usando entidades Ciudad
     public Ruta(String n, String desc,
                 Ciudad origen, Ciudad destino,
                 int hora, Date fechaAlta,
@@ -82,20 +74,7 @@ public class Ruta {
         this.costoEquipajeExtra = costoEquipajeExtra;
     }
 
-    // (Opcional) Constructor de conveniencia si aún no usás JPA y querés trabajar con textos
-    // Crea objetos Ciudad mínimos en memoria. Cuando uses JPA, pasá Ciudades "managed".
-    public Ruta(String n, String desc,
-                String origenNombre, String origenPais,
-                String destinoNombre, String destinoPais,
-                int hora, Date fechaAlta,
-                int costoBase, int costoEquipajeExtra) {
-        this(n, desc,
-             new Ciudad(origenNombre, origenPais, "N/A", null, fechaAlta), // ajustá si querés
-             new Ciudad(destinoNombre, destinoPais, "N/A", null, fechaAlta),
-             hora, fechaAlta, costoBase, costoEquipajeExtra);
-    }
-
-    // ---------- Getters ----------
+    // getters
     public int getIdRuta() { return idRuta; }
     public String getNombre() { return nombre; }
     public String getDescripcion() { return descripcion; }
@@ -106,8 +85,9 @@ public class Ruta {
     public int getCostoBase() { return costoBase; }
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
     public List<Categoria> getCategorias() { return categorias; }
+    public Aerolinea getAerolinea() { return aerolinea; }
 
-    // ---------- Setters ----------
+    // setters
     public void setNombre(String n) { this.nombre = n; }
     public void setDescripcion(String desc) { this.descripcion = desc; }
     public void setOrigen(Ciudad origen) { this.origen = origen; }
@@ -117,9 +97,9 @@ public class Ruta {
     public void setCostoBase(int costoBase) { this.costoBase = costoBase; }
     public void setCostoEquipajeExtra(int costoEquipajeExtra) { this.costoEquipajeExtra = costoEquipajeExtra; }
     public void setCategorias(List<Categoria> cat) { this.categorias = cat; }
+    public void setAerolinea(Aerolinea aerolinea) { this.aerolinea = aerolinea; }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return "Ruta [idRuta=" + idRuta +
                ", nombre=" + nombre +
                ", descripcion=" + descripcion +
@@ -129,7 +109,6 @@ public class Ruta {
                ", fechaAlta=" + fechaAlta +
                ", costoBase=" + costoBase +
                ", costoEquipajeExtra=" + costoEquipajeExtra +
-               ", categorias=" + categorias +
-               "]";
+               ", categorias=" + categorias + "]";
     }
 }
