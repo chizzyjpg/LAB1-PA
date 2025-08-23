@@ -43,7 +43,8 @@ public class Reserva {
 	
 	protected Reserva() {}	
 	
-	public Reserva(Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal) {
+	public Reserva(int idReserva, Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal) {
+		this.idReserva = idReserva;
 		this.fechaReserva = fechaReserva;
 		this.tipoAsiento = tipoAsiento;
 		this.equipaje = equipaje;
@@ -52,6 +53,9 @@ public class Reserva {
 	}
 	
 	//Getters
+	public int getIdReserva() {
+		return idReserva;
+	}
 	public Date getFechaReserva() {
 		return fechaReserva;
 	}
@@ -69,6 +73,10 @@ public class Reserva {
 	}
 	
 	//Setters
+	public void setIdReserva(int idReserva) {
+		this.idReserva = idReserva;
+	}
+	
 	public void setFechaReserva(Date fechaReserva) {
 		this.fechaReserva = fechaReserva;	
 	}

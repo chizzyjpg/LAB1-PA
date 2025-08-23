@@ -8,6 +8,7 @@ public interface ISistema {
     boolean existeNickname(String nickname);
     boolean existeEmail(String email);
     boolean existeCategoria(String nombre);
+    //boolean existeReserva(int idReserva);
     
     List<DataUsuario> listarUsuarios();
 
@@ -17,7 +18,7 @@ public interface ISistema {
     void modificarCliente(String nickname, DataCliente nuevosDatos);
     void modificarAerolinea(String nickname, DataAerolinea nuevosDatos);
     void registrarCategoria(DataCategoria Data);
-    
+    //List<DataReserva> listarReservasDeCliente(String nickname);
     /*List<DataRutaResumen> listarRutasDeAerolinea(String nickAerolinea);
     List<DataReservaResumen> listarReservasDeCliente(String nickCliente);
     List<DataPaqueteResumen> listarPaquetesDeCliente(String nickCliente);
