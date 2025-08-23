@@ -14,6 +14,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
+import Logica.ManejadorCiudad;
+import Logica.DataCiudad;
+
 
 public class RegistroCiudad extends JInternalFrame {
 
@@ -117,55 +120,78 @@ public class RegistroCiudad extends JInternalFrame {
 		JButton btnAceptar = new JButton("ACEPTAR");
 		btnAceptar.setBackground(new Color(5, 250, 79));
 		btnAceptar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String nomCiudad = textFieldNomCiudad.getText().trim();
-				String nomPais = textFieldPais.getText().trim();
-				String nomAeropuerto = textFieldAeropuerto.getText().trim();
-				String Descripcion = textAreaDesc.getText().trim();
-				String web = textFieldWeb.getText().trim();
-				java.util.Date fecha = fechaAlta.getDate();
-				
-				if(nomCiudad.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistroCiudad.this, "La Ciudad NO puede estar vacía", "Error Ciudad" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				
-				if(nomPais.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistroCiudad.this, "El País NO puede estar vacío", "Error País" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				
-				if(nomAeropuerto.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistroCiudad.this, "El Aeropuerto NO puede estar vacío", "Error Aeropuerto" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				
-				if(Descripcion.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistroCiudad.this, "La Descripción NO puede estar vacía", "Error Descripción" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				
-				if(web.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistroCiudad.this, "El Sitio Web NO puede estar vacío", "Error Sitio Web" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				
-				if(fecha == null) {
-					JOptionPane.showMessageDialog(RegistroCiudad.this, "La Fecha NO puede estar vacía", "Error Fecha" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				JOptionPane.showMessageDialog(RegistroCiudad.this, "Ciudad registrada correctamente!\nNombre: " + nomCiudad + "\nPaís: " + nomPais, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
-				
-				
-				//LIMPIA CAMPOS
-				textFieldNomCiudad.setText("");
-				textFieldPais.setText("");
-				textFieldAeropuerto.setText("");
-				textAreaDesc.setText("");
-				textFieldWeb.setText("");
-				
-			}
+		    public void actionPerformed(ActionEvent e) {
+		        String nomCiudad     = textFieldNomCiudad.getText().trim();
+		        String nomPais       = textFieldPais.getText().trim();
+		        String nomAeropuerto = textFieldAeropuerto.getText().trim();
+		        String descripcion   = textAreaDesc.getText().trim();
+		        String web           = textFieldWeb.getText().trim();  // hoy no se persiste en Ciudad
+		        java.util.Date fecha = fechaAlta.getDate();
+
+		        // Validaciones mínimas (dejé las tuyas)
+		        if (nomCiudad.isEmpty()) {
+		            JOptionPane.showMessageDialog(RegistroCiudad.this, "La Ciudad NO puede estar vacía", "Error Ciudad" , JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+		        if (nomPais.isEmpty()) {
+		            JOptionPane.showMessageDialog(RegistroCiudad.this, "El País NO puede estar vacío", "Error País" , JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+		        if (nomAeropuerto.isEmpty()) {
+		            JOptionPane.showMessageDialog(RegistroCiudad.this, "El Aeropuerto NO puede estar vacío", "Error Aeropuerto" , JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+		        if (descripcion.isEmpty()) {
+		            JOptionPane.showMessageDialog(RegistroCiudad.this, "La Descripción NO puede estar vacía", "Error Descripción" , JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+		        if (web.isEmpty()) {
+		            JOptionPane.showMessageDialog(RegistroCiudad.this, "El Sitio Web NO puede estar vacío", "Error Sitio Web" , JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+		        if (fecha == null) {
+		            JOptionPane.showMessageDialog(RegistroCiudad.this, "La Fecha NO puede estar vacía", "Error Fecha" , JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+
+		        // Conectar con el manejador usando DTO
+		        try {
+		            DataCiudad dto = new DataCiudad(
+		                nomCiudad,
+		                nomPais,
+		                nomAeropuerto,
+		                descripcion,
+		                fecha,
+		                web
+		            );
+
+		            // Alta en memoria (tu manejador)
+		            ManejadorCiudad.get().agregarCiudad(dto);
+
+		            JOptionPane.showMessageDialog(
+		                RegistroCiudad.this,
+		                "Ciudad registrada correctamente!\nNombre: " + nomCiudad + "\nPaís: " + nomPais,
+		                "ÉXITO!",
+		                JOptionPane.INFORMATION_MESSAGE
+		            );
+
+		            // LIMPIA CAMPOS
+		            textFieldNomCiudad.setText("");
+		            textFieldPais.setText("");
+		            textFieldAeropuerto.setText("");
+		            textAreaDesc.setText("");
+		            textFieldWeb.setText("");
+		            fechaAlta.setDate(null);
+
+		        } catch (IllegalArgumentException ex) {
+		            // Errores de validación/duplicado del manejador
+		            JOptionPane.showMessageDialog(RegistroCiudad.this, ex.getMessage(), "Datos inválidos", JOptionPane.WARNING_MESSAGE);
+		        } catch (Exception ex) {
+		            JOptionPane.showMessageDialog(RegistroCiudad.this, "Error al registrar la ciudad: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		        }
+		    }
 		});
+
 		btnAceptar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		btnAceptar.setBounds(299, 409, 89, 23);
 		getContentPane().add(btnAceptar);
