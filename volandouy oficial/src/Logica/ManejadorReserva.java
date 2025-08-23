@@ -13,7 +13,6 @@ public final class ManejadorReserva {
 	public static Reserva toEntity (DataReserva dto) {
 		Objects.requireNonNull(dto, "DataReserva no puede ser null"); // Valida que dto no sea null; si lo es, lanza NullPointerException con mensaje.
 		return new Reserva (
-				dto.getIdReserva(),
 				dto.getFechaReserva(),
 				dto.getTipoAsiento(),
 				dto.getEquipaje(),
@@ -27,7 +26,6 @@ public final class ManejadorReserva {
 	public static DataReserva toDTO (Reserva r) {
 		Objects.requireNonNull(r, "Reserva no puede ser null"); // Valida argumento no nulo.
 		return new DataReserva (
-				r.getIdReserva(),
 				r.getFechaReserva(),
 				r.getTipoAsiento(),
 				r.getEquipaje(),
