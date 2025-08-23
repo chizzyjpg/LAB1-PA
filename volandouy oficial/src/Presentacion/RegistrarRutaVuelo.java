@@ -21,9 +21,15 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import Logica.Aerolinea;
+import Logica.DataAerolinea;
+import Logica.ManejadorAerolinea;
+import Logica.ManejadorRuta;
+
 public class RegistrarRutaVuelo extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
+	private JComboBox<DataAerolinea> comboAerolinea;
 	private JTextField textFieldNombre;
 	private JTextField textFieldTurista;
 	private JTextField textFieldEjecutivo;
@@ -65,6 +71,9 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		JComboBox comboBoxAerolinea = new JComboBox();
 		comboBoxAerolinea.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBoxAerolinea.setBounds(155, 25, 145, 22);
+		for (DataAerolinea da : ManejadorAerolinea.get().listarData()) {
+		    comboBoxAerolinea.addItem(da);
+		}
 		getContentPane().add(comboBoxAerolinea);
 		
 		JLabel lblNombre = new JLabel("Nombre:");
@@ -188,72 +197,82 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		
 		JButton btnAceptar = new JButton("ACEPTAR");
 		btnAceptar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//String aerolinea = comboBoxAerolinea.getToolTipText().trim();
-				String nombre = textFieldNombre.getText().trim();
-				String Descripcion = textAreaDesc.getText().trim();
-				String turista = textFieldTurista.getText().trim();
-				String ejecutivo = textFieldEjecutivo.getText().trim();
-				String costo = textFieldEquipajeExtra.getText().trim();
-				String ciudadO = textFieldCiudadOrigen.getText().trim();
-				String ciudadD = textFieldCiudadDestino.getText().trim();
-				java.util.Date fecha = fechaAlta.getDate();
-				//String cat = comboBoxCategoria.getToolTipText().trim();
-				
-				/*if(aerolinea.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Aerolínea NO puede estar vacía", "Error Aerolínea" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}*/
-				
-				if(nombre.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Nombre NO puede estar vacío", "Error Nombre" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				
-				if(Descripcion.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Descripción NO puede estar vacía", "Error Descripción" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				
-				if(turista.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Costo Turista NO puede estar vacío", "Error Costo" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				
-				if(ejecutivo.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Costo Ejecutivo NO puede estar vacío", "Error Costo" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				
-				if(costo.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Costo de Equipaje NO puede estar vacío", "Error Costo" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				
-				if(ciudadO.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Ciudad de Origen NO puede estar vacía", "Error Origen" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				
-				if(ciudadD.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Ciudad de Destino NO puede estar vacía", "Error Destino" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				
-				if(fecha == null) {
-					JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Fecha NO puede estar vacía", "Error Fecha" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				
-				/*if(cat.isEmpty()) {
-					JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Categoría NO puede estar vacía", "Error Categoría" , JOptionPane.ERROR_MESSAGE);
-					return;
-				}*/
-				
-				JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Ruta de Vuelo registrada correctamente!\nNombre: " + nombre, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
-				
-			}
+		    public void actionPerformed(ActionEvent e) {
+		    	DataAerolinea aerolinea = (DataAerolinea) comboBoxAerolinea.getSelectedItem();
+		    	Aerolinea aero = ManejadorAerolinea.get().obtenerEntidad(aerolinea.getNickname());
+		        String nombre = textFieldNombre.getText().trim();
+		        String Descripcion = textAreaDesc.getText().trim();
+		        String turista = textFieldTurista.getText().trim();
+		        String ejecutivo = textFieldEjecutivo.getText().trim(); // hoy no lo usamos porque Ruta tiene un solo costo base
+		        String costo = textFieldEquipajeExtra.getText().trim();
+		        String ciudadO = textFieldCiudadOrigen.getText().trim();
+		        String ciudadD = textFieldCiudadDestino.getText().trim();
+		        java.util.Date fecha = fechaAlta.getDate();
+
+		        // Validaciones mínimas (las tuyas)
+		        if(nombre.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Nombre NO puede estar vacío", "Error Nombre" , JOptionPane.ERROR_MESSAGE); return; }
+		        if(Descripcion.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Descripción NO puede estar vacía", "Error Descripción" , JOptionPane.ERROR_MESSAGE); return; }
+		        if(turista.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Costo Turista NO puede estar vacío", "Error Costo" , JOptionPane.ERROR_MESSAGE); return; }
+		        if(ejecutivo.isEmpty()) { /* por ahora no lo usamos, pero dejo tu check */ JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Costo Ejecutivo NO puede estar vacío", "Error Costo" , JOptionPane.ERROR_MESSAGE); return; }
+		        if(costo.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Costo de Equipaje NO puede estar vacío", "Error Costo" , JOptionPane.ERROR_MESSAGE); return; }
+		        if(ciudadO.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Ciudad de Origen NO puede estar vacía", "Error Origen" , JOptionPane.ERROR_MESSAGE); return; }
+		        if(ciudadD.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Ciudad de Destino NO puede estar vacía", "Error Destino" , JOptionPane.ERROR_MESSAGE); return; }
+		        if(fecha == null) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Fecha NO puede estar vacía", "Error Fecha" , JOptionPane.ERROR_MESSAGE); return; }
+
+		        // Pedimos PAÍS (mínimo cambio en UI)
+		        String paisO = JOptionPane.showInputDialog(this, "País de ORIGEN para \"" + ciudadO + "\":");
+		        if (paisO == null || paisO.isBlank()) { /* mostrar error y return */ }
+
+		        String paisD = JOptionPane.showInputDialog(this, "País de DESTINO para \"" + ciudadD + "\":");
+		        if (paisD == null || paisD.isBlank()) { /* mostrar error y return */ }
+
+		        // Parseos
+		        int costoBase;
+		        int costoEquipaje;
+		        try {
+		            costoBase = Integer.parseInt(turista);       // usamos "Turista" como costo base (tu entidad tiene 1 costo)
+		            costoEquipaje = Integer.parseInt(costo);
+		        } catch (NumberFormatException nfe) {
+		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Costos deben ser números enteros", "Error de formato" , JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+
+		        // Hora (tomamos HH:mm del spinner → a int HHmm o solo hora; tu entidad usa 'int hora')
+		        Date h = (Date) ((JSpinner.DateEditor) spinnerHora.getEditor()).getModel().getValue();
+		        Calendar cal = Calendar.getInstance();
+		        cal.setTime(h);
+		        int horaInt = cal.get(Calendar.HOUR_OF_DAY); // si querés HHmm, comentalo y armamos HH*100 + mm
+
+		        try {
+		            // Alta real usando el manejador (resuelve Ciudad por nombre+país)
+		        		ManejadorRuta.get().altaRutaDesdeFormulario(
+		        		    nombre, Descripcion,
+		        		    ciudadO, paisO,
+		        		    ciudadD, paisD,
+		        		    horaInt, fecha,
+		        		    costoBase, costoEquipaje,
+		        		    aero
+		        		);
+
+		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Ruta de Vuelo registrada correctamente!\nNombre: " + nombre, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
+
+		            // limpiar
+		            textFieldNombre.setText("");
+		            textFieldTurista.setText("");
+		            textFieldEjecutivo.setText("");
+		            textFieldEquipajeExtra.setText("");
+		            textFieldCiudadOrigen.setText("");
+		            textFieldCiudadDestino.setText("");
+		            fechaAlta.setDate(null);
+
+		        } catch (IllegalArgumentException ex2) {
+		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, ex2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		        } catch (Exception ex) {
+		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Error al registrar ruta: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		        }
+		    }
 		});
+
 		btnAceptar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		btnAceptar.setBackground(new Color(5, 250, 79));
 		btnAceptar.setBounds(265, 451, 89, 23);
