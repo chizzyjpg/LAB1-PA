@@ -177,4 +177,30 @@ public class Sistema implements ISistema {
     public java.util.List<DataCategoria> listarCategorias() {
         return ManejadorCategoria.toDTOs(new java.util.ArrayList<>(categoriasPorNombre.values()));
     }
+    
+    
+    // ======================
+    //  RESERVAS
+    // ======================
+    
+    @Override
+    public Reserva existeReserva(int idReserva, String nickname) {
+		String key = canonical(nickname);
+		Usuario u = usuariosPorNickname.get(key);
+		if (!(u instanceof Cliente c))
+			throw new IllegalArgumentException("No existe un cliente con ese nickname");
+		
+		return c.getReservas().stream()
+	            .filter(r -> r.getIdReserva() == idReserva)
+	            .findFirst()
+	            .orElseThrow(() ->
+	                new IllegalArgumentException("No existe una reserva con ese ID para el cliente indicado"));
+		
+	}
+    
+    @Override
+    public void actualizarReserva(int idReserva, String nickname, Cliente nuevoCliente, VueloEspecifico nuevoVuelo, boolean cambiarAerolinea, boolean cambiarRuta) {
+
+    }
+    
 }

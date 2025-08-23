@@ -41,9 +41,20 @@ public class Reserva {
 	@ManyToOne
 	private Paquetes paquete;	
 	
+	
+	private String aerolinea;
+	private String rutasVuelo;
+	private int cantPasajes;
+	//private Pasajero pasajero;
+	
 	protected Reserva() {}	
 	
-	public Reserva(Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal) {
+	public Reserva(String aerolinea, String rutasVuelo, Cliente cliente, int cantPasajes/*,Pasajero pasajero*/,Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal){
+		this.aerolinea = aerolinea;
+		this.rutasVuelo = rutasVuelo;
+		this.cliente = cliente;
+		this.cantPasajes = cantPasajes;
+		//this.pasajero = pasajero;
 		this.fechaReserva = fechaReserva;
 		this.tipoAsiento = tipoAsiento;
 		this.equipaje = equipaje;
@@ -52,6 +63,24 @@ public class Reserva {
 	}
 	
 	//Getters
+	public int getIdReserva() {
+		return idReserva;
+	}
+	public String getAerolinea() {
+		return aerolinea;
+	}
+	public String getRutasVuelo() {
+		return rutasVuelo;
+	}
+	public Cliente getCliente() {
+		return cliente;
+	}
+	public int getCantPasajes() {
+		return cantPasajes;
+	}
+	/*public Pasajero getPasajero() {
+		return pasajero;
+	}*/
 	public Date getFechaReserva() {
 		return fechaReserva;
 	}
@@ -69,6 +98,21 @@ public class Reserva {
 	}
 	
 	//Setters
+	public void setAerolinea(String aerolinea) {
+		this.aerolinea = aerolinea;
+	}
+	public void setRutasVuelo(String rutasVuelo) {
+		this.rutasVuelo = rutasVuelo;
+	}
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	public void setCantPasajes(int cantPasajes) {
+		this.cantPasajes = cantPasajes;
+	}
+	/*public void setPasajero(Pasajero pasajero) {
+		this.pasajero = pasajero;
+	}*/
 	public void setFechaReserva(Date fechaReserva) {
 		this.fechaReserva = fechaReserva;	
 	}

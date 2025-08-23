@@ -18,6 +18,8 @@ public interface ISistema {
     void modificarCliente(String nickname, DataCliente nuevosDatos);
     void modificarAerolinea(String nickname, DataAerolinea nuevosDatos);
     void registrarCategoria(DataCategoria Data);
+    Reserva existeReserva(int idReserva, String nickname);
+    void actualizarReserva(int idReserva, String nickname, Cliente nuevoCliente, VueloEspecifico nuevoVuelo, boolean cambiarAerolinea, boolean cambiarRuta);
     //List<DataReserva> listarReservasDeCliente(String nickname);
     /*List<DataRutaResumen> listarRutasDeAerolinea(String nickAerolinea);
     List<DataReservaResumen> listarReservasDeCliente(String nickCliente);
