@@ -4,14 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Ciudad")
@@ -38,18 +31,24 @@ public class Ciudad {
     @Column(name = "fecha_alta", nullable = false)
     private Date fechaAlta;
 
+    // 👉 NUEVO: sitio web (si tu letra lo requiere, podés hacerlo NOT NULL)
+    @Column(name = "sitio_web", length = 200, nullable = true)
+    private String sitioWeb;
+
     // ===== Constructores =====
-    public Ciudad() {} // requerido por JPA
+    public Ciudad() {}
 
     public Ciudad(String nombre, String pais,
                   String nombreAeropuerto,
                   String descripcionAeropuerto,
-                  Date fechaAlta) {
+                  Date fechaAlta,
+                  String sitioWeb) {
         this.nombre = nombre;
         this.pais = pais;
         this.nombreAeropuerto = nombreAeropuerto;
         this.descripcionAeropuerto = descripcionAeropuerto;
         this.fechaAlta = fechaAlta;
+        this.sitioWeb = sitioWeb;
     }
 
     // ===== Getters/Setters =====
@@ -68,14 +67,16 @@ public class Ciudad {
     public Date getFechaAlta() { return fechaAlta; }
     public void setFechaAlta(Date fechaAlta) { this.fechaAlta = fechaAlta; }
 
-    // ===== Clase Id compuesta (estática interna) =====
+    public String getSitioWeb() { return sitioWeb; }
+    public void setSitioWeb(String sitioWeb) { this.sitioWeb = sitioWeb; }
+
+    // ===== Clase Id compuesta =====
     public static class CiudadId implements Serializable {
         private static final long serialVersionUID = 1L;
-
         private String nombre;
         private String pais;
 
-        public CiudadId() {} // requerido por JPA
+        public CiudadId() {}
         public CiudadId(String nombre, String pais) {
             this.nombre = nombre;
             this.pais = pais;
@@ -83,22 +84,18 @@ public class Ciudad {
 
         public String getNombre() { return nombre; }
         public void setNombre(String nombre) { this.nombre = nombre; }
-
         public String getPais() { return pais; }
         public void setPais(String pais) { this.pais = pais; }
 
-        @Override
-        public boolean equals(Object o) {
+        @Override public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof CiudadId)) return false;
             CiudadId that = (CiudadId) o;
             return Objects.equals(nombre, that.nombre) &&
                    Objects.equals(pais, that.pais);
         }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(nombre, pais);
+        @Override public int hashCode() {
+            return java.util.Objects.hash(nombre, pais);
         }
     }
 }
