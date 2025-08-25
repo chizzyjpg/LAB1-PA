@@ -54,7 +54,7 @@ public class Aerolinea extends Usuario {
 	
 	
 		//Metodos
-	public void agregarRuta(Ruta r) {
+	public void addRuta(Ruta r) {
 		rutasMap.put(r.getNombre(), r);
 	}
 	
