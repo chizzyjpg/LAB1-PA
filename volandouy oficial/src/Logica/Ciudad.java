@@ -6,6 +6,14 @@ import java.util.Objects;
 
 import jakarta.persistence.*;
 
+//private boolean ciudadMatch(Ciudad c, String nombre, String pais) {
+//    if (nombre == null && pais == null) return true;
+//    if (c == null) return false;
+//    boolean okNombre = (nombre == null) || (c.getNombre()!=null && c.getNombre().equalsIgnoreCase(nombre));
+//    boolean okPais   = (pais   == null) || (c.getPais()!=null   && c.getPais().equalsIgnoreCase(pais));
+//    return okNombre && okPais;
+//}
+
 @Entity
 @Table(name = "Ciudad")
 @IdClass(Ciudad.CiudadId.class)

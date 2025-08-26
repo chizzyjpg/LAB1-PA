@@ -2,11 +2,16 @@
 package Logica;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class Sistema implements ISistema {
@@ -14,8 +19,10 @@ public class Sistema implements ISistema {
 
     // “Persistencia” en memoria por ahora.
     private final Map<String, Usuario> usuariosPorNickname = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por nickname
+    private final Map<Long, Ciudad> CiudadPorHash = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por hashcode
 
     public Sistema() {}
+
     
     
     // ======================
@@ -94,6 +101,20 @@ public class Sistema implements ISistema {
     public List<DataUsuario> listarUsuarios() {
         return ManejadorUsuario.toDTOs(new ArrayList<>(usuariosPorNickname.values()));
     }
+    
+    @Override
+    public List<DataAerolinea> listarAerolineas() {
+		List<DataAerolinea> aerolineas = new ArrayList<>();
+		for (Usuario u : usuariosPorNickname.values()) {
+			if (u instanceof Aerolinea a) {
+				aerolineas.add(ManejadorAerolinea.toData(a));
+			}
+		}
+		aerolineas.sort(Comparator.comparing(
+				a -> a.getNickname() == null ? "" : a.getNickname(),
+				String.CASE_INSENSITIVE_ORDER));
+		return aerolineas;
+	}
 
     
     // ======================
@@ -153,5 +174,71 @@ public class Sistema implements ISistema {
         a.setLinkWeb(nuevos.getSitioWeb());
     }
     
+    
+    // =========================
+    // REGISTRAR RUTAS DE VUELO
+    // =========================
+    
+    @Override
+    public void RegistrarRuta(String nickAerolinea, DataRuta datos) {
+		if (datos == null) throw new IllegalArgumentException("Los datos de la ruta no pueden ser nulos");
+		
+		Usuario u = usuariosPorNickname.get(canonical(nickAerolinea));
+		if (!(u instanceof Aerolinea a)) {
+			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+		}
+		Ruta r = ManejadorRuta.toEntity(datos);
+		a.addRuta(r);
+	}
+    
+//    private void validarBasico(Ruta r) {
+//        if (r.getNombre()==null || r.getNombre().isBlank()) throw new IllegalArgumentException("nombre obligatorio");
+//        if (r.getDescripcion()==null || r.getDescripcion().isBlank()) throw new IllegalArgumentException("descripcion obligatoria");
+//        if (r.getOrigen()==null)  throw new IllegalArgumentException("ciudad origen obligatoria");
+//        if (r.getDestino()==null) throw new IllegalArgumentException("ciudad destino obligatoria");
+//        if (r.getFechaAlta()==null) throw new IllegalArgumentException("fecha de alta obligatoria");
+//    }
+    
+    public List<DataRuta> listarPorAerolinea(String nicknameAerolinea) {
+    	Usuario u = usuariosPorNickname.get(canonical(nicknameAerolinea));
+    	if (!(u instanceof Aerolinea a)) {
+    		throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+    	}
+    	return ManejadorRuta.toDatas(new ArrayList<>(a.getRutaMap().values()));
+    }
+    
+    
+    // =========================
+    //  	   CIUDADES
+    // =========================
+    
+    @Override
+    public void registrarCiudad(DataCiudad data) {
+		if (data == null) throw new IllegalArgumentException("Los datos no pueden ser nulos");
+
+		// Validaciones de unicidad
+		long hash = data.getNombre().toLowerCase().hashCode() + 31 * data.getPais().toLowerCase().hashCode();
+		if (CiudadPorHash.containsKey(hash)) {
+			throw new IllegalArgumentException("La ciudad ya está registrada");
+		}
+
+		// DTO -> Entidad
+		Ciudad entity = ManejadorCiudad.toEntity(data);
+
+		CiudadPorHash.put(hash, entity);
+	}
+
+	@Override
+	public List<DataCiudad> listarCiudades() {
+		return ManejadorCiudad.toDatas(new ArrayList<>(CiudadPorHash.values()));
+	}
+	
+	public Ciudad buscarCiudad(String nombre, String pais) {
+		if (nombre == null || nombre.isBlank() || pais == null || pais.isBlank()) {
+			return null;
+		}
+		long hash = nombre.toLowerCase().hashCode() + 31 * pais.toLowerCase().hashCode();
+		return CiudadPorHash.get(hash);
+	}
     
 }

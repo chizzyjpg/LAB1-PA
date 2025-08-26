@@ -9,7 +9,7 @@ import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import Logica.ManejadorVuelo;
+import Logica.ISistema;
 
 public class ConsultaRutaVuelo extends JInternalFrame {
 
@@ -18,12 +18,14 @@ public class ConsultaRutaVuelo extends JInternalFrame {
     private final JList<DataVueloEspecifico> listVuelos = new JList<>(new DefaultListModel<>());
     private final JTextArea txtDetallesRuta = new JTextArea(12, 40);
     private final JButton btnVerVuelo = new JButton("Ver vuelo…");
+    private final ISistema sistema; // referencia al sistema
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private final SimpleDateFormat sdfHora = new SimpleDateFormat("HH:mm");
 
-    public ConsultaRutaVuelo() {
+    public ConsultaRutaVuelo(ISistema sistema) {
         super("Consulta de Ruta de Vuelo", true, true, true, true);
+    	this.sistema = sistema;
         setSize(900, 600);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -111,7 +113,7 @@ public class ConsultaRutaVuelo extends JInternalFrame {
     private void cargarAerolineas() {
         comboAerolineas.removeAllItems();
         try {
-            List<DataAerolinea> aas = ManejadorAerolinea.get().listarData(); // <-- ajustá si tu método se llama distinto
+            List<DataAerolinea> aas = sistema.listarAerolineas(); // <-- ajustá si tu método se llama distinto
             for (DataAerolinea a : aas) comboAerolineas.addItem(a);
             if (!aas.isEmpty()) comboAerolineas.setSelectedIndex(0);
         } catch (Exception ex) {
@@ -128,7 +130,7 @@ public class ConsultaRutaVuelo extends JInternalFrame {
 
         if (sel == null) return;
         try {
-            List<DataRuta> rutas = ManejadorRuta.get().listarPorAerolinea(sel.getNickname()); // <-- implementa esto en tu manejador
+            List<DataRuta> rutas = sistema.listarPorAerolinea(sel.getNickname()); // <-- implementa esto en tu manejador
             for (DataRuta r : rutas) model.addElement(r);
             if (!rutas.isEmpty()) listRutas.setSelectedIndex(0);
         } catch (Exception ex) {

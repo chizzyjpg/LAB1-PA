@@ -16,6 +16,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import Logica.ManejadorCiudad;
 import Logica.DataCiudad;
+import Logica.ISistema;
 
 
 public class RegistroCiudad extends JInternalFrame {
@@ -25,6 +26,7 @@ public class RegistroCiudad extends JInternalFrame {
 	private JTextField textFieldPais;
 	private JTextField textFieldAeropuerto;
 	private JTextField textFieldWeb;
+	private static ISistema sistema; // referencia al sistema
 
 	/**
 	 * Launch the application.
@@ -33,7 +35,7 @@ public class RegistroCiudad extends JInternalFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					RegistroCiudad frame = new RegistroCiudad();
+					RegistroCiudad frame = new RegistroCiudad(sistema);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -45,7 +47,7 @@ public class RegistroCiudad extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
-	public RegistroCiudad() {
+	public RegistroCiudad(ISistema sistema) {
 		setClosable(true);
 		setResizable(true);
 		setMaximizable(true);
@@ -166,7 +168,7 @@ public class RegistroCiudad extends JInternalFrame {
 		            );
 
 		            // Alta en memoria (tu manejador)
-		            ManejadorCiudad.get().agregarCiudad(dto);
+		            sistema.registrarCiudad(dto);
 
 		            JOptionPane.showMessageDialog(
 		                RegistroCiudad.this,

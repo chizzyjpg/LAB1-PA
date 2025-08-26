@@ -46,10 +46,6 @@ public class Ruta {
 
     @Column(name = "costoEquipajeExtra", nullable = false)
     private int costoEquipajeExtra;
-    
-    @ManyToOne
-    @JoinColumn(name = "aerolinea_nickname", referencedColumnName = "nickname", nullable = false)
-    private Aerolinea aerolinea;
 
     // si Categoria es enum:
     @ElementCollection(targetClass = Categoria.class)
@@ -85,7 +81,6 @@ public class Ruta {
     public int getCostoBase() { return costoBase; }
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
     public List<Categoria> getCategorias() { return categorias; }
-    public Aerolinea getAerolinea() { return aerolinea; }
 
     // setters
     public void setNombre(String n) { this.nombre = n; }
@@ -97,7 +92,6 @@ public class Ruta {
     public void setCostoBase(int costoBase) { this.costoBase = costoBase; }
     public void setCostoEquipajeExtra(int costoEquipajeExtra) { this.costoEquipajeExtra = costoEquipajeExtra; }
     public void setCategorias(List<Categoria> cat) { this.categorias = cat; }
-    public void setAerolinea(Aerolinea aerolinea) { this.aerolinea = aerolinea; }
 
     @Override public String toString() {
         return "Ruta [idRuta=" + idRuta +

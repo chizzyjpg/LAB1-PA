@@ -5,19 +5,17 @@ import java.util.Date;
 public class DataRuta {
     private String nombre;
     private String descripcion;
-    private DataCiudad ciudadOrigen;
-    private DataCiudad ciudadDestino;
+    private Ciudad ciudadOrigen;
+    private Ciudad ciudadDestino;
     private int hora;
     private Date fechaAlta;
     private int costoBase;
     private int costoEquipajeExtra;
-    private Aerolinea aerolinea;
 
     public DataRuta(String nombre, String descripcion,
-                    DataCiudad ciudadOrigen, DataCiudad ciudadDestino,
+                    Ciudad ciudadOrigen, Ciudad ciudadDestino,
                     int hora, Date fechaAlta,
-                    int costoBase, int costoEquipajeExtra,
-                    Aerolinea aerolinea) {
+                    int costoBase, int costoEquipajeExtra) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.ciudadOrigen = ciudadOrigen;
@@ -26,16 +24,16 @@ public class DataRuta {
         this.fechaAlta = fechaAlta;
         this.costoBase = costoBase;
         this.costoEquipajeExtra = costoEquipajeExtra;
-        this.aerolinea = aerolinea;
     }
 
-    public String getNombre() { return nombre; }
+    // Getters
+
+	public String getNombre() { return nombre; }
     public String getDescripcion() { return descripcion; }
-    public DataCiudad getCiudadOrigen() { return ciudadOrigen; }
-    public DataCiudad getCiudadDestino() { return ciudadDestino; }
+    public Ciudad getCiudadOrigen() { return ciudadOrigen; }
+    public Ciudad getCiudadDestino() { return ciudadDestino; }
     public int getHora() { return hora; }
     public Date getFechaAlta() { return fechaAlta; }
     public int getCostoBase() { return costoBase; }
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
-    public Aerolinea getAerolinea() { return aerolinea; }
 }
