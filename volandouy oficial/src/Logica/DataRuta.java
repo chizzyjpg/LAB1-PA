@@ -5,15 +5,15 @@ import java.util.Date;
 public class DataRuta {
     private String nombre;
     private String descripcion;
-    private Ciudad ciudadOrigen;
-    private Ciudad ciudadDestino;
+    private DataCiudad ciudadOrigen;
+    private DataCiudad ciudadDestino;
     private int hora;
     private Date fechaAlta;
     private int costoBase;
     private int costoEquipajeExtra;
 
     public DataRuta(String nombre, String descripcion,
-                    Ciudad ciudadOrigen, Ciudad ciudadDestino,
+                    DataCiudad ciudadOrigen, DataCiudad ciudadDestino,
                     int hora, Date fechaAlta,
                     int costoBase, int costoEquipajeExtra) {
         this.nombre = nombre;
@@ -30,8 +30,8 @@ public class DataRuta {
 
 	public String getNombre() { return nombre; }
     public String getDescripcion() { return descripcion; }
-    public Ciudad getCiudadOrigen() { return ciudadOrigen; }
-    public Ciudad getCiudadDestino() { return ciudadDestino; }
+    public DataCiudad getCiudadOrigen() { return ciudadOrigen; }
+    public DataCiudad getCiudadDestino() { return ciudadDestino; }
     public int getHora() { return hora; }
     public Date getFechaAlta() { return fechaAlta; }
     public int getCostoBase() { return costoBase; }

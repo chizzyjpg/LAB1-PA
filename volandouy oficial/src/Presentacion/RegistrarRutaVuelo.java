@@ -230,13 +230,9 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        // Parseos
 		        int costoBase;
 		        int costoEquipaje;
-		        Ciudad Origen;
-		        Ciudad Destino;
 		        try {
 		            costoBase = Integer.parseInt(turista);       // usamos "Turista" como costo base (tu entidad tiene 1 costo)
 		            costoEquipaje = Integer.parseInt(costo);
-		            Origen = sistema.buscarCiudad(ciudadO.getNombre(), ciudadO.getPais());
-		            Destino = sistema.buscarCiudad(ciudadD.getNombre(), ciudadD.getPais());
 		        } catch (NumberFormatException nfe) {
 		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Costos deben ser números enteros", "Error de formato" , JOptionPane.ERROR_MESSAGE);
 		            return;
@@ -253,8 +249,8 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        	DataRuta datos = new DataRuta(
 		        			nombre,
 		        			Descripcion,
-		        			Origen,
-		        			Destino,// <-- fijate que tu manejador resuelve bien la ciudad
+		        			ciudadO,// <-- fijate que tu manejador resuelve bien la ciudad
+		        			ciudadD,// <-- fijate que tu manejador resuelve bien la ciudad
 		        			horaInt,
 		        			fecha,
 		        			costoBase,

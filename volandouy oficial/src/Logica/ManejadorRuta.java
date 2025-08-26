@@ -11,9 +11,11 @@ public class ManejadorRuta {
     // ===== Obtener / Listar =====
     public static Ruta toEntity(DataRuta data) {
     	Objects.requireNonNull(data, "Los datos no pueden ser nulos");
+    	Ciudad origen = ManejadorCiudad.toEntity(data.getCiudadOrigen());
+    	Ciudad destino = ManejadorCiudad.toEntity(data.getCiudadDestino());
         return new Ruta(
 			data.getNombre(), data.getDescripcion(),
-			data.getCiudadOrigen(), data.getCiudadDestino(),
+			origen, destino,
 			data.getHora(), data.getFechaAlta(),
 			data.getCostoBase(), data.getCostoEquipajeExtra()
 		);
@@ -22,9 +24,11 @@ public class ManejadorRuta {
     
     public static DataRuta toData(Ruta r) {
     	Objects.requireNonNull(r, "La ruta no puede ser nula");
+    	DataCiudad origen = ManejadorCiudad.toData(r.getOrigen());
+    	DataCiudad destino = ManejadorCiudad.toData(r.getDestino());
         return new DataRuta(
             r.getNombre(), r.getDescripcion(),
-            r.getOrigen(), r.getDestino(),
+            origen, destino,
             r.getHora(), r.getFechaAlta(),
             r.getCostoBase(), r.getCostoEquipajeExtra()
         );
