@@ -128,7 +128,7 @@ public class ReservaVuelo extends JInternalFrame {
 		JButton btnIngresar = new JButton("Ingresar");
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				IngresarPasajero ingresarPasajero = new IngresarPasajero();
+				IngresarPasajero ingresarPasajero = new IngresarPasajero(sistema);
 				ingresarPasajero.setVisible(true);
 			}
 		});
