@@ -9,6 +9,9 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import Logica.ISistema;
+
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -23,7 +26,7 @@ public class IngresarPasajero extends JInternalFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -34,12 +37,12 @@ public class IngresarPasajero extends JInternalFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public IngresarPasajero() {
+	public IngresarPasajero(ISistema sistema) {
 		setIconifiable(true);
 		setClosable(true);
 		setTitle("Ingresar Pasajero");
@@ -111,6 +114,8 @@ public class IngresarPasajero extends JInternalFrame {
 				if(sexo.isEmpty()) {
 					JOptionPane.showMessageDialog(IngresarPasajero.this, "Debe seleccionar un sexo.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
+				
+				//ACA SE LLAMA A UNA FUNCION DEL SISTEMA PARA QUE VALIDE LOS DATOS y ESTA LLAMA AL MANEJADOR PARA QUE CREE LOS OBJETOS PASASJEROS, EL SISTEMA LO GUARDA EN UNA LISTA O ALGO POR EL ESTILO
 				
 				//Si pasa las validaciones, se ingresa el pasajero
 				JOptionPane.showMessageDialog(IngresarPasajero.this, "Pasajero ingresado:\nNombre: " + nombre + "\nApellido: " + apellido + "\nSexo: " + sexo, "Éxito", JOptionPane.INFORMATION_MESSAGE);
