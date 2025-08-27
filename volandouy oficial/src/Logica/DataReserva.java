@@ -4,9 +4,11 @@ import java.util.Date;
 
 public class DataReserva {
 	private String Aerolinea;
-	private String rutasVuelo;
+	private Ruta rutasVuelo;
 	private Cliente cliente;
 	private int cantPasajes;
+	private String nomPasajero;
+	private String apePasajero;
 	//private Pasajero pasajero;
 	private Date fechaReserva;
 	private TipoAsiento tipoAsiento;
@@ -14,11 +16,13 @@ public class DataReserva {
 	private int cantEquipajeExtra;
 	private Float costoTotal;
 	
-	public DataReserva(String aerolinea, String rutasVuelo, Cliente cliente, int cantPasajes/*,Pasajero pasajero*/,Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal) {
+	public DataReserva(String aerolinea, Ruta rutasVuelo, Cliente cliente, int cantPasajes, String nomPasajero, String apePasajero/*,Pasajero pasajero*/,Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal) {
 		this.Aerolinea = aerolinea;
 		this.rutasVuelo = rutasVuelo;
 		this.cliente = cliente;
 		this.cantPasajes = cantPasajes;
+		this.nomPasajero = nomPasajero;
+		this.apePasajero = apePasajero;
 		//this.pasajero = pasajero;
 		this.fechaReserva = fechaReserva;
 		this.tipoAsiento = tipoAsiento;
@@ -31,7 +35,7 @@ public class DataReserva {
 		return Aerolinea;
 	}
 	
-	public String getRutasVuelo() {
+	public Ruta getRutasVuelo() {
 		return rutasVuelo;
 	}
 	
@@ -42,7 +46,12 @@ public class DataReserva {
 	public int getCantPasajes() {
 		return cantPasajes;
 	}
-	
+	public String getNomPasajero() {
+		return nomPasajero;
+	}
+	public String getApePasajero() {
+		return apePasajero;
+	}
 	/*public Pasajero getPasajero() {
 		return pasajero;
 	}*/

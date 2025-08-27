@@ -199,7 +199,8 @@ public class Sistema implements ISistema {
     
     @Override
     public void actualizarReserva(int idReserva, String nickname, Cliente nuevoCliente, VueloEspecifico nuevoVuelo, boolean cambiarAerolinea, boolean cambiarRuta) {
-
+ 	
+ 		
     }
     
 }

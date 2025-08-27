@@ -43,17 +43,21 @@ public class Reserva {
 	
 	
 	private String aerolinea;
-	private String rutasVuelo;
+	private Ruta rutasVuelo;
 	private int cantPasajes;
+	private String nomPasajero;
+	private String apePasajero;
 	//private Pasajero pasajero;
 	
 	protected Reserva() {}	
 	
-	public Reserva(String aerolinea, String rutasVuelo, Cliente cliente, int cantPasajes/*,Pasajero pasajero*/,Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal){
+	public Reserva(String aerolinea, Ruta rutasVuelo, Cliente cliente, int cantPasajes, String nomPasajero, String apePasajero/*,Pasajero pasajero*/,Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal){
 		this.aerolinea = aerolinea;
 		this.rutasVuelo = rutasVuelo;
 		this.cliente = cliente;
 		this.cantPasajes = cantPasajes;
+		this.nomPasajero = nomPasajero;
+		this.apePasajero = apePasajero;
 		//this.pasajero = pasajero;
 		this.fechaReserva = fechaReserva;
 		this.tipoAsiento = tipoAsiento;
@@ -69,7 +73,7 @@ public class Reserva {
 	public String getAerolinea() {
 		return aerolinea;
 	}
-	public String getRutasVuelo() {
+	public Ruta getRutasVuelo() {
 		return rutasVuelo;
 	}
 	public Cliente getCliente() {
@@ -77,6 +81,12 @@ public class Reserva {
 	}
 	public int getCantPasajes() {
 		return cantPasajes;
+	}
+	public String getNomPasajero() {
+		return nomPasajero;
+	}
+	public String getApePasajero() {
+		return apePasajero;
 	}
 	/*public Pasajero getPasajero() {
 		return pasajero;
@@ -101,7 +111,7 @@ public class Reserva {
 	public void setAerolinea(String aerolinea) {
 		this.aerolinea = aerolinea;
 	}
-	public void setRutasVuelo(String rutasVuelo) {
+	public void setRutasVuelo(Ruta rutasVuelo) {
 		this.rutasVuelo = rutasVuelo;
 	}
 	public void setCliente(Cliente cliente) {
@@ -109,6 +119,12 @@ public class Reserva {
 	}
 	public void setCantPasajes(int cantPasajes) {
 		this.cantPasajes = cantPasajes;
+	}
+	public void setNomPasajero(String nomPasajero) {
+		this.nomPasajero = nomPasajero;
+	}
+	public void setApePasajero(String apePasajero) {
+		this.apePasajero = apePasajero;
 	}
 	/*public void setPasajero(Pasajero pasajero) {
 		this.pasajero = pasajero;
@@ -138,5 +154,9 @@ public class Reserva {
 				+ ", equipaje=" + equipaje + ", cantEquipajeExtra=" + cantEquipajeExtra + ", costoTotal=" + costoTotal
 				+ "]";
 	}
+
+	
+
+	
 	
 }
