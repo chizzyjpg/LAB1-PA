@@ -33,4 +33,7 @@ public interface ISistema {
 	void registrarCiudad(DataCiudad data);
 	List<DataCiudad> listarCiudades();
 	Ciudad buscarCiudad(String nombre, String pais);
+	
+	List<DataVueloEspecifico> listarVuelos(String nickname, String nombre);
+	void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos);
 }

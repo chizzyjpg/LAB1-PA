@@ -240,5 +240,43 @@ public class Sistema implements ISistema {
 		long hash = nombre.toLowerCase().hashCode() + 31 * pais.toLowerCase().hashCode();
 		return CiudadPorHash.get(hash);
 	}
+	
+	// =========================
+	//  	   VUELOS
+	// =========================
+	
+	@Override
+	public void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos) {
+//		if (datos == null) throw new IllegalArgumentException("Los datos del vuelo no pueden ser nulos");
+//		
+//		Usuario u = usuariosPorNickname.get(canonical(nickname));
+//		if (!(u instanceof Aerolinea a)) {
+//			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+//		}
+//		Ruta r = a.getRutaMap().values().stream()
+//				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
+//				.findFirst().orElse(null);
+//		if (r == null) {
+//			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+//		}
+//		VueloEspecifico v = ManejadorVueloEspecifico.toEntity(datos);
+//		r.addVueloEspecifico(v);
+	}
+	
+	@Override
+	public List<DataVueloEspecifico> listarVuelos(String nickname, String nombre) {
+		Usuario u = usuariosPorNickname.get(canonical(nickname));
+		if (!(u instanceof Aerolinea a)) {
+			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+		}
+		Ruta r = a.getRutaMap().values().stream()
+				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
+				.findFirst().orElse(null);
+		if (r == null) {
+			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+		}
+		Collection<VueloEspecifico> vuelos = r.getVuelosEspecificos().values();
+		return ManejadorVueloEspecifico.toDatas(new ArrayList<>(vuelos));
+	}
     
 }

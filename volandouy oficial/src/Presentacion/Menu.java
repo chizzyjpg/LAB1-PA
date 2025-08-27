@@ -100,10 +100,11 @@ public class Menu extends JFrame {
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Reg. Vuelo");
 		mntmNewMenuItem_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistroVuelo nuevoVuelo = new RegistroVuelo();
-				nuevoVuelo.setVisible(true);
+				RegistroVuelo nuevoVuelo = new RegistroVuelo(sistema);
 				desktopPane.add(nuevoVuelo);
-				
+				desktopPane.revalidate();
+				desktopPane.repaint();
+				nuevoVuelo.setVisible(true);
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem_3);

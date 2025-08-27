@@ -2,13 +2,18 @@ package Logica;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Ruta")
 public class Ruta {
+	
+	@ManyToMany
+	private Map<Integer, VueloEspecifico> vuelosEspecificos = new HashMap<>();
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int idRuta;
@@ -68,6 +73,7 @@ public class Ruta {
         this.fechaAlta = fechaAlta;
         this.costoBase = costoBase;
         this.costoEquipajeExtra = costoEquipajeExtra;
+        this.vuelosEspecificos = new HashMap<>();
     }
 
     // getters
@@ -81,6 +87,7 @@ public class Ruta {
     public int getCostoBase() { return costoBase; }
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
     public List<Categoria> getCategorias() { return categorias; }
+    public Map<Integer, VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
 
     // setters
     public void setNombre(String n) { this.nombre = n; }
@@ -92,6 +99,7 @@ public class Ruta {
     public void setCostoBase(int costoBase) { this.costoBase = costoBase; }
     public void setCostoEquipajeExtra(int costoEquipajeExtra) { this.costoEquipajeExtra = costoEquipajeExtra; }
     public void setCategorias(List<Categoria> cat) { this.categorias = cat; }
+    public void setVuelosEspecificos(Map<Integer, VueloEspecifico> vuelos) { this.vuelosEspecificos = vuelos; }
 
     @Override public String toString() {
         return "Ruta [idRuta=" + idRuta +
@@ -103,6 +111,7 @@ public class Ruta {
                ", fechaAlta=" + fechaAlta +
                ", costoBase=" + costoBase +
                ", costoEquipajeExtra=" + costoEquipajeExtra +
-               ", categorias=" + categorias + "]";
+               ", categorias=" + categorias + "]" +
+               " vuelosEspecificos=" + vuelosEspecificos.values() + "]";
     }
 }

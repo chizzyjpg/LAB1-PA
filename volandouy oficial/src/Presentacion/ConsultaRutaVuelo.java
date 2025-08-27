@@ -1,6 +1,10 @@
 package Presentacion;
 
-import Logica.*;
+import Logica.ISistema;
+import Logica.DataAerolinea;
+import Logica.DataRuta;
+import Logica.DataVueloEspecifico;
+
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -8,8 +12,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
-
-import Logica.ISistema;
 
 public class ConsultaRutaVuelo extends JInternalFrame {
 
@@ -100,7 +102,7 @@ public class ConsultaRutaVuelo extends JInternalFrame {
         // Listeners
         comboAerolineas.addActionListener(e -> cargarRutasDeSeleccion());
         listRutas.addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) mostrarDetalleRutaYVuelos(listRutas.getSelectedValue());
+            if (!e.getValueIsAdjusting()) mostrarDetalleRutaYVuelos((DataAerolinea)comboAerolineas.getSelectedItem(), listRutas.getSelectedValue());
         });
         btnVerVuelo.addActionListener(e -> verVueloSeleccionado());
 
@@ -108,7 +110,7 @@ public class ConsultaRutaVuelo extends JInternalFrame {
         cargarAerolineas();
     }
 
-    // ==== DATA FLOW ====
+	// ==== DATA FLOW ====
 
     private void cargarAerolineas() {
         comboAerolineas.removeAllItems();
@@ -138,21 +140,22 @@ public class ConsultaRutaVuelo extends JInternalFrame {
         }
     }
 
-    private void mostrarDetalleRutaYVuelos(DataRuta r) {
+    private void mostrarDetalleRutaYVuelos(DataAerolinea a, DataRuta r) {
+    	if (a == null) return;
         if (r == null) {
             txtDetallesRuta.setText("");
             ((DefaultListModel<DataVueloEspecifico>) listVuelos.getModel()).clear();
             return;
         }
         txtDetallesRuta.setText(formatRuta(r));
-        cargarVuelosDeRuta(r);
+        cargarVuelosDeRuta(a, r);
     }
 
-    private void cargarVuelosDeRuta(DataRuta r) {
+    private void cargarVuelosDeRuta(DataAerolinea a, DataRuta r) {
         DefaultListModel<DataVueloEspecifico> m = (DefaultListModel<DataVueloEspecifico>) listVuelos.getModel();
         m.clear();
         try {
-            List<DataVueloEspecifico> vuelos = ManejadorVuelo.get().listarPorRuta(r.getNombre()); // <-- implementa en manejador
+            List<DataVueloEspecifico> vuelos = sistema.listarVuelos( a.getNickname(), r.getNombre() ); // <-- implementa en manejador
             for (DataVueloEspecifico v : vuelos) m.addElement(v);
         } catch (Exception ex) {
             mostrarError("Error cargando vuelos: " + ex.getMessage());
