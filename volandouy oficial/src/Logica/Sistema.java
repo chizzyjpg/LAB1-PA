@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,6 +21,7 @@ public class Sistema implements ISistema {
     // “Persistencia” en memoria por ahora.
     private final Map<String, Usuario> usuariosPorNickname = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por nickname
     private final Map<Long, Ciudad> CiudadPorHash = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por hashcode
+    private final Map<String, Categoria> categoriasPorNombre = new LinkedHashMap<>();
 
     public Sistema() {}
 
@@ -34,9 +36,6 @@ public class Sistema implements ISistema {
     
     
     private static String canonical(String s) {
-        return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
-    }
-    private static String canonicalEmail(String s) {
         return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
     }
     
@@ -73,10 +72,10 @@ public class Sistema implements ISistema {
     @Override
     public boolean existeEmail(String email) {
         if (email == null) return false;
-        String e = canonicalEmail(email);
+        String e = canonical(email);
         return usuariosPorNickname.values().stream()
                 .anyMatch(u -> u.getEmail() != null
-                        && canonicalEmail(u.getEmail()).equals(e));
+                        && canonical(u.getEmail()).equals(e));
     }
 
     @Override
@@ -133,7 +132,7 @@ public class Sistema implements ISistema {
         // Validar que NO se cambie email ni nickname (según caso de uso)
         String emailActual = c.getEmail();
         String emailNuevo  = nuevos.getEmail();
-        if (emailNuevo != null && !canonicalEmail(emailNuevo).equals(canonicalEmail(emailActual))) {
+        if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
             throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
         }
         if (nuevos.getNickname() != null && !canonical(nuevos.getNickname()).equals(key)) {
@@ -161,7 +160,7 @@ public class Sistema implements ISistema {
         // Validar que NO se cambie email ni nickname
         String emailActual = a.getEmail();
         String emailNuevo  = nuevos.getEmail();
-        if (emailNuevo != null && !canonicalEmail(emailNuevo).equals(canonicalEmail(emailActual))) {
+        if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
             throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
         }
         if (nuevos.getNickname() != null && !canonical(nuevos.getNickname()).equals(key)) {
@@ -174,6 +173,9 @@ public class Sistema implements ISistema {
         a.setLinkWeb(nuevos.getSitioWeb());
     }
     
+    // ======================
+    //  CREAR CATEGORIA
+    // ======================
     
     // =========================
     // REGISTRAR RUTAS DE VUELO
@@ -279,4 +281,26 @@ public class Sistema implements ISistema {
 		return ManejadorVueloEspecifico.toDatas(new ArrayList<>(vuelos));
 	}
     
+    @Override
+    public void registrarCategoria(DataCategoria data) {
+        if (data == null || data.getNombre() == null || data.getNombre().isBlank())
+            throw new IllegalArgumentException("El nombre de la categoría es obligatorio");
+        
+        String key = canonical(data.getNombre());
+        if (categoriasPorNombre.containsKey(key))
+            throw new IllegalArgumentException("Ya existe una categoría con ese nombre");
+        
+        categoriasPorNombre.put(key, ManejadorCategoria.toEntity(data));
+        
+    }
+    
+    @Override
+    public boolean existeCategoria(String nombre) {
+        return nombre != null && categoriasPorNombre.containsKey(canonical(nombre));
+    }
+    
+    @Override
+    public java.util.List<DataCategoria> listarCategorias() {
+        return ManejadorCategoria.toDTOs(new java.util.ArrayList<>(categoriasPorNombre.values()));
+    }
 }

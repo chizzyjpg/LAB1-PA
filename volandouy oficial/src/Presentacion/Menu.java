@@ -74,9 +74,10 @@ public class Menu extends JFrame {
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Categoría ");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistroCategoria cat = new RegistroCategoria();
-				cat.setVisible(true);
-				desktopPane.add(cat);
+				RegistroCategoria cat = new RegistroCategoria(sistema); // usa el campo del menú
+			    desktopPane.add(cat);
+			    cat.setVisible(true);
+			    cat.toFront();
 				desktopPane.revalidate();
 				desktopPane.repaint();
 
