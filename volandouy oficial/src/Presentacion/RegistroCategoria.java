@@ -9,6 +9,8 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.JTextField;
 
+import BD.CategoriaService;
+import Logica.Categoria;
 import Logica.DataCategoria;
 import Logica.ISistema;
 
@@ -65,6 +67,19 @@ public class RegistroCategoria extends JInternalFrame {
 				}
 				
 				try {
+				    String nombreCat = textFieldCategoria.getText();
+				    new CategoriaService().crearCategoria(nombreCat);
+				    JOptionPane.showMessageDialog(null, "Se insertó correctamente");
+				    textFieldCategoria.setText("");
+				} catch (Exception ex) {
+				    JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+				}
+
+				
+				
+				/*
+				 
+				try {
 					sistema.registrarCategoria(new DataCategoria(cat));
 					JOptionPane.showMessageDialog(RegistroCategoria.this, "Categoría registrada correctamente!\nNombre: " + cat, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE); 
 		            textFieldCategoria.setText("");
@@ -78,6 +93,7 @@ public class RegistroCategoria extends JInternalFrame {
 		            textFieldCategoria.requestFocusInWindow();
 		            textFieldCategoria.selectAll();
 				}
+				 **/
 				
 			}
 		});
