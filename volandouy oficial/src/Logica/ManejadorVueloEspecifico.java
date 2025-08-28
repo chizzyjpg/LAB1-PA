@@ -13,8 +13,8 @@ public class ManejadorVueloEspecifico {
 				v.getDuracion(),
 				v.getMaxAsientosTur(),
 				v.getMaxAsientosEjec(),
-				v.getFechaAlta(),
-				v.getRuta()
+				v.getFechaAlta()//,
+				//v.getRuta()
 		);
 	}
 	
@@ -26,8 +26,8 @@ public class ManejadorVueloEspecifico {
 				v.getDuracion(),
 				v.getMaxAsientosTur(),
 				v.getMaxAsientosEjec(),
-				v.getFechaAlta(),
-				v.getRuta()
+				v.getFechaAlta()//,
+				//v.getRuta()
 		);
 	}
 	

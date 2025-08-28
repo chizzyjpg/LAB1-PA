@@ -23,20 +23,14 @@ public class Ruta {
 
     @Column(name = "Descripcion", nullable = false, length = 200)
     private String descripcion;
-
-    // Ciudad con PK compuesta (nombre, pais)
+    
+    // Ahora el ManyToOne es por idCiudad
     @ManyToOne(optional = false)
-    @JoinColumns({
-        @JoinColumn(name = "origen_nombre",  referencedColumnName = "nombre", nullable = false),
-        @JoinColumn(name = "origen_pais",    referencedColumnName = "pais",   nullable = false)
-    })
+    @JoinColumn(name = "origen_idCiudad", nullable = false, referencedColumnName = "idCiudad")
     private Ciudad origen;
 
     @ManyToOne(optional = false)
-    @JoinColumns({
-        @JoinColumn(name = "destino_nombre", referencedColumnName = "nombre", nullable = false),
-        @JoinColumn(name = "destino_pais",   referencedColumnName = "pais",   nullable = false)
-    })
+    @JoinColumn(name = "destino_idCiudad", nullable = false, referencedColumnName = "idCiudad")
     private Ciudad destino;
 
     @Column(name = "Hora", nullable = false)

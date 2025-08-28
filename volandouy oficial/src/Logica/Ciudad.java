@@ -19,16 +19,16 @@ import jakarta.persistence.*;
 @IdClass(Ciudad.CiudadId.class)
 public class Ciudad {
 
-    // ===== Clave compuesta =====
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private int idCiudad;
+   
+    // ===== Atributos adicionales =====
     @Column(name = "nombre", length = 80, nullable = false)
     private String nombre;
 
-    @Id
     @Column(name = "pais", length = 80, nullable = false)
     private String pais;
 
-    // ===== Atributos adicionales =====
     @Column(name = "nombre_aeropuerto", length = 120, nullable = false)
     private String nombreAeropuerto;
 
@@ -43,6 +43,10 @@ public class Ciudad {
     @Column(name = "sitio_web", length = 200, nullable = true)
     private String sitioWeb;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "idRuta", nullable = false, referencedColumnName = "idRuta")
+    private Ruta ruta;
+    
     // ===== Constructores =====
     public Ciudad() {}
 

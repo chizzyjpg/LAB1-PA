@@ -28,19 +28,19 @@ public class VueloEspecifico {
 	@Column(name = "fechaAlta", nullable = false)
 	private Date fechaAlta;
 	
-	@ManyToOne
-	private Ruta ruta;
+	//@ManyToOne
+	//private Ruta ruta;
 	
 	protected VueloEspecifico() {}
 	
-	public VueloEspecifico(String n, Date fecha, int dur, int maxTur, int maxEjec, Date fechaAlta, Ruta ruta) {
+	public VueloEspecifico(String n, Date fecha, int dur, int maxTur, int maxEjec, Date fechaAlta/*, Ruta ruta*/) {
 		this.nombre = n;
 		this.fecha = fecha;
 		this.duracion = dur;
 		this.maxAsientosTur = maxTur;
 		this.maxAsientosEjec = maxEjec;
 		this.fechaAlta = fechaAlta;
-		this.ruta = ruta;
+		//this.ruta = ruta;
 	}
 	
 	//Getters
@@ -62,10 +62,11 @@ public class VueloEspecifico {
 	public Date getFechaAlta() {
 		return fechaAlta;
 	}
+	/*
 	public Ruta getRuta() {
 		return ruta;
 	}
-	
+	*/
 	//Setters
 	public void setNombre(String n) {
 		this.nombre = n;
@@ -85,13 +86,14 @@ public class VueloEspecifico {
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
+	/*
 	public void setRuta(Ruta ruta) {
 		this.ruta = ruta;
 	}
-	
+	*/
 	@Override public String toString() {
 		return "VueloEspecifico [idVueloEspecifico=" + idVueloEspecifico + ", nombre=" + nombre + ", fecha=" + fecha
 				+ ", duracion=" + duracion + ", maxAsientosTur=" + maxAsientosTur + ", maxAsientosEjec="
-				+ maxAsientosEjec + ", fechaAlta=" + fechaAlta + ", ruta=" + ruta + "]";
+				+ maxAsientosEjec + ", fechaAlta=" + fechaAlta + /*", ruta=" + ruta + */"]";
 	}
 }

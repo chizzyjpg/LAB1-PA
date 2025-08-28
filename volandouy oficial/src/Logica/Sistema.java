@@ -304,29 +304,7 @@ public class Sistema implements ISistema {
 		return ManejadorVueloEspecifico.toDatas(new ArrayList<>(vuelos));
 	}
     
-    @Override
-    public void registrarCategoria(DataCategoria data) {
-        if (data == null || data.getNombre() == null || data.getNombre().isBlank())
-            throw new IllegalArgumentException("El nombre de la categoría es obligatorio");
-        
-        String key = canonical(data.getNombre());
-        if (categoriasPorNombre.containsKey(key))
-            throw new IllegalArgumentException("Ya existe una categoría con ese nombre");
-        
-        categoriasPorNombre.put(key, ManejadorCategoria.toEntity(data));
-        
-    }
-    
-    @Override
-    public boolean existeCategoria(String nombre) {
-        return nombre != null && categoriasPorNombre.containsKey(canonical(nombre));
-    }
-    
-    @Override
-    public java.util.List<DataCategoria> listarCategorias() {
-        return ManejadorCategoria.toDTOs(new java.util.ArrayList<>(categoriasPorNombre.values()));
-    }
-    
+   
     
     // ======================
     //  RESERVAS
