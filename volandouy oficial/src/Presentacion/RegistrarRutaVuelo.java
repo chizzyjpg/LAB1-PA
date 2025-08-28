@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import Logica.DataAerolinea;
+import Logica.DataCategoria;
 import Logica.DataCiudad;
 import Logica.DataRuta;
 import Logica.ISistema;
@@ -213,6 +214,22 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		
 		JComboBox comboBoxCategoria = new JComboBox();
 		comboBoxCategoria.setBounds(155, 405, 145, 22);
+		for (DataCategoria dc : sistema.listarCategorias()) comboBoxCategoria.addItem(dc);
+		comboBoxCategoria.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		comboBoxCategoria.setRenderer(new javax.swing.DefaultListCellRenderer() {
+			@Override
+		    public java.awt.Component getListCellRendererComponent(
+		            javax.swing.JList<?> list, Object value, int index,
+		            boolean isSelected, boolean cellHasFocus) {
+		        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+		        if (value instanceof DataCategoria c) {
+		            // Ajustá getters reales: getNombre(), getPais()
+		            setText(c.getNombre());
+		        }
+		        return this;
+			}
+		});
+		
 		getContentPane().add(comboBoxCategoria);
 		
 		JLabel lblCategoria = new JLabel("Categoría:");
@@ -235,7 +252,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		btnAceptar.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		    	DataAerolinea aerolinea = (DataAerolinea) comboAerolinea.getSelectedItem();
-		    	DataAerolinea aero = sistema.verInfoAerolinea(aerolinea.getNickname());
+//		    	DataAerolinea aero = sistema.verInfoAerolinea(aerolinea.getNickname());
 		        String nombre = textFieldNombre.getText().trim();
 		        String Descripcion = textAreaDesc.getText().trim();
 		        String turista = textFieldTurista.getText().trim();
@@ -286,7 +303,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        			costoBase,
 		        			costoEquipaje
 		        			);
-		        	sistema.RegistrarRuta(aero.getNickname(), datos);
+		        	sistema.RegistrarRuta(aerolinea.getNickname(), datos);
 
 		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Ruta de Vuelo registrada correctamente!\nNombre: " + nombre, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
 
