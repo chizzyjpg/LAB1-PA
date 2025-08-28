@@ -2,11 +2,17 @@
 package Logica;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class Sistema implements ISistema {
@@ -14,8 +20,11 @@ public class Sistema implements ISistema {
 
     // “Persistencia” en memoria por ahora.
     private final Map<String, Usuario> usuariosPorNickname = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por nickname
+    private final Map<Long, Ciudad> CiudadPorHash = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por hashcode
+    private final Map<String, Categoria> categoriasPorNombre = new LinkedHashMap<>();
 
     public Sistema() {}
+
     
     
     // ======================
@@ -27,9 +36,6 @@ public class Sistema implements ISistema {
     
     
     private static String canonical(String s) {
-        return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
-    }
-    private static String canonicalEmail(String s) {
         return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
     }
     
@@ -66,10 +72,10 @@ public class Sistema implements ISistema {
     @Override
     public boolean existeEmail(String email) {
         if (email == null) return false;
-        String e = canonicalEmail(email);
+        String e = canonical(email);
         return usuariosPorNickname.values().stream()
                 .anyMatch(u -> u.getEmail() != null
-                        && canonicalEmail(u.getEmail()).equals(e));
+                        && canonical(u.getEmail()).equals(e));
     }
 
     @Override
@@ -94,6 +100,20 @@ public class Sistema implements ISistema {
     public List<DataUsuario> listarUsuarios() {
         return ManejadorUsuario.toDTOs(new ArrayList<>(usuariosPorNickname.values()));
     }
+    
+    @Override
+    public List<DataAerolinea> listarAerolineas() {
+		List<DataAerolinea> aerolineas = new ArrayList<>();
+		for (Usuario u : usuariosPorNickname.values()) {
+			if (u instanceof Aerolinea a) {
+				aerolineas.add(ManejadorAerolinea.toData(a));
+			}
+		}
+		aerolineas.sort(Comparator.comparing(
+				a -> a.getNickname() == null ? "" : a.getNickname(),
+				String.CASE_INSENSITIVE_ORDER));
+		return aerolineas;
+	}
 
     
     // ======================
@@ -112,7 +132,7 @@ public class Sistema implements ISistema {
         // Validar que NO se cambie email ni nickname (según caso de uso)
         String emailActual = c.getEmail();
         String emailNuevo  = nuevos.getEmail();
-        if (emailNuevo != null && !canonicalEmail(emailNuevo).equals(canonicalEmail(emailActual))) {
+        if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
             throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
         }
         if (nuevos.getNickname() != null && !canonical(nuevos.getNickname()).equals(key)) {
@@ -140,7 +160,7 @@ public class Sistema implements ISistema {
         // Validar que NO se cambie email ni nickname
         String emailActual = a.getEmail();
         String emailNuevo  = nuevos.getEmail();
-        if (emailNuevo != null && !canonicalEmail(emailNuevo).equals(canonicalEmail(emailActual))) {
+        if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
             throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
         }
         if (nuevos.getNickname() != null && !canonical(nuevos.getNickname()).equals(key)) {
@@ -153,5 +173,136 @@ public class Sistema implements ISistema {
         a.setLinkWeb(nuevos.getSitioWeb());
     }
     
+    // ======================
+    //  CREAR CATEGORIA
+    // ======================
     
+    @Override
+    public void registrarCategoria(DataCategoria data) {
+        if (data == null || data.getNombre() == null || data.getNombre().isBlank())
+            throw new IllegalArgumentException("El nombre de la categoría es obligatorio");
+        
+        String key = canonical(data.getNombre());
+        if (categoriasPorNombre.containsKey(key))
+            throw new IllegalArgumentException("Ya existe una categoría con ese nombre");
+        
+        categoriasPorNombre.put(key, ManejadorCategoria.toEntity(data));
+        
+    }
+    
+    @Override
+    public boolean existeCategoria(String nombre) {
+        return nombre != null && categoriasPorNombre.containsKey(canonical(nombre));
+    }
+    
+    @Override
+    public java.util.List<DataCategoria> listarCategorias() {
+        return ManejadorCategoria.toDTOs(new java.util.ArrayList<>(categoriasPorNombre.values()));
+    } 
+    
+    // =========================
+    // REGISTRAR RUTAS DE VUELO
+    // =========================
+    
+    @Override
+    public void RegistrarRuta(String nickAerolinea, DataRuta datos) {
+		if (datos == null) throw new IllegalArgumentException("Los datos de la ruta no pueden ser nulos");
+		
+		Usuario u = usuariosPorNickname.get(canonical(nickAerolinea));
+		if (!(u instanceof Aerolinea a)) {
+			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+		}
+		Ruta r = ManejadorRuta.toEntity(datos);
+		a.addRuta(r);
+	}
+    
+//    private void validarBasico(Ruta r) {
+//        if (r.getNombre()==null || r.getNombre().isBlank()) throw new IllegalArgumentException("nombre obligatorio");
+//        if (r.getDescripcion()==null || r.getDescripcion().isBlank()) throw new IllegalArgumentException("descripcion obligatoria");
+//        if (r.getOrigen()==null)  throw new IllegalArgumentException("ciudad origen obligatoria");
+//        if (r.getDestino()==null) throw new IllegalArgumentException("ciudad destino obligatoria");
+//        if (r.getFechaAlta()==null) throw new IllegalArgumentException("fecha de alta obligatoria");
+//    }
+    
+    public List<DataRuta> listarPorAerolinea(String nicknameAerolinea) {
+    	Usuario u = usuariosPorNickname.get(canonical(nicknameAerolinea));
+    	if (!(u instanceof Aerolinea a)) {
+    		throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+    	}
+    	return ManejadorRuta.toDatas(new ArrayList<>(a.getRutaMap().values()));
+    }
+    
+    
+    // =========================
+    //  	   CIUDADES
+    // =========================
+    
+    @Override
+    public void registrarCiudad(DataCiudad data) {
+		if (data == null) throw new IllegalArgumentException("Los datos no pueden ser nulos");
+
+		// Validaciones de unicidad
+		long hash = data.getNombre().toLowerCase().hashCode() + 31 * data.getPais().toLowerCase().hashCode();
+		if (CiudadPorHash.containsKey(hash)) {
+			throw new IllegalArgumentException("La ciudad ya está registrada");
+		}
+
+		// DTO -> Entidad
+		Ciudad entity = ManejadorCiudad.toEntity(data);
+
+		CiudadPorHash.put(hash, entity);
+	}
+
+	@Override
+	public List<DataCiudad> listarCiudades() {
+		return ManejadorCiudad.toDatas(new ArrayList<>(CiudadPorHash.values()));
+	}
+	
+	public Ciudad buscarCiudad(String nombre, String pais) {
+		if (nombre == null || nombre.isBlank() || pais == null || pais.isBlank()) {
+			return null;
+		}
+		long hash = nombre.toLowerCase().hashCode() + 31 * pais.toLowerCase().hashCode();
+		return CiudadPorHash.get(hash);
+	}
+	
+	// =========================
+	//  	   VUELOS
+	// =========================
+	
+	@Override
+	public void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos) {
+//		if (datos == null) throw new IllegalArgumentException("Los datos del vuelo no pueden ser nulos");
+//		
+//		Usuario u = usuariosPorNickname.get(canonical(nickname));
+//		if (!(u instanceof Aerolinea a)) {
+//			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+//		}
+//		Ruta r = a.getRutaMap().values().stream()
+//				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
+//				.findFirst().orElse(null);
+//		if (r == null) {
+//			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+//		}
+//		VueloEspecifico v = ManejadorVueloEspecifico.toEntity(datos);
+//		r.addVueloEspecifico(v);
+	}
+	
+	@Override
+	public List<DataVueloEspecifico> listarVuelos(String nickname, String nombre) {
+		Usuario u = usuariosPorNickname.get(canonical(nickname));
+		if (!(u instanceof Aerolinea a)) {
+			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+		}
+		Ruta r = a.getRutaMap().values().stream()
+				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
+				.findFirst().orElse(null);
+		if (r == null) {
+			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+		}
+		Collection<VueloEspecifico> vuelos = r.getVuelosEspecificos().values();
+		return ManejadorVueloEspecifico.toDatas(new ArrayList<>(vuelos));
+	}
+    
+   
 }

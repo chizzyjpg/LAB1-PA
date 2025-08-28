@@ -74,9 +74,10 @@ public class Menu extends JFrame {
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Categoría ");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistroCategoria cat = new RegistroCategoria();
-				cat.setVisible(true);
-				desktopPane.add(cat);
+				RegistroCategoria cat = new RegistroCategoria(sistema); // usa el campo del menú
+			    desktopPane.add(cat);
+			    cat.setVisible(true);
+			    cat.toFront();
 				desktopPane.revalidate();
 				desktopPane.repaint();
 
@@ -87,7 +88,7 @@ public class Menu extends JFrame {
 		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Reg. Ciudad");
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistroCiudad nuevaCiudad = new RegistroCiudad();
+				RegistroCiudad nuevaCiudad = new RegistroCiudad(sistema);
 				nuevaCiudad.setVisible(true);
 				desktopPane.add(nuevaCiudad);
 				desktopPane.revalidate();
@@ -100,10 +101,11 @@ public class Menu extends JFrame {
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Reg. Vuelo");
 		mntmNewMenuItem_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistroVuelo nuevoVuelo = new RegistroVuelo();
-				nuevoVuelo.setVisible(true);
+				RegistroVuelo nuevoVuelo = new RegistroVuelo(sistema);
 				desktopPane.add(nuevoVuelo);
-				
+				desktopPane.revalidate();
+				desktopPane.repaint();
+				nuevoVuelo.setVisible(true);
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem_3);
@@ -111,7 +113,7 @@ public class Menu extends JFrame {
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Reg. Ruta de Vuelo");
 		mntmNewMenuItem_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistrarRutaVuelo rutaNueva = new RegistrarRutaVuelo();
+				RegistrarRutaVuelo rutaNueva = new RegistrarRutaVuelo(sistema);
 				rutaNueva.setVisible(true);
 				desktopPane.add(rutaNueva);
 				desktopPane.revalidate();
@@ -164,7 +166,7 @@ public class Menu extends JFrame {
 		JMenuItem mntmNewMenuItem_7 = new JMenuItem("Ruta de Vuelo");
 		mntmNewMenuItem_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ConsultaRutaVuelo ConRut = new ConsultaRutaVuelo();
+				ConsultaRutaVuelo ConRut = new ConsultaRutaVuelo(sistema);
 				desktopPane.add(ConRut);
 				desktopPane.revalidate();
 				desktopPane.repaint();
@@ -172,16 +174,6 @@ public class Menu extends JFrame {
 			}
 		});
 		mnNewMenu_1.add(mntmNewMenuItem_7);
-//		mntmNewMenuItem_7.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				ConsultaVuelo ConVue = new ConsultaVuelo();
-//				ConVue.setVisible(true);
-//				desktopPane.add(ConVue);
-//				desktopPane.revalidate();
-//				desktopPane.repaint();
-//
-//			}
-//		});
 		
 		JMenuItem mntmNewMenuItem_8 = new JMenuItem("Vuelo");
 		mnNewMenu_1.add(mntmNewMenuItem_8);

@@ -40,6 +40,8 @@ public final class ManejadorUsuario {
                 /* sitioWeb   */ da.getSitioWeb()
             );
         }
+        
+        //INSERT PARA PASAR A JPA
 
         throw new IllegalArgumentException("Tipo de DataUsuario no soportado: " + dto.getClass()); // Si llega aquí, el tipo de dto no es ninguno de los soportados.
     }
