@@ -36,12 +36,13 @@ public class RegistroVuelo extends JInternalFrame {
 	private JTextField textCantTurista;
 	private JTextField textMaxEjecutivo;
 	private JComboBox<DataAerolinea> comboAerolinea;
+	private JComboBox<DataRuta> comboBoxRutaVuelo;
 	private final static ISistema sistema = Logica.Fabrica.getInstance().getSistema();     // trabajá contra la interfaz
 	
 
 	/**
 	 * Launch the application.
-	 */
+	 *//*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -53,8 +54,7 @@ public class RegistroVuelo extends JInternalFrame {
 				}
 			}
 		});
-	}
-	
+	}*/
 	/**
 	 * Create the frame.
 	 */
@@ -82,6 +82,11 @@ public class RegistroVuelo extends JInternalFrame {
 		    comboAerolinea.addItem(da);
 		}
 		getContentPane().add(comboAerolinea);
+		
+		// FORZAR una selección inicial si hay items
+		if (comboAerolinea.getItemCount() > 0) {
+		    comboAerolinea.setSelectedIndex(0);
+		}
 
 		
 		JLabel lblNewLabelRutaVuelo = new JLabel("Ruta de Vuelo");
@@ -92,9 +97,33 @@ public class RegistroVuelo extends JInternalFrame {
 		JComboBox comboBoxRutaVuelo = new JComboBox();
 		comboBoxRutaVuelo.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBoxRutaVuelo.setBounds(147, 83, 339, 22);
-		for (DataRuta da : sistema.listarPorAerolinea(((DataAerolinea)comboAerolinea.getSelectedItem()).getNickname())) {
+		
+		
+		/*for (DataRuta da : sistema.listarPorAerolinea(((DataAerolinea)comboAerolinea.getSelectedItem()).getNickname())) {
 		    comboBoxRutaVuelo.addItem(da);
-		}
+		}*/
+		
+		Runnable cargarRutas = () -> {
+		    comboBoxRutaVuelo.removeAllItems();
+		    DataAerolinea sel = (DataAerolinea) comboAerolinea.getSelectedItem();
+		    if (sel != null) {
+		        for (DataRuta dr : sistema.listarPorAerolinea(sel.getNickname())) {
+		            comboBoxRutaVuelo.addItem(dr);
+		        }
+		        if (comboBoxRutaVuelo.getItemCount() > 0) {
+		            comboBoxRutaVuelo.setSelectedIndex(0);
+		        }
+		    }
+		};
+		
+		cargarRutas.run();
+		
+		comboAerolinea.addItemListener(e -> {
+		    if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+		        cargarRutas.run();
+		    }
+		});
+		
 		lblNewLabelRutaVuelo.setLabelFor(comboBoxRutaVuelo);
 		getContentPane().add(comboBoxRutaVuelo);
 		
@@ -131,9 +160,9 @@ public class RegistroVuelo extends JInternalFrame {
 		getContentPane().add(textDuracion);
 		textDuracion.setColumns(10);
 		
-		JLabel lblNewLabelCantTurista = new JLabel("cant.Turista");
+		JLabel lblNewLabelCantTurista = new JLabel("Cantidad Turista");
 		lblNewLabelCantTurista.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblNewLabelCantTurista.setBounds(123, 323, 62, 14);
+		lblNewLabelCantTurista.setBounds(123, 323, 124, 14);
 		getContentPane().add(lblNewLabelCantTurista);
 		
 		textCantTurista = new JTextField();
@@ -143,9 +172,9 @@ public class RegistroVuelo extends JInternalFrame {
 		getContentPane().add(textCantTurista);
 		textCantTurista.setColumns(10);
 		
-		JLabel lblNewLabelMaxEjecutivos = new JLabel("Max. ejecutivos");
+		JLabel lblNewLabelMaxEjecutivos = new JLabel("Cantidad Ejecutivos");
 		lblNewLabelMaxEjecutivos.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblNewLabelMaxEjecutivos.setBounds(123, 371, 83, 14);
+		lblNewLabelMaxEjecutivos.setBounds(123, 371, 124, 14);
 		getContentPane().add(lblNewLabelMaxEjecutivos);
 		
 		textMaxEjecutivo = new JTextField();
@@ -195,7 +224,7 @@ public class RegistroVuelo extends JInternalFrame {
 		btnNewButtonAceptar.setBackground(Color.GREEN);
 		btnNewButtonAceptar.setForeground(Color.BLACK);
 		btnNewButtonAceptar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		btnNewButtonAceptar.addActionListener(new ActionListener() {
+		/*btnNewButtonAceptar.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        // Validar que todos los campos tengan texto
 		        if (textNombreVuelo.getText().trim().isEmpty() ||
@@ -266,6 +295,70 @@ public class RegistroVuelo extends JInternalFrame {
 		                dateChooserFechaAlta.setDate(null);
 		            }
 
+		    }
+		});*/
+		
+		btnNewButtonAceptar.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        if (textNombreVuelo.getText().trim().isEmpty() ||
+		            textDuracion.getText().trim().isEmpty() ||
+		            textCantTurista.getText().trim().isEmpty() ||
+		            textMaxEjecutivo.getText().trim().isEmpty()) {
+		            JOptionPane.showMessageDialog(null, "Debe completar todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+
+		        DataAerolinea aerolineaSeleccionada = (DataAerolinea) comboAerolinea.getSelectedItem();
+		        DataRuta rutaSeleccionada = (DataRuta) comboBoxRutaVuelo.getSelectedItem();
+
+		        if (aerolineaSeleccionada == null) {
+		            JOptionPane.showMessageDialog(null, "Debe seleccionar una aerolínea.", "Error", JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+		        if (rutaSeleccionada == null) {
+		            JOptionPane.showMessageDialog(null, "Debe seleccionar una ruta.", "Error", JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+		        if (dateChooserFechaVuelo.getDate() == null || dateChooserFechaAlta.getDate() == null) {
+		            JOptionPane.showMessageDialog(null, "Debe seleccionar ambas fechas.", "Error", JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+
+		        try {
+		            int duracion = Integer.parseInt(textDuracion.getText().trim());
+		            int cantTurista = Integer.parseInt(textCantTurista.getText().trim());
+		            int maxEjecutivo = Integer.parseInt(textMaxEjecutivo.getText().trim());
+		            if (duracion <= 0 || cantTurista <= 0 || maxEjecutivo <= 0) throw new NumberFormatException();
+
+		            DataVueloEspecifico vueloData = new DataVueloEspecifico(
+		                textNombreVuelo.getText().trim(),
+		                dateChooserFechaVuelo.getDate(),
+		                duracion,
+		                cantTurista,
+		                maxEjecutivo,
+		                dateChooserFechaAlta.getDate()
+		            );
+
+		            sistema.registrarVuelo(aerolineaSeleccionada.getNickname(),
+		                                   rutaSeleccionada.getNombre(),
+		                                   vueloData);
+
+		            JOptionPane.showMessageDialog(null, "¡Vuelo registrado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+		            // Limpiar campos
+		            textNombreVuelo.setText("");
+		            textDuracion.setText("");
+		            textCantTurista.setText("");
+		            textMaxEjecutivo.setText("");
+		            dateChooserFechaVuelo.setDate(null);
+		            dateChooserFechaAlta.setDate(null);
+
+		        } catch (NumberFormatException ex) {
+		            JOptionPane.showMessageDialog(null,
+		                "Los campos de duración, cantidad de turista y máximo ejecutivo deben ser enteros positivos.",
+		                "Error",
+		                JOptionPane.ERROR_MESSAGE);
+		        }
 		    }
 		});
 
