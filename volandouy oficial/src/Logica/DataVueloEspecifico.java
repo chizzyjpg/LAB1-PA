@@ -10,14 +10,16 @@ public class DataVueloEspecifico {
 	private int maxAsientosTur;
 	private int maxAsientosEjec;
 	private Date fechaAlta;
+	private Ruta ruta;
 	
-	public DataVueloEspecifico(String nombre, Date fecha, int duracion, int maxAsientosTur, int maxAsientosEjec, Date fechaAlta) {
+	public DataVueloEspecifico(String nombre, Date fecha, int duracion, int maxAsientosTur, int maxAsientosEjec, Date fechaAlta, Ruta ruta) {
 		this.nombre = nombre;
 		this.fecha = fecha;
 		this.duracion = duracion;
 		this.maxAsientosTur = maxAsientosTur;
 		this.maxAsientosEjec = maxAsientosEjec;
 		this.fechaAlta = fechaAlta;
+		this.ruta = ruta;
 	}
 	
 	public String getNombre() {
@@ -42,5 +44,8 @@ public class DataVueloEspecifico {
 	
 	public Date getFechaAlta() {
 		return fechaAlta;
+	}
+	public Ruta getRuta() {
+		return ruta;
 	}
 }
