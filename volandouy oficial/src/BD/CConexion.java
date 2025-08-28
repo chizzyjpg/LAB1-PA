@@ -1,6 +1,7 @@
 package BD;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 
 import javax.swing.JOptionPane;
 
@@ -19,7 +20,7 @@ public class CConexion {
 	public Connection getConexion() {
 		try {
 			Class.forName("org.postgresql.Driver");
-			con = java.sql.DriverManager.getConnection(cadena, usuario, password);
+			con = DriverManager.getConnection(cadena, usuario, password);
 			JOptionPane.showMessageDialog(null, "Conexion Exitosa");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error de Conexion "+e.getMessage());
