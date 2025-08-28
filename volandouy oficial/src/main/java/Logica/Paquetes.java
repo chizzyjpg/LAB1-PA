@@ -32,6 +32,7 @@ public class Paquetes {
 	@Column(name = "Validez", nullable = false)
 	private int validez;
 	
+	protected Paquetes() {}
 	
 	public Paquetes(String n, String desc, int cantRut,TipoAsiento tipoAsiento, int dto, Date fechaComp, int val) {
 		this.nombre = n;

@@ -16,7 +16,6 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Ciudad")
-@IdClass(Ciudad.CiudadId.class)
 public class Ciudad {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -83,31 +82,5 @@ public class Ciudad {
     public void setSitioWeb(String sitioWeb) { this.sitioWeb = sitioWeb; }
 
     // ===== Clase Id compuesta =====
-    public static class CiudadId implements Serializable {
-        private static final long serialVersionUID = 1L;
-        private String nombre;
-        private String pais;
-
-        public CiudadId() {}
-        public CiudadId(String nombre, String pais) {
-            this.nombre = nombre;
-            this.pais = pais;
-        }
-
-        public String getNombre() { return nombre; }
-        public void setNombre(String nombre) { this.nombre = nombre; }
-        public String getPais() { return pais; }
-        public void setPais(String pais) { this.pais = pais; }
-
-        @Override public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof CiudadId)) return false;
-            CiudadId that = (CiudadId) o;
-            return Objects.equals(nombre, that.nombre) &&
-                   Objects.equals(pais, that.pais);
-        }
-        @Override public int hashCode() {
-            return java.util.Objects.hash(nombre, pais);
-        }
-    }
+    // Eliminada la clase CiudadId porque no se usa @IdClass
 }

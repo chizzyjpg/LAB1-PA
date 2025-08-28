@@ -43,6 +43,7 @@ public class Reserva {
 	
 	
 	private String aerolinea;
+	@ManyToOne
 	private Ruta rutasVuelo;
 	private int cantPasajes;
 	private String nomPasajero;

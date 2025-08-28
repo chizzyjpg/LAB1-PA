@@ -1,10 +1,8 @@
 package Logica;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import jakarta.persistence.*;
 
@@ -13,7 +11,7 @@ import jakarta.persistence.*;
 public class Ruta {
 	
 	@ManyToMany
-	private Map<Integer, VueloEspecifico> vuelosEspecificos = new HashMap<>();
+	private List<VueloEspecifico> vuelosEspecificos = new ArrayList<>();
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int idRuta;
@@ -46,12 +44,8 @@ public class Ruta {
     @Column(name = "costoEquipajeExtra", nullable = false)
     private int costoEquipajeExtra;
 
-    // si Categoria es enum:
-    @ElementCollection(targetClass = Categoria.class)
-    @CollectionTable(name = "ruta_categoria", joinColumns = @JoinColumn(name = "ruta_id"))
-    @Enumerated(EnumType.STRING)
-    @Column(name = "categoria", length = 40, nullable = false)
-    private List<Categoria> categorias = new ArrayList<>();
+    @ManyToOne
+    private Categoria categoria;
 
     protected Ruta() {}
 
@@ -67,7 +61,7 @@ public class Ruta {
         this.fechaAlta = fechaAlta;
         this.costoBase = costoBase;
         this.costoEquipajeExtra = costoEquipajeExtra;
-        this.vuelosEspecificos = new HashMap<>();
+        this.vuelosEspecificos = new ArrayList<>();
     }
 
     // getters
@@ -80,8 +74,8 @@ public class Ruta {
     public Date getFechaAlta() { return fechaAlta; }
     public int getCostoBase() { return costoBase; }
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
-    public List<Categoria> getCategorias() { return categorias; }
-    public Map<Integer, VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
+    public Categoria getCategoria() { return categoria; }
+    public List<VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
 
     // setters
     public void setNombre(String n) { this.nombre = n; }
@@ -92,8 +86,8 @@ public class Ruta {
     public void setFechaAlta(Date fechaAlta) { this.fechaAlta = fechaAlta; }
     public void setCostoBase(int costoBase) { this.costoBase = costoBase; }
     public void setCostoEquipajeExtra(int costoEquipajeExtra) { this.costoEquipajeExtra = costoEquipajeExtra; }
-    public void setCategorias(List<Categoria> cat) { this.categorias = cat; }
-    public void setVuelosEspecificos(Map<Integer, VueloEspecifico> vuelos) { this.vuelosEspecificos = vuelos; }
+    public void setCategoria(Categoria categoria) { this.categoria = categoria; }
+    public void setVuelosEspecificos(List<VueloEspecifico> vuelos) { this.vuelosEspecificos = vuelos; }
 
     @Override public String toString() {
         return "Ruta [idRuta=" + idRuta +
@@ -105,7 +99,7 @@ public class Ruta {
                ", fechaAlta=" + fechaAlta +
                ", costoBase=" + costoBase +
                ", costoEquipajeExtra=" + costoEquipajeExtra +
-               ", categorias=" + categorias + "]" +
-               " vuelosEspecificos=" + vuelosEspecificos.values() + "]";
+               ", categoria=" + categoria + "]" +
+               " vuelosEspecificos=" + vuelosEspecificos + "]";
     }
 }

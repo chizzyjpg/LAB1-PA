@@ -67,8 +67,7 @@ public class RegistroCategoria extends JInternalFrame {
 				}
 				
 				try {
-				    String nombreCat = textFieldCategoria.getText();
-				    new CategoriaService().crearCategoria(nombreCat);
+				    new CategoriaService().crearCategoria(cat);
 				    JOptionPane.showMessageDialog(null, "Se insertó correctamente");
 				    textFieldCategoria.setText("");
 				} catch (Exception ex) {

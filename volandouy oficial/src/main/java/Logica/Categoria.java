@@ -1,9 +1,12 @@
 package Logica;
 
 import java.sql.CallableStatement;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+
 
 import BD.CConexion;
 import jakarta.persistence.*;
@@ -17,8 +20,8 @@ public class Categoria{
 	@Id
 	private String nombre;
 
-	@OneToMany
-	private Ruta ruta;
+	@OneToMany(mappedBy = "categoria")
+	private List<Ruta> rutas;
 	
 	public Categoria(){}
 	
@@ -60,5 +63,4 @@ public class Categoria{
 		}
 	}
  * */
-}	
-
+}

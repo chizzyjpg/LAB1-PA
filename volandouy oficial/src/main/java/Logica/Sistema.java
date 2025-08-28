@@ -1,4 +1,3 @@
-
 package Logica;
 
 import java.util.ArrayList;
@@ -300,7 +299,7 @@ public class Sistema implements ISistema {
 		if (r == null) {
 			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
 		}
-		Collection<VueloEspecifico> vuelos = r.getVuelosEspecificos().values();
+		Collection<VueloEspecifico> vuelos = r.getVuelosEspecificos();
 		return ManejadorVueloEspecifico.toDatas(new ArrayList<>(vuelos));
 	}
     

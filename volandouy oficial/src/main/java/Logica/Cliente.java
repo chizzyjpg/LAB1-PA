@@ -14,7 +14,7 @@ import java.util.List;
 @PrimaryKeyJoinColumn(name = "nickname")
 public class Cliente extends Usuario{
 	
-	@OneToMany(mappedBy = "reserva")
+	@OneToMany(mappedBy = "cliente")
 	private List<Reserva> reservas;
 	//private Collection<Reserva> reservas;
 	
@@ -93,4 +93,3 @@ public class Cliente extends Usuario{
 				", tipoDocumento=" + tipoDocumento + ", numDocumento=" + numDocumento + "]";
 	}
 }
-

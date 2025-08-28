@@ -29,6 +29,7 @@ import Logica.DataCategoria;
 import Logica.DataCiudad;
 import Logica.DataRuta;
 import Logica.ISistema;
+import BD.CategoriaService;
 
 public class RegistrarRutaVuelo extends JInternalFrame {
 
@@ -204,20 +205,22 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		
 		JComboBox<DataCategoria> comboBoxCategoria = new JComboBox();
 		comboBoxCategoria.setBounds(155, 405, 145, 22);
-		for (DataCategoria dc : sistema.listarCategorias()) comboBoxCategoria.addItem(dc);
-		comboBoxCategoria.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		comboBoxCategoria.setRenderer(new javax.swing.DefaultListCellRenderer() {
-			@Override
-		    public Component getListCellRendererComponent(
-		            JList<?> list, Object value, int index,
-		            boolean isSelected, boolean cellHasFocus) {
-		        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-		        if (value instanceof DataCategoria c) {
-		            setText(c.getNombre());
-		        }
-		        return this;
-			}
-		});
+		// Cargar categorías desde la base de datos usando CategoriaService
+        CategoriaService categoriaService = new CategoriaService();
+        for (DataCategoria dc : categoriaService.listarCategorias()) comboBoxCategoria.addItem(dc);
+        comboBoxCategoria.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        comboBoxCategoria.setRenderer(new javax.swing.DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof DataCategoria c) {
+                    setText(c.getNombre());
+                }
+                return this;
+            }
+        });
 		
 		getContentPane().add(comboBoxCategoria);
 		
