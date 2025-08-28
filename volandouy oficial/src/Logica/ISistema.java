@@ -1,6 +1,7 @@
 
 package Logica;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ISistema {
@@ -11,7 +12,8 @@ public interface ISistema {
     //boolean existeReserva(int idReserva);
     
     List<DataUsuario> listarUsuarios();
-
+    List<DataAerolinea> listarAerolineas();
+    
     DataCliente verInfoCliente(String nickname);      // null si no existe o no es cliente
     DataAerolinea verInfoAerolinea(String nickname); // null si no existe o no es aerolínea
     List<DataCategoria> listarCategorias();
@@ -28,4 +30,15 @@ public interface ISistema {
     DataRuta verRuta(long idRuta);
     DataVuelo verVuelo(long idVuelo);
     DataPaquete verPaquete(long idPaquete);*/
+    
+
+    void RegistrarRuta(String nickAerolinea, DataRuta datos);
+    List<DataRuta> listarPorAerolinea(String nicknameAerolinea);
+    
+	void registrarCiudad(DataCiudad data);
+	List<DataCiudad> listarCiudades();
+	Ciudad buscarCiudad(String nombre, String pais);
+	
+	List<DataVueloEspecifico> listarVuelos(String nickname, String nombre);
+	void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos);
 }
