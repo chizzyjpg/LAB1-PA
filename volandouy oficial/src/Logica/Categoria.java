@@ -2,8 +2,8 @@ package Logica;
 
 import java.sql.CallableStatement;
 
-//import javax.swing.JOptionPane;
-//import javax.swing.JTextField;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import BD.CConexion;
 import jakarta.persistence.*;
