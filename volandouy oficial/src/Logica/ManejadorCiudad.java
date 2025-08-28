@@ -1,0 +1,49 @@
+package Logica;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class ManejadorCiudad {
+    
+	public static Ciudad toEntity(DataCiudad ciudad) {
+		Objects.requireNonNull(ciudad, "Los datos no pueden ser nulos");
+		return new Ciudad(
+				ciudad.getNombre(),
+				ciudad.getPais(),
+				ciudad.getNombreAeropuerto(),
+				ciudad.getDescripcionAeropuerto(),
+				ciudad.getFechaAlta(),
+				ciudad.getSitioWeb()
+		);
+	}
+
+    public static DataCiudad toData(Ciudad c) {
+    	Objects.requireNonNull(c, "La ciudad no puede ser nula");
+        return new DataCiudad(
+                c.getNombre(),
+                c.getPais(),
+                c.getNombreAeropuerto(),
+                c.getDescripcionAeropuerto(),
+                c.getFechaAlta(),
+                c.getSitioWeb()
+        );
+    }
+    
+    // HELLPERS
+    
+    public static List<Ciudad> toEntities(List<? extends DataCiudad> dtos) {
+		if (dtos == null) return Collections.emptyList();
+		return dtos.stream()
+				   .filter(Objects::nonNull)
+				   .map(ManejadorCiudad::toEntity)
+				   .collect(Collectors.toList());
+	}
+    
+    public static List<DataCiudad> toDatas(List<? extends Ciudad> entities) {
+		if (entities == null) return Collections.emptyList();
+		return entities.stream()
+					   .filter(Objects::nonNull)
+					   .map(ManejadorCiudad::toData)
+					   .collect(Collectors.toList());
+	}
+}
