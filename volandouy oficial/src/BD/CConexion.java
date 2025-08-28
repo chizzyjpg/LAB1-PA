@@ -4,16 +4,14 @@ import java.sql.Connection;
 
 import javax.swing.JOptionPane;
 
-import Logica.JPAUtil;
-
 public class CConexion {
 
 	Connection con = null;
 	
 	String usuario = "postgres";
-	String password = "1234";
+	String password = "admin";
 	String bd = "pa2025";
-	String ip = "postgres";
+	String ip = "localhost";
 	String puerto = "5432";
 	
 	String cadena = "jdbc:postgresql://"+ip+":"+puerto+"/"+bd;
