@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 public class Ruta {
 	
 	@ManyToMany
-	private Map<Integer, VueloEspecifico> vuelosEspecificos = new HashMap<>();
+	private Map<String, VueloEspecifico> vuelosEspecificos = new HashMap<>();
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int idRuta;
@@ -87,7 +87,7 @@ public class Ruta {
     public int getCostoBase() { return costoBase; }
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
     public List<Categoria> getCategorias() { return categorias; }
-    public Map<Integer, VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
+    public Map<String, VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
 
     // setters
     public void setNombre(String n) { this.nombre = n; }
@@ -99,7 +99,7 @@ public class Ruta {
     public void setCostoBase(int costoBase) { this.costoBase = costoBase; }
     public void setCostoEquipajeExtra(int costoEquipajeExtra) { this.costoEquipajeExtra = costoEquipajeExtra; }
     public void setCategorias(List<Categoria> cat) { this.categorias = cat; }
-    public void setVuelosEspecificos(Map<Integer, VueloEspecifico> vuelos) { this.vuelosEspecificos = vuelos; }
+    public void setVuelosEspecificos(Map<String, VueloEspecifico> vuelos) { this.vuelosEspecificos = vuelos; }
 
     @Override public String toString() {
         return "Ruta [idRuta=" + idRuta +
@@ -114,4 +114,9 @@ public class Ruta {
                ", categorias=" + categorias + "]" +
                " vuelosEspecificos=" + vuelosEspecificos.values() + "]";
     }
+
+	public void addVuelosEspecificos(VueloEspecifico v) {
+		vuelosEspecificos.put(v.getNombre(), v);
+		
+	}
 }

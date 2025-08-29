@@ -42,7 +42,6 @@ public class Menu extends JFrame {
 	 * Create the frame.
 	 */
 	public Menu() {
-        //this.sistema = new Sistema();   // una sola instancia para toda la app
         //initComponents();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 907, 719);

@@ -3,16 +3,15 @@ package Logica;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import javax.swing.JOptionPane;
 
 
 public class Sistema implements ISistema {
@@ -207,8 +206,8 @@ public class Sistema implements ISistema {
     @Override
     public void RegistrarRuta(String nickAerolinea, DataRuta datos) {
 		if (datos == null) throw new IllegalArgumentException("Los datos de la ruta no pueden ser nulos");
-		
-		Usuario u = usuariosPorNickname.get(canonical(nickAerolinea));
+
+	    Usuario u = usuariosPorNickname.get(key);	    
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}
@@ -272,20 +271,20 @@ public class Sistema implements ISistema {
 	
 	@Override
 	public void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos) {
-//		if (datos == null) throw new IllegalArgumentException("Los datos del vuelo no pueden ser nulos");
-//		
-//		Usuario u = usuariosPorNickname.get(canonical(nickname));
-//		if (!(u instanceof Aerolinea a)) {
-//			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
-//		}
-//		Ruta r = a.getRutaMap().values().stream()
-//				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
-//				.findFirst().orElse(null);
-//		if (r == null) {
-//			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
-//		}
-//		VueloEspecifico v = ManejadorVueloEspecifico.toEntity(datos);
-//		r.addVueloEspecifico(v);
+		if (datos == null) throw new IllegalArgumentException("Los datos del vuelo no pueden ser nulos");
+		
+		Usuario u = usuariosPorNickname.get(canonical(nickname));
+		if (!(u instanceof Aerolinea a)) {
+			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+		}
+		Ruta r = a.getRutaMap().values().stream()
+				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
+				.findFirst().orElse(null);
+		if (r == null) {
+			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+		}
+		VueloEspecifico v = ManejadorVueloEspecifico.toEntity(datos);
+		r.addVuelosEspecificos(v);
 	}
 	
 	@Override
