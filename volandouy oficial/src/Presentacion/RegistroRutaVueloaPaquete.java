@@ -9,6 +9,9 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.swing.JSpinner;
+
+import Logica.ISistema;
+
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -17,11 +20,18 @@ import java.awt.event.ActionEvent;
 public class RegistroRutaVueloaPaquete extends JInternalFrame {
 
 	private static final long serialVersionUID = 1L;
+	
+	
+	////////// 
+	///
+	/// CUANDO SE REGISTRE UNA RUTA DE VUELO A PAQUETE HAY QUE SUBIR EL CONT DE ESE PAQUETE +1
+	/// YA QUE COMPRA DE PAQUETE SOLICITA SABER ESE CONTADOR
+	///
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -32,12 +42,12 @@ public class RegistroRutaVueloaPaquete extends JInternalFrame {
 				}
 			}
 		});
-	}
+	}/*/
 
 	/**
 	 * Create the frame.
 	 */
-	public RegistroRutaVueloaPaquete() {
+	public RegistroRutaVueloaPaquete(ISistema sistema) {
 		setClosable(true);
 		setResizable(true);
 		setMaximizable(true);

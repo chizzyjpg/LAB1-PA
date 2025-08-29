@@ -37,27 +37,7 @@ public class RegistroVuelo extends JInternalFrame {
 	private JTextField textMaxEjecutivo;
 	private JComboBox<DataAerolinea> comboAerolinea;
 	private JComboBox<DataRuta> comboBoxRutaVuelo;
-	private final static ISistema sistema = Logica.Fabrica.getInstance().getSistema();     // trabajá contra la interfaz
 	
-
-	/**
-	 * Launch the application.
-	 *//*
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegistroVuelo frame = new RegistroVuelo(sistema);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-	/**
-	 * Create the frame.
-	 */
 	public RegistroVuelo(ISistema sistema) {
 		getContentPane().setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		setResizable(true);
@@ -224,80 +204,6 @@ public class RegistroVuelo extends JInternalFrame {
 		btnNewButtonAceptar.setBackground(Color.GREEN);
 		btnNewButtonAceptar.setForeground(Color.BLACK);
 		btnNewButtonAceptar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		/*btnNewButtonAceptar.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        // Validar que todos los campos tengan texto
-		        if (textNombreVuelo.getText().trim().isEmpty() ||
-		            textDuracion.getText().trim().isEmpty() ||
-		            textCantTurista.getText().trim().isEmpty() ||
-		            textMaxEjecutivo.getText().trim().isEmpty()) {
-		            
-		            JOptionPane.showMessageDialog(null,
-		                "Debe completar todos los campos.",
-		                "Error",
-		                JOptionPane.ERROR_MESSAGE);
-		        } else {
-		        	try {
-		                // Intentar convertir los campos numéricos
-		                int duracion = Integer.parseInt(textDuracion.getText().trim());
-		                int cantTurista = Integer.parseInt(textCantTurista.getText().trim());
-		                int maxEjecutivo = Integer.parseInt(textMaxEjecutivo.getText().trim());
-
-		                // Validar que los números sean positivos
-		                if (duracion <= 0 || cantTurista <= 0 || maxEjecutivo <= 0) {
-		                    throw new NumberFormatException();
-		                }
-
-		                // Validar que las fechas no sean nulas
-		                if (dateChooserFechaVuelo.getDate() == null || dateChooserFechaAlta.getDate() == null) {
-		                    JOptionPane.showMessageDialog(null,
-		                        "Debe seleccionar ambas fechas.",
-		                        "Error",
-		                        JOptionPane.ERROR_MESSAGE);
-		                    return;
-		                }
-		                
-		                // Registrar el vuelo
-		                DataVueloEspecifico vueloData = new DataVueloEspecifico(textNombreVuelo.getText().trim(),
-		                        dateChooserFechaVuelo.getDate(),
-		                        duracion,
-		                        cantTurista,
-		                        maxEjecutivo,
-		                        dateChooserFechaAlta.getDate());
-		                DataRuta rutaSeleccionada = (DataRuta) comboBoxRutaVuelo.getSelectedItem();
-		                DataAerolinea aerolineaSeleccionada = (DataAerolinea) comboAerolinea.getSelectedItem();
-
-		                 sistema.registrarVuelo(aerolineaSeleccionada.getNickname(), rutaSeleccionada.getNombre(), vueloData);
-		                 
-		                 JOptionPane.showMessageDialog(null,
-		                         "¡Vuelo registrado con éxito!",
-		                         "Éxito",
-		                         JOptionPane.INFORMATION_MESSAGE);
-
-		            } catch (NumberFormatException ex) {
-		                JOptionPane.showMessageDialog(null,
-		                    "Los campos de duración, cantidad de turista y máximo ejecutivo deben ser números enteros positivos.",
-		                    "Error",
-		                    JOptionPane.ERROR_MESSAGE);
-		                return;
-		            }
-		            JOptionPane.showMessageDialog(null,
-		                    "¡Vuelo registrado con éxito!",
-		                    "Éxito",
-		                    JOptionPane.INFORMATION_MESSAGE);
-
-		                // Limpiar campos
-		                textNombreVuelo.setText("");
-		                textDuracion.setText("");
-		                textCantTurista.setText("");
-		                textMaxEjecutivo.setText("");
-		                dateChooserFechaVuelo.setDate(null);
-		                dateChooserFechaAlta.setDate(null);
-		            }
-
-		    }
-		});*/
-		
 		btnNewButtonAceptar.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        if (textNombreVuelo.getText().trim().isEmpty() ||
@@ -378,7 +284,6 @@ public class RegistroVuelo extends JInternalFrame {
 		            boolean isSelected, boolean cellHasFocus) {
 		        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		        if (value instanceof DataAerolinea da) {
-		            // Cambiá getNombre()/getNickname() por los getters reales que tengas
 		            String nombre = da.getNombre();
 		            String nick   = da.getNickname();
 		            setText((nombre != null && !nombre.isBlank() ? nombre : nick) +

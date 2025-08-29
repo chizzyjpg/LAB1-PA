@@ -11,6 +11,9 @@ import javax.swing.JTextArea;
 import javax.swing.JSpinner;
 import java.awt.Font;
 import com.toedter.calendar.JDateChooser;
+
+import Logica.ISistema;
+
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -26,7 +29,7 @@ public class RegistroPaqueteRuta extends JInternalFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -37,12 +40,12 @@ public class RegistroPaqueteRuta extends JInternalFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public RegistroPaqueteRuta() {
+	public RegistroPaqueteRuta(ISistema sistema) {
 		setClosable(true);
 		getContentPane().setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		setTitle("Registro Paquete de Rutas de Vuelo");

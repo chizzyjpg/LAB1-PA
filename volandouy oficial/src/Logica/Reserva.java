@@ -39,7 +39,7 @@ public class Reserva {
 	private VueloEspecifico vueloEspecifico;
 	
 	@ManyToOne
-	private Paquetes paquete;	
+	private Paquete paquete;	
 	
 	protected Reserva() {}	
 	

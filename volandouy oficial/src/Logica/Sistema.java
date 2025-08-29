@@ -1,6 +1,7 @@
 
 package Logica;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,7 +23,10 @@ public class Sistema implements ISistema {
     private final Map<String, Usuario> usuariosPorNickname = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por nickname
     private final Map<Long, Ciudad> CiudadPorHash = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por hashcode
     private final Map<String, Categoria> categoriasPorNombre = new LinkedHashMap<>();
-
+    private final Map<String, Paquete> paquetesPorNombre = new HashMap<>(); // clave: nombre canónico
+    private final List<CompraPaquete> compras = new java.util.ArrayList<>();
+    private int compraIdSeq = 1;  // Contador de IDs para compras (auto incremental en memoria)
+           
     public Sistema() {}
 
     
@@ -205,7 +209,7 @@ public class Sistema implements ISistema {
     // =========================
     
     @Override
-    public void RegistrarRuta(String nickAerolinea, DataRuta datos) {
+    public void registrarRuta(String nickAerolinea, DataRuta datos) {
 		if (datos == null) throw new IllegalArgumentException("Los datos de la ruta no pueden ser nulos");
 		
 		Usuario u = usuariosPorNickname.get(canonical(nickAerolinea));
@@ -303,6 +307,82 @@ public class Sistema implements ISistema {
 		Collection<VueloEspecifico> vuelos = r.getVuelosEspecificos().values();
 		return ManejadorVueloEspecifico.toDatas(new ArrayList<>(vuelos));
 	}
+	
+		// =========================
+		//  	COMPRA DE PAQUETE
+		// =========================
     
-   
+	@Override
+	public List<DataPaquete> listarPaquetesDisponiblesParaCompra() {
+		List<Paquete> elegibles = paquetesPorNombre.values().stream()
+	            .filter(p -> p.getCantRutas() > 0)
+	            .sorted(Comparator.comparing(Paquete::getNombre, String.CASE_INSENSITIVE_ORDER))
+	            .collect(Collectors.toList());
+
+	    return ManejadorPaquete.toDTOs(elegibles);
+	}
+	
+
+	@Override
+	public List<DataCliente> listarClientesParaCompra() {
+	    // Usamos tu ManejadorUsuario para convertir ENTIDAD -> DTO
+	    return usuariosPorNickname.values().stream()
+	            .filter(u -> u instanceof Cliente)
+	            .map(u -> (Cliente) u)
+	            .sorted(Comparator.comparing(Cliente::getNickname, String.CASE_INSENSITIVE_ORDER))
+	            .map(c -> (DataCliente) ManejadorUsuario.toDTO(c))
+	            .collect(Collectors.toList());
+	}
+	
+	@Override
+	public boolean clienteYaComproPaquete(String nicknameCliente, String nombrePaquete) {
+	    String keyNick = canonical(nicknameCliente);
+	    String keyPack = canonical(nombrePaquete);
+	    return compras.stream().anyMatch(cp ->
+	            canonical(cp.getCliente().getNickname()).equals(keyNick) &&
+	            canonical(cp.getPaquete().getNombre()).equals(keyPack)
+	    );
+	}
+	
+	@Override
+	public void comprarPaquete(DataCompraPaquete compra) {
+	    if (compra == null)
+	        throw new IllegalArgumentException("Datos de compra nulos");
+
+	    // Resuelvo ENTIDADES a partir de los identificadores del DTO
+	    Paquete paquete = paquetesPorNombre.get(canonical(compra.getNombrePaquete()));
+	    if (paquete == null) throw new IllegalArgumentException("Paquete inexistente: " + compra.getNombrePaquete());
+	    if (paquete.getCantRutas() <= 0) throw new IllegalStateException("El paquete no tiene rutas");
+
+	    Usuario u = usuariosPorNickname.get(canonical(compra.getNicknameCliente()));
+	    if (!(u instanceof Cliente cliente))
+	        throw new IllegalArgumentException("Cliente inexistente: " + compra.getNicknameCliente());
+
+	    if (clienteYaComproPaquete(compra.getNicknameCliente(), compra.getNombrePaquete())) {
+	        throw new IllegalArgumentException("El cliente ya compró este paquete");
+	    }
+
+	    if (compra.getFechaCompra() == null)
+	        throw new IllegalArgumentException("La fecha de compra es obligatoria");
+
+	    // ENTIDAD a partir del DTO usando el Manejador de compras (nada de 'new' acá)
+	    CompraPaquete entidad = ManejadorCompraPaquete.toEntity(compra, cliente, paquete);
+	    
+	    // asignar id secuencial
+	    entidad.setId(compraIdSeq++);
+
+	    // Registro en la “BD” en memoria
+	    compras.add(entidad);
+	}
+
+	// ===== util: sumar días a una Date =====
+	/*private static Date sumarDias(Date base, int dias) {
+	    java.util.Calendar cal = java.util.Calendar.getInstance();
+	    cal.setTime(base);
+	    cal.add(java.util.Calendar.DAY_OF_YEAR, dias);
+	    return cal.getTime();
+	}*/
+
+	
+	
 }
