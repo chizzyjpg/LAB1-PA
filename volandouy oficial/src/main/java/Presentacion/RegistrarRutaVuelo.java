@@ -295,7 +295,8 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        			horaInt,
 		        			fecha,
 		        			costoBase,
-		        			costoEquipaje
+		        			costoEquipaje,
+		        			null //iria categoria aca
 		        			);
 		        	
 		        	sistema.RegistrarRuta(nombreAerolinea, datos);

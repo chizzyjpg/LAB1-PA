@@ -11,11 +11,12 @@ public class DataRuta {
     private Date fechaAlta;
     private int costoBase;
     private int costoEquipajeExtra;
-
+    private Categoria categoria;
+    
     public DataRuta(String nombre, String descripcion,
                     DataCiudad ciudadOrigen, DataCiudad ciudadDestino,
                     int hora, Date fechaAlta,
-                    int costoBase, int costoEquipajeExtra) {
+                    int costoBase, int costoEquipajeExtra, Categoria categoria) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.ciudadOrigen = ciudadOrigen;
@@ -24,6 +25,7 @@ public class DataRuta {
         this.fechaAlta = fechaAlta;
         this.costoBase = costoBase;
         this.costoEquipajeExtra = costoEquipajeExtra;
+        this.categoria = categoria;
     }
 
     // Getters
@@ -36,4 +38,5 @@ public class DataRuta {
     public Date getFechaAlta() { return fechaAlta; }
     public int getCostoBase() { return costoBase; }
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
+	public Categoria getCategoria() {return categoria;}
 }

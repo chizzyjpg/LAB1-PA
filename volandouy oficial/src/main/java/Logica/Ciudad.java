@@ -63,6 +63,8 @@ public class Ciudad {
     }
 
     // ===== Getters/Setters =====
+    public int getIdCiudad() { return idCiudad; }
+    
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 
