@@ -99,6 +99,9 @@ public class ConsultaRutaVuelo extends JInternalFrame {
 
         // Si querés dejar “detalles” y “vuelos” apilados en la derecha:
         right.add(flightsPanel, BorderLayout.SOUTH); // (podés cambiarlo por CENTER si preferís que ocupe más alto)
+        
+        center.setRightComponent(right);
+        root.add(center, BorderLayout.CENTER);
 
         // Listeners
         comboAerolineas.addActionListener(e -> cargarRutasDeSeleccion());

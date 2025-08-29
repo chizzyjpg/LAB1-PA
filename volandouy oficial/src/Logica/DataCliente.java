@@ -51,6 +51,16 @@ public class DataCliente extends DataUsuario {
     public String getNumDocumento() {
         return numDocumento;
     }
+    
+    @Override
+    public String toString() {
+    			return "DataCliente [nickname=" + this.getNickname() + ","
+			+ " nombre=" + this.getNombre() + ","
+			+ " email=" + this.getEmail() + ","
+			+ " apellido=" + apellido + ", fechaNac=" + fechaNac +
+			", nacionalidad=" + nacionalidad + ", tipoDocumento=" + tipoDocumento
+			+ ", numDocumento=" + numDocumento + "]";
+    }
 }
 
 

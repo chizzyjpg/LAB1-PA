@@ -16,8 +16,11 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -94,7 +97,7 @@ public class RegistroVuelo extends JInternalFrame {
 		lblNewLabelRutaVuelo.setBounds(280, 58, 69, 14);
 		getContentPane().add(lblNewLabelRutaVuelo);
 		
-		JComboBox comboBoxRutaVuelo = new JComboBox();
+		comboBoxRutaVuelo = new JComboBox<>(); // usa el atributo de clase
 		comboBoxRutaVuelo.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBoxRutaVuelo.setBounds(147, 83, 339, 22);
 		
@@ -387,6 +390,5 @@ public class RegistroVuelo extends JInternalFrame {
 		        return this;
 		    }
 		});
-
 	}
 }
