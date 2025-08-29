@@ -13,6 +13,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import BD.CategoriaService;
+import BD.CiudadService;
+
 
 public class Sistema implements ISistema {
     
@@ -198,7 +201,8 @@ public class Sistema implements ISistema {
     
     @Override
     public java.util.List<DataCategoria> listarCategorias() {
-        return ManejadorCategoria.toDTOs(new java.util.ArrayList<>(categoriasPorNombre.values()));
+    	CategoriaService categoriaService = new CategoriaService();
+    	return categoriaService.listarCategorias();
     } 
     
     // =========================
@@ -256,7 +260,8 @@ public class Sistema implements ISistema {
 
 	@Override
 	public List<DataCiudad> listarCiudades() {
-		return ManejadorCiudad.toDatas(new ArrayList<>(CiudadPorHash.values()));
+		CiudadService ciudadService = new CiudadService();
+		return ciudadService.listarCiudades();
 	}
 	
 	public Ciudad buscarCiudad(String nombre, String pais) {

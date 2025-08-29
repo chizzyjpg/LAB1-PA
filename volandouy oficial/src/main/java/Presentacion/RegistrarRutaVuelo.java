@@ -205,10 +205,11 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		
 		JComboBox<DataCategoria> comboBoxCategoria = new JComboBox();
 		comboBoxCategoria.setBounds(155, 405, 145, 22);
-		// Cargar categorías desde la base de datos usando CategoriaService
-        CategoriaService categoriaService = new CategoriaService();
-        for (DataCategoria dc : categoriaService.listarCategorias()) comboBoxCategoria.addItem(dc);
         comboBoxCategoria.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        //carga el combobox con las categorias de la BD
+        for (DataCategoria dc : sistema.listarCategorias()) {
+            comboBoxCategoria.addItem(dc);
+        }
         comboBoxCategoria.setRenderer(new javax.swing.DefaultListCellRenderer() {
             @Override
             public java.awt.Component getListCellRendererComponent(
