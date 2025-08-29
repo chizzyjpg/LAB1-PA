@@ -207,7 +207,7 @@ public class Sistema implements ISistema {
     public void RegistrarRuta(String nickAerolinea, DataRuta datos) {
 		if (datos == null) throw new IllegalArgumentException("Los datos de la ruta no pueden ser nulos");
 
-	    Usuario u = usuariosPorNickname.get(key);	    
+	    Usuario u = usuariosPorNickname.get(canonical(nickAerolinea));	    
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}
