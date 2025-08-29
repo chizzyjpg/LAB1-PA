@@ -13,6 +13,9 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
+
+import BD.CiudadService;
+
 import java.awt.Color;
 import Logica.ManejadorCiudad;
 import Logica.DataCiudad;
@@ -155,7 +158,7 @@ public class RegistroCiudad extends JInternalFrame {
 		            JOptionPane.showMessageDialog(RegistroCiudad.this, "La Fecha NO puede estar vacía", "Error Fecha" , JOptionPane.ERROR_MESSAGE);
 		            return;
 		        }
-
+		        
 		        // Conectar con el manejador usando DTO
 		        try {
 		            DataCiudad dto = new DataCiudad(
@@ -169,14 +172,6 @@ public class RegistroCiudad extends JInternalFrame {
 
 		            // Alta en memoria (tu manejador)
 		            sistema.registrarCiudad(dto);
-
-		            JOptionPane.showMessageDialog(
-		                RegistroCiudad.this,
-		                "Ciudad registrada correctamente!\nNombre: " + nomCiudad + "\nPaís: " + nomPais,
-		                "ÉXITO!",
-		                JOptionPane.INFORMATION_MESSAGE
-		            );
-
 		            // LIMPIA CAMPOS
 		            textFieldNomCiudad.setText("");
 		            textFieldPais.setText("");

@@ -178,7 +178,9 @@ public class Sistema implements ISistema {
     
     @Override
     public void registrarCategoria(DataCategoria data) {
-        if (data == null || data.getNombre() == null || data.getNombre().isBlank())
+    	ManejadorCategoria.toEntity(data);
+        /*
+    	if (data == null || data.getNombre() == null || data.getNombre().isBlank())
             throw new IllegalArgumentException("El nombre de la categoría es obligatorio");
         
         String key = canonical(data.getNombre());
@@ -186,7 +188,7 @@ public class Sistema implements ISistema {
             throw new IllegalArgumentException("Ya existe una categoría con ese nombre");
         
         categoriasPorNombre.put(key, ManejadorCategoria.toEntity(data));
-        
+        */
     }
     
     @Override

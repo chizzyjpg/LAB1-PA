@@ -67,24 +67,9 @@ public class RegistroCategoria extends JInternalFrame {
 				}
 				
 				try {
-				    new CategoriaService().crearCategoria(cat);
-				    JOptionPane.showMessageDialog(null, "Se insertó correctamente");
-				    textFieldCategoria.setText("");
-				} catch (Exception ex) {
-				    JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
-				}
-
-				
-				
-				/*
-				 
-				try {
-					sistema.registrarCategoria(new DataCategoria(cat));
-					JOptionPane.showMessageDialog(RegistroCategoria.this, "Categoría registrada correctamente!\nNombre: " + cat, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE); 
+					sistema.registrarCategoria(new DataCategoria(cat)); 
 		            textFieldCategoria.setText("");
-		            textFieldCategoria.requestFocusInWindow();
-		            
-		            
+		            textFieldCategoria.requestFocusInWindow();   
 				}catch (IllegalArgumentException ex) {
             // el Sistema también valida nombre duplicado / vacío
 		            JOptionPane.showMessageDialog(RegistroCategoria.this, ex.getMessage(),
@@ -92,7 +77,6 @@ public class RegistroCategoria extends JInternalFrame {
 		            textFieldCategoria.requestFocusInWindow();
 		            textFieldCategoria.selectAll();
 				}
-				 **/
 				
 			}
 		});
