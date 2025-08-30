@@ -242,6 +242,7 @@ public class RegistroUsuario extends JInternalFrame {
 		btnGuardar.setBackground(new Color(5, 250, 79));
 		btnGuardar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		
+		
 		panel.add(btnGuardar);
 		btnGuardar.addActionListener(e -> {
 		    String nickname = textFieldNickname.getText().trim();
