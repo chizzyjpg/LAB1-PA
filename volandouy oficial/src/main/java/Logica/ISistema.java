@@ -41,4 +41,5 @@ public interface ISistema {
 	
 	List<DataVueloEspecifico> listarVuelos(String nickname, String nombre);
 	void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos);
+	void registrarAerolinea(DataAerolinea data);
 }

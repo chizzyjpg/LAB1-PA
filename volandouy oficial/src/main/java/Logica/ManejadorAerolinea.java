@@ -3,6 +3,8 @@ package Logica;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import BD.AerolineaService;
+
 public class ManejadorAerolinea {
 
     private ManejadorAerolinea() {}
@@ -10,7 +12,13 @@ public class ManejadorAerolinea {
     // Obtener
     public static Aerolinea toEntity(DataAerolinea aero) {
         Objects.requireNonNull(aero, "Los datos no pueden ser nulos");
-        return new Aerolinea(aero.getNombre(), aero.getNickname(), aero.getEmail(), aero.getDescripcion(), aero.getSitioWeb());
+        Aerolinea a = new Aerolinea(aero.getNombre(), aero.getNickname(), aero.getEmail(), aero.getDescripcion(), aero.getSitioWeb());
+        try {
+			new AerolineaService().crearAerolinea(a.getNombre(), a.getNickname(), a.getEmail(), a.getDescGeneral(), a.getLinkWeb());
+		} catch (Exception ex) {
+			throw new IllegalStateException("Error al crear la aerolínea: " + ex.getMessage(), ex);
+		}
+        return a;
     }
 
     public static DataAerolinea toData(Aerolinea a) {
@@ -36,4 +44,5 @@ public class ManejadorAerolinea {
 					   .map(ManejadorAerolinea::toData)
 					   .collect(Collectors.toList());
 	}
+   
 }

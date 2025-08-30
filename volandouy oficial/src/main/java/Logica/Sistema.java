@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import BD.AerolineaService;
 import BD.CategoriaService;
 import BD.CiudadService;
 
@@ -105,16 +106,20 @@ public class Sistema implements ISistema {
     
     @Override
     public List<DataAerolinea> listarAerolineas() {
-		List<DataAerolinea> aerolineas = new ArrayList<>();
-		for (Usuario u : usuariosPorNickname.values()) {
-			if (u instanceof Aerolinea a) {
-				aerolineas.add(ManejadorAerolinea.toData(a));
-			}
-		}
-		aerolineas.sort(Comparator.comparing(
-				a -> a.getNickname() == null ? "" : a.getNickname(),
-				String.CASE_INSENSITIVE_ORDER));
-		return aerolineas;
+    	AerolineaService aerolineaService = new AerolineaService();
+    	return aerolineaService.listarAerolineas();
+		/*
+    	List<DataAerolinea> aerolineas = new ArrayList<>();
+    	for (Usuario u : usuariosPorNickname.values()) {
+    		if (u instanceof Aerolinea a) {
+    			aerolineas.add(ManejadorAerolinea.toData(a));
+    		}
+    	}
+    	aerolineas.sort(Comparator.comparing(
+    			a -> a.getNickname() == null ? "" : a.getNickname(),
+    					String.CASE_INSENSITIVE_ORDER));
+    	return aerolineas;
+		 * */
 	}
 
     
@@ -336,5 +341,29 @@ public class Sistema implements ISistema {
  		
     }
     
+ // ======================
+    //  AEROLINEAS
+    // ===================
+    
+    @Override
+    public void registrarAerolinea(DataAerolinea data) {
+		
+		// Validaciones de unicidad
+		if (existeNickname(data.getNickname())) {
+			throw new IllegalArgumentException("El nickname ya está en uso");
+		}
+		if (existeEmail(data.getEmail())) {
+			throw new IllegalArgumentException("El email ya está en uso");
+		}
+
+		// DTO -> Entidad (polimórfico)
+		Aerolinea entity = ManejadorAerolinea.toEntity(data);
+
+		// Clave canónica
+		String key = canonical(entity.getNickname());
+		usuariosPorNickname.put(key, entity);
+	}
+    
    
+
 }
