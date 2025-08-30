@@ -303,5 +303,50 @@ public class Sistema implements ISistema {
 		return ManejadorVueloEspecifico.toDatas(new ArrayList<>(vuelos));
 	}
     
-   
+	
+	// =========================
+	//         RESERVAS
+	// =========================
+	
+	@Override
+	public List<DataReserva> listarReservas(String nickname, String nombre, String codigoVuelo) {
+		Usuario u = usuariosPorNickname.get(canonical(nickname));
+		if (!(u instanceof Aerolinea a)) {
+			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+		}
+		Ruta r = a.getRutaMap().values().stream()
+				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
+				.findFirst().orElse(null);
+		if (r == null) {
+			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+		}
+		VueloEspecifico v = r.getVuelosEspecificos().get(codigoVuelo);
+		if (v == null) {
+			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
+		}
+		Collection<Reserva> reservas = v.getReserva().values();
+		return ManejadorReserva.toDatas(new ArrayList<>(reservas));
+	}
+	
+	@Override
+	public void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos) {
+		if (datos == null) throw new IllegalArgumentException("Los datos de la reserva no pueden ser nulos");
+		
+		Usuario u = usuariosPorNickname.get(canonical(nickname));
+		if (!(u instanceof Aerolinea a)) {
+			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+		}
+		Ruta r = a.getRutaMap().values().stream()
+				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
+				.findFirst().orElse(null);
+		if (r == null) {
+			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+		}
+		VueloEspecifico v = r.getVuelosEspecificos().get(codigoVuelo);
+		if (v == null) {
+			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
+		}
+		Reserva res = ManejadorReserva.toEntity(datos);
+		v.getReserva().put(Integer.toString(res.getIdReserva()), res);
+	}
 }

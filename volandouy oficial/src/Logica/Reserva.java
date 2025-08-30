@@ -1,11 +1,14 @@
 package Logica;
 
-import java.util.Date;
+import java.util.*;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Reserva")
 public class Reserva {
+	
+	@ManyToMany
+	private List<Pasaje> pasajes = new ArrayList<>();
 	
 	@ManyToOne
 	@JoinColumn(name = "idCliente", referencedColumnName = "nickname")
@@ -31,7 +34,6 @@ public class Reserva {
 	@Column(name = "costoTotal", nullable = false)
 	private Float costoTotal;
 	
-	
 	@ManyToOne
 	private Cliente nickname;
 	
@@ -49,6 +51,7 @@ public class Reserva {
 		this.equipaje = equipaje;
 		this.cantEquipajeExtra = cantEquipajeExtra;
 		this.costoTotal = costoTotal;
+		this.pasajes = new ArrayList<>();
 	}
 	
 	//Getters
@@ -66,6 +69,10 @@ public class Reserva {
 	}
 	public Float getCostoTotal() {
 		return costoTotal;
+	}
+	
+	public int getIdReserva() {
+		return idReserva;
 	}
 	
 	//Setters
