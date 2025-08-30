@@ -47,6 +47,8 @@ public class Menu extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 907, 719);
 		
+		sistema.precargaDemo();
+		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
@@ -197,7 +199,6 @@ public class Menu extends JFrame {
 		
 		JMenuItem mntmNewMenuItem_10 = new JMenuItem("Modificar Datos de Usuario");
 		mnNewMenu_2.add(mntmNewMenuItem_10);
-		mnNewMenu_2.add(mntmNewMenuItem_10);
 		mntmNewMenuItem_10.addActionListener(e -> {
 		    ModificarUsuario frm = new ModificarUsuario(sistema);
 		    desktopPane.add(frm);
@@ -215,6 +216,14 @@ public class Menu extends JFrame {
 		
 		JMenuItem mntmNewMenuItem_12 = new JMenuItem("Compra de Paquete");
 		mnNewMenu_3.add(mntmNewMenuItem_12);
+		mntmNewMenuItem_12.addActionListener(e -> {
+		    CompraPaqueteIF compraPaquete = new CompraPaqueteIF(sistema);
+		    desktopPane.add(compraPaquete);
+		    desktopPane.revalidate();
+			desktopPane.repaint();
+		    compraPaquete.setVisible(true);
+		    compraPaquete.toFront();
+		});
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

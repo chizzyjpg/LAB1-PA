@@ -1,6 +1,7 @@
 package Logica;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 //import java.util.Date;
 import jakarta.persistence.*;
@@ -37,6 +38,8 @@ public class Paquete {
 	 @Column(name = "costo", nullable = false, precision = 12, scale = 2)
 	    private BigDecimal costo; // precio final promocional
 	
+	 @Column(name = "fechaAlta", nullable = false)
+	 	private Date fechaAlta;
 	
 	protected Paquete() { } // JPA 
 	
@@ -77,6 +80,9 @@ public class Paquete {
 		return costo;
 	}
 	
+	public Date getFechaAlta() {
+		return fechaAlta;
+	}
 	/*
 	public double getCostoAsociado() {
 	    double costoBasePorRuta;
@@ -125,6 +131,9 @@ public class Paquete {
 	}
 	public void setCosto(BigDecimal costo) {
 		this.costo = costo;
+	}
+	public void setFechaAlta(Date fecha) {
+		this.fechaAlta = fecha;
 	}
 	
 	@Override public String toString() {

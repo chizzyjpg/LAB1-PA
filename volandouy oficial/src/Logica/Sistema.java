@@ -374,15 +374,72 @@ public class Sistema implements ISistema {
 	    // Registro en la “BD” en memoria
 	    compras.add(entidad);
 	}
+	
+			// ===============================
+			//  PRECARGA CLIENTES Y PAQUETES
+			// ===============================
 
-	// ===== util: sumar días a una Date =====
-	/*private static Date sumarDias(Date base, int dias) {
-	    java.util.Calendar cal = java.util.Calendar.getInstance();
-	    cal.setTime(base);
-	    cal.add(java.util.Calendar.DAY_OF_YEAR, dias);
-	    return cal.getTime();
-	}*/
+	public void precargaDemo() {
+	    registrarUsuario(new DataCliente("Ana","ana01","ana@mail.com","Pérez", new Date(), "UY", TipoDocumento.CEDULA, "52559649"));
+	    registrarUsuario(new DataCliente("Bruno","bruno02","bruno@mail.com","López", new Date(), "UY", TipoDocumento.PASAPORTE, "54985693"));
 
+	    DataPaquete rp  = new DataPaquete("Promo Río","Paquete con rutas a Río",2,TipoAsiento.TURISTA,20,30, BigDecimal.valueOf(1200));
+	    DataPaquete rp2 = new DataPaquete("Europa Express","Rutas a Europa",3,TipoAsiento.EJECUTIVO,15,60, BigDecimal.valueOf(3200));
+
+	    Paquete p1 = ManejadorPaquete.toEntity(rp);
+	    Paquete p2 = ManejadorPaquete.toEntity(rp2);
+
+	    // ✅ Guardar con la MISMA normalización que usás al buscar
+	    paquetesPorNombre.put(canonical(rp.getNombre()),  p1);
+	    paquetesPorNombre.put(canonical(rp2.getNombre()), p2);
+	}
+	
+			// ===============================
+			//  ALTA PAQUETE
+			// ===============================
 	
 	
+	public void registrarPaquete(DataPaqueteAlta data) {
+        // Validaciones básicas de entrada
+        if (data == null) throw new IllegalArgumentException("Datos del paquete nulos");
+        if (data.getNombre() == null || data.getNombre().isBlank())
+            throw new IllegalArgumentException("El nombre del paquete es obligatorio");
+        if (data.getDescripcion() == null || data.getDescripcion().isBlank())
+            throw new IllegalArgumentException("La descripción es obligatoria");
+        if (data.getValidez() <= 0)
+            throw new IllegalArgumentException("La validez debe ser mayor a 0");
+        if (data.getDescuento() < 0 || data.getDescuento() > 100)
+            throw new IllegalArgumentException("El descuento debe estar entre 0 y 100");
+        if (data.getFechaAlta() == null)
+            throw new IllegalArgumentException("La fecha de alta es obligatoria");
+
+        // Unicidad por nombre
+        String key = canonical(data.getNombre());
+        if (paquetesPorNombre.containsKey(key))
+            throw new IllegalArgumentException("Ya existe un paquete con ese nombre");
+        
+        Paquete entity = ManejadorPaquete.altaToEntity(data);
+        paquetesPorNombre.put(key, entity);
+	}
+	
+	 @Override
+	    public boolean existePaquete(String nombre) {
+	        return nombre != null && paquetesPorNombre.containsKey(canonical(nombre));
+	    }
+	 
+	 @Override
+	    public List<DataPaquete> listarPaquetes() {
+	        // Devolver DTOs usando tu manejador
+	        return paquetesPorNombre.values().stream()
+	                .sorted(Comparator.comparing(Paquete::getNombre, String.CASE_INSENSITIVE_ORDER))
+	                .map(ManejadorPaquete::toDTO)
+	                .collect(Collectors.toList());
+	    }
+	 
+	 @Override
+	    public DataPaquete verPaquete(String nombre) {
+	        if (nombre == null) return null;
+	        Paquete p = paquetesPorNombre.get(canonical(nombre));
+	        return (p == null) ? null : ManejadorPaquete.toDTO(p);
+	    }
 }

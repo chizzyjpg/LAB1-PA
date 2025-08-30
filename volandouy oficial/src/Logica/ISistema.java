@@ -11,9 +11,11 @@ public interface ISistema {
     boolean existeEmail(String email);
     boolean existeCategoria(String nombre);
     boolean clienteYaComproPaquete(String nicknameCliente, String nombrePaquete);
+    boolean existePaquete(String nombre); 
       
     DataCliente verInfoCliente(String nickname);      // null si no existe o no es cliente
     DataAerolinea verInfoAerolinea(String nickname); // null si no existe o no es aerolínea
+    DataPaquete verPaquete(String nombre);  
     
     List<DataUsuario> listarUsuarios();
     List<DataAerolinea> listarAerolineas();
@@ -23,6 +25,7 @@ public interface ISistema {
     List<DataVueloEspecifico> listarVuelos(String nickname, String nombre);
     List<DataPaquete> listarPaquetesDisponiblesParaCompra();
     List<DataCliente> listarClientesParaCompra();
+    List<DataPaquete> listarPaquetes();  
     
     void registrarUsuario(DataUsuario data); // DataCliente o DataAerolinea
     void modificarCliente(String nickname, DataCliente nuevosDatos);
@@ -32,6 +35,9 @@ public interface ISistema {
     void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos);
 	void registrarCiudad(DataCiudad data);
 	void comprarPaquete(DataCompraPaquete compra);
+	void registrarPaquete(DataPaqueteAlta data);  
+	
+	void precargaDemo();	
 	
 	Ciudad buscarCiudad(String nombre, String pais);	
 	

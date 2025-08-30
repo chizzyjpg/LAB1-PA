@@ -12,7 +12,7 @@ public class DataCompraPaquete {
 
 
     public DataCompraPaquete(String nombrePaquete, String nicknameCliente,
-                             Date fechaCompra, Date vencimiento, BigDecimal costo) {
+                             Date fechaCompra,BigDecimal costo, Date vencimiento) {
         this.nombrePaquete = nombrePaquete;
         this.nicknameCliente = nicknameCliente;
         this.fechaCompra = (fechaCompra == null) ? null : new Date(fechaCompra.getTime());

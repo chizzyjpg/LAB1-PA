@@ -34,9 +34,8 @@ public final class ManejadorCompraPaquete {
                 e.getPaquete().getNombre(),
                 e.getCliente().getNickname(),
                 e.getFechaCompra(),
-                e.getVencimiento(),
-                e.getCosto()
-                
+                e.getCosto(),
+                e.getVencimiento()                             
         );
     }
 

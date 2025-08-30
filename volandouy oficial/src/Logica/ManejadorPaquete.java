@@ -43,4 +43,49 @@ public final class ManejadorPaquete {
 		if (dtos == null) return Collections.emptyList();
 		return dtos.stream().filter(Objects::nonNull).map(ManejadorPaquete::toEntity).collect(Collectors.toList());
 	}
+    
+    ////////////////////////
+    ///
+    ///
+    /// USO EL MISMO MANEJADOR PARA LAS ALTAS QUE TIENEN MENOS PARAMETROS
+    ///
+    ///////////////////
+    
+    public static Paquete altaToEntity(DataPaqueteAlta dto) {
+        if (dto == null) return null;
+        Paquete p = new Paquete(
+        		dto.getNombre(),
+                dto.getDescripcion(),
+                /* cantRutas */ 0,
+                /* tipoAsiento */ null,        // un solo tipo por paquete, se definirá luego si corresponde
+                /* descuento */ dto.getDescuento(),
+                /* validez */ dto.getValidez(),
+                /* costo */ null               // aún no definido
+        );
+        p.setFechaAlta(copia(dto.getFechaAlta()));
+        return p;
+    }
+
+    /*public static DataPaquete altaToDTO(Paquete p) {
+        if (p == null) return null;
+        return new DataPaquete(								////////////////////DE MOMENTO NO SE NECESITA
+          
+        );
+    }*/
+
+    /*public static List<DataPaquete> altaToDTOs(List<Paquete> paquetes) {
+        return paquetes.stream().map(ManejadorPaquete::altaToDTO).collect(Collectors.toList());     ////////////////////DE MOMENTO NO SE NECESITA
+    }*/
+    
+    public static List<Paquete> altaToEntities(List<? extends DataPaqueteAlta> dtos) {
+		if (dtos == null) return Collections.emptyList();
+		return dtos.stream().filter(Objects::nonNull).map(ManejadorPaquete::altaToEntity).collect(Collectors.toList());
+	}
+    
+    //////// HELPERS DE FECHA
+    ///
+    
+    private static java.util.Date copia(java.util.Date d) {
+        return (d == null) ? null : new java.util.Date(d.getTime());
+    }
 }
