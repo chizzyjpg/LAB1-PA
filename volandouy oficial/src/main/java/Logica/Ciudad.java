@@ -42,8 +42,8 @@ public class Ciudad {
     @Column(name = "sitio_web", length = 200, nullable = true)
     private String sitioWeb;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "idRuta", nullable = false, referencedColumnName = "idRuta")
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "idRuta", nullable = true, referencedColumnName = "idRuta")
     private Ruta ruta;
     
     // ===== Constructores =====
@@ -63,6 +63,8 @@ public class Ciudad {
     }
 
     // ===== Getters/Setters =====
+    public int getIdCiudad() { return idCiudad; }
+    
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 

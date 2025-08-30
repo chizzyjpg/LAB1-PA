@@ -13,6 +13,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import BD.CategoriaService;
+import BD.CiudadService;
+
 
 public class Sistema implements ISistema {
     
@@ -178,7 +181,9 @@ public class Sistema implements ISistema {
     
     @Override
     public void registrarCategoria(DataCategoria data) {
-        if (data == null || data.getNombre() == null || data.getNombre().isBlank())
+    	ManejadorCategoria.toEntity(data);
+        /*
+    	if (data == null || data.getNombre() == null || data.getNombre().isBlank())
             throw new IllegalArgumentException("El nombre de la categoría es obligatorio");
         
         String key = canonical(data.getNombre());
@@ -186,7 +191,7 @@ public class Sistema implements ISistema {
             throw new IllegalArgumentException("Ya existe una categoría con ese nombre");
         
         categoriasPorNombre.put(key, ManejadorCategoria.toEntity(data));
-        
+        */
     }
     
     @Override
@@ -196,7 +201,8 @@ public class Sistema implements ISistema {
     
     @Override
     public java.util.List<DataCategoria> listarCategorias() {
-        return ManejadorCategoria.toDTOs(new java.util.ArrayList<>(categoriasPorNombre.values()));
+    	CategoriaService categoriaService = new CategoriaService();
+    	return categoriaService.listarCategorias();
     } 
     
     // =========================
@@ -254,7 +260,8 @@ public class Sistema implements ISistema {
 
 	@Override
 	public List<DataCiudad> listarCiudades() {
-		return ManejadorCiudad.toDatas(new ArrayList<>(CiudadPorHash.values()));
+		CiudadService ciudadService = new CiudadService();
+		return ciudadService.listarCiudades();
 	}
 	
 	public Ciudad buscarCiudad(String nombre, String pais) {

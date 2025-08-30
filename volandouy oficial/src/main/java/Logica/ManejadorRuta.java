@@ -3,6 +3,10 @@ package Logica;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.swing.JOptionPane;
+
+import BD.RutaVueloService;
+
 public class ManejadorRuta {
 
     private ManejadorRuta() {}
@@ -13,12 +17,19 @@ public class ManejadorRuta {
     	Objects.requireNonNull(data, "Los datos no pueden ser nulos");
     	Ciudad origen = ManejadorCiudad.toEntity(data.getCiudadOrigen());
     	Ciudad destino = ManejadorCiudad.toEntity(data.getCiudadDestino());
-        return new Ruta(
+        Ruta r = new Ruta(
 			data.getNombre(), data.getDescripcion(),
 			origen, destino,
 			data.getHora(), data.getFechaAlta(),
-			data.getCostoBase(), data.getCostoEquipajeExtra()
+			data.getCostoBase(), data.getCostoEquipajeExtra(), data.getCategoria()
 		);
+        try {
+        	new RutaVueloService().crearRutaVuelo(r.getNombre(), r.getDescripcion(), origen, destino, r.getHora(), r.getFechaAlta(), r.getCostoBase(), r.getCostoEquipajeExtra(), r.getCategoria());
+        	JOptionPane.showMessageDialog(null, "Se insertó correctamente");
+        }catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+		}
+        return r;
     }
 
     
@@ -30,7 +41,7 @@ public class ManejadorRuta {
             r.getNombre(), r.getDescripcion(),
             origen, destino,
             r.getHora(), r.getFechaAlta(),
-            r.getCostoBase(), r.getCostoEquipajeExtra()
+            r.getCostoBase(), r.getCostoEquipajeExtra(), r.getCategoria()
         );
     }
     

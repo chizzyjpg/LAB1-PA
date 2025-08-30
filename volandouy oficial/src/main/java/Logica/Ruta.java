@@ -52,7 +52,7 @@ public class Ruta {
     public Ruta(String n, String desc,
                 Ciudad origen, Ciudad destino,
                 int hora, Date fechaAlta,
-                int costoBase, int costoEquipajeExtra) {
+                int costoBase, int costoEquipajeExtra, Categoria cat) {
         this.nombre = n;
         this.descripcion = desc;
         this.origen = origen;
@@ -62,6 +62,7 @@ public class Ruta {
         this.costoBase = costoBase;
         this.costoEquipajeExtra = costoEquipajeExtra;
         this.vuelosEspecificos = new ArrayList<>();
+        this.categoria = cat;
     }
 
     // getters
@@ -76,7 +77,7 @@ public class Ruta {
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
     public Categoria getCategoria() { return categoria; }
     public List<VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
-
+    
     // setters
     public void setNombre(String n) { this.nombre = n; }
     public void setDescripcion(String desc) { this.descripcion = desc; }

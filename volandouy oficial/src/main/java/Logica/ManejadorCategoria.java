@@ -4,6 +4,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.swing.JOptionPane;
+
+import BD.CategoriaService;
+
+
 public final class ManejadorCategoria{
 	
 	private ManejadorCategoria() {}
@@ -13,10 +18,15 @@ public final class ManejadorCategoria{
 	
 	public static Categoria toEntity (DataCategoria dto) {
 		Objects.requireNonNull(dto, "DataCategoria no puede ser null"); // Valida que dto no sea null; si lo es, lanza NullPointerException con mensaje.
-		return new Categoria (
-				dto.getNombre());		
+		Categoria c = new Categoria (dto.getNombre());
+		try {
+		    new CategoriaService().crearCategoria(c.getNombre());
+		    JOptionPane.showMessageDialog(null, "Se insertó correctamente");
+		} catch (Exception ex) {
+		    JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
 		}
-	
+		return c;
+		}
 	///// ENITIDAD -> DTO
 	
 	public static DataCategoria toDTO (Categoria c) {

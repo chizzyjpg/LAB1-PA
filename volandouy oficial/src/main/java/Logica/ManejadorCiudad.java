@@ -3,11 +3,15 @@ package Logica;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.swing.JOptionPane;
+
+import BD.CiudadService;
+
 public class ManejadorCiudad {
     
 	public static Ciudad toEntity(DataCiudad ciudad) {
 		Objects.requireNonNull(ciudad, "Los datos no pueden ser nulos");
-		return new Ciudad(
+		Ciudad c = new Ciudad(
 				ciudad.getNombre(),
 				ciudad.getPais(),
 				ciudad.getNombreAeropuerto(),
@@ -15,6 +19,13 @@ public class ManejadorCiudad {
 				ciudad.getFechaAlta(),
 				ciudad.getSitioWeb()
 		);
+		try {
+        	new CiudadService().crearCiudad(c.getNombre(), c.getPais(), c.getNombreAeropuerto(), c.getDescripcionAeropuerto(), c.getFechaAlta(), c.getSitioWeb());
+        	JOptionPane.showMessageDialog(null, "Se insertó correctamente");
+        }catch (Exception ex) {
+        	JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+        }
+		return c;
 	}
 
     public static DataCiudad toData(Ciudad c) {

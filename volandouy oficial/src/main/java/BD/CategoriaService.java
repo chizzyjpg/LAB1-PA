@@ -36,13 +36,13 @@ public class CategoriaService {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             em.getTransaction().begin();
-
+            /*
             // Evitar duplicados (como el @Id es 'nombre')
             Categoria existente = em.find(Categoria.class, nombre);
             if (existente != null) {
                 throw new IllegalStateException("Ya existe una categoría con ese nombre.");
             }
-
+             */
             Categoria c = new Categoria(nombre.trim());
             em.persist(c);
 
