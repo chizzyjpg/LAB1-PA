@@ -1,5 +1,6 @@
 package Logica;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DataVueloEspecifico {
@@ -45,8 +46,10 @@ public class DataVueloEspecifico {
 	}
 	
 	public String toString() {
-		return "nombre=" + nombre + ", fecha=" + fecha + ", duracion=" + duracion
-				+ ", maxAsientosTur=" + maxAsientosTur + ", maxAsientosEjec=" + maxAsientosEjec + ", fechaAlta="
-				+ fechaAlta;
+
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    	String sfd = sdf.format(fecha);
+		
+		return nombre + " - " + sfd;
 	}
 }

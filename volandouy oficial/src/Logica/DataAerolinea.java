@@ -23,10 +23,7 @@ public class DataAerolinea extends DataUsuario {
     
     @Override
     public String toString() {
-    			return "DataAerolinea [nickname=" + this.getNickname() + ","
-				+ " nombre=" + this.getNombre() + ","
-				+ " email=" + this.getEmail() + ","
-				+ " descGeneral=" + descGeneral + ", sitioWeb=" + sitioWeb + "]";
+    			return this.getNickname() + " - " + this.getNombre();
     }
 }
 

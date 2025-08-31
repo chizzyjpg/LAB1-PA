@@ -1,5 +1,6 @@
 package Logica;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class DataReserva {
@@ -58,7 +59,10 @@ public class DataReserva {
 	}
 	
 	public String toString() {
-		return "Id " + idReserva + " Fecha Reserva" + fechaReserva + " Tipo Asiento: " + tipoAsiento;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    	String sfd = sdf.format(fechaReserva);
+		
+		return "Id " + idReserva + " - " + "Nickname: " + nickCliente.getNickname() + " " + sfd + " Tipo Asiento: " + tipoAsiento;
 	}
 	
 }
