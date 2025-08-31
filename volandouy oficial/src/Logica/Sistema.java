@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -24,7 +25,7 @@ public class Sistema implements ISistema {
     private final Map<Long, Ciudad> CiudadPorHash = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por hashcode
     private final Map<String, Categoria> categoriasPorNombre = new LinkedHashMap<>();
     private final Map<String, Paquete> paquetesPorNombre = new HashMap<>(); // clave: nombre canónico
-    private final List<CompraPaquete> compras = new java.util.ArrayList<>();
+    private final List<CompraPaquete> compras = new ArrayList<>();
     private int compraIdSeq = 1;  // Contador de IDs para compras (auto incremental en memoria)
            
     public Sistema() {}
@@ -442,4 +443,72 @@ public class Sistema implements ISistema {
 	        Paquete p = paquetesPorNombre.get(canonical(nombre));
 	        return (p == null) ? null : ManejadorPaquete.toDTO(p);
 	    }
+	 
+	 			// ===============================
+				//  AGREGAR RUTA DE VUELO A PAQUETE
+				// ===============================
+	 	
+	 @Override
+	 public List<DataPaquete> listarPaquetesSinCompras() {
+	     // un paquete “con compras” es aquel que aparece en la lista compras
+	     Set<String> nombresConCompra = compras.stream()
+	             .map(cp -> canonical(cp.getPaquete().getNombre()))
+	             .collect(Collectors.toSet());
+
+	     return paquetesPorNombre.values().stream()
+	             .filter(p -> !nombresConCompra.contains(canonical(p.getNombre())))
+	             .sorted(Comparator.comparing(Paquete::getNombre, String.CASE_INSENSITIVE_ORDER))
+	             .map(ManejadorPaquete::toDTO)
+	             .collect(Collectors.toList());
+	 }
+	 	 
+	 @Override
+	 public void agregarRutaAPaquete(String nombrePaquete,
+	                                 String nicknameAerolinea,
+	                                 String nombreRuta,
+	                                 TipoAsiento tipo,
+	                                 int cantidad) {
+
+	     if (nombrePaquete == null || nicknameAerolinea == null || nombreRuta == null || tipo == null || cantidad <= 0)
+	         throw new IllegalArgumentException("Datos incompletos");
+
+	     // 1) Paquete (y no permitir si ya tiene compras)
+	     Paquete p = paquetesPorNombre.get(canonical(nombrePaquete));
+	     if (p == null) throw new IllegalArgumentException("No existe un paquete con ese nombre");
+
+	     boolean tieneCompras = compras.stream()
+	             .anyMatch(cp -> canonical(cp.getPaquete().getNombre()).equals(canonical(nombrePaquete)));
+	     if (tieneCompras) throw new IllegalStateException("El paquete ya tiene compras y no admite modificaciones");
+
+	     // 2) Aerolínea
+	     Usuario u = usuariosPorNickname.get(canonical(nicknameAerolinea));
+	     if (!(u instanceof Aerolinea a)) {
+	         throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+	     }
+
+	     // 3) Ruta de esa aerolínea por NOMBRE
+	     Ruta r = a.getRutaMap().values().stream()
+	             .filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombreRuta))
+	             .findFirst()
+	             .orElseThrow(() -> new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre"));
+	     
+	     //////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+         /*if (p == null || r == null || tipo == null)
+             throw new IllegalArgumentException("Datos inválidos para agregar ruta al paquete");*/
+
+         // fijar/validar tipo de asiento único del paquete
+         if (p.getTipoAsiento() == null) {
+             p.setTipoAsiento(tipo);
+         } else if (p.getTipoAsiento() != tipo) {
+             throw new IllegalArgumentException(
+                 "El tipo de asiento del paquete (" + p.getTipoAsiento()
+                 + ") no coincide con el seleccionado (" + tipo + ")."
+             );
+         }
+
+         // agregar ruta por NOMBRE (único)
+         p.addCuposRuta(r.getNombre(), cantidad);
+     }
+
 }

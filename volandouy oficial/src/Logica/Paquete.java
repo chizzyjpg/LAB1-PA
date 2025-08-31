@@ -1,7 +1,12 @@
 package Logica;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
+//import java.util.LinkedHashSet;
+import java.util.Map;
+//import java.util.Set;
 
 //import java.util.Date;
 import jakarta.persistence.*;
@@ -40,6 +45,12 @@ public class Paquete {
 	
 	 @Column(name = "fechaAlta", nullable = false)
 	 	private Date fechaAlta;
+	 
+	 /*@Column(name = "nombreRuta", nullable = false)
+	 private final Set<String> rutasIncluidas = new LinkedHashSet<>();*/
+	 
+	 @Column(name = "Cupos por Ruta", nullable = false)
+	 private final Map<String,Integer> cuposPorRuta = new LinkedHashMap<>();
 	
 	protected Paquete() { } // JPA 
 	
@@ -83,6 +94,15 @@ public class Paquete {
 	public Date getFechaAlta() {
 		return fechaAlta;
 	}
+	
+	 /*public Set<String> getRutasIncluidas() {
+	        // solo lectura hacia afuera
+	        return Collections.unmodifiableSet(rutasIncluidas);
+	    }*/
+	
+	public java.util.Map<String,Integer> getCuposPorRuta() {
+        return Collections.unmodifiableMap(cuposPorRuta);
+    }
 	/*
 	public double getCostoAsociado() {
 	    double costoBasePorRuta;
@@ -142,4 +162,37 @@ public class Paquete {
 				+ ", descuento=" + descuento +/* ", fechaCompra=" + fechaCompra 
 				+ */", validez=" + validez + "]";
 	}
+	
+	/*void addRutaPorNombre(String nombreRuta) {
+        String key = canonical(nombreRuta);
+        if (key == null || key.isBlank())
+            throw new IllegalArgumentException("Nombre de ruta inválido");
+
+        if (rutasIncluidas.add(key)) { // solo si no existía
+            this.cantRutas++;          // ++ una vez por ruta distinta
+        }
+        
+    }*/
+	
+	  void addCuposRuta(String nombreRuta, int cantidad) {
+	        String key = canonical(nombreRuta);
+	        if (key == null || key.isBlank() || cantidad <= 0) {
+	            throw new IllegalArgumentException("Ruta/cantidad inválidas");
+	        }
+	        boolean esNueva = !cuposPorRuta.containsKey(key);
+	        cuposPorRuta.merge(key, cantidad, Integer::sum);
+	        if (esNueva) this.cantRutas++;
+	    }
+
+	  public int getCuposDeTipo(String nombreRuta) {
+	        return cuposPorRuta.getOrDefault(canonical(nombreRuta), 0);
+	    }
+
+	  public int getTotalCupos() {
+	        return cuposPorRuta.values().stream().mapToInt(Integer::intValue).sum();
+	    }
+	
+	  private static String canonical(String s) {
+	        return (s == null) ? null : s.trim().toLowerCase(java.util.Locale.ROOT);
+	    }
 }

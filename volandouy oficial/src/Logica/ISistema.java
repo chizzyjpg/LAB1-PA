@@ -26,6 +26,7 @@ public interface ISistema {
     List<DataPaquete> listarPaquetesDisponiblesParaCompra();
     List<DataCliente> listarClientesParaCompra();
     List<DataPaquete> listarPaquetes();  
+    List<DataPaquete> listarPaquetesSinCompras();
     
     void registrarUsuario(DataUsuario data); // DataCliente o DataAerolinea
     void modificarCliente(String nickname, DataCliente nuevosDatos);
@@ -36,6 +37,7 @@ public interface ISistema {
 	void registrarCiudad(DataCiudad data);
 	void comprarPaquete(DataCompraPaquete compra);
 	void registrarPaquete(DataPaqueteAlta data);  
+	void agregarRutaAPaquete(String nombrePaquete,String nicknameAerolinea,String nombreRuta, TipoAsiento tipo, int cantidad);
 	
 	void precargaDemo();	
 	
