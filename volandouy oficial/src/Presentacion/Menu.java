@@ -215,6 +215,16 @@ public class Menu extends JFrame {
 		menuBar.add(mnNewMenu_3);
 		
 		JMenuItem mntmNewMenuItem_11 = new JMenuItem("Vuelo");
+		mntmNewMenuItem_11.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistrarReservaVuelo nuevaResVuelo = new RegistrarReservaVuelo(sistema);
+				nuevaResVuelo.setVisible(true);
+				desktopPane.add(nuevaResVuelo);
+				desktopPane.revalidate();
+				desktopPane.repaint();
+
+			}
+		});
 		mnNewMenu_3.add(mntmNewMenuItem_11);
 		
 		JMenuItem mntmNewMenuItem_12 = new JMenuItem("Paquete");

@@ -38,19 +38,17 @@ public class Reserva {
 	private Cliente nickname;
 	
 	@ManyToOne
-	private VueloEspecifico vueloEspecifico;
-	
-	@ManyToOne
 	private Paquetes paquete;	
 	
 	protected Reserva() {}	
 	
-	public Reserva(Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal) {
+	public Reserva(Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal, Cliente nickCliente) {
 		this.fechaReserva = fechaReserva;
 		this.tipoAsiento = tipoAsiento;
 		this.equipaje = equipaje;
 		this.cantEquipajeExtra = cantEquipajeExtra;
 		this.costoTotal = costoTotal;
+		this.cliente = nickCliente;
 		this.pasajes = new ArrayList<>();
 	}
 	
@@ -75,6 +73,14 @@ public class Reserva {
 		return idReserva;
 	}
 	
+	public List<Pasaje> getPasajes() {
+		return pasajes;
+	}
+	
+	public Cliente getCliente() {
+		return cliente;
+	}
+	
 	//Setters
 	public void setFechaReserva(Date fechaReserva) {
 		this.fechaReserva = fechaReserva;	
@@ -95,6 +101,9 @@ public class Reserva {
 		this.costoTotal = costoTotal;
 	}
 	
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 	
 	@Override public String toString() {
 		return "Reserva [idReserva=" + idReserva + ", fechaReserva=" + fechaReserva + ", tipoAsiento=" + tipoAsiento

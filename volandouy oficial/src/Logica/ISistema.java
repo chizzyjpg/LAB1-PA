@@ -12,6 +12,7 @@ public interface ISistema {
     
     List<DataUsuario> listarUsuarios();
     List<DataAerolinea> listarAerolineas();
+    List<DataCliente> listarClientes();
     
     DataCliente verInfoCliente(String nickname);      // null si no existe o no es cliente
     DataAerolinea verInfoAerolinea(String nickname); // null si no existe o no es aerolínea
@@ -37,8 +38,10 @@ public interface ISistema {
 	Ciudad buscarCiudad(String nombre, String pais);
 	
 	List<DataVueloEspecifico> listarVuelos(String nickname, String nombre);
+	DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo);
 	void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos);
 	
 	List<DataReserva> listarReservas(String nickname, String nombre, String codigoVuelo);
+	DataReserva buscarReserva(String nickname, String nombre, String codigoVuelo, int idReserva);
 	void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos);
 }

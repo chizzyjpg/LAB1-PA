@@ -213,7 +213,7 @@ public class ConsultaVuelo extends JInternalFrame {
             return;
         }
 
-        txtDetalleVuelo.setText(v.toString());
+        txtDetalleVuelo.setText(formatVuelo(v));
 
         DefaultListModel<DataReserva> mr = (DefaultListModel<DataReserva>) listReservas.getModel();
         mr.clear();
@@ -237,4 +237,32 @@ public class ConsultaVuelo extends JInternalFrame {
     private void error(String msg) {
         JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
     }
+    
+    private String formatVuelo(DataVueloEspecifico v) {
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    	
+        String fVuelo = v.getFecha()     != null ? sdf.format(v.getFecha())     : "-";
+        String fAlta  = v.getFechaAlta() != null ? sdf.format(v.getFechaAlta()) : "-";
+
+        return """
+               Nombre: %s
+               Fecha: %s
+               Duración: %d min
+               Asientos Turista: %d
+               Asientos Ejecutivo: %d
+               Fecha alta: %s
+               """.formatted(
+                nullToDash(v.getNombre()),
+                fVuelo,
+                v.getDuracion(),
+                v.getMaxAsientosTur(),
+                v.getMaxAsientosEjec(),
+                fAlta
+        );
+    }
+
+	private Object nullToDash(String s) {
+		return (s == null || s.isEmpty()) ? "-" : s;
+	}
+
 }

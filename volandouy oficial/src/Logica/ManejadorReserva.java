@@ -11,14 +11,14 @@ public class ManejadorReserva {
     public static Reserva toEntity(DataReserva res) {
 		Objects.requireNonNull(res, "Los datos no pueden ser nulos");
 		return new Reserva(res.getFechaReserva(), res.getTipoAsiento(), res.getEquipaje(),
-						   res.getCantEquipajeExtra(), res.getCostoTotal());
+						   res.getCantEquipajeExtra(), res.getCostoTotal(), ManejadorCliente.toEntity(res.getNickCliente()));
     }
 
 
     public static DataReserva toData(Reserva res) {
     	Objects.requireNonNull(res, "La reserva no puede ser nula");
-		return new DataReserva(res.getIdReserva, res.getFechaReserva(), res.getTipoAsiento(), res.getEquipaje(),
-							   res.getCantEquipajeExtra(), res.getCostoTotal());
+		return new DataReserva(res.getIdReserva(), res.getFechaReserva(), res.getTipoAsiento(), res.getEquipaje(),
+							   res.getCantEquipajeExtra(), res.getCostoTotal(), ManejadorCliente.toData(res.getCliente()));
     }
     
     // HELLPERS

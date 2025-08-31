@@ -113,6 +113,19 @@ public class Sistema implements ISistema {
 				String.CASE_INSENSITIVE_ORDER));
 		return aerolineas;
 	}
+    
+    public List<DataCliente> listarClientes() {
+		List<DataCliente> clientes = new ArrayList<>();
+		for (Usuario u : usuariosPorNickname.values()) {
+			if (u instanceof Cliente c) {
+				clientes.add(ManejadorCliente.toData(c));
+			}
+		}
+		clientes.sort(Comparator.comparing(
+				c -> c.getNickname() == null ? "" : c.getNickname(),
+				String.CASE_INSENSITIVE_ORDER));
+		return clientes;
+    }
 
     
     // ======================
@@ -302,6 +315,25 @@ public class Sistema implements ISistema {
 		Collection<VueloEspecifico> vuelos = r.getVuelosEspecificos().values();
 		return ManejadorVueloEspecifico.toDatas(new ArrayList<>(vuelos));
 	}
+	
+	@Override
+	public DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo) {
+		Usuario u = usuariosPorNickname.get(canonical(nickname));
+		if (!(u instanceof Aerolinea a)) {
+			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+		}
+		Ruta r = a.getRutaMap().values().stream()
+				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
+				.findFirst().orElse(null);
+		if (r == null) {
+			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+		}
+		VueloEspecifico v = r.getVuelosEspecificos().get(codigoVuelo);
+		if (v == null) {
+			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
+		}
+		return ManejadorVueloEspecifico.toData(v);
+	}
     
 	
 	// =========================
@@ -326,6 +358,28 @@ public class Sistema implements ISistema {
 		}
 		Collection<Reserva> reservas = v.getReserva().values();
 		return ManejadorReserva.toDatas(new ArrayList<>(reservas));
+	}
+	
+	public DataReserva buscarReserva(String nickname, String nombre, String codigoVuelo, int idReserva) {
+		Usuario u = usuariosPorNickname.get(canonical(nickname));
+		if (!(u instanceof Aerolinea a)) {
+			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+		}
+		Ruta r = a.getRutaMap().values().stream()
+				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
+				.findFirst().orElse(null);
+		if (r == null) {
+			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+		}
+		VueloEspecifico v = r.getVuelosEspecificos().get(codigoVuelo);
+		if (v == null) {
+			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
+		}
+		Reserva res = v.getReserva().get(Integer.toString(idReserva));
+		if (res == null) {
+			throw new IllegalArgumentException("No existe una reserva con ese ID en el vuelo indicado");
+		}
+		return ManejadorReserva.toData(res);
 	}
 	
 	@Override

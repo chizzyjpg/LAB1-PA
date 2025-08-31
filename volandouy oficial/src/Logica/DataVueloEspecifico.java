@@ -43,4 +43,10 @@ public class DataVueloEspecifico {
 	public Date getFechaAlta() {
 		return fechaAlta;
 	}
+	
+	public String toString() {
+		return "nombre=" + nombre + ", fecha=" + fecha + ", duracion=" + duracion
+				+ ", maxAsientosTur=" + maxAsientosTur + ", maxAsientosEjec=" + maxAsientosEjec + ", fechaAlta="
+				+ fechaAlta;
+	}
 }

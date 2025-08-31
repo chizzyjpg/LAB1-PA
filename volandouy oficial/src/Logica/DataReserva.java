@@ -10,17 +10,20 @@ public class DataReserva {
 	private int cantEquipajeExtra;
 	private Float costoTotal;
 	private List<DataPasaje> pasajes;
+	private DataCliente nickCliente;
 	
-	public DataReserva(int idReserva, Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal) {
+	public DataReserva(int idReserva, Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal, DataCliente nickCliente) {
 		this.idReserva = idReserva;
 		this.fechaReserva = fechaReserva;
 		this.tipoAsiento = tipoAsiento;
 		this.equipaje = equipaje;
 		this.cantEquipajeExtra = cantEquipajeExtra;
 		this.costoTotal = costoTotal;
+		this.nickCliente = nickCliente;
 		this.pasajes = new ArrayList<>();
 	}
 	
+
 	//Getters
 	public int getIdReserva() {
 		return idReserva;
@@ -48,7 +51,11 @@ public class DataReserva {
 	
 	public List<DataPasaje> getPasajes() {
 		return pasajes;
-	}	
+	}
+	
+	public DataCliente getNickCliente() {
+		return nickCliente;
+	}
 	
 	public String toString() {
 		return "Id " + idReserva + " Fecha Reserva" + fechaReserva + " Tipo Asiento: " + tipoAsiento;
