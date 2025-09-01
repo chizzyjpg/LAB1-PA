@@ -9,6 +9,7 @@ import Logica.DataVueloEspecifico;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -167,23 +168,65 @@ public class ConsultaRutaVuelo extends JInternalFrame {
     }
 
     private void verVueloSeleccionado() {
-    	DataVueloEspecifico v = listVuelos.getSelectedValue();
+        DataVueloEspecifico v = listVuelos.getSelectedValue();
         if (v == null) {
             JOptionPane.showMessageDialog(this, "Seleccioná un vuelo", "Atención", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        // TODO: abrir tu "Consulta de Vuelo", pasando el identificador del vuelo
-        // new ConsultaVueloInternalFrame(v.getNombre()).setVisible(true);
-        JOptionPane.showMessageDialog(this, "Abrir detalle de vuelo: " + v.getNombre());
+
+        DataAerolinea a = (DataAerolinea) comboAerolineas.getSelectedItem();
+        DataRuta r = listRutas.getSelectedValue();
+        if (a == null || r == null) {
+            JOptionPane.showMessageDialog(this, "Falta aerolínea o ruta seleccionada.", "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        JDesktopPane dp = getDesktopPane();
+        if (dp == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró el escritorio para abrir la ventana.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            // ⬇️ Usa el constructor que tengas en tu proyecto.
+            // Opción 1 (recomendada): pasamos sistema + identificadores
+            ConsultaVuelo frame = new ConsultaVuelo(
+                    sistema
+            );
+
+            // --- Si tu constructor es diferente, usa alguna de estas variantes ---
+            // ConsultaVuelo frame = new ConsultaVuelo(sistema, v);                    // pasa el DTO completo
+            // ConsultaVuelo frame = new ConsultaVuelo(a.getNickname(), r.getNombre(), v.getNombre());
+            // ConsultaVuelo frame = new ConsultaVuelo(v.getId());                     // si usás ID
+
+            dp.add(frame);
+            frame.setVisible(true);
+            frame.toFront();
+            frame.requestFocusInWindow();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo abrir Consulta de Vuelo:\n" + ex.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // ==== HELPERS ====
 
     private String formatRuta(DataRuta r) {
-        String o = r.getCiudadOrigen()  != null ? r.getCiudadOrigen().getNombre()  + ", " + r.getCiudadOrigen().getPais()  : "-";
-        String d = r.getCiudadDestino() != null ? r.getCiudadDestino().getNombre() + ", " + r.getCiudadDestino().getPais() : "-";
-        String f = r.getFechaAlta() != null ? sdf.format(r.getFechaAlta()) : "-";
-        String h = String.format("%02d:00", r.getHora()); // si guardás HH solamente
+        String o = (r.getCiudadOrigen()  != null)
+                ? r.getCiudadOrigen().getNombre() + ", " + r.getCiudadOrigen().getPais()
+                : "-";
+        String d = (r.getCiudadDestino() != null)
+                ? r.getCiudadDestino().getNombre() + ", " + r.getCiudadDestino().getPais()
+                : "-";
+        String f = (r.getFechaAlta() != null) ? sdf.format(r.getFechaAlta()) : "-";
+
+        // getHora() es int primitivo
+        String h = String.format("%02d:00", r.getHora());
+
+        // Acepta BigDecimal o números (int, Integer, etc.)
+        String ct = anyMoney(r.getCostoTurista());
+        String ce = anyMoney(r.getCostoEquipajeExtra());
+        String cj = anyMoney(r.getCostoEjecutivo());
 
         return """
                Nombre: %s
@@ -192,17 +235,22 @@ public class ConsultaRutaVuelo extends JInternalFrame {
                Destino: %s
                Hora: %s
                Fecha alta: %s
-               Costo Turista: %d
-               Costo equipaje extra: %d
-               Costo Ejecutivo: %d
+               Costo Turista: %s
+               Costo equipaje extra: %s
+               Costo Ejecutivo: %s
                """.formatted(
                 r.getNombre(),
                 nullToDash(r.getDescripcion()),
                 o, d, h, f,
-                r.getCostoTurista(),
-                r.getCostoEquipajeExtra(),
-                r.getCostoEjecutivo() // si querés mostrarlo
+                ct, ce, cj
         );
+    }
+
+    private String anyMoney(Object x) {
+        if (x == null) return "-";
+        if (x instanceof java.math.BigDecimal bd) return bd.toPlainString();
+        if (x instanceof Number n) return String.valueOf(n);
+        return x.toString();
     }
 
     private String nullToDash(String s){ return (s==null || s.isBlank()) ? "-" : s; }

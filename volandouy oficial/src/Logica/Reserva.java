@@ -108,6 +108,10 @@ public class Reserva {
 		this.cliente = cliente;
 	}
 	
+	public void setIdReserva(int idReserva) {
+		this.idReserva = idReserva;
+	}
+	
 	@Override public String toString() {
 		return "Reserva [idReserva=" + idReserva + ", fechaReserva=" + fechaReserva + ", tipoAsiento=" + tipoAsiento
 				+ ", equipaje=" + equipaje + ", cantEquipajeExtra=" + cantEquipajeExtra + ", costoTotal=" + costoTotal
