@@ -60,7 +60,7 @@ public final class ManejadorPaquete {
                 /* tipoAsiento */ null,        // un solo tipo por paquete, se definirá luego si corresponde
                 /* descuento */ dto.getDescuento(),
                 /* validez */ dto.getValidez(),
-                /* costo */ null               // aún no definido
+                /* costo */ null              // aún no definido
         );
         p.setFechaAlta(copia(dto.getFechaAlta()));
         return p;

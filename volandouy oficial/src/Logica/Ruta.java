@@ -1,5 +1,6 @@
 package Logica;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,8 +47,11 @@ public class Ruta {
     @Column(name = "fechaAlta", nullable = false)
     private Date fechaAlta;
 
-    @Column(name = "costoBase", nullable = false)
-    private int costoBase;
+    @Column(name = "costoTurista", nullable = false)
+    private BigDecimal costoTurista;
+    
+    @Column(name = "costoEjecutivo", nullable = false)
+    private BigDecimal costoEjecutivo;
 
     @Column(name = "costoEquipajeExtra", nullable = false)
     private int costoEquipajeExtra;
@@ -64,16 +68,17 @@ public class Ruta {
     public Ruta(String n, String desc,
                 Ciudad origen, Ciudad destino,
                 int hora, Date fechaAlta,
-                int costoBase, int costoEquipajeExtra) {
+                BigDecimal costoTurista, int costoEquipajeExtra, BigDecimal costoEjecutivo) {
         this.nombre = n;
         this.descripcion = desc;
         this.origen = origen;
         this.destino = destino;
         this.hora = hora;
         this.fechaAlta = fechaAlta;
-        this.costoBase = costoBase;
+        this.costoTurista = costoTurista;
         this.costoEquipajeExtra = costoEquipajeExtra;
         this.vuelosEspecificos = new HashMap<>();
+        this.costoEjecutivo = costoEjecutivo;
     }
 
     // getters
@@ -84,7 +89,8 @@ public class Ruta {
     public Ciudad getDestino() { return destino; }
     public int getHora() { return hora; }
     public Date getFechaAlta() { return fechaAlta; }
-    public int getCostoBase() { return costoBase; }
+    public BigDecimal getCostoTurista() { return costoTurista; }
+    public BigDecimal getCostoEjecutivo() { return costoEjecutivo; }
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
     public List<Categoria> getCategorias() { return categorias; }
     public Map<String, VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
@@ -96,7 +102,8 @@ public class Ruta {
     public void setDestino(Ciudad destino) { this.destino = destino; }
     public void setHora(int hora) { this.hora = hora; }
     public void setFechaAlta(Date fechaAlta) { this.fechaAlta = fechaAlta; }
-    public void setCostoBase(int costoBase) { this.costoBase = costoBase; }
+    public void setCostoBase(BigDecimal costoTurista) { this.costoTurista = costoTurista; }
+    public void setCostoEjecutivo(BigDecimal costoEjecutivo) { this.costoEjecutivo = costoEjecutivo; }
     public void setCostoEquipajeExtra(int costoEquipajeExtra) { this.costoEquipajeExtra = costoEquipajeExtra; }
     public void setCategorias(List<Categoria> cat) { this.categorias = cat; }
     public void setVuelosEspecificos(Map<String, VueloEspecifico> vuelos) { this.vuelosEspecificos = vuelos; }
@@ -109,7 +116,8 @@ public class Ruta {
                ", destino=" + (destino!=null ? (destino.getNombre()+", "+destino.getPais()) : null) +
                ", hora=" + hora +
                ", fechaAlta=" + fechaAlta +
-               ", costoBase=" + costoBase +
+               ", costoTurista=" + costoTurista +
+               ", costoEjecutivo=" + costoEjecutivo +
                ", costoEquipajeExtra=" + costoEquipajeExtra +
                ", categorias=" + categorias + "]" +
                " vuelosEspecificos=" + vuelosEspecificos.values() + "]";

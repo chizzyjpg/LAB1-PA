@@ -343,8 +343,11 @@ public class Sistema implements ISistema {
 	            .filter(p -> p.getCantRutas() > 0)
 	            .sorted(Comparator.comparing(Paquete::getNombre, String.CASE_INSENSITIVE_ORDER))
 	            .collect(Collectors.toList());
-
+		
+		System.out.println(elegibles.toString());
+		
 	    return ManejadorPaquete.toDTOs(elegibles);
+	    
 	}
 	
 
@@ -407,6 +410,9 @@ public class Sistema implements ISistema {
 	public void precargaDemo() {
 	    registrarUsuario(new DataCliente("Ana","ana01","ana@mail.com","Pérez", new Date(), "UY", TipoDocumento.CEDULA, "52559649"));
 	    registrarUsuario(new DataCliente("Bruno","bruno02","bruno@mail.com","López", new Date(), "UY", TipoDocumento.PASAPORTE, "54985693"));
+	    
+	    //registrarUsuario(new DataAerolinea("Ana","ana01","ana@mail.com","Pérez", new Date(), "UY", TipoDocumento.CEDULA, "52559649"));
+	    registrarUsuario(new DataAerolinea("Jet","jet","jet@mail.com", "DESC", "SITIO"));
 
 	    DataPaquete rp  = new DataPaquete("Promo Río","Paquete con rutas a Río",2,TipoAsiento.TURISTA,20,30, BigDecimal.valueOf(1200));
 	    DataPaquete rp2 = new DataPaquete("Europa Express","Rutas a Europa",3,TipoAsiento.EJECUTIVO,15,60, BigDecimal.valueOf(3200));
@@ -491,7 +497,8 @@ public class Sistema implements ISistema {
 	                                 String nicknameAerolinea,
 	                                 String nombreRuta,
 	                                 TipoAsiento tipo,
-	                                 int cantidad) {
+	                                 int cantidad
+	                                 ) {
 
 	     if (nombrePaquete == null || nicknameAerolinea == null || nombreRuta == null || tipo == null || cantidad <= 0)
 	         throw new IllegalArgumentException("Datos incompletos");
@@ -532,6 +539,22 @@ public class Sistema implements ISistema {
                  + ") no coincide con el seleccionado (" + tipo + ")."
              );
          }
+         
+         BigDecimal cantidadBD = BigDecimal.valueOf(cantidad);
+         BigDecimal descuentoFactor = BigDecimal.valueOf((100 - p.getDescuento()) / 100.0);
+         
+         if (p.getCosto() == null) {
+			 p.setCosto(BigDecimal.ZERO);
+		 }
+         
+         
+         if(tipo == TipoAsiento.TURISTA) {
+        	 p.setCosto(p.getCosto().add(r.getCostoTurista().multiply(cantidadBD).multiply(descuentoFactor)));
+         }
+         else if(tipo == TipoAsiento.EJECUTIVO) {
+			 p.setCosto(p.getCosto().add(r.getCostoEjecutivo().multiply(cantidadBD).multiply(descuentoFactor)));
+		 }
+         
 
          // agregar ruta por NOMBRE (único)
          p.addCuposRuta(r.getNombre(), cantidad);

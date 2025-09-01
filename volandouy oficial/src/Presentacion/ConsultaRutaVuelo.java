@@ -192,14 +192,16 @@ public class ConsultaRutaVuelo extends JInternalFrame {
                Destino: %s
                Hora: %s
                Fecha alta: %s
-               Costo base: %d
+               Costo Turista: %d
                Costo equipaje extra: %d
+               Costo Ejecutivo: %d
                """.formatted(
                 r.getNombre(),
                 nullToDash(r.getDescripcion()),
                 o, d, h, f,
-                r.getCostoBase(),
-                r.getCostoEquipajeExtra()
+                r.getCostoTurista(),
+                r.getCostoEquipajeExtra(),
+                r.getCostoEjecutivo() // si querés mostrarlo
         );
     }
 
