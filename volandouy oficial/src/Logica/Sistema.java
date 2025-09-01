@@ -31,12 +31,24 @@ public class Sistema implements ISistema {
     
  // Normaliza claves para que "Juan", "juAN" y "juan" choquen correctamente ////// HELPERS
     
+ // Helper en Sistema
+    private static int nextReservaId(java.util.Map<String, Reserva> mapa) {
+        int max = 0;
+        for (String k : mapa.keySet()) {
+            try {
+                int n = Integer.parseInt(k);
+                if (n > max) max = n;
+            } catch (NumberFormatException ignore) {}
+        }
+        return max + 1;
+    }
+    
     
     private static String canonical(String s) {
         return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
     }
     
-    private static java.util.Date copia(java.util.Date d) {
+    private static Date copia(java.util.Date d) {
         return (d == null) ? null : new java.util.Date(d.getTime());
     }
 
@@ -411,8 +423,12 @@ public class Sistema implements ISistema {
 	    registrarUsuario(new DataCliente("Ana","ana01","ana@mail.com","Pérez", new Date(), "UY", TipoDocumento.CEDULA, "52559649"));
 	    registrarUsuario(new DataCliente("Bruno","bruno02","bruno@mail.com","López", new Date(), "UY", TipoDocumento.PASAPORTE, "54985693"));
 	    
-	    //registrarUsuario(new DataAerolinea("Ana","ana01","ana@mail.com","Pérez", new Date(), "UY", TipoDocumento.CEDULA, "52559649"));
+	    registrarUsuario(new DataAerolinea("Copa","copa","copa@mail.com", "DESCcopa", "SITIOcopa"));
 	    registrarUsuario(new DataAerolinea("Jet","jet","jet@mail.com", "DESC", "SITIO"));
+	    
+	    registrarCategoria(new DataCategoria("Económica"));
+	    
+	    registrarCiudad(new DataCiudad("Montevideo","Uruguay", "Carrasco", "Ciudad capital", null, "sitio"));
 
 	    DataPaquete rp  = new DataPaquete("Promo Río","Paquete con rutas a Río",2,TipoAsiento.TURISTA,20,30, BigDecimal.valueOf(1200));
 	    DataPaquete rp2 = new DataPaquete("Europa Express","Rutas a Europa",3,TipoAsiento.EJECUTIVO,15,60, BigDecimal.valueOf(3200));
@@ -561,7 +577,11 @@ public class Sistema implements ISistema {
      }
 
 	
-    
+	// =========================
+	//   CONSULTA DE PAQUETE
+	// =========================
+	 
+	 
 	
 	// =========================
 	//         RESERVAS
@@ -628,6 +648,12 @@ public class Sistema implements ISistema {
 			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
 		}
 		Reserva res = ManejadorReserva.toEntity(datos);
+		
+		int nuevoId = nextReservaId(v.getReserva());
+	    res.setIdReserva(nuevoId);  
 		v.getReserva().put(Integer.toString(res.getIdReserva()), res);
 	}
+	
+	
+	
 }

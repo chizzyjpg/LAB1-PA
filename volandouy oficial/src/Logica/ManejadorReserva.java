@@ -10,8 +10,17 @@ public class ManejadorReserva {
     // Obtener
     public static Reserva toEntity(DataReserva res) {
 		Objects.requireNonNull(res, "Los datos no pueden ser nulos");
-		return new Reserva(res.getFechaReserva(), res.getTipoAsiento(), res.getEquipaje(),
+		Cliente cli = ManejadorCliente.toEntity(res.getNickCliente());
+		Reserva r = new Reserva(res.getFechaReserva(), res.getTipoAsiento(), res.getEquipaje(),
 						   res.getCantEquipajeExtra(), res.getCostoTotal(), ManejadorCliente.toEntity(res.getNickCliente()));
+		
+		if (res.getPasajes() != null) {
+	        for (DataPasaje dp : res.getPasajes()) {
+	            Pasaje p = ManejadorPasaje.toEntity(dp);
+	             r.getPasajes().add(p);     // o agregar a la colección
+	        }
+	    }
+	    return r;
     }
 
 
