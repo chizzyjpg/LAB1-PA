@@ -14,7 +14,7 @@ public final class ManejadorCompraPaquete {
 
         Date fecha = copy(dto.getFechaCompra());
         // costo: si dto trae null, usar el del paquete
-        BigDecimal costo = (dto.getCosto() != null) ? dto.getCosto() : paquete.getCosto();
+        BigDecimal costo = paquete.getCosto();//(dto.getCosto() != null) ? dto.getCosto() : paquete.getCosto();
 
         // vencimiento: si dto trae null, calcular = fecha + validez (días)
         Date venc = (dto.getVencimiento() != null)? copy(dto.getVencimiento()) : addDays(fecha, paquete.getValidez());

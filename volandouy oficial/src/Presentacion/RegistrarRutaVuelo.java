@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultListCellRenderer;
 
@@ -257,10 +258,12 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        // Pedimos PAÍS (mínimo cambio en UI)
 		        
 		        // Parseos
-		        int costoBase;
+		        BigDecimal costoTurista;
 		        int costoEquipaje;
+		        BigDecimal costoEjecutivo;
 		        try {
-		            costoBase = Integer.parseInt(turista);
+		        	costoTurista = new BigDecimal(turista);
+		        	costoEjecutivo = new BigDecimal(ejecutivo);
 		            costoEquipaje = Integer.parseInt(costo);
 		        } catch (NumberFormatException nfe) {
 		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Costos deben ser números enteros", "Error de formato" , JOptionPane.ERROR_MESSAGE);
@@ -282,8 +285,9 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        			ciudadD,
 		        			horaInt,
 		        			fecha,
-		        			costoBase,
-		        			costoEquipaje
+		        			costoTurista,
+		        			costoEquipaje,
+		        			costoEjecutivo
 		        			);
 		        	
 		        	sistema.registrarRuta(aerolinea.getNickname(), datos);

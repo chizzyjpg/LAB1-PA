@@ -17,7 +17,7 @@ public class ManejadorRuta {
 			data.getNombre(), data.getDescripcion(),
 			origen, destino,
 			data.getHora(), data.getFechaAlta(),
-			data.getCostoBase(), data.getCostoEquipajeExtra()
+			data.getCostoTurista(), data.getCostoEquipajeExtra(), data.getCostoEjecutivo()			
 		);
     }
 
@@ -30,7 +30,7 @@ public class ManejadorRuta {
             r.getNombre(), r.getDescripcion(),
             origen, destino,
             r.getHora(), r.getFechaAlta(),
-            r.getCostoBase(), r.getCostoEquipajeExtra()
+            r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo()
         );
     }
     
