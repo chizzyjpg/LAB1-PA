@@ -36,4 +36,10 @@ public class DataRuta {
     public Date getFechaAlta() { return fechaAlta; }
     public int getCostoBase() { return costoBase; }
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
+    
+    @Override
+    public String toString() {
+    			return  nombre + " De (" + ciudadOrigen.getNombre() + ") " + "A (" +ciudadDestino.getNombre() + ")";
+    			
+    }
 }

@@ -1,11 +1,14 @@
 package Logica;
 
-import java.util.Date;
+import java.util.*;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Reserva")
 public class Reserva {
+	
+	@ManyToMany
+	private List<Pasaje> pasajes = new ArrayList<>();
 	
 	@ManyToOne
 	@JoinColumn(name = "idCliente", referencedColumnName = "nickname")
@@ -31,7 +34,6 @@ public class Reserva {
 	@Column(name = "costoTotal", nullable = false)
 	private Float costoTotal;
 	
-	
 	@ManyToOne
 	private Cliente nickname;
 	
@@ -43,12 +45,14 @@ public class Reserva {
 	
 	protected Reserva() {}	
 	
-	public Reserva(Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal) {
+	public Reserva(Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal, Cliente nickCliente) {
 		this.fechaReserva = fechaReserva;
 		this.tipoAsiento = tipoAsiento;
 		this.equipaje = equipaje;
 		this.cantEquipajeExtra = cantEquipajeExtra;
 		this.costoTotal = costoTotal;
+		this.cliente = nickCliente;
+		this.pasajes = new ArrayList<>();
 	}
 	
 	//Getters
@@ -66,6 +70,18 @@ public class Reserva {
 	}
 	public Float getCostoTotal() {
 		return costoTotal;
+	}
+	
+	public int getIdReserva() {
+		return idReserva;
+	}
+	
+	public List<Pasaje> getPasajes() {
+		return pasajes;
+	}
+	
+	public Cliente getCliente() {
+		return cliente;
 	}
 	
 	//Setters
@@ -88,6 +104,9 @@ public class Reserva {
 		this.costoTotal = costoTotal;
 	}
 	
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 	
 	@Override public String toString() {
 		return "Reserva [idReserva=" + idReserva + ", fechaReserva=" + fechaReserva + ", tipoAsiento=" + tipoAsiento

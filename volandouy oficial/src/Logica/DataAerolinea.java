@@ -20,5 +20,10 @@ public class DataAerolinea extends DataUsuario {
     public String getSitioWeb() {
         return sitioWeb;
     }
+    
+    @Override
+    public String toString() {
+    			return this.getNickname() + " - " + this.getNombre();
+    }
 }
 
