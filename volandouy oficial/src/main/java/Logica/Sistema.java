@@ -322,7 +322,7 @@ public class Sistema implements ISistema {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}
 		Ruta r = a.getRutaMap().values().stream()
-				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
+				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))  //anda a saber si esto esta bien
 				.findFirst().orElse(null);
 		if (r == null) {
 			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
@@ -343,7 +343,7 @@ public class Sistema implements ISistema {
 		if (r == null) {
 			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
 		}
-		Collection<VueloEspecifico> vuelos = r.getVuelosEspecificos().values();
+		Collection<VueloEspecifico> vuelos = r.getVuelosEspecificos();
 		return ManejadorVueloEspecifico.toDatas(new ArrayList<>(vuelos));
 	}
 
@@ -359,7 +359,9 @@ public class Sistema implements ISistema {
 		if (r == null) {
 			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
 		}
-		VueloEspecifico v = r.getVuelosEspecificos().get(codigoVuelo);
+		VueloEspecifico v = r.getVuelosEspecificos().stream()
+			.filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo))
+			.findFirst().orElse(null);
 		if (v == null) {
 			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
 		}
@@ -602,65 +604,72 @@ public class Sistema implements ISistema {
 	
 	@Override
 	public List<DataReserva> listarReservas(String nickname, String nombre, String codigoVuelo) {
-		Usuario u = usuariosPorNickname.get(canonical(nickname));
-		if (!(u instanceof Aerolinea a)) {
-			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
-		}
-		Ruta r = a.getRutaMap().values().stream()
-				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
-				.findFirst().orElse(null);
-		if (r == null) {
-			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
-		}
-		VueloEspecifico v = r.getVuelosEspecificos().get(codigoVuelo);
-		if (v == null) {
-			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
-		}
-		Collection<Reserva> reservas = v.getReserva().values();
-		return ManejadorReserva.toDatas(new ArrayList<>(reservas));
-	}
-	
-	public DataReserva buscarReserva(String nickname, String nombre, String codigoVuelo, int idReserva) {
-		Usuario u = usuariosPorNickname.get(canonical(nickname));
-		if (!(u instanceof Aerolinea a)) {
-			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
-		}
-		Ruta r = a.getRutaMap().values().stream()
-				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
-				.findFirst().orElse(null);
-		if (r == null) {
-			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
-		}
-		VueloEspecifico v = r.getVuelosEspecificos().get(codigoVuelo);
-		if (v == null) {
-			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
-		}
-		Reserva res = v.getReserva().get(Integer.toString(idReserva));
-		if (res == null) {
-			throw new IllegalArgumentException("No existe una reserva con ese ID en el vuelo indicado");
-		}
-		return ManejadorReserva.toData(res);
-	}
-	
-	@Override
-	public void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos) {
-		if (datos == null) throw new IllegalArgumentException("Los datos de la reserva no pueden ser nulos");
-		
-		Usuario u = usuariosPorNickname.get(canonical(nickname));
-		if (!(u instanceof Aerolinea a)) {
-			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
-		}
-		Ruta r = a.getRutaMap().values().stream()
-				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
-				.findFirst().orElse(null);
-		if (r == null) {
-			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
-		}
-		VueloEspecifico v = r.getVuelosEspecificos().get(codigoVuelo);
-		if (v == null) {
-			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
-		}
-		Reserva res = ManejadorReserva.toEntity(datos);
-		v.getReserva().put(Integer.toString(res.getIdReserva()), res);
-	}
+        Usuario u = usuariosPorNickname.get(canonical(nickname));
+        if (!(u instanceof Aerolinea a)) {
+            throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+        }
+        Ruta r = a.getRutaMap().values().stream()
+                .filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
+                .findFirst().orElse(null);
+        if (r == null) {
+            throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+        }
+        VueloEspecifico v = r.getVuelosEspecificos().stream()
+            .filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo))
+            .findFirst().orElse(null);
+        if (v == null) {
+            throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
+        }
+        Collection<Reserva> reservas = v.getReservas();
+        return ManejadorReserva.toDatas(new ArrayList<>(reservas));
+    }
+
+    public DataReserva buscarReserva(String nickname, String nombre, String codigoVuelo, int idReserva) {
+        Usuario u = usuariosPorNickname.get(canonical(nickname));
+        if (!(u instanceof Aerolinea a)) {
+            throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+        }
+        Ruta r = a.getRutaMap().values().stream()
+                .filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
+                .findFirst().orElse(null);
+        if (r == null) {
+            throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+        }
+        VueloEspecifico v = r.getVuelosEspecificos().stream()
+            .filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo))
+            .findFirst().orElse(null);
+        if (v == null) {
+            throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
+        }
+        Reserva res = v.getReservas().stream()
+            .filter(rsv -> rsv.getIdReserva() == idReserva)
+            .findFirst().orElse(null);
+        if (res == null) {
+            throw new IllegalArgumentException("No existe una reserva con ese ID en el vuelo indicado");
+        }
+        return ManejadorReserva.toData(res);
+    }
+
+    @Override
+    public void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos) {
+        if (datos == null) throw new IllegalArgumentException("Los datos de la reserva no pueden ser nulos");
+        Usuario u = usuariosPorNickname.get(canonical(nickname));
+        if (!(u instanceof Aerolinea a)) {
+            throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+        }
+        Ruta r = a.getRutaMap().values().stream()
+                .filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
+                .findFirst().orElse(null);
+        if (r == null) {
+            throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+        }
+        VueloEspecifico v = r.getVuelosEspecificos().stream()
+            .filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo))
+            .findFirst().orElse(null);
+        if (v == null) {
+            throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
+        }
+        Reserva res = ManejadorReserva.toEntity(datos);
+        v.getReservas().add(res);
+    }
 }

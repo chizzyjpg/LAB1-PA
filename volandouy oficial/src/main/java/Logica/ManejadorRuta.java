@@ -24,7 +24,7 @@ public class ManejadorRuta {
 			data.getCostoTurista(), data.getCostoEquipajeExtra(), data.getCostoEjecutivo()			
 		);
         try {
-        	new RutaVueloService().crearRutaVuelo(r.getNombre(), r.getDescripcion(), origen, destino, r.getHora(), r.getFechaAlta(), r.getCostoBase(), r.getCostoEquipajeExtra(), r.getCategoria());
+        	new RutaVueloService().crearRutaVuelo(r.getNombre(), r.getDescripcion(), origen, destino, r.getHora(), r.getFechaAlta(), r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo());
         	JOptionPane.showMessageDialog(null, "Se insertó correctamente");
         }catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());

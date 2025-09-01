@@ -150,10 +150,6 @@ public class Reserva {
 		this.costoTotal = costoTotal;
 	}
 	
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-	
 	@Override public String toString() {
 		return "Reserva [fechaReserva=" + fechaReserva + ", tipoAsiento=" + tipoAsiento
 				+ ", equipaje=" + equipaje + ", cantEquipajeExtra=" + cantEquipajeExtra + ", costoTotal=" + costoTotal

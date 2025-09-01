@@ -13,7 +13,7 @@ public class ModificarUsuario extends JInternalFrame {
     private final ISistema sistema;
 
     // top
-    private JComboBox<DataUsuario> comboUsuarios;
+    private JComboBox<DataUsuarioAux> comboUsuarios;
     private JButton btnGuardar, btnCerrar;
 
     // comunes
@@ -59,7 +59,7 @@ public class ModificarUsuario extends JInternalFrame {
         comboUsuarios.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (value instanceof DataUsuario du) {
+                if (value instanceof DataUsuarioAux du) {
                     String tipo = (du instanceof DataCliente) ? "Cliente" :
                                   (du instanceof DataAerolinea) ? "Aerolínea" : "Usuario";
                     setText("%s: %s — %s".formatted(tipo, nvl(du.getNickname()), nvl(du.getNombre())));
@@ -168,9 +168,11 @@ public class ModificarUsuario extends JInternalFrame {
 
     private void cargarUsuarios() {
         try {
-            List<DataUsuarioAux> lista = sistema.listarUsuarios();
+            List<DataUsuarioAux> lista = sistema.listarUsuarios().stream()
+                .map(DataUsuarioAux::new)
+                .toList();
             lista.sort(Comparator.comparing(u -> nvl(u.getNickname()), String.CASE_INSENSITIVE_ORDER));
-            comboUsuarios.setModel(new DefaultComboBoxModel<>(lista.toArray(new DataUsuario[0])));
+            comboUsuarios.setModel(new DefaultComboBoxModel<>(lista.toArray(new DataUsuarioAux[0])));
             if (!lista.isEmpty()) {
                 comboUsuarios.setSelectedIndex(0);
                 onSeleccionarUsuario(); // carga el primero
@@ -187,7 +189,6 @@ public class ModificarUsuario extends JInternalFrame {
     private void onSeleccionarUsuario() {
         DataUsuarioAux du = (DataUsuarioAux) comboUsuarios.getSelectedItem();
         if (du == null) { limpiar(); return; }
-
         // refrescar desde sistema por nickname
         String nick = du.getNickname();
         DataCliente dc = sistema.verInfoCliente(nick);
@@ -205,7 +206,6 @@ public class ModificarUsuario extends JInternalFrame {
             txtNumDoc.setText(nvl(dc.getNumDocumento()));
             return;
         }
-
         DataAerolinea da = sistema.verInfoAerolinea(nick);
         if (da != null) {
             mostrarCard(CARD_AERO);
@@ -218,7 +218,6 @@ public class ModificarUsuario extends JInternalFrame {
             txtSitio.setText(nvl(da.getSitioWeb()));
             return;
         }
-
         // si no existe
         limpiar();
         JOptionPane.showMessageDialog(this, "Usuario no encontrado", "Aviso", JOptionPane.WARNING_MESSAGE);
@@ -228,7 +227,6 @@ public class ModificarUsuario extends JInternalFrame {
         DataUsuarioAux du = (DataUsuarioAux) comboUsuarios.getSelectedItem();
         if (du == null) return;
         String nick = du.getNickname();
-
         // ¿cliente?
         DataCliente dcActual = sistema.verInfoCliente(nick);
         if (dcActual != null) {
@@ -250,7 +248,6 @@ public class ModificarUsuario extends JInternalFrame {
             }
             return;
         }
-
         // ¿aerolínea?
         DataAerolinea daActual = sistema.verInfoAerolinea(nick);
         if (daActual != null) {

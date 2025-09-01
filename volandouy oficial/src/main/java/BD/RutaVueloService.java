@@ -2,6 +2,8 @@ package BD;
 
 
 import jakarta.persistence.EntityManager;
+
+import java.math.BigDecimal;
 import java.util.Date;
 
 import Logica.Categoria;
@@ -12,7 +14,7 @@ import Logica.Ruta;
 public class RutaVueloService {
 
 	public void crearRutaVuelo(String nombre, String descripcion, Ciudad ciudadOrigen,
-			Ciudad ciudadDestino, int hora, Date fechaAlta, int costoBase, int costoEquipajeExtra, Categoria cat) {
+			Ciudad ciudadDestino, int hora, Date fechaAlta, BigDecimal costoTurista, int costoEquipajeExtra, BigDecimal costoEjecutivo) {
 		// TODO Auto-generated method stub
 		EntityManager em = JPAUtil.getEntityManager();
 		
@@ -28,7 +30,7 @@ public class RutaVueloService {
 				em.persist(ciudadDestino);
 			}
 
-			Ruta r = new Ruta(nombre, descripcion, ciudadOrigen, ciudadDestino, hora, fechaAlta, costoBase, costoEquipajeExtra, cat);
+			Ruta r = new Ruta(nombre, descripcion, ciudadOrigen, ciudadDestino, hora, fechaAlta, costoTurista, costoEquipajeExtra, costoEjecutivo);
 			em.persist(r);
 			
 			em.getTransaction().commit();
