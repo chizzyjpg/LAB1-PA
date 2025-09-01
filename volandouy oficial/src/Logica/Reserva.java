@@ -38,7 +38,10 @@ public class Reserva {
 	private Cliente nickname;
 	
 	@ManyToOne
-	private Paquetes paquete;	
+	private VueloEspecifico vueloEspecifico;
+	
+	@ManyToOne
+	private Paquete paquete;	
 	
 	protected Reserva() {}	
 	

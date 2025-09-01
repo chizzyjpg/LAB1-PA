@@ -286,7 +286,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        			costoEquipaje
 		        			);
 		        	
-		        	sistema.RegistrarRuta(aerolinea.getNickname(), datos);
+		        	sistema.registrarRuta(aerolinea.getNickname(), datos);
 
 		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Ruta de Vuelo registrada correctamente!\nNombre: " + nombre, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
 

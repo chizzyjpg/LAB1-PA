@@ -46,13 +46,15 @@ public class Menu extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 907, 719);
 		
+		sistema.precargaDemo();
+		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
 		JMenu mnNewMenu = new JMenu("Registros");
 		menuBar.add(mnNewMenu);
 		
-		JMenuItem mntmNewMenuItem = new JMenuItem("Reg. Usuario");
+		JMenuItem mntmNewMenuItem = new JMenuItem("Registar Usuario");
 		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RegistroUsuario internal = new RegistroUsuario(sistema);
@@ -70,7 +72,7 @@ public class Menu extends JFrame {
 		});
 		mnNewMenu.add(mntmNewMenuItem);
 		
-		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Categoría ");
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Registrar Categoría");
 		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RegistroCategoria cat = new RegistroCategoria(sistema); // usa el campo del menú
@@ -84,7 +86,7 @@ public class Menu extends JFrame {
 		});
 		mnNewMenu.add(mntmNewMenuItem_1);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Reg. Ciudad");
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Registrar Ciudad");
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RegistroCiudad nuevaCiudad = new RegistroCiudad(sistema);
@@ -97,7 +99,7 @@ public class Menu extends JFrame {
 		});
 		mnNewMenu.add(mntmNewMenuItem_2);
 		
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Reg. Vuelo");
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Registrar Vuelo");
 		mntmNewMenuItem_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RegistroVuelo nuevoVuelo = new RegistroVuelo(sistema);
@@ -109,7 +111,7 @@ public class Menu extends JFrame {
 		});
 		mnNewMenu.add(mntmNewMenuItem_3);
 		
-		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Reg. Ruta de Vuelo");
+		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Registrar Ruta de Vuelo");
 		mntmNewMenuItem_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RegistrarRutaVuelo rutaNueva = new RegistrarRutaVuelo(sistema);
@@ -122,21 +124,23 @@ public class Menu extends JFrame {
 		});
 		mnNewMenu.add(mntmNewMenuItem_4);
 		
-		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Reg. Paq. Rutas de Vuelo");
+		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Crear Paquetes de Rutas de Vuelo");
 		mntmNewMenuItem_5.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 		        // instanciás tu InternalFrame correcto
-		        RegistroPaqueteRuta nuevoPaqRutasDeVuelo = new RegistroPaqueteRuta();
+		        RegistroPaqueteRuta nuevoPaqRutasDeVuelo = new RegistroPaqueteRuta(sistema);
 		        nuevoPaqRutasDeVuelo.setVisible(true);
 		        desktopPane.add(nuevoPaqRutasDeVuelo);
+		        desktopPane.revalidate();
+				desktopPane.repaint();
 		    }
 		});
 		mnNewMenu.add(mntmNewMenuItem_5);
 		
-		JMenuItem mntmNewMenuItem_13 = new JMenuItem("Reg. Rutas de Vuelo a Paq.");
+		JMenuItem mntmNewMenuItem_13 = new JMenuItem("Registrar Rutas de Vuelo en Paquete");
 		mntmNewMenuItem_13.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegistroRutaVueloaPaquete nuevoRegRutasVueloaPaq = new RegistroRutaVueloaPaquete();
+				RegistroRutaVueloaPaquete nuevoRegRutasVueloaPaq = new RegistroRutaVueloaPaquete(sistema);
 				nuevoRegRutasVueloaPaq.setVisible(true);
 				desktopPane.add(nuevoRegRutasVueloaPaq);
 				desktopPane.revalidate();
@@ -186,7 +190,7 @@ public class Menu extends JFrame {
 		});
 		mnNewMenu_1.add(mntmNewMenuItem_8);
 		
-		JMenuItem mntmNewMenuItem_9 = new JMenuItem("Paq. de Rutas de Vuelo");
+		JMenuItem mntmNewMenuItem_9 = new JMenuItem("Paquetes de Rutas de Vuelo");
 		mntmNewMenuItem_9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ConsultaPaqRutasVuelo ConPaq = new ConsultaPaqRutasVuelo();
@@ -203,18 +207,19 @@ public class Menu extends JFrame {
 		
 		JMenuItem mntmNewMenuItem_10 = new JMenuItem("Modificar Datos de Usuario");
 		mnNewMenu_2.add(mntmNewMenuItem_10);
-		mnNewMenu_2.add(mntmNewMenuItem_10);
 		mntmNewMenuItem_10.addActionListener(e -> {
 		    ModificarUsuario frm = new ModificarUsuario(sistema);
 		    desktopPane.add(frm);
+		    desktopPane.revalidate();
+			desktopPane.repaint();
 		    frm.setVisible(true);
 		    frm.toFront();
 		});
 		
-		JMenu mnNewMenu_3 = new JMenu("Reservas");
+		JMenu mnNewMenu_3 = new JMenu("Reservas / Compra");
 		menuBar.add(mnNewMenu_3);
 		
-		JMenuItem mntmNewMenuItem_11 = new JMenuItem("Vuelo");
+		JMenuItem mntmNewMenuItem_11 = new JMenuItem("Reserva de Vuelo");
 		mntmNewMenuItem_11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RegistrarReservaVuelo nuevaResVuelo = new RegistrarReservaVuelo(sistema);
@@ -227,8 +232,16 @@ public class Menu extends JFrame {
 		});
 		mnNewMenu_3.add(mntmNewMenuItem_11);
 		
-		JMenuItem mntmNewMenuItem_12 = new JMenuItem("Paquete");
+		JMenuItem mntmNewMenuItem_12 = new JMenuItem("Compra de Paquete");
 		mnNewMenu_3.add(mntmNewMenuItem_12);
+		mntmNewMenuItem_12.addActionListener(e -> {
+		    CompraPaqueteIF compraPaquete = new CompraPaqueteIF(sistema);
+		    desktopPane.add(compraPaquete);
+		    desktopPane.revalidate();
+			desktopPane.repaint();
+		    compraPaquete.setVisible(true);
+		    compraPaquete.toFront();
+		});
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
