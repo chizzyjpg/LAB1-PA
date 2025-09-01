@@ -1,61 +1,34 @@
 package Logica;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class DataReserva {
-	private String Aerolinea;
-	private Ruta rutasVuelo;
-	private Cliente cliente;
-	private int cantPasajes;
-	private String nomPasajero;
-	private String apePasajero;
-	//private Pasajero pasajero;
+	private int idReserva;
 	private Date fechaReserva;
 	private TipoAsiento tipoAsiento;
 	private Equipaje equipaje;
 	private int cantEquipajeExtra;
 	private Float costoTotal;
+	private List<DataPasaje> pasajes;
+	private DataCliente nickCliente;
 	
-	public DataReserva(String aerolinea, Ruta rutasVuelo, Cliente cliente, int cantPasajes, String nomPasajero, String apePasajero/*,Pasajero pasajero*/,Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal) {
-		this.Aerolinea = aerolinea;
-		this.rutasVuelo = rutasVuelo;
-		this.cliente = cliente;
-		this.cantPasajes = cantPasajes;
-		this.nomPasajero = nomPasajero;
-		this.apePasajero = apePasajero;
-		//this.pasajero = pasajero;
+	public DataReserva(int idReserva, Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal, DataCliente nickCliente) {
+		this.idReserva = idReserva;
 		this.fechaReserva = fechaReserva;
 		this.tipoAsiento = tipoAsiento;
 		this.equipaje = equipaje;
 		this.cantEquipajeExtra = cantEquipajeExtra;
 		this.costoTotal = costoTotal;
+		this.nickCliente = nickCliente;
+		this.pasajes = new ArrayList<>();
 	}
 	
-	public String getAerolinea() {
-		return Aerolinea;
+
+	//Getters
+	public int getIdReserva() {
+		return idReserva;
 	}
-	
-	public Ruta getRutasVuelo() {
-		return rutasVuelo;
-	}
-	
-	public Cliente getCliente() {
-		return cliente;
-	}
-	
-	public int getCantPasajes() {
-		return cantPasajes;
-	}
-	public String getNomPasajero() {
-		return nomPasajero;
-	}
-	public String getApePasajero() {
-		return apePasajero;
-	}
-	/*public Pasajero getPasajero() {
-		return pasajero;
-	}*/
-	
 	
 	public Date getFechaReserva() {
 		return fechaReserva;
@@ -75,6 +48,21 @@ public class DataReserva {
 	
 	public Float getCostoTotal() {
 		return costoTotal;
+	}
+	
+	public List<DataPasaje> getPasajes() {
+		return pasajes;
+	}
+	
+	public DataCliente getNickCliente() {
+		return nickCliente;
+	}
+	
+	public String toString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    	String sfd = sdf.format(fechaReserva);
+		
+		return "Id " + idReserva + " - " + "Nickname: " + nickCliente.getNickname() + " " + sfd + " Tipo Asiento: " + tipoAsiento;
 	}
 	
 }

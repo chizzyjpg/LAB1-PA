@@ -1,62 +1,41 @@
 package Logica;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
-public final class ManejadorReserva {
+public class ManejadorReserva {
 
-	private ManejadorReserva() {}
-	
-	//DTO -> ENTIDAD
-	
-	public static Reserva toEntity (DataReserva dto) {
-		Objects.requireNonNull(dto, "DataReserva no puede ser null"); // Valida que dto no sea null; si lo es, lanza NullPointerException con mensaje.
-		return new Reserva (
-				dto.getAerolinea(),
-				dto.getRutasVuelo(),
-				dto.getCliente(),
-				dto.getCantPasajes(),
-				dto.getNomPasajero(),
-				dto.getApePasajero(),
-				//dto.getPasajero(),
-				dto.getFechaReserva(),
-				dto.getTipoAsiento(),
-				dto.getEquipaje(),
-				dto.getCantEquipajeExtra(),
-				dto.getCostoTotal()
-				);		
+    private ManejadorReserva() {}
+
+    // Obtener
+    public static Reserva toEntity(DataReserva res) {
+		Objects.requireNonNull(res, "Los datos no pueden ser nulos");
+		return new Reserva(res.getFechaReserva(), res.getTipoAsiento(), res.getEquipaje(),
+						   res.getCantEquipajeExtra(), res.getCostoTotal(), ManejadorCliente.toEntity(res.getNickCliente()));
+    }
+
+
+    public static DataReserva toData(Reserva res) {
+    	Objects.requireNonNull(res, "La reserva no puede ser nula");
+		return new DataReserva(res.getIdReserva(), res.getFechaReserva(), res.getTipoAsiento(), res.getEquipaje(),
+							   res.getCantEquipajeExtra(), res.getCostoTotal(), ManejadorCliente.toData(res.getCliente()));
+    }
+    
+    // HELLPERS
+    
+    public static List<Reserva> toEntities(List<? extends DataReserva> dtos) {
+    	if (dtos == null) return Collections.emptyList();
+    	return dtos.stream()
+						   .filter(Objects::nonNull)
+						   .map(ManejadorReserva::toEntity)
+						   .collect(Collectors.toList());
 	}
-	
-	//ENTIDAD -> DTO
-	
-	public static DataReserva toDTO (Reserva r) {
-		Objects.requireNonNull(r, "Reserva no puede ser null"); // Valida argumento no nulo.
-		return new DataReserva (
-				r.getAerolinea(),
-				r.getRutasVuelo(),
-				r.getCliente(),
-				r.getCantPasajes(),
-				r.getNomPasajero(),
-				r.getApePasajero(),
-				//r.getPasajero(),
-				r.getFechaReserva(),
-				r.getTipoAsiento(),
-				r.getEquipaje(),
-				r.getCantEquipajeExtra(),
-				r.getCostoTotal()
-				);			
+    
+    public static List<DataReserva> toDatas(List<? extends Reserva> entities) {
+		if (entities == null) return Collections.emptyList();
+		return entities.stream()
+						   .filter(Objects::nonNull)
+						   .map(ManejadorReserva::toData)
+						   .collect(Collectors.toList());
 	}
-	
-	//HELPERS
-	
-	public static List<Reserva> toEntities(List<? extends DataReserva> dtos) {  // Convierte una lista de DTOs a entidades.
-		return dtos.stream().map(ManejadorReserva::toEntity).collect(Collectors.toList()); 
-	        //return dtos.stream() Convierte la lista a stream… // .map(ManejadorUsuario::toEntity aplica toEntity a cada elemento (method reference)… // .collect(Collectors.toList()); // y vuelve a materializar una List.
-		}
-	
-	public static List<DataReserva> toDTOs(List<? extends Reserva> reservas) {// Convierte una lista de entidades a DTOs
-		return reservas.stream().map(ManejadorReserva::toDTO).collect(Collectors.toList());
-	        //return user.stream() Stream sobre la lista de usuarios… // .map(ManejadorUsuario::toDTO mapea cada entidad a su DTO… // .collect(Collectors.toList y colecta en una List.
-		}
 }

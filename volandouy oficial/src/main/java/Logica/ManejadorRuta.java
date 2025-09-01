@@ -21,7 +21,7 @@ public class ManejadorRuta {
 			data.getNombre(), data.getDescripcion(),
 			origen, destino,
 			data.getHora(), data.getFechaAlta(),
-			data.getCostoBase(), data.getCostoEquipajeExtra(), data.getCategoria()
+			data.getCostoTurista(), data.getCostoEquipajeExtra(), data.getCostoEjecutivo()			
 		);
         try {
         	new RutaVueloService().crearRutaVuelo(r.getNombre(), r.getDescripcion(), origen, destino, r.getHora(), r.getFechaAlta(), r.getCostoBase(), r.getCostoEquipajeExtra(), r.getCategoria());
@@ -41,7 +41,7 @@ public class ManejadorRuta {
             r.getNombre(), r.getDescripcion(),
             origen, destino,
             r.getHora(), r.getFechaAlta(),
-            r.getCostoBase(), r.getCostoEquipajeExtra(), r.getCategoria()
+            r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo()
         );
     }
     

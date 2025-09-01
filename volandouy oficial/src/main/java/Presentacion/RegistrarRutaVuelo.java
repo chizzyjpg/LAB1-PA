@@ -1,7 +1,5 @@
 package Presentacion;
 
-import java.awt.EventQueue;
-
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -15,12 +13,12 @@ import javax.swing.JTextArea;
 import javax.swing.SpinnerDateModel;
 import java.util.Date;
 import java.util.Calendar;
-import javax.swing.SpinnerNumberModel;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultListCellRenderer;
 
@@ -39,8 +37,6 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 	private JTextField textFieldTurista;
 	private JTextField textFieldEjecutivo;
 	private JTextField textFieldEquipajeExtra;
-//	private JTextField textFieldCiudadOrigen;
-//	private JTextField textFieldCiudadDestino;
 
 	/**
 	 * Launch the application.
@@ -105,7 +101,6 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		lblHora.setBounds(8, 183, 72, 14);
 		getContentPane().add(lblHora);
 		
-		SpinnerDateModel model = new SpinnerDateModel();
 		JSpinner spinnerHora = new JSpinner(new SpinnerDateModel(new Date(1755715138092L), null, null, Calendar.DAY_OF_MONTH));
 
 		JSpinner.DateEditor editor = new JSpinner.DateEditor(spinnerHora, "HH:mm");
@@ -180,7 +175,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		comboBoxCiudadDestino.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBoxCiudadDestino.setBounds(155, 342, 240, 22);
 		for (DataCiudad dcd : sistema.listarCiudades()) comboBoxCiudadDestino.addItem(dcd);
-		comboBoxCiudadDestino.setRenderer(new javax.swing.DefaultListCellRenderer() {
+		comboBoxCiudadDestino.setRenderer(new DefaultListCellRenderer() {
 		    @Override
 		    public java.awt.Component getListCellRendererComponent(
 		            javax.swing.JList<?> list, Object value, int index,
@@ -205,23 +200,20 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		
 		JComboBox<DataCategoria> comboBoxCategoria = new JComboBox();
 		comboBoxCategoria.setBounds(155, 405, 145, 22);
-        comboBoxCategoria.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-        //carga el combobox con las categorias de la BD
-        for (DataCategoria dc : sistema.listarCategorias()) {
-            comboBoxCategoria.addItem(dc);
-        }
-        comboBoxCategoria.setRenderer(new javax.swing.DefaultListCellRenderer() {
-            @Override
-            public java.awt.Component getListCellRendererComponent(
-                    javax.swing.JList<?> list, Object value, int index,
-                    boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (value instanceof DataCategoria c) {
-                    setText(c.getNombre());
-                }
-                return this;
-            }
-        });
+		for (DataCategoria dc : sistema.listarCategorias()) comboBoxCategoria.addItem(dc);
+		comboBoxCategoria.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		comboBoxCategoria.setRenderer(new DefaultListCellRenderer() {
+			@Override
+		    public Component getListCellRendererComponent(
+		            JList<?> list, Object value, int index,
+		            boolean isSelected, boolean cellHasFocus) {
+		        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+		        if (value instanceof DataCategoria c) {
+		            setText(c.getNombre());
+		        }
+		        return this;
+			}
+		});
 		
 		getContentPane().add(comboBoxCategoria);
 		
@@ -244,8 +236,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		JButton btnAceptar = new JButton("ACEPTAR");
 		btnAceptar.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	DataAerolinea aerolinea = (DataAerolinea) comboAerolinea.getSelectedItem();	
-		    	String nombreAerolinea = (aerolinea != null) ? aerolinea.getNickname() : null;
+		    	DataAerolinea aerolinea = (DataAerolinea) comboAerolinea.getSelectedItem();
 		        String nombre = textFieldNombre.getText().trim();
 		        String Descripcion = textAreaDesc.getText().trim();
 		        String turista = textFieldTurista.getText().trim();
@@ -268,10 +259,12 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        // Pedimos PAÍS (mínimo cambio en UI)
 		        
 		        // Parseos
-		        int costoBase;
+		        BigDecimal costoTurista;
 		        int costoEquipaje;
+		        BigDecimal costoEjecutivo;
 		        try {
-		            costoBase = Integer.parseInt(turista);       // usamos "Turista" como costo base (tu entidad tiene 1 costo)
+		        	costoTurista = new BigDecimal(turista);
+		        	costoEjecutivo = new BigDecimal(ejecutivo);
 		            costoEquipaje = Integer.parseInt(costo);
 		        } catch (NumberFormatException nfe) {
 		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Costos deben ser números enteros", "Error de formato" , JOptionPane.ERROR_MESSAGE);
@@ -282,24 +275,23 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        Date h = (Date) ((JSpinner.DateEditor) spinnerHora.getEditor()).getModel().getValue();
 		        Calendar cal = Calendar.getInstance();
 		        cal.setTime(h);
-		        int horaInt = cal.get(Calendar.HOUR_OF_DAY); // si querés HHmm, comentalo y armamos HH*100 + mm
+		        int horaInt = cal.get(Calendar.HOUR_OF_DAY);
 
 		        try {
-		            // Alta real usando el manejador (resuelve Ciudad por nombre+país)
 		        	
 		        	DataRuta datos = new DataRuta(
 		        			nombre,
 		        			Descripcion,
-		        			ciudadO,// <-- fijate que tu manejador resuelve bien la ciudad
-		        			ciudadD,// <-- fijate que tu manejador resuelve bien la ciudad
+		        			ciudadO,
+		        			ciudadD,
 		        			horaInt,
 		        			fecha,
-		        			costoBase,
+		        			costoTurista,
 		        			costoEquipaje,
-		        			null //iria categoria aca
+		        			costoEjecutivo
 		        			);
 		        	
-		        	sistema.RegistrarRuta(nombreAerolinea, datos);
+		        	sistema.registrarRuta(aerolinea.getNickname(), datos);
 
 		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Ruta de Vuelo registrada correctamente!\nNombre: " + nombre, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
 
@@ -330,7 +322,6 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		            boolean isSelected, boolean cellHasFocus) {
 		        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		        if (value instanceof DataAerolinea da) {
-		            // Cambiá getNombre()/getNickname() por los getters reales que tengas
 		            String nombre = da.getNombre();
 		            String nick   = da.getNickname();
 		            setText((nombre != null && !nombre.isBlank() ? nombre : nick) +
