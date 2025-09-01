@@ -16,8 +16,11 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -94,7 +97,7 @@ public class RegistroVuelo extends JInternalFrame {
 		lblNewLabelRutaVuelo.setBounds(280, 58, 69, 14);
 		getContentPane().add(lblNewLabelRutaVuelo);
 		
-		JComboBox comboBoxRutaVuelo = new JComboBox();
+		comboBoxRutaVuelo = new JComboBox<>(); // usa el atributo de clase
 		comboBoxRutaVuelo.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBoxRutaVuelo.setBounds(147, 83, 339, 22);
 		
@@ -149,49 +152,49 @@ public class RegistroVuelo extends JInternalFrame {
 		getContentPane().add(dateChooserFechaVuelo);
 		
 		JLabel lblNewLabelDuracion = new JLabel("Duración");
-		lblNewLabelDuracion.setBounds(123, 283, 62, 17);
+		lblNewLabelDuracion.setBounds(97, 283, 62, 17);
 		getContentPane().add(lblNewLabelDuracion);
 		lblNewLabelDuracion.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		
 		textDuracion = new JTextField();
 		textDuracion.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblNewLabelDuracion.setLabelFor(textDuracion);
-		textDuracion.setBounds(257, 281, 86, 20);
+		textDuracion.setBounds(219, 281, 124, 20);
 		getContentPane().add(textDuracion);
 		textDuracion.setColumns(10);
 		
 		JLabel lblNewLabelCantTurista = new JLabel("Cantidad Turista");
 		lblNewLabelCantTurista.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblNewLabelCantTurista.setBounds(123, 323, 124, 14);
+		lblNewLabelCantTurista.setBounds(97, 324, 124, 14);
 		getContentPane().add(lblNewLabelCantTurista);
 		
 		textCantTurista = new JTextField();
 		textCantTurista.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblNewLabelCantTurista.setLabelFor(textCantTurista);
-		textCantTurista.setBounds(257, 321, 86, 20);
+		textCantTurista.setBounds(219, 321, 124, 20);
 		getContentPane().add(textCantTurista);
 		textCantTurista.setColumns(10);
 		
 		JLabel lblNewLabelMaxEjecutivos = new JLabel("Cantidad Ejecutivos");
 		lblNewLabelMaxEjecutivos.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblNewLabelMaxEjecutivos.setBounds(123, 371, 124, 14);
+		lblNewLabelMaxEjecutivos.setBounds(97, 372, 124, 14);
 		getContentPane().add(lblNewLabelMaxEjecutivos);
 		
 		textMaxEjecutivo = new JTextField();
 		textMaxEjecutivo.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblNewLabelMaxEjecutivos.setLabelFor(textMaxEjecutivo);
-		textMaxEjecutivo.setBounds(257, 369, 86, 20);
+		textMaxEjecutivo.setBounds(219, 369, 124, 20);
 		getContentPane().add(textMaxEjecutivo);
 		textMaxEjecutivo.setColumns(10);
 		
 		JLabel lblNewLabelFechaAlta = new JLabel("Fecha de Alta");
 		lblNewLabelFechaAlta.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblNewLabelFechaAlta.setBounds(123, 426, 69, 14);
+		lblNewLabelFechaAlta.setBounds(97, 420, 69, 14);
 		getContentPane().add(lblNewLabelFechaAlta);
 		
 		JDateChooser dateChooserFechaAlta = new JDateChooser();
 		lblNewLabelFechaAlta.setLabelFor(dateChooserFechaAlta);
-		dateChooserFechaAlta.setBounds(273, 420, 70, 20);
+		dateChooserFechaAlta.setBounds(219, 420, 124, 20);
 		// Botón Cancelar
 		JButton btnCancelar = new JButton("CANCELAR");
 		btnCancelar.setBackground(Color.RED);
@@ -387,6 +390,5 @@ public class RegistroVuelo extends JInternalFrame {
 		        return this;
 		    }
 		});
-
 	}
 }

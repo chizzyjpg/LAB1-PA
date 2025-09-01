@@ -10,12 +10,19 @@ public class ManejadorAerolinea {
     // Obtener
     public static Aerolinea toEntity(DataAerolinea aero) {
         Objects.requireNonNull(aero, "Los datos no pueden ser nulos");
-        return new Aerolinea(aero.getNickname(), aero.getNombre(), aero.getEmail(), aero.getDescripcion(), aero.getSitioWeb());
+        return new Aerolinea(
+            aero.getNombre(),     // nombre
+            aero.getNickname(),   // nickname
+            aero.getEmail(),
+            aero.getDescripcion(),
+            aero.getSitioWeb()
+        );
     }
+
 
     public static DataAerolinea toData(Aerolinea a) {
     	Objects.requireNonNull(a, "La aerolinea no puede ser nula");
-        return new DataAerolinea(a.getNickname(), a.getNombre(), a.getEmail(),
+        return new DataAerolinea(a.getNombre(), a.getNickname(), a.getEmail(),
                                  a.getDescGeneral(), a.getLinkWeb());
     }
     

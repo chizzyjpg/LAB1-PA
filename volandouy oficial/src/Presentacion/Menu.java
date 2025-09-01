@@ -42,7 +42,6 @@ public class Menu extends JFrame {
 	 * Create the frame.
 	 */
 	public Menu() {
-        //this.sistema = new Sistema();   // una sola instancia para toda la app
         //initComponents();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 907, 719);
@@ -176,6 +175,15 @@ public class Menu extends JFrame {
 		mnNewMenu_1.add(mntmNewMenuItem_7);
 		
 		JMenuItem mntmNewMenuItem_8 = new JMenuItem("Vuelo");
+		mntmNewMenuItem_8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ConsultaVuelo ConVuel = new ConsultaVuelo(sistema);
+				desktopPane.add(ConVuel);
+				desktopPane.revalidate();
+				desktopPane.repaint();
+				ConVuel.setVisible(true);
+			}
+		});
 		mnNewMenu_1.add(mntmNewMenuItem_8);
 		
 		JMenuItem mntmNewMenuItem_9 = new JMenuItem("Paq. de Rutas de Vuelo");
@@ -207,6 +215,16 @@ public class Menu extends JFrame {
 		menuBar.add(mnNewMenu_3);
 		
 		JMenuItem mntmNewMenuItem_11 = new JMenuItem("Vuelo");
+		mntmNewMenuItem_11.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistrarReservaVuelo nuevaResVuelo = new RegistrarReservaVuelo(sistema);
+				nuevaResVuelo.setVisible(true);
+				desktopPane.add(nuevaResVuelo);
+				desktopPane.revalidate();
+				desktopPane.repaint();
+
+			}
+		});
 		mnNewMenu_3.add(mntmNewMenuItem_11);
 		
 		JMenuItem mntmNewMenuItem_12 = new JMenuItem("Paquete");

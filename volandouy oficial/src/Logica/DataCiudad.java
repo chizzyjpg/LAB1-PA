@@ -29,4 +29,11 @@ public class DataCiudad {
     public String getDescripcionAeropuerto() { return descripcionAeropuerto; }
     public Date getFechaAlta() { return fechaAlta; }
     public String getSitioWeb() { return sitioWeb; }
+    
+    @Override
+    public String toString() {
+    			return "DataCiudad [nombre=" + nombre + ", pais=" + pais + ", nombreAeropuerto=" + nombreAeropuerto
+				+ ", descripcionAeropuerto=" + descripcionAeropuerto + ", fechaAlta=" + fechaAlta + ", sitioWeb="
+				+ sitioWeb + "]";
+    }
 }

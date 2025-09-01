@@ -1,11 +1,13 @@
 package Logica;
 
-import java.util.Date;
+import java.util.*;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "VueloEspecifico")
 public class VueloEspecifico {
+	@ManyToMany
+	private Map<String, Reserva> reserva = new HashMap<>();
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int idVueloEspecifico;
@@ -40,6 +42,7 @@ public class VueloEspecifico {
 		this.maxAsientosTur = maxTur;
 		this.maxAsientosEjec = maxEjec;
 		this.fechaAlta = fechaAlta;
+		this.reserva = new HashMap<>();
 	}
 	
 	//Getters
@@ -60,6 +63,14 @@ public class VueloEspecifico {
 	}
 	public Date getFechaAlta() {
 		return fechaAlta;
+	}
+	
+	public int getIdVueloEspecifico() {
+		return idVueloEspecifico;
+	}
+	
+	public Map<String, Reserva> getReserva() {
+		return reserva;
 	}
 	
 	//Setters

@@ -1,5 +1,6 @@
 package Logica;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DataVueloEspecifico {
@@ -42,5 +43,13 @@ public class DataVueloEspecifico {
 	
 	public Date getFechaAlta() {
 		return fechaAlta;
+	}
+	
+	public String toString() {
+
+    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    	String sfd = sdf.format(fecha);
+		
+		return nombre + " - " + sfd;
 	}
 }

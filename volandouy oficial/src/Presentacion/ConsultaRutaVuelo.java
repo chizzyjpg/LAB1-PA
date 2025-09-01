@@ -9,7 +9,6 @@ import Logica.DataVueloEspecifico;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -75,28 +74,33 @@ public class ConsultaRutaVuelo extends JInternalFrame {
         detailsPanel.add(new JScrollPane(txtDetallesRuta), BorderLayout.CENTER);
         right.add(detailsPanel, BorderLayout.CENTER);
 
+     // --- flightsPanel: igual que rutas ---
         JPanel flightsPanel = new JPanel(new BorderLayout(6,6));
         flightsPanel.add(new JLabel("Vuelos asociados"), BorderLayout.NORTH);
+
         listVuelos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listVuelos.setCellRenderer(new DefaultListCellRenderer(){
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof DataVueloEspecifico v) {
-                    String f = v.getFecha() != null ? sdf.format(v.getFecha()) : "-";
+                    String f = (v.getFecha() != null) ? sdf.format(v.getFecha()) : "-";
                     setText(v.getNombre() + "  (" + f + ")");
                 }
                 return this;
             }
         });
+
+        // ➜ FALTABA ESTO: scroll con la lista, como en rutas
         flightsPanel.add(new JScrollPane(listVuelos), BorderLayout.CENTER);
 
         JPanel flightsButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         flightsButtons.add(btnVerVuelo);
         flightsPanel.add(flightsButtons, BorderLayout.SOUTH);
 
-        right.add(flightsPanel, BorderLayout.SOUTH);
+        // Si querés dejar “detalles” y “vuelos” apilados en la derecha:
+        right.add(flightsPanel, BorderLayout.SOUTH); // (podés cambiarlo por CENTER si preferís que ocupe más alto)
+        
         center.setRightComponent(right);
-
         root.add(center, BorderLayout.CENTER);
 
         // Listeners

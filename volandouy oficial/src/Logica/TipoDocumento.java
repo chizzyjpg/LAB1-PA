@@ -1,8 +1,19 @@
 package Logica;
 
 public enum TipoDocumento {
-	CEDULA,
-	PASAPORTE,
-	OTRO
+	CEDULA("Cedula"),
+	PASAPORTE("Pasaporte"),
+	OTRO("Otro");
+	
+	private final String descripcion;
+	
+	private TipoDocumento(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	
+	@Override
+	public String toString() {
+		return descripcion;
+	}
 
 }

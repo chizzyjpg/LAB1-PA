@@ -43,6 +43,6 @@ public class Pasaje {
 	
 	@Override
 	public String toString() {
-		return "Pasaje [idPasaje=" + idPasaje + ", nombre=" + nombre + ", apellido=" + apellido + "]";
+		return idPasaje + " " + nombre + " " + apellido;
 	}
 }
