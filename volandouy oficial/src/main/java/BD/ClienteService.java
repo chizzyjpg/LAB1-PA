@@ -1,25 +1,23 @@
 package BD;
 
-import Logica.Aerolinea;
+import Logica.Cliente;
+import Logica.DataCliente;
 import Logica.JPAUtil;
-import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.Collectors;
-import Logica.DataAerolinea;
 
+import jakarta.persistence.EntityManager;
 
-
-public class AerolineaService {
-	
-		public List<DataAerolinea> listarAerolineas() {
+public class ClienteService {
+	public List<DataCliente> listarClientes() {
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
 			em.getTransaction().begin();
-			var aerolineas = em.createQuery("SELECT a FROM Aerolinea a", Aerolinea.class).getResultList();
+			var clientes = em.createQuery("SELECT c FROM Cliente c", Cliente.class).getResultList();
 			em.getTransaction().commit();
-			// Convertir Aerolinea a DataAerolinea
-			return aerolineas.stream()
-				.map(a -> new DataAerolinea(a.getNombre(), a.getNickname(), a.getEmail(), a.getDescGeneral(), a.getLinkWeb()))
+			// Convertir Cliente a DataCliente
+			return clientes.stream()
+				.map(c -> new DataCliente(c.getNombre(), c.getNickname(), c.getEmail(),c.getApellido(), c.getFechaNac(),c.getNacionalidad(),c.getTipoDocumento(),c.getNumDocumento()))
 				.collect(Collectors.toList());
 		} catch (RuntimeException ex) {
 			if (em.getTransaction().isActive()) em.getTransaction().rollback();
@@ -29,14 +27,14 @@ public class AerolineaService {
 		}
 	}
 	
-	public void crearAerolinea(Aerolinea a) {
+	public void crearCliente (Cliente c) {
 	
 		
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
 			em.getTransaction().begin();
 
-			em.persist(a);
+			em.persist(c);
 
 			em.getTransaction().commit();
 		} catch (RuntimeException ex) {
@@ -47,3 +45,5 @@ public class AerolineaService {
 		}
 	}
 }
+
+ 

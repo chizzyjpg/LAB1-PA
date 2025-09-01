@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 import BD.AerolineaService;
 import BD.CategoriaService;
 import BD.CiudadService;
+import BD.ClienteService;
+import BD.UsuarioService;
 
 
 public class Sistema implements ISistema {
@@ -50,6 +52,8 @@ public class Sistema implements ISistema {
     public void registrarUsuario(DataUsuario data) {
         if (data == null) throw new IllegalArgumentException("Los datos no pueden ser nulos");
 
+        /*
+         
         // Validaciones de unicidad
         if (existeNickname(data.getNickname())) {
             throw new IllegalArgumentException("El nickname ya está en uso");
@@ -57,9 +61,14 @@ public class Sistema implements ISistema {
         if (existeEmail(data.getEmail())) {
             throw new IllegalArgumentException("El email ya está en uso");
         }
+         */
+        
 
         // DTO -> Entidad (polimórfico)
         Usuario entity = ManejadorUsuario.toEntity(data);
+        
+        System.out.println(entity.toString());
+        
 
         // Clave canónica
         String key = canonical(entity.getNickname());
@@ -101,7 +110,9 @@ public class Sistema implements ISistema {
     
     @Override
     public List<DataUsuario> listarUsuarios() {
-        return ManejadorUsuario.toDTOs(new ArrayList<>(usuariosPorNickname.values()));
+    	UsuarioService usuarioService = new UsuarioService();
+    	return usuarioService.listarUsuarios();
+       // return ManejadorUsuario.toDTOs(new ArrayList<>(usuariosPorNickname.values()));
     }
     
     @Override
@@ -122,6 +133,12 @@ public class Sistema implements ISistema {
 		 * */
 	}
 
+    public List<DataCliente> listarClientes() {
+		// Usando BD
+		
+		ClienteService clienteService = new ClienteService();
+		return clienteService.listarClientes();
+	}
     
     // ======================
     //  MODIFICAR USUARIOS
@@ -160,7 +177,7 @@ public class Sistema implements ISistema {
         if (nuevos == null) throw new IllegalArgumentException("Datos de aerolínea no pueden ser nulos");
 
         String key = canonical(nickname);
-        Usuario u = usuariosPorNickname.get(key);
+        Usuario u = usuariosPorNickname.get(key); //cambiar la validacion
         if (!(u instanceof Aerolinea a))
             throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 
@@ -357,13 +374,33 @@ public class Sistema implements ISistema {
 		}
 
 		// DTO -> Entidad (polimórfico)
-		Aerolinea entity = ManejadorAerolinea.toEntity(data);
+		Aerolinea entity = (Aerolinea) ManejadorUsuario.toEntity(data); //ojo que esto no rompa
 
 		// Clave canónica
 		String key = canonical(entity.getNickname());
 		usuariosPorNickname.put(key, entity);
 	}
     
-   
+    // ======================
+    //  CLIENTES
+    // ===================
+
+    @Override
+    public void registrarCliente(DataCliente data) {
+    			// Validaciones de unicidad
+    			if (existeNickname(data.getNickname())) {
+    				throw new IllegalArgumentException("El nickname ya está en uso");
+    				
+    			}
+    			if (existeEmail(data.getEmail())) {
+					throw new IllegalArgumentException("El email ya está en uso");
+				}
+    			// DTO -> Entidad (polimórfico)
+				Cliente entity = (Cliente) ManejadorUsuario.toEntity(data); //ojo que esto no rompa
+				
+				// Clave canónica
+				String key = canonical(entity.getNickname());
+				usuariosPorNickname.put(key, entity);
+    }
 
 }

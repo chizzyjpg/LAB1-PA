@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import BD.ClienteService;
+import BD.AerolineaService;
+
 public final class ManejadorUsuario {
 
     private ManejadorUsuario() {} // Constructor privado: evita instanciar la clase (solo utilidad estática).
@@ -21,7 +24,7 @@ public final class ManejadorUsuario {
         Objects.requireNonNull(dto, "DataUsuario no puede ser null"); // Valida que dto no sea null; si lo es, lanza NullPointerException con mensaje.
 
         if (dto instanceof DataCliente dc) { // Pattern matching de instanceof
-            return new Cliente(				 // si dto es DataCliente, lo "captura" en la variable dc ya casteada. // Crea una entidad Cliente desde el DTO DataCliente.
+            Cliente c = new Cliente(				 // si dto es DataCliente, lo "captura" en la variable dc ya casteada. // Crea una entidad Cliente desde el DTO DataCliente.
                 /* nombre   */ dc.getNombre(), // Mapea 1:1 los campos…
                 /* nickname */ dc.getNickname(),
                 /* email    */ dc.getEmail(),
@@ -31,14 +34,31 @@ public final class ManejadorUsuario {
                 /* tipoDoc  */ dc.getTipoDocumento(),
                 /* numDoc   */ dc.getNumDocumento()
             );
+            
+            try {
+    			new ClienteService().crearCliente(c);
+    		} catch (Exception ex) {
+    			throw new IllegalStateException("Error al crear el cliente: " + ex.getMessage(), ex);
+    		}
+    		return c;
+    		
         } else if (dto instanceof DataAerolinea da) { // Si el dto es de aerolínea, lo captura como da.
-            return new Aerolinea(					  // Crea la entidad Aerolinea a partir del DataAerolinea.
+            Aerolinea a = new Aerolinea(					  // Crea la entidad Aerolinea a partir del DataAerolinea.
                 /* nombre     */ da.getNombre(),
                 /* nickname   */ da.getNickname(),
                 /* email      */ da.getEmail(),
                 /* descripcion*/ da.getDescripcion(),
                 /* sitioWeb   */ da.getSitioWeb()
             );
+            
+            try {
+    			new AerolineaService().crearAerolinea(a);
+    		} catch (Exception ex) {
+    			throw new IllegalStateException("Error al crear Aerolinea: " + ex.getMessage(), ex);
+    		}
+    		return a;
+    	
+ 
         }
         
         //INSERT PARA PASAR A JPA
@@ -63,6 +83,8 @@ public final class ManejadorUsuario {
                 /* tipoDoc  */ c.getTipoDocumento(),
                 /* numDoc   */ c.getNumDocumento()
             );
+            
+            
         } else if (u instanceof Aerolinea a) { // Si la entidad es Aerolinea, la captura en a.
             return new DataAerolinea(		   // Crea el DTO DataAerolinea desde la entidad.
                 /* nombre     */ a.getNombre(),

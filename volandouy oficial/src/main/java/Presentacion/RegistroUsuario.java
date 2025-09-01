@@ -323,7 +323,7 @@ public class RegistroUsuario extends JInternalFrame {
 		                descripcion,
 		                sitio
 		        );
-		        sistema.registrarAerolinea(data);
+		        sistema.registrarUsuario(data);
 		        /*
 		        try {
 		            JOptionPane.showMessageDialog(this, "Aerolínea registrada con éxito");

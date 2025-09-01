@@ -27,6 +27,7 @@ public class Cliente extends Usuario{
 	@Column(name = "Nacionalidad", nullable = false, length = 40)
 	private String nacionalidad;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "TipoDocumento", nullable = false)
 	private TipoDocumento tipoDocumento;
 	

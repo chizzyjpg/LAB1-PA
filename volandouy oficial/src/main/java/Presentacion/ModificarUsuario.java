@@ -53,6 +53,9 @@ public class ModificarUsuario extends JInternalFrame {
 
         comboUsuarios = new JComboBox<>();
         comboUsuarios.setPreferredSize(new Dimension(300, 28));
+        for(DataUsuario da : sistema.listarUsuarios()) {
+			comboUsuarios.addItem(da);
+		}
         comboUsuarios.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -165,7 +168,7 @@ public class ModificarUsuario extends JInternalFrame {
 
     private void cargarUsuarios() {
         try {
-            List<DataUsuario> lista = sistema.listarUsuarios();
+            List<DataUsuarioAux> lista = sistema.listarUsuarios();
             lista.sort(Comparator.comparing(u -> nvl(u.getNickname()), String.CASE_INSENSITIVE_ORDER));
             comboUsuarios.setModel(new DefaultComboBoxModel<>(lista.toArray(new DataUsuario[0])));
             if (!lista.isEmpty()) {
@@ -182,7 +185,7 @@ public class ModificarUsuario extends JInternalFrame {
     }
 
     private void onSeleccionarUsuario() {
-        DataUsuario du = (DataUsuario) comboUsuarios.getSelectedItem();
+        DataUsuarioAux du = (DataUsuarioAux) comboUsuarios.getSelectedItem();
         if (du == null) { limpiar(); return; }
 
         // refrescar desde sistema por nickname
@@ -222,7 +225,7 @@ public class ModificarUsuario extends JInternalFrame {
     }
 
     private void guardar() {
-        DataUsuario du = (DataUsuario) comboUsuarios.getSelectedItem();
+        DataUsuarioAux du = (DataUsuarioAux) comboUsuarios.getSelectedItem();
         if (du == null) return;
         String nick = du.getNickname();
 

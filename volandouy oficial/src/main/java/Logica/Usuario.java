@@ -21,8 +21,8 @@ public class Usuario {
     protected Usuario() {}
 
     public Usuario(String nombre, String nickname, String email) {
+    	this.nombre = nombre;
         this.nickname = nickname;
-        this.nombre = nombre;
         this.email = email;
     }
 
