@@ -3,8 +3,8 @@ package Logica;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +15,12 @@ import jakarta.persistence.*;
 public class Ruta {
 	
 	@ManyToMany
-	private Map<String, VueloEspecifico> vuelosEspecificos = new HashMap<>();
+    @JoinTable(
+        name = "aerolinearuta",
+        joinColumns = @JoinColumn(name = "idRuta"),
+        inverseJoinColumns = @JoinColumn(name = "idVueloEspecifico")
+    )
+    private Set<VueloEspecifico> vuelosEspecificos = new HashSet<>();
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int idRuta;
@@ -73,7 +78,7 @@ public class Ruta {
         this.fechaAlta = fechaAlta;
         this.costoTurista = costoTurista;
         this.costoEquipajeExtra = costoEquipajeExtra;
-        this.vuelosEspecificos = new HashMap<>();
+        this.vuelosEspecificos = new HashSet<>();
         this.costoEjecutivo = costoEjecutivo;
     }
 
@@ -89,7 +94,7 @@ public class Ruta {
     public BigDecimal getCostoEjecutivo() { return costoEjecutivo; }
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
     public List<Categoria> getCategorias() { return categoria; }
-    public Map<String, VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
+    public Set<VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
 
     // setters
     public void setNombre(String n) { this.nombre = n; }
@@ -102,7 +107,7 @@ public class Ruta {
     public void setCostoEjecutivo(BigDecimal costoEjecutivo) { this.costoEjecutivo = costoEjecutivo; }
     public void setCostoEquipajeExtra(int costoEquipajeExtra) { this.costoEquipajeExtra = costoEquipajeExtra; }
     public void setCategorias(List<Categoria> cat) { this.categoria = cat; }
-    public void setVuelosEspecificos(Map<String, VueloEspecifico> vuelos) { this.vuelosEspecificos = vuelos; }
+    public void setVuelosEspecificos(Set<VueloEspecifico> vuelos) { this.vuelosEspecificos = vuelos; }
 
     @Override public String toString() {
         return "Ruta [idRuta=" + idRuta +
@@ -120,7 +125,6 @@ public class Ruta {
     }
 
 	public void addVuelosEspecificos(VueloEspecifico v) {
-		vuelosEspecificos.put(v.getNombre(), v);
-		
-	}
+        vuelosEspecificos.add(v);
+    }
 }

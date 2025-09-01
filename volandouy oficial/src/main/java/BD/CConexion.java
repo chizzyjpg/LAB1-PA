@@ -10,7 +10,7 @@ public class CConexion {
 	Connection con = null;
 	
 	String usuario = "postgres";
-	String password = "cristian";
+	String password = "admin";
 	String bd = "pa2025";
 	String ip = "localhost";
 	String puerto = "5432";

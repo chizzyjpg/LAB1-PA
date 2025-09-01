@@ -6,8 +6,8 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "VueloEspecifico")
 public class VueloEspecifico {
-	@ManyToMany
-	private Map<String, Reserva> reserva = new HashMap<>();
+	@OneToMany(mappedBy = "vueloEspecifico")
+	private Set<Reserva> reservas = new HashSet<>();
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int idVueloEspecifico;
@@ -30,8 +30,8 @@ public class VueloEspecifico {
 	@Column(name = "fechaAlta", nullable = false)
 	private Date fechaAlta;
 	
-	//@ManyToOne
-	//private Ruta ruta;
+	@ManyToMany(mappedBy = "vuelosEspecificos")
+	private Set<Ruta> rutas = new HashSet<>();
 	
 	protected VueloEspecifico() {}
 	
@@ -42,7 +42,7 @@ public class VueloEspecifico {
 		this.maxAsientosTur = maxTur;
 		this.maxAsientosEjec = maxEjec;
 		this.fechaAlta = fechaAlta;
-		this.reserva = new HashMap<>();
+		this.reservas = new HashSet<>();
 	}
 	
 	//Getters
@@ -69,9 +69,10 @@ public class VueloEspecifico {
 		return idVueloEspecifico;
 	}
 	
-	public Map<String, Reserva> getReserva() {
-		return reserva;
+	public Set<Reserva> getReservas() {
+		return reservas;
 	}
+	public Set<Ruta> getRutas() { return rutas; }
 	
 	//Setters
 	public void setNombre(String n) {
@@ -92,6 +93,10 @@ public class VueloEspecifico {
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
+	public void setRutas(Set<Ruta> rutas) { this.rutas = rutas; }
+	public void setReservas(Set<Reserva> reservas) {
+        this.reservas = reservas;
+    }
 	/*
 	public void setRuta(Ruta ruta) {
 		this.ruta = ruta;

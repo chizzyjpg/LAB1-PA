@@ -4,11 +4,8 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
-//import java.util.LinkedHashSet;
 import java.util.Map;
-//import java.util.Set;
 
-//import java.util.Date;
 import jakarta.persistence.*;
 
 @Entity
@@ -49,8 +46,11 @@ public class Paquete {
 	 /*@Column(name = "nombreRuta", nullable = false)
 	 private final Set<String> rutasIncluidas = new LinkedHashSet<>();*/
 	 
-	 @Column(name = "Cupos por Ruta", nullable = false)
-	 private final Map<String,Integer> cuposPorRuta = new LinkedHashMap<>();
+	 @ElementCollection
+	    @CollectionTable(name = "paquete_cupos_por_ruta", joinColumns = @JoinColumn(name = "paquete_id"))
+	    @MapKeyColumn(name = "ruta")
+	    @Column(name = "cupos")
+	    private Map<String,Integer> cuposPorRuta = new LinkedHashMap<>();
 	
 	protected Paquete() { } // JPA 
 	
@@ -100,7 +100,7 @@ public class Paquete {
 	        return Collections.unmodifiableSet(rutasIncluidas);
 	    }*/
 	
-	public java.util.Map<String,Integer> getCuposPorRuta() {
+	public Map<String,Integer> getCuposPorRuta() {
         return Collections.unmodifiableMap(cuposPorRuta);
     }
 	/*
