@@ -2,17 +2,9 @@
 package Logica;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+
 
 //import javax.swing.JOptionPane;
 
@@ -503,6 +495,8 @@ public class Sistema implements ISistema {
 
 	     if (nombrePaquete == null || nicknameAerolinea == null || nombreRuta == null || tipo == null || cantidad <= 0)
 	         throw new IllegalArgumentException("Datos incompletos");
+	     
+	     //System.out.println(nombrePaquete + " " + nicknameAerolinea + " " + nombreRuta + " " +  tipo + " " + cantidad );
 
 	     // 1) Paquete (y no permitir si ya tiene compras)
 	     Paquete p = paquetesPorNombre.get(canonical(nombrePaquete));

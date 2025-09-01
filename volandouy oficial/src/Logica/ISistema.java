@@ -16,8 +16,6 @@ public interface ISistema {
     DataCliente verInfoCliente(String nickname);      // null si no existe o no es cliente
     DataAerolinea verInfoAerolinea(String nickname); // null si no existe o no es aerolínea
     DataPaquete verPaquete(String nombre);  
-    DataCliente verInfoCliente(String nickname);      // null si no existe o no es cliente
-    DataAerolinea verInfoAerolinea(String nickname); // null si no existe o no es aerolínea
     DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo);
     DataReserva buscarReserva(String nickname, String nombre, String codigoVuelo, int idReserva);
 
@@ -27,7 +25,6 @@ public interface ISistema {
     List<DataCategoria> listarCategorias();
     List<DataRuta> listarPorAerolinea(String nicknameAerolinea);
     List<DataCiudad> listarCiudades();
-    List<DataVueloEspecifico> listarVuelos(String nickname, String nombre);
     List<DataPaquete> listarPaquetesDisponiblesParaCompra();
     List<DataCliente> listarClientesParaCompra();
     List<DataPaquete> listarPaquetes();  
@@ -41,7 +38,6 @@ public interface ISistema {
     void modificarAerolinea(String nickname, DataAerolinea nuevosDatos);
     void registrarCategoria(DataCategoria Data);
     void registrarRuta(String nickAerolinea, DataRuta datos);
-    void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos);
 	void registrarCiudad(DataCiudad data);
 	void comprarPaquete(DataCompraPaquete compra);
 	void registrarPaquete(DataPaqueteAlta data);  
