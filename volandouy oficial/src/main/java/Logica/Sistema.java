@@ -60,7 +60,8 @@ public class Sistema implements ISistema {
         }
          */
         
-
+        
+        
         // DTO -> Entidad (polimórfico)
         Usuario entity = ManejadorUsuario.toEntity(data);
         
@@ -342,7 +343,7 @@ public class Sistema implements ISistema {
 		if (r == null) {
 			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
 		}
-		Collection<VueloEspecifico> vuelos = r.getVuelosEspecificos();
+		Collection<VueloEspecifico> vuelos = r.getVuelosEspecificos().values();
 		return ManejadorVueloEspecifico.toDatas(new ArrayList<>(vuelos));
 	}
 

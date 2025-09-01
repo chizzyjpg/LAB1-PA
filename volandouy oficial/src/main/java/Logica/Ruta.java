@@ -3,8 +3,10 @@ package Logica;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.persistence.*;
 
@@ -49,9 +51,14 @@ public class Ruta {
     @Column(name = "costoEquipajeExtra", nullable = false)
     private int costoEquipajeExtra;
 
-    @ManyToOne
-    private Categoria categoria;
-
+ 
+ // si Categoria es enum:
+    @ElementCollection(targetClass = Categoria.class)
+    @CollectionTable(name = "ruta_categoria", joinColumns = @JoinColumn(name = "ruta_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categoria", length = 40, nullable = false)
+    private List<Categoria> categoria = new ArrayList<>();
+    
     protected Ruta() {}
 
     public Ruta(String n, String desc,
@@ -81,7 +88,7 @@ public class Ruta {
     public BigDecimal getCostoTurista() { return costoTurista; }
     public BigDecimal getCostoEjecutivo() { return costoEjecutivo; }
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
-    public List<Categoria> getCategorias() { return categorias; }
+    public List<Categoria> getCategorias() { return categoria; }
     public Map<String, VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
 
     // setters
@@ -94,7 +101,7 @@ public class Ruta {
     public void setCostoBase(BigDecimal costoTurista) { this.costoTurista = costoTurista; }
     public void setCostoEjecutivo(BigDecimal costoEjecutivo) { this.costoEjecutivo = costoEjecutivo; }
     public void setCostoEquipajeExtra(int costoEquipajeExtra) { this.costoEquipajeExtra = costoEquipajeExtra; }
-    public void setCategorias(List<Categoria> cat) { this.categorias = cat; }
+    public void setCategorias(List<Categoria> cat) { this.categoria = cat; }
     public void setVuelosEspecificos(Map<String, VueloEspecifico> vuelos) { this.vuelosEspecificos = vuelos; }
 
     @Override public String toString() {
