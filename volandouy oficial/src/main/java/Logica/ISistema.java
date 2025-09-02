@@ -37,7 +37,7 @@ public interface ISistema {
     void modificarCliente(String nickname, DataCliente nuevosDatos);
     void modificarAerolinea(String nickname, DataAerolinea nuevosDatos);
     void registrarCategoria(DataCategoria Data);
-    void registrarRuta(String nickAerolinea, DataRuta datos);
+    void registrarRuta(DataRuta datos);
 	void registrarCiudad(DataCiudad data);
 	void comprarPaquete(DataCompraPaquete compra);
 	void registrarPaquete(DataPaqueteAlta data);  

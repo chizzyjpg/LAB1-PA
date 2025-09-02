@@ -44,7 +44,7 @@ public class DataRuta {
     
     @Override
     public String toString() {
-    			return  nombre + " De (" + ciudadOrigen.getNombre() + ") " + "A (" +ciudadDestino.getNombre() + ")";
+    	return getNombre()+ getDescripcion() + getCiudadOrigen() + getCiudadDestino() + getHora() + getFechaAlta() + getCostoTurista() + getCostoEjecutivo() + getCostoEquipajeExtra();
     			
     }
 }

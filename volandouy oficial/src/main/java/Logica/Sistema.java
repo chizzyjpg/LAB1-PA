@@ -247,15 +247,21 @@ public class Sistema implements ISistema {
     // =========================
     
     @Override
-    public void registrarRuta(String nickAerolinea, DataRuta datos) {
+    public void registrarRuta(DataRuta datos) {
+    	ManejadorRuta.toEntity(datos);
+    	
+    	System.out.println(datos.toString());
+    	/*
 		if (datos == null) throw new IllegalArgumentException("Los datos de la ruta no pueden ser nulos");
-
+		
+		
 	    Usuario u = usuariosPorNickname.get(canonical(nickAerolinea));	    
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}
 		Ruta r = ManejadorRuta.toEntity(datos);
 		a.addRuta(r);
+		*/
 	}
     
 //    private void validarBasico(Ruta r) {
