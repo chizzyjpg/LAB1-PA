@@ -86,8 +86,38 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
         txtCosto       = roField("Costo:",           10, y, 180, 28, 160);
         txtValidez     = roField("Validez (días):", 380, y, 150, 28, 120); y += 34;
         txtCantRutas   = roField("Cant. Rutas:",     10, y, 180, 28, 120);
-        txtTipoAsiento = roField("Tipo Asiento:",   250, y, 150, 28, 150);
-        txtDescuento   = roField("Descuento (%):",  450, y, 150, 28, 120); y += 40;
+     // Cant. Rutas (queda igual)
+        txtCantRutas = roField("Cant. Rutas:", 10, y, 180, 28, 120);
+
+        // -------- Tipo de Asiento (label + campo) --------
+        JLabel lblTipoAsiento = new JLabel("Tipo de Asiento:");
+        lblTipoAsiento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        // Lo movemos después del campo de Cant. Rutas (que termina en x=318)
+        lblTipoAsiento.setBounds(330, y, 140, 28);
+        getContentPane().add(lblTipoAsiento);
+
+        txtTipoAsiento = new JTextField();
+        txtTipoAsiento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        txtTipoAsiento.setEditable(false);
+        // Campo alineado a continuación del label (330 + 140 + 8 = 478)
+        txtTipoAsiento.setBounds(478, y, 150, 28); // ocupa 478..628
+        getContentPane().add(txtTipoAsiento);
+
+        // -------- Descuento (label + campo) --------
+        // Lo corremos más a la derecha para que no quede debajo del campo anterior
+        JLabel lblDescuento = new JLabel("Descuento (%):");
+        lblDescuento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        lblDescuento.setBounds(650, y, 120, 28);
+        getContentPane().add(lblDescuento);
+
+        txtDescuento = new JTextField();
+        txtDescuento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        txtDescuento.setEditable(false);
+        // Campo a continuación del label (650 + 120 + 8 = 778)
+        txtDescuento.setBounds(778, y, 80, 28); // 80 px para que entre en el ancho del frame
+        getContentPane().add(txtDescuento);
+
+        y += 40; // mantener tu incremento de fila y += 40;
 
         JLabel lblDesc = new JLabel("Descripción:");
         lblDesc.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
@@ -95,6 +125,7 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
         getContentPane().add(lblDesc);
 
         txtDescripcion = new JTextArea();
+        txtDescripcion.setFont(new Font("Comic Sans MS", Font.PLAIN, 13));
         txtDescripcion.setEditable(false);
         txtDescripcion.setLineWrap(true);
         txtDescripcion.setWrapStyleWord(true);
