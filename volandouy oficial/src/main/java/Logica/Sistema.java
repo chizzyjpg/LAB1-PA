@@ -146,6 +146,7 @@ public class Sistema implements ISistema {
 				 String.CASE_INSENSITIVE_ORDER));
 		 return clientes;
 	 }
+	 */
  
 	 public List<DataCliente> listarClientes() {
 		 // Usando BD
@@ -154,7 +155,6 @@ public class Sistema implements ISistema {
 		 return clienteService.listarClientes();
 	 }
 	 
-	 */
     // ======================
     //  MODIFICAR USUARIOS
     // ======================

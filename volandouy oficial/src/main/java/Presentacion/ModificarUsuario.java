@@ -54,15 +54,13 @@ public class ModificarUsuario extends JInternalFrame {
         comboUsuarios = new JComboBox<>();
         comboUsuarios.setPreferredSize(new Dimension(300, 28));
         for(DataUsuario da : sistema.listarUsuarios()) {
-			comboUsuarios.addItem(da);
-		}
+            comboUsuarios.addItem(new DataUsuarioAux(da));
+        }
         comboUsuarios.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof DataUsuarioAux du) {
-                    String tipo = (du instanceof DataCliente) ? "Cliente" :
-                                  (du instanceof DataAerolinea) ? "Aerolínea" : "Usuario";
-                    setText("%s: %s — %s".formatted(tipo, nvl(du.getNickname()), nvl(du.getNombre())));
+                    setText("%s: %s — %s".formatted(du.getTipoUsuario(), nvl(du.getNickname()), nvl(du.getNombre())));
                     setToolTipText(du.getEmail());
                 }
                 return this;

@@ -19,7 +19,7 @@ public interface ISistema {
     DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo);
     DataReserva buscarReserva(String nickname, String nombre, String codigoVuelo, int idReserva);
 
-    List<DataUsuarioAux> listarUsuarios();
+    List<DataUsuario> listarUsuarios();
     List<DataAerolinea> listarAerolineas();
     List<DataCliente> listarClientes();
     List<DataCategoria> listarCategorias();
