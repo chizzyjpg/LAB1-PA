@@ -170,13 +170,13 @@ public class CompraPaqueteIF extends JInternalFrame {
                 return;
             }
 
-            BigDecimal costoOverride = parseBigDecimalNullable(txtCosto.getText().trim());
+            //BigDecimal costoOverride = parseBigDecimalNullable(txtCosto.getText().trim());
 
             DataCompraPaquete dto = new DataCompraPaquete(
                     nombrePaquete,
                     nickCliente,
                     fechaCompra,
-                    costoOverride,   // null => usa costo del paquete
+                    null,   // null => usa costo del paquete
                     null             // vencimiento => que lo calcule el manejador/sistema
             );
 
