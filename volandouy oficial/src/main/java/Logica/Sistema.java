@@ -8,6 +8,7 @@ import BD.AerolineaService;
 import BD.CategoriaService;
 import BD.CiudadService;
 import BD.ClienteService;
+import BD.PaqueteService;
 import BD.RutaVueloService;
 import BD.UsuarioService;
 
@@ -61,6 +62,7 @@ public class Sistema implements ISistema {
     @Override
     public void registrarUsuario(DataUsuario data) {
         if (data == null) throw new IllegalArgumentException("Los datos no pueden ser nulos");
+        ManejadorUsuario.toEntity(data);
 
         /*
          
@@ -76,14 +78,14 @@ public class Sistema implements ISistema {
         
         
         // DTO -> Entidad (polimórfico)
-        Usuario entity = ManejadorUsuario.toEntity(data);
+        		//Usuario entity = 
         
         //System.out.println(entity.toString());
         
 
         // Clave canónica
-        String key = canonical(entity.getNickname());
-        usuariosPorNickname.put(key, entity);
+        //String key = canonical(entity.getNickname());
+        //usuariosPorNickname.put(key, entity);
     }
 
     @Override
@@ -265,11 +267,14 @@ public class Sistema implements ISistema {
     public List<DataCategoria> listarCategorias() {
     	CategoriaService categoriaService = new CategoriaService();
     	List<Categoria> categorias = categoriaService.listarCategorias();
+    	return ManejadorCategoria.toDTOs(categorias);
+    	/*
+    	List<Categoria> categorias = categoriaService.listarCategorias();
     	List<DataCategoria> dataCategorias = new ArrayList<>();
     	for (Categoria c : categorias) {
     		dataCategorias.add(new DataCategoria(c.getNombre()));
     	}
-    	return dataCategorias;
+    	return dataCategorias;*/
     } 
     
     // =========================
@@ -294,20 +299,25 @@ public class Sistema implements ISistema {
 //    }
     
     public List<DataRuta> listarPorAerolinea(String nicknameAerolinea) {
-    	Usuario u = usuariosPorNickname.get(canonical(nicknameAerolinea));
-    	if (!(u instanceof Aerolinea a)) {
-    		throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
-    	}
-    	return ManejadorRuta.toDatas(new ArrayList<>(a.getRutaMap().values()));
+        DataUsuario usuario = usuarioService.verInfoUsuario(nicknameAerolinea);
+        if (!(usuario instanceof DataAerolinea)) {
+            throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+        }
+        List<DataRuta> rutas = usuarioService.listarRutasPorAerolinea(nicknameAerolinea);
+        return rutas.stream()
+				.sorted(Comparator.comparing(
+						r -> r.getNombre() == null ? "" : r.getNombre(),
+						String.CASE_INSENSITIVE_ORDER))
+				.collect(Collectors.toList());
     }
     
     
     // =========================
-    //  	   CIUDADES
-    // =========================
-    
-    @Override
-    public void registrarCiudad(DataCiudad data) {
+	//  	   CIUDADES
+	// =========================
+	
+	@Override
+	public void registrarCiudad(DataCiudad data) {
 		if (data == null) throw new IllegalArgumentException("Los datos no pueden ser nulos");
 
 		// Validaciones de unicidad
@@ -316,21 +326,24 @@ public class Sistema implements ISistema {
 			throw new IllegalArgumentException("La ciudad ya está registrada");
 		}
 
+		ManejadorCiudad.toEntity(data);
 		// DTO -> Entidad
-		Ciudad entity = ManejadorCiudad.toEntity(data);
 
-		CiudadPorHash.put(hash, entity);
+		//Ciudad entity = 
+		//CiudadPorHash.put(hash, entity);
 	}
 
 	@Override
 	public List<DataCiudad> listarCiudades() {
 		CiudadService ciudadService = new CiudadService();
+		return ManejadorCiudad.toDatas(ciudadService.listarCiudades());
+		/*
 		List<Ciudad> ciudades = ciudadService.listarCiudades();
 		List<DataCiudad> dataCiudades = new ArrayList<>();
 		for (Ciudad c : ciudades) {
 			dataCiudades.add(new DataCiudad(c.getNombre(), c.getPais(), c.getNombreAeropuerto(), c.getDescripcionAeropuerto(), c.getFechaAlta(), c.getSitioWeb()));
 		}
-		return dataCiudades;
+		return dataCiudades;*/
 	}
 	
 	public Ciudad buscarCiudad(String nombre, String pais) {
@@ -348,13 +361,12 @@ public class Sistema implements ISistema {
 	@Override
 	public void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos) {
 		if (datos == null) throw new IllegalArgumentException("Los datos del vuelo no pueden ser nulos");
-		
 		Usuario u = usuariosPorNickname.get(canonical(nickname));
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}
-		Ruta r = a.getRutaMap().values().stream()
-				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))  //anda a saber si esto esta bien
+		Ruta r = a.getRutas().stream()
+				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
 				.findFirst().orElse(null);
 		if (r == null) {
 			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
@@ -369,7 +381,7 @@ public class Sistema implements ISistema {
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}
-		Ruta r = a.getRutaMap().values().stream()
+		Ruta r = a.getRutas().stream()
 				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
 				.findFirst().orElse(null);
 		if (r == null) {
@@ -385,7 +397,7 @@ public class Sistema implements ISistema {
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}
-		Ruta r = a.getRutaMap().values().stream()
+		Ruta r = a.getRutas().stream()
 				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
 				.findFirst().orElse(null);
 		if (r == null) {
@@ -478,7 +490,7 @@ public class Sistema implements ISistema {
 			// ===============================
 			//  PRECARGA CLIENTES Y PAQUETES
 			// ===============================
-
+/*
 	public void precargaDemo() {
 	    registrarUsuario(new DataCliente("Ana","ana01","ana@mail.com","Pérez", new Date(), "UY", TipoDocumento.CEDULA, "52559649"));
 	    registrarUsuario(new DataCliente("Bruno","bruno02","bruno@mail.com","López", new Date(), "UY", TipoDocumento.PASAPORTE, "54985693"));
@@ -500,7 +512,7 @@ public class Sistema implements ISistema {
 	    paquetesPorNombre.put(canonical(rp.getNombre()),  p1);
 	    paquetesPorNombre.put(canonical(rp2.getNombre()), p2);
 	}
-	
+	*/
 			// ===============================
 			//  ALTA PAQUETE
 			// ===============================
@@ -521,13 +533,14 @@ public class Sistema implements ISistema {
             throw new IllegalArgumentException("La fecha de alta es obligatoria");
         
         // Unicidad por nombre
-        String key = canonical(data.getNombre());
         /*
+        String key = canonical(data.getNombre());
         if (paquetesPorNombre.containsKey(key))
             throw new IllegalArgumentException("Ya existe un paquete con ese nombre");
-        */
-        Paquete entity = ManejadorPaquete.altaToEntity(data);
         paquetesPorNombre.put(key, entity);
+        Paquete entity = 
+        */
+        ManejadorPaquete.altaToEntity(data);
 	}
 	
 	 @Override
@@ -538,18 +551,18 @@ public class Sistema implements ISistema {
 	 @Override
 	    public List<DataPaquete> listarPaquetes() {
 	        // Devolver DTOs usando tu manejador
-	        return paquetesPorNombre.values().stream()
-	                .sorted(Comparator.comparing(Paquete::getNombre, String.CASE_INSENSITIVE_ORDER))
-	                .map(ManejadorPaquete::toDTO)
-	                .collect(Collectors.toList());
+		 	PaqueteService paqueteService = new PaqueteService();
+		 	List<Paquete> paquetes = paqueteService.listarPaquetes();
+		 	return ManejadorPaquete.toDTOs(paquetes);
 	    }
 	 
 	 @Override
-	    public DataPaquete verPaquete(String nombre) {
-	        if (nombre == null) return null;
-	        Paquete p = paquetesPorNombre.get(canonical(nombre));
-	        return (p == null) ? null : ManejadorPaquete.toDTO(p);
-	    }
+	 public DataPaquete verPaquete(String nombre) {
+	     if (nombre == null) return null;
+	     PaqueteService paqueteService = new PaqueteService();
+	     Paquete p = paqueteService.existePaquete(nombre);
+	     return (p == null) ? null : ManejadorPaquete.toDTO(p);
+	 }
 	 
 	 			// ===============================
 				//  AGREGAR RUTA DE VUELO A PAQUETE
@@ -558,11 +571,13 @@ public class Sistema implements ISistema {
 	 @Override
 	 public List<DataPaquete> listarPaquetesSinCompras() {
 	     // un paquete “con compras” es aquel que aparece en la lista compras
-	     Set<String> nombresConCompra = compras.stream()
+	     PaqueteService paqueteService = new PaqueteService();
+	     List<Paquete> paquetes = paqueteService.listarPaquetes();
+		 Set<String> nombresConCompra = compras.stream()
 	             .map(cp -> canonical(cp.getPaquete().getNombre()))
 	             .collect(Collectors.toSet());
-
-	     return paquetesPorNombre.values().stream()
+		 
+	     return paquetes.stream()
 	             .filter(p -> !nombresConCompra.contains(canonical(p.getNombre())))
 	             .sorted(Comparator.comparing(Paquete::getNombre, String.CASE_INSENSITIVE_ORDER))
 	             .map(ManejadorPaquete::toDTO)
@@ -581,60 +596,55 @@ public class Sistema implements ISistema {
 	         throw new IllegalArgumentException("Datos incompletos");
 	     
 	     //System.out.println(nombrePaquete + " " + nicknameAerolinea + " " + nombreRuta + " " +  tipo + " " + cantidad );
-
+	
 	     // 1) Paquete (y no permitir si ya tiene compras)
-	     Paquete p = paquetesPorNombre.get(canonical(nombrePaquete));
+	     PaqueteService paqueteService = new PaqueteService();
+	     Paquete p = paqueteService.existePaquete(nombrePaquete);
 	     if (p == null) throw new IllegalArgumentException("No existe un paquete con ese nombre");
-
+	
 	     boolean tieneCompras = compras.stream()
 	             .anyMatch(cp -> canonical(cp.getPaquete().getNombre()).equals(canonical(nombrePaquete)));
 	     if (tieneCompras) throw new IllegalStateException("El paquete ya tiene compras y no admite modificaciones");
-
+	
 	     // 2) Aerolínea
-	     Usuario u = usuariosPorNickname.get(canonical(nicknameAerolinea));
+	     //Usuario u = usuariosPorNickname.get(canonical(nicknameAerolinea));
+	     usuarioService.verInfoUsuario(nicknameAerolinea);
+	     /*
 	     if (!(u instanceof Aerolinea a)) {
 	         throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 	     }
-
+	      */
 	     // 3) Ruta de esa aerolínea por NOMBRE
-	     Ruta r = a.getRutaMap().values().stream()
-	             .filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombreRuta))
-	             .findFirst()
-	             .orElseThrow(() -> new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre"));
+	     Ruta r = paqueteService.buscarRutaEnAerolinea(nicknameAerolinea, nombreRuta);
 	     //////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-         /*if (p == null || r == null || tipo == null)
-             throw new IllegalArgumentException("Datos inválidos para agregar ruta al paquete");*/
-
-         // fijar/validar tipo de asiento único del paquete
-         if (p.getTipoAsiento() == null) {
-             p.setTipoAsiento(tipo);
-         } else if (p.getTipoAsiento() != tipo) {
-             throw new IllegalArgumentException(
-                 "El tipo de asiento del paquete (" + p.getTipoAsiento()
-                 + ") no coincide con el seleccionado (" + tipo + ")."
-             );
-         }
-         
-         BigDecimal cantidadBD = BigDecimal.valueOf(cantidad);
-         BigDecimal descuentoFactor = BigDecimal.valueOf((100 - p.getDescuento()) / 100.0);
-         
-         if (p.getCosto() == null) {
-			 p.setCosto(BigDecimal.ZERO);
-		 }
-         
-         
-         if(tipo == TipoAsiento.TURISTA) {
-        	 p.setCosto(p.getCosto().add(r.getCostoTurista().multiply(cantidadBD).multiply(descuentoFactor)));
-         }
-         else if(tipo == TipoAsiento.EJECUTIVO) {
-			 p.setCosto(p.getCosto().add(r.getCostoEjecutivo().multiply(cantidadBD).multiply(descuentoFactor)));
-		 }
-         
-
-         // agregar ruta por NOMBRE (único)
-         p.addCuposRuta(r.getNombre(), cantidad);
-     }
+	     // fijar/validar tipo de asiento único del paquete
+	     if (p.getTipoAsiento() == null) {
+	         p.setTipoAsiento(tipo);
+	     } else if (p.getTipoAsiento() != tipo) {
+	         throw new IllegalArgumentException(
+	             "El tipo de asiento del paquete (" + p.getTipoAsiento()
+	             + ") no coincide con el seleccionado (" + tipo + ")."
+	         );
+	     }
+	     
+	     BigDecimal cantidadBD = BigDecimal.valueOf(cantidad);
+	     BigDecimal descuentoFactor = BigDecimal.valueOf((100 - p.getDescuento()) / 100.0);
+	     
+	     if (p.getCosto() == null) {
+	         p.setCosto(BigDecimal.ZERO);
+	     }
+	     
+	     if(tipo == TipoAsiento.TURISTA) {
+	         p.setCosto(p.getCosto().add(r.getCostoTurista().multiply(cantidadBD).multiply(descuentoFactor)));
+	     }
+	     else if(tipo == TipoAsiento.EJECUTIVO) {
+	         p.setCosto(p.getCosto().add(r.getCostoEjecutivo().multiply(cantidadBD).multiply(descuentoFactor)));
+	     }
+	     // agregar ruta por NOMBRE (único)
+	     p.addCuposRuta(r.getNombre(), cantidad);
+	     paqueteService.actualizarPaquete(p);
+	     }
 
 	
 	// =========================
@@ -653,21 +663,20 @@ public class Sistema implements ISistema {
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}
-		Ruta r = a.getRutaMap().values().stream()
+		Ruta r = a.getRutas().stream()
 				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
 				.findFirst().orElse(null);
 		if (r == null) {
 			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
 		}
 		VueloEspecifico v = r.getVuelosEspecificos().stream()
-			.filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo)) //no se si esta bien
+			.filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo))
 			.findFirst().orElse(null);
-			//r.getVuelosEspecificos().get(codigoVuelo);
 		if (v == null) {
 			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
 		}
 		Collection<Reserva> reservas = v.getReservas().stream()
-				.sorted(Comparator.comparingInt(Reserva::getIdReserva)) //no se si esta bien
+				.sorted(Comparator.comparingInt(Reserva::getIdReserva))
 				.collect(Collectors.toList());
 		return ManejadorReserva.toDatas(new ArrayList<>(reservas));
 	}
@@ -677,16 +686,15 @@ public class Sistema implements ISistema {
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}
-		Ruta r = a.getRutaMap().values().stream()
+		Ruta r = a.getRutas().stream()
 				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
 				.findFirst().orElse(null);
 		if (r == null) {
 			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
 		}
 		VueloEspecifico v = r.getVuelosEspecificos().stream()
-			.filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo)) //no se si esta bien
+			.filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo))
 			.findFirst().orElse(null);
-			//r.getVuelosEspecificos().get(codigoVuelo);
 		if (v == null) {
 			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
 		}
@@ -702,31 +710,26 @@ public class Sistema implements ISistema {
 	@Override
 	public void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos) {
 		if (datos == null) throw new IllegalArgumentException("Los datos de la reserva no pueden ser nulos");
-		
 		Usuario u = usuariosPorNickname.get(canonical(nickname));
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}
-		Ruta r = a.getRutaMap().values().stream()
+		Ruta r = a.getRutas().stream()
 				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
 				.findFirst().orElse(null);
 		if (r == null) {
 			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
 		}
 		VueloEspecifico v = r.getVuelosEspecificos().stream()
-			.filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo)) //no se si esta bien
+			.filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo))
 			.findFirst().orElse(null);
-			//r.getVuelosEspecificos().get(codigoVuelo);
 		if (v == null) {
 			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
 		}
 		Reserva res = ManejadorReserva.toEntity(datos);
-		
 		int nuevoId = nextReservaId(v.getReservas());
-	    res.setIdReserva(nuevoId);  
-		v.getReservas().add(res); //Si necesitas asociar una clave con cada Reserva, deberías usar un Map en vez de un Set.
+		res.setIdReserva(nuevoId);
+		v.getReservas().add(res);
 	}
-	
-	
 	
 }

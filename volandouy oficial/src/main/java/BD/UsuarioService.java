@@ -2,6 +2,8 @@ package BD;
 
 import Logica.Usuario;
 import Logica.JPAUtil;
+import Logica.ManejadorRuta;
+import Logica.Ruta;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +12,7 @@ import Logica.Aerolinea;
 import Logica.Cliente;
 import Logica.DataAerolinea;
 import Logica.DataCliente;
+import Logica.DataRuta;
 import Logica.DataUsuario;
 import Logica.DataUsuarioAux;
 
@@ -136,4 +139,38 @@ public class UsuarioService {
 			}
 		}
 		
+		public List<DataRuta> listarRutasPorAerolinea(String nicknameAerolinea) {
+	        EntityManager em = JPAUtil.getEntityManager();
+	        try {
+	            em.getTransaction().begin();
+	            List<Ruta> rutas = em.createQuery(
+	                "SELECT r FROM Ruta r WHERE r.aerolinea.nickname = :nickname", Ruta.class)
+	                .setParameter("nickname", nicknameAerolinea)
+	                .getResultList();
+	            em.getTransaction().commit();
+	            // Usar ManejadorRuta para convertir de entidad a DTO
+	            return rutas.stream()
+	                .map(ManejadorRuta::toData)
+	                .collect(Collectors.toList());
+	        } catch (RuntimeException ex) {
+	            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+	            throw ex;
+	        } finally {
+	            em.close();
+	        }
+	    }
+		
+		public void actualizarUsuario(Usuario usuario) {
+	        EntityManager em = JPAUtil.getEntityManager();
+	        try {
+	            em.getTransaction().begin();
+	            em.merge(usuario);
+	            em.getTransaction().commit();
+	        } catch (RuntimeException ex) {
+	            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+	            throw ex;
+	        } finally {
+	            em.close();
+	        }
+	    }
 }

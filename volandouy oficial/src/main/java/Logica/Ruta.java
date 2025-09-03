@@ -61,6 +61,14 @@ public class Ruta {
     @JoinColumn(name = "categoria_nombre", nullable = false, referencedColumnName = "nombre")
     private Categoria categoria;
     
+    @ManyToMany
+    @JoinTable(
+        name = "aerolinea_ruta",
+        joinColumns = @JoinColumn(name = "idRuta"),
+        inverseJoinColumns = @JoinColumn(name = "nicknameAerolinea", referencedColumnName = "nickname")
+    )
+    private Set<Aerolinea> aerolineas = new HashSet<>();
+    
     protected Ruta() {}
 
     public Ruta(String n, String desc,
@@ -93,6 +101,7 @@ public class Ruta {
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
     public Categoria getCategoriaR() { return categoria; }
     public Set<VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
+    public Set<Aerolinea> getAerolineas() { return aerolineas; }
 
     // setters
     public void setNombre(String n) { this.nombre = n; }
@@ -106,6 +115,7 @@ public class Ruta {
     public void setCostoEquipajeExtra(int costoEquipajeExtra) { this.costoEquipajeExtra = costoEquipajeExtra; }
     public void setCategoriaR(Categoria categoria) { this.categoria = categoria; }
     public void setVuelosEspecificos(Set<VueloEspecifico> vuelos) { this.vuelosEspecificos = vuelos; }
+    public void setAerolineas(Set<Aerolinea> aerolineas) { this.aerolineas = aerolineas; }
 
     @Override public String toString() {
         return "Ruta [idRuta=" + idRuta +

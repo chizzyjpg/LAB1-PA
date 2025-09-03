@@ -46,7 +46,7 @@ public interface ISistema {
 	void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos);
 	//void registrarReservaConPasajeros(String nickname, String nombreRuta, String codigoVuelo, DataReserva datos, List<DataPasaje> pasajeros);
 
-	void precargaDemo();	
+	//void precargaDemo();	
 	
 	
 	Ciudad buscarCiudad(String nombre, String pais);	

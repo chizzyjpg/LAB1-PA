@@ -64,4 +64,8 @@ public class CategoriaService {
             em.close();
         }
     }
+    
+    public boolean existeCategorias(String nombre) {
+		return buscarPorNombre(nombre) != null;
+	}
 }

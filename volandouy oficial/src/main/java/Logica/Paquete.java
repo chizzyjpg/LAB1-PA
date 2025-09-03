@@ -46,7 +46,7 @@ public class Paquete {
 	 /*@Column(name = "nombreRuta", nullable = false)
 	 private final Set<String> rutasIncluidas = new LinkedHashSet<>();*/
 	 
-	 @ElementCollection
+	 @ElementCollection(fetch = FetchType.EAGER)
 	    @CollectionTable(name = "paquete_cupos_por_ruta", joinColumns = @JoinColumn(name = "paquete_id"))
 	    @MapKeyColumn(name = "ruta")
 	    @Column(name = "cupos")

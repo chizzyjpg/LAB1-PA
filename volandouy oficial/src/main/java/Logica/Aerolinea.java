@@ -1,16 +1,16 @@
 package Logica;
 
 import jakarta.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Aerolinea")
 @PrimaryKeyJoinColumn(name = "nickname")
 public class Aerolinea extends Usuario {
 
-	@ManyToMany
-	private Map<String, Ruta> rutaMap = new HashMap<>();
+	@ManyToMany(mappedBy = "aerolineas")
+	private Set<Ruta> rutas = new HashSet<>();
 	
 	@Column(name = "descGeneral", nullable = false, length = 200)
 	private String descGeneral;
@@ -25,7 +25,7 @@ public class Aerolinea extends Usuario {
 		super(n, nick, email);
 		this.setLinkWeb(linkWeb);
 		this.setDescGeneral(descGeneral);
-		this.rutaMap = new HashMap<>();
+		this.rutas = new HashSet<>();
 		// Getters
 	}
 
@@ -39,8 +39,8 @@ public class Aerolinea extends Usuario {
 		return linkWeb;
 	}
 	
-	public Map<String, Ruta> getRutaMap() {
-		return rutaMap;
+	public Set<Ruta> getRutas() {
+		return rutas;
 	}
 
 	//Setters
@@ -56,8 +56,9 @@ public class Aerolinea extends Usuario {
 	
 		//Metodos
 	public void addRuta(Ruta r) {
-		rutaMap.put(r.getNombre(), r);
-	}
+        rutas.add(r);
+        r.getAerolineas().add(this);
+    }
 	
 	@Override public String toString() {
 		return "Aerolinea [nickname=" + this.getNickname() + ","
