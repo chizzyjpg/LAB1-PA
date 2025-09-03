@@ -504,12 +504,13 @@ public class Sistema implements ISistema {
             throw new IllegalArgumentException("El descuento debe estar entre 0 y 100");
         if (data.getFechaAlta() == null)
             throw new IllegalArgumentException("La fecha de alta es obligatoria");
-
+        
         // Unicidad por nombre
         String key = canonical(data.getNombre());
+        /*
         if (paquetesPorNombre.containsKey(key))
             throw new IllegalArgumentException("Ya existe un paquete con ese nombre");
-        
+        */
         Paquete entity = ManejadorPaquete.altaToEntity(data);
         paquetesPorNombre.put(key, entity);
 	}

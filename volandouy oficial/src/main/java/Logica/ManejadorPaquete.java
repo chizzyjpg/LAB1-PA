@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import BD.PaqueteService;
+
 public final class ManejadorPaquete {
     private ManejadorPaquete() {}
 
@@ -19,6 +21,7 @@ public final class ManejadorPaquete {
             dto.getValidez(),
             dto.getCosto()
         );
+        
         return p;
     }
 
@@ -62,6 +65,11 @@ public final class ManejadorPaquete {
                 /* validez */ dto.getValidez(),
                 /* costo */ null              // aún no definido
         );
+        try {
+        	new PaqueteService().crearPaquete(p);
+        } catch (Exception ex) {
+        	throw new IllegalStateException("Error al crear el paquete: " + ex.getMessage(), ex);
+        }
         p.setFechaAlta(copia(dto.getFechaAlta()));
         return p;
     }

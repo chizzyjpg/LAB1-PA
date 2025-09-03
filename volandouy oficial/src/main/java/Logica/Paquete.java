@@ -21,11 +21,11 @@ public class Paquete {
 	@Column(name = "Descripcion", nullable = false, length = 200)
 	private String descripcion;
 	
-	@Column(name = "cantRutas", nullable = false)
+	@Column(name = "cantRutas", nullable = true)
 	private int cantRutas;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "tipoAsiento", nullable = false)
+	@Column(name = "tipoAsiento", nullable = true)
 	private TipoAsiento tipoAsiento;
 	
 	@Column(name = "descuento", nullable = false)
@@ -37,10 +37,10 @@ public class Paquete {
 	@Column(name = "Validez", nullable = false)
 	private int validez;
 	
-	 @Column(name = "costo", nullable = false, precision = 12, scale = 2)
+	 @Column(name = "costo", nullable = true, precision = 12, scale = 2)
 	    private BigDecimal costo; // precio final promocional
 	
-	 @Column(name = "fechaAlta", nullable = false)
+	 @Column(name = "fechaAlta", nullable = true)
 	 	private Date fechaAlta;
 	 
 	 /*@Column(name = "nombreRuta", nullable = false)
