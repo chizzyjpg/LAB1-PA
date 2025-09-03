@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import Logica.Aerolinea;
 import Logica.Cliente;
 import Logica.DataAerolinea;
+import Logica.DataCliente;
 import Logica.DataUsuario;
 import Logica.DataUsuarioAux;
 
@@ -80,6 +81,53 @@ public class UsuarioService {
 				em.persist(a);
 
 				em.getTransaction().commit();
+			} catch (RuntimeException ex) {
+				if (em.getTransaction().isActive()) em.getTransaction().rollback();
+				throw ex; // propagar para que la UI decida qué mostrar
+			} finally {
+				em.close();
+			}
+		}
+		
+		public DataUsuario verInfoUsuario (String nickname){
+			EntityManager em = JPAUtil.getEntityManager();
+			try {
+				em.getTransaction().begin();
+				List<Usuario> usuarios = em.createQuery("from Usuario u where u.nickname = :nickname", Usuario.class)
+					.setParameter("nickname", nickname)
+					.getResultList();
+				em.getTransaction().commit();
+				if (usuarios.isEmpty()) return null;
+				
+				Usuario u = usuarios.get(0);
+				
+				if (u instanceof Cliente c) {
+					return new DataCliente(
+			                c.getNombre(),
+			                c.getNickname(),
+			                c.getEmail(),
+			                c.getApellido(),
+			                c.getFechaNac(),
+			                c.getNacionalidad(),
+			                c.getTipoDocumento(),
+			                c.getNumDocumento()
+			            );
+				} else if (u instanceof Aerolinea a) {
+					return new DataAerolinea(
+			                a.getNombre(),
+			                a.getNickname(),
+			                a.getEmail(),
+			                a.getDescGeneral(),
+			                a.getLinkWeb()
+			            );
+				} else {
+					return new DataUsuarioAux(
+	                        u.getNombre(),
+	                        u.getNickname(),
+	                        u.getEmail()
+	                    );
+				}
+				
 			} catch (RuntimeException ex) {
 				if (em.getTransaction().isActive()) em.getTransaction().rollback();
 				throw ex; // propagar para que la UI decida qué mostrar

@@ -25,7 +25,8 @@ public class Sistema implements ISistema {
     private final Map<String, Paquete> paquetesPorNombre = new HashMap<>(); // clave: nombre canónico
     private final List<CompraPaquete> compras = new ArrayList<>();
     private int compraIdSeq = 1;  // Contador de IDs para compras (auto incremental en memoria)
-           
+    private final UsuarioService usuarioService = new UsuarioService();
+    
     public Sistema() {}
 
     
@@ -42,7 +43,7 @@ public class Sistema implements ISistema {
         return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
     }
     
-    private static java.util.Date copia(java.util.Date d) {
+    private static Date copia(java.util.Date d) {
         return (d == null) ? null : new java.util.Date(d.getTime());
     }
 
@@ -66,7 +67,7 @@ public class Sistema implements ISistema {
         // DTO -> Entidad (polimórfico)
         Usuario entity = ManejadorUsuario.toEntity(data);
         
-        System.out.println(entity.toString());
+        //System.out.println(entity.toString());
         
 
         // Clave canónica
@@ -91,18 +92,26 @@ public class Sistema implements ISistema {
 
     @Override
     public DataCliente verInfoCliente(String nickname) {
-        Usuario u = usuariosPorNickname.get(canonical(nickname));
-        if (u instanceof Cliente c) {
-        	return (DataCliente) ManejadorUsuario.toDTO(c);
-        }
-        return null;
+       DataUsuario usuario = usuarioService.verInfoUsuario(nickname);
+       if (usuario instanceof DataCliente) {
+		   return (DataCliente) usuario;
+	   }
+       return null;
+	   
+	   /*
+		Usuario u = usuariosPorNickname.get(canonical(nickname));
+		if (u instanceof Cliente c) {
+			return (DataCliente) ManejadorUsuario.toDTO(c);
+		}
+		return null;
+		*/
     }
 
     @Override
     public DataAerolinea verInfoAerolinea(String nickname) {
-        Usuario u = usuariosPorNickname.get(canonical(nickname));
-        if (u instanceof Aerolinea a) {
-            return (DataAerolinea) ManejadorUsuario.toDTO(a);
+        DataUsuario usuario = usuarioService.verInfoUsuario(nickname);
+        if (usuario instanceof DataAerolinea) {
+            return (DataAerolinea) usuario;
         }
         return null;
     }
@@ -114,7 +123,7 @@ public class Sistema implements ISistema {
        // return ManejadorUsuario.toDTOs(new ArrayList<>(usuariosPorNickname.values()));
     }
     
-    private final UsuarioService usuarioService = new UsuarioService();
+    
     @Override
     public List<DataAerolinea> listarAerolineas() {
     	return usuarioService.listarUsuarios().stream()
