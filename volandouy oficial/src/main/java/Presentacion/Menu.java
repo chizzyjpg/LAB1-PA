@@ -47,7 +47,7 @@ public class Menu extends JFrame {
 	public Menu() {
         //initComponents();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 907, 719);
+		setBounds(100, 100, 958, 766);
 		
 		CConexion con = new CConexion();
 		con.getConexion();
@@ -198,7 +198,7 @@ public class Menu extends JFrame {
 		JMenuItem mntmNewMenuItem_9 = new JMenuItem("Paquetes de Rutas de Vuelo");
 		mntmNewMenuItem_9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ConsultaPaqRutasVuelo ConPaq = new ConsultaPaqRutasVuelo();
+				ConsultaPaqRutasVuelo ConPaq = new ConsultaPaqRutasVuelo(sistema);
 				desktopPane.add(ConPaq);
 				desktopPane.revalidate();
 				desktopPane.repaint();

@@ -12,10 +12,13 @@ public class ConsultaVuelo extends JInternalFrame {
 
     private static final long serialVersionUID = 1L;
 
+    // --- ctor sin args para WindowBuilder ---
+    public ConsultaVuelo() { this(null); }
+
     private final ISistema sistema;
 
     private final JComboBox<DataAerolinea> comboAerolineas = new JComboBox<>();
-    private final JComboBox<DataRuta> comboRutas = new JComboBox<>();
+    private final JComboBox<DataRuta>       comboRutas      = new JComboBox<>();
 
     private final JList<DataVueloEspecifico> listVuelos = new JList<>(new DefaultListModel<>());
     private final JTextArea txtDetalleVuelo = new JTextArea(10, 40);
@@ -24,7 +27,6 @@ public class ConsultaVuelo extends JInternalFrame {
     private final JButton btnVerReserva = new JButton("Ver reserva…");
 
     private final SimpleDateFormat sdfFecha = new SimpleDateFormat("yyyy-MM-dd");
-    private final SimpleDateFormat sdfHora = new SimpleDateFormat("HH:mm");
 
     // ==== Constructores ====
     public ConsultaVuelo(ISistema sistema) {
@@ -32,19 +34,13 @@ public class ConsultaVuelo extends JInternalFrame {
         this.sistema = sistema;
         setSize(1000, 620);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
         armarUI();
         wireEvents();
-        cargarAerolineas();
-    }
 
-    // (si querés mantener main para probar standalone)
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            // TODO: pasá una implementación real de ISistema
-            ISistema sistema = null;
-            ConsultaVuelo frame = new ConsultaVuelo(sistema);
-            frame.setVisible(true);
-        });
+        if (this.sistema != null) {  // evita NPE en el diseñador
+            cargarAerolineas();
+        }
     }
 
     // ==== UI ====
@@ -53,13 +49,13 @@ public class ConsultaVuelo extends JInternalFrame {
         root.setBorder(new EmptyBorder(10,10,10,10));
         setContentPane(root);
 
-        // TOP: Aerolínea + Ruta
-        JPanel top = new JPanel(new GridBagLayout());
-        GridBagConstraints gc = new GridBagConstraints();
-        gc.insets = new Insets(4,4,4,4);
-        gc.fill = GridBagConstraints.HORIZONTAL;
+        // TOP: Aerolínea + Ruta (sin GridBag para evitar el warning de WB)
+        JPanel top = new JPanel(new BorderLayout(8,8));
+        JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 4));
 
-        gc.gridx = 0; gc.gridy = 0; top.add(new JLabel("Aerolínea:"), gc);
+        JLabel label = new JLabel("Aerolínea:");
+        label.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        row.add(label);
         comboAerolineas.setRenderer(new DefaultListCellRenderer(){
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -67,10 +63,11 @@ public class ConsultaVuelo extends JInternalFrame {
                 return this;
             }
         });
-        gc.gridx = 1; gc.gridy = 0; gc.weightx = 1; top.add(comboAerolineas, gc);
-        gc.weightx = 0;
+        row.add(comboAerolineas);
 
-        gc.gridx = 0; gc.gridy = 1; top.add(new JLabel("Ruta:"), gc);
+        JLabel label_1 = new JLabel("Ruta:");
+        label_1.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        row.add(label_1);
         comboRutas.setRenderer(new DefaultListCellRenderer(){
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -78,17 +75,21 @@ public class ConsultaVuelo extends JInternalFrame {
                 return this;
             }
         });
-        gc.gridx = 1; gc.gridy = 1; gc.weightx = 1; top.add(comboRutas, gc);
+        row.add(comboRutas);
 
+        top.add(row, BorderLayout.CENTER);
         root.add(top, BorderLayout.NORTH);
 
-        // CENTER: Vuelos (izquierda) + Detalle y Reservas (derecha)
+        // CENTER: Vuelos (izq) + Detalle y Reservas (der)
         JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         split.setResizeWeight(0.30);
 
         // Izquierda: lista de vuelos
         JPanel left = new JPanel(new BorderLayout(6,6));
-        left.add(new JLabel("Vuelos asociados a la ruta"), BorderLayout.NORTH);
+        JLabel label_2 = new JLabel("Vuelos asociados a la ruta");
+        label_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        left.add(label_2, BorderLayout.NORTH);
+        listVuelos.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         listVuelos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listVuelos.setCellRenderer(new DefaultListCellRenderer(){
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -107,29 +108,34 @@ public class ConsultaVuelo extends JInternalFrame {
         JPanel right = new JPanel(new BorderLayout(8,8));
 
         JPanel detallePanel = new JPanel(new BorderLayout(6,6));
-        detallePanel.add(new JLabel("Detalle del vuelo"), BorderLayout.NORTH);
+        JLabel label_3 = new JLabel("Detalle del vuelo");
+        label_3.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        detallePanel.add(label_3, BorderLayout.NORTH);
         txtDetalleVuelo.setEditable(false);
-        txtDetalleVuelo.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        txtDetalleVuelo.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));
         detallePanel.add(new JScrollPane(txtDetalleVuelo), BorderLayout.CENTER);
 
         JPanel reservasPanel = new JPanel(new BorderLayout(6,6));
-        reservasPanel.add(new JLabel("Reservas asociadas"), BorderLayout.NORTH);
+        JLabel label_4 = new JLabel("Reservas asociadas");
+        label_4.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        reservasPanel.add(label_4, BorderLayout.NORTH);
+        listReservas.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         listReservas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listReservas.setCellRenderer(new DefaultListCellRenderer(){
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof DataReserva r) {
-                    r.toString();
+                    setText(r.toString()); // << antes no seteaba el texto
                 }
                 return this;
             }
         });
         reservasPanel.add(new JScrollPane(listReservas), BorderLayout.CENTER);
         JPanel southRes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnVerReserva.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         southRes.add(btnVerReserva);
         reservasPanel.add(southRes, BorderLayout.SOUTH);
 
-        // apilo detalle arriba y reservas abajo
         right.add(detallePanel, BorderLayout.CENTER);
         right.add(reservasPanel, BorderLayout.SOUTH);
 
@@ -143,18 +149,11 @@ public class ConsultaVuelo extends JInternalFrame {
         listVuelos.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) mostrarDetalleYReservas();
         });
-
-        btnVerReserva.addActionListener(e -> {
-            DataReserva r = listReservas.getSelectedValue();
-            if (r == null) {
-                JOptionPane.showMessageDialog(this, "Seleccioná una reserva", "Atención", JOptionPane.INFORMATION_MESSAGE);
-                return;
-            }
-            // TODO: abrir tu frame de "Consulta de Reserva" si existe
-            JOptionPane.showMessageDialog(this, "Abrir detalle de reserva: " +
-					r.toString(), "Ver Reserva", JOptionPane.INFORMATION_MESSAGE);
-        });
+        
+        btnVerReserva.addActionListener(e -> verReservaSeleccionada());
     }
+        
+        
 
     // ==== Carga de datos ====
     private void cargarAerolineas() {
@@ -232,15 +231,14 @@ public class ConsultaVuelo extends JInternalFrame {
         txtDetalleVuelo.setText("");
     }
 
-    private String safe(String s){ return (s==null?"-":s); }
+    private String errorSafe(String s){ return (s == null || s.isEmpty()) ? "-" : s; }
 
     private void error(String msg) {
         JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
     }
-    
+
     private String formatVuelo(DataVueloEspecifico v) {
-    	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    	
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String fVuelo = v.getFecha()     != null ? sdf.format(v.getFecha())     : "-";
         String fAlta  = v.getFechaAlta() != null ? sdf.format(v.getFechaAlta()) : "-";
 
@@ -252,7 +250,7 @@ public class ConsultaVuelo extends JInternalFrame {
                Asientos Ejecutivo: %d
                Fecha alta: %s
                """.formatted(
-                nullToDash(v.getNombre()),
+                errorSafe(v.getNombre()),
                 fVuelo,
                 v.getDuracion(),
                 v.getMaxAsientosTur(),
@@ -260,9 +258,42 @@ public class ConsultaVuelo extends JInternalFrame {
                 fAlta
         );
     }
+    
+    private void verReservaSeleccionada() {
+        DataReserva sel = listReservas.getSelectedValue();
+        if (sel == null) {
+            JOptionPane.showMessageDialog(this, "Seleccioná una reserva", "Atención", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
-	private Object nullToDash(String s) {
-		return (s == null || s.isEmpty()) ? "-" : s;
-	}
+        DataAerolinea a = (DataAerolinea) comboAerolineas.getSelectedItem();
+        DataRuta r      = (DataRuta) comboRutas.getSelectedItem();
+        DataVueloEspecifico v = listVuelos.getSelectedValue();
 
+        if (a == null || r == null || v == null) {
+            JOptionPane.showMessageDialog(this, "Falta aerolínea/ruta/vuelo seleccionado.", "Atención", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Si DataReserva tiene getIdReserva(), usamos el ID para traer el detalle actualizado
+        DataReserva detalle;
+        try {
+            int id = sel.getIdReserva(); // <-- ajusta si tu getter tiene otro nombre
+            detalle = sistema.buscarReserva(a.getNickname(), r.getNombre(), v.getNombre(), id);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo cargar la reserva:\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Abrir el IF de detalle
+        JDesktopPane dp = getDesktopPane();
+        if (dp == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró el escritorio (JDesktopPane).", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        ConsultaReserva frame = new ConsultaReserva(detalle); // ver clase abajo
+        dp.add(frame);
+        frame.setVisible(true);
+        frame.toFront();
+    }
 }

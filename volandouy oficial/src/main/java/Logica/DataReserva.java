@@ -65,4 +65,8 @@ public class DataReserva {
 		return "Id " + idReserva + " - " + "Nickname: " + nickCliente.getNickname() + " " + sfd + " Tipo Asiento: " + tipoAsiento;
 	}
 	
+	 public void setPasajes(List<DataPasaje> pasajes) {
+	        this.pasajes = (pasajes == null) ? List.of() : List.copyOf(pasajes);
+	    }
+
 }
