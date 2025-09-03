@@ -39,13 +39,12 @@ public class Sistema implements ISistema {
  // Normaliza claves para que "Juan", "juAN" y "juan" choquen correctamente ////// HELPERS
     
  // Helper en Sistema
-    private static int nextReservaId(java.util.Map<String, Reserva> mapa) {
+    private static int nextReservaId(Set<Reserva> reservas) {
         int max = 0;
-        for (String k : mapa.keySet()) {
-            try {
-                int n = Integer.parseInt(k);
-                if (n > max) max = n;
-            } catch (NumberFormatException ignore) {}
+        for (Reserva r : reservas) {
+            if (r.getIdReserva() > max) {
+                max = r.getIdReserva();
+            }
         }
         return max + 1;
     }
@@ -660,11 +659,16 @@ public class Sistema implements ISistema {
 		if (r == null) {
 			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
 		}
-		VueloEspecifico v = r.getVuelosEspecificos().get(codigoVuelo);
+		VueloEspecifico v = r.getVuelosEspecificos().stream()
+			.filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo)) //no se si esta bien
+			.findFirst().orElse(null);
+			//r.getVuelosEspecificos().get(codigoVuelo);
 		if (v == null) {
 			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
 		}
-		Collection<Reserva> reservas = v.getReserva().values();
+		Collection<Reserva> reservas = v.getReservas().stream()
+				.sorted(Comparator.comparingInt(Reserva::getIdReserva)) //no se si esta bien
+				.collect(Collectors.toList());
 		return ManejadorReserva.toDatas(new ArrayList<>(reservas));
 	}
 	
@@ -679,11 +683,16 @@ public class Sistema implements ISistema {
 		if (r == null) {
 			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
 		}
-		VueloEspecifico v = r.getVuelosEspecificos().get(codigoVuelo);
+		VueloEspecifico v = r.getVuelosEspecificos().stream()
+			.filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo)) //no se si esta bien
+			.findFirst().orElse(null);
+			//r.getVuelosEspecificos().get(codigoVuelo);
 		if (v == null) {
 			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
 		}
-		Reserva res = v.getReserva().get(Integer.toString(idReserva));
+		Reserva res = v.getReservas().stream()
+				.filter(re -> re.getIdReserva() == idReserva)
+				.findFirst().orElse(null);
 		if (res == null) {
 			throw new IllegalArgumentException("No existe una reserva con ese ID en el vuelo indicado");
 		}
@@ -704,15 +713,18 @@ public class Sistema implements ISistema {
 		if (r == null) {
 			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
 		}
-		VueloEspecifico v = r.getVuelosEspecificos().get(codigoVuelo);
+		VueloEspecifico v = r.getVuelosEspecificos().stream()
+			.filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo)) //no se si esta bien
+			.findFirst().orElse(null);
+			//r.getVuelosEspecificos().get(codigoVuelo);
 		if (v == null) {
 			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
 		}
 		Reserva res = ManejadorReserva.toEntity(datos);
 		
-		int nuevoId = nextReservaId(v.getReserva());
+		int nuevoId = nextReservaId(v.getReservas());
 	    res.setIdReserva(nuevoId);  
-		v.getReserva().put(Integer.toString(res.getIdReserva()), res);
+		v.getReservas().add(res); //Si necesitas asociar una clave con cada Reserva, deberías usar un Map en vez de un Set.
 	}
 	
 	

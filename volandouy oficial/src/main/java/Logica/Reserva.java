@@ -150,10 +150,6 @@ public class Reserva {
 		this.costoTotal = costoTotal;
 	}
 	
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-	
 	public void setIdReserva(int idReserva) {
 		this.idReserva = idReserva;
 	}
