@@ -20,7 +20,7 @@ public class ManejadorCiudad {
 				ciudad.getSitioWeb()
 		);
 		try {
-        	new CiudadService().crearCiudad(c.getNombre(), c.getPais(), c.getNombreAeropuerto(), c.getDescripcionAeropuerto(), c.getFechaAlta(), c.getSitioWeb());
+        	new CiudadService().crearCiudad(c);
         	JOptionPane.showMessageDialog(null, "Se insertó correctamente");
         }catch (Exception ex) {
         	JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());

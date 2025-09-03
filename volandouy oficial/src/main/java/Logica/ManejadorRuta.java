@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
+import BD.CategoriaService;
+import BD.CiudadService;
 import BD.RutaVueloService;
 
 public class ManejadorRuta {
@@ -14,34 +16,50 @@ public class ManejadorRuta {
 
     // ===== Obtener / Listar =====
     public static Ruta toEntity(DataRuta data) {
-    	Objects.requireNonNull(data, "Los datos no pueden ser nulos");
-    	Ciudad origen = ManejadorCiudad.toEntity(data.getCiudadOrigen());
-    	Ciudad destino = ManejadorCiudad.toEntity(data.getCiudadDestino());
+        Objects.requireNonNull(data, "Los datos no pueden ser nulos");
+        // Buscar Ciudad y Categoria reales a partir de los DTOs
+        Ciudad origen = new CiudadService().buscarPorNombre(data.getCiudadOrigen().getNombre());
+        Ciudad destino = new CiudadService().buscarPorNombre(data.getCiudadDestino().getNombre());
+        Categoria categoria = new CategoriaService().buscarPorNombre(data.getCategoria().getNombre());
         Ruta r = new Ruta(
-			data.getNombre(), data.getDescripcion(),
-			origen, destino,
-			data.getHora(), data.getFechaAlta(),
-			data.getCostoTurista(), data.getCostoEquipajeExtra(), data.getCostoEjecutivo()			
-		);
+            data.getNombre(), data.getDescripcion(),
+            origen, destino,
+            data.getHora(), data.getFechaAlta(),
+            data.getCostoTurista(), data.getCostoEquipajeExtra(), data.getCostoEjecutivo(), categoria
+        );
         try {
-        	new RutaVueloService().crearRutaVuelo(r.getNombre(), r.getDescripcion(), origen, destino, r.getHora(), r.getFechaAlta(), r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo());
-        	JOptionPane.showMessageDialog(null, "Se insertó correctamente");
+            new RutaVueloService().crearRutaVuelo(r);
+            JOptionPane.showMessageDialog(null, "Se insertó correctamente");
         }catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
-		}
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+        }
         return r;
     }
 
-    
     public static DataRuta toData(Ruta r) {
-    	Objects.requireNonNull(r, "La ruta no puede ser nula");
-    	DataCiudad origen = ManejadorCiudad.toData(r.getOrigen());
-    	DataCiudad destino = ManejadorCiudad.toData(r.getDestino());
+        Objects.requireNonNull(r, "La ruta no puede ser nula");
+        DataCiudad origen = new DataCiudad(
+            r.getOrigen().getNombre(),
+            r.getOrigen().getPais(),
+            r.getOrigen().getNombreAeropuerto(),
+            r.getOrigen().getDescripcionAeropuerto(),
+            r.getOrigen().getFechaAlta(),
+            r.getOrigen().getSitioWeb()
+        );
+        DataCiudad destino = new DataCiudad(
+            r.getDestino().getNombre(),
+            r.getDestino().getPais(),
+            r.getDestino().getNombreAeropuerto(),
+            r.getDestino().getDescripcionAeropuerto(),
+            r.getDestino().getFechaAlta(),
+            r.getDestino().getSitioWeb()
+        );
+        DataCategoria categoria = new DataCategoria(r.getCategoriaR().getNombre());
         return new DataRuta(
             r.getNombre(), r.getDescripcion(),
             origen, destino,
             r.getHora(), r.getFechaAlta(),
-            r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo()
+            r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo(), categoria
         );
     }
     

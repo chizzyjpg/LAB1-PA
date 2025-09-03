@@ -56,20 +56,17 @@ public class Ruta {
     @Column(name = "costoEquipajeExtra", nullable = false)
     private int costoEquipajeExtra;
 
- 
  // si Categoria es enum:
-    @ElementCollection(targetClass = Categoria.class)
-    @CollectionTable(name = "ruta_categoria", joinColumns = @JoinColumn(name = "ruta_id"))
-    @Enumerated(EnumType.STRING)
-    @Column(name = "categoria", length = 40, nullable = false)
-    private List<Categoria> categoria = new ArrayList<>();
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "categoria_nombre", nullable = false, referencedColumnName = "nombre")
+    private Categoria categoria;
     
     protected Ruta() {}
 
     public Ruta(String n, String desc,
                 Ciudad origen, Ciudad destino,
                 int hora, Date fechaAlta,
-                BigDecimal costoTurista, int costoEquipajeExtra, BigDecimal costoEjecutivo) {
+                BigDecimal costoTurista, int costoEquipajeExtra, BigDecimal costoEjecutivo, Categoria categoria) {
         this.nombre = n;
         this.descripcion = desc;
         this.origen = origen;
@@ -80,6 +77,7 @@ public class Ruta {
         this.costoEquipajeExtra = costoEquipajeExtra;
         this.vuelosEspecificos = new HashSet<>();
         this.costoEjecutivo = costoEjecutivo;
+        this.categoria = categoria;
     }
 
     // getters
@@ -93,7 +91,7 @@ public class Ruta {
     public BigDecimal getCostoTurista() { return costoTurista; }
     public BigDecimal getCostoEjecutivo() { return costoEjecutivo; }
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
-    public List<Categoria> getCategorias() { return categoria; }
+    public Categoria getCategoriaR() { return categoria; }
     public Set<VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
 
     // setters
@@ -106,7 +104,7 @@ public class Ruta {
     public void setCostoBase(BigDecimal costoTurista) { this.costoTurista = costoTurista; }
     public void setCostoEjecutivo(BigDecimal costoEjecutivo) { this.costoEjecutivo = costoEjecutivo; }
     public void setCostoEquipajeExtra(int costoEquipajeExtra) { this.costoEquipajeExtra = costoEquipajeExtra; }
-    public void setCategorias(List<Categoria> cat) { this.categoria = cat; }
+    public void setCategoriaR(Categoria categoria) { this.categoria = categoria; }
     public void setVuelosEspecificos(Set<VueloEspecifico> vuelos) { this.vuelosEspecificos = vuelos; }
 
     @Override public String toString() {

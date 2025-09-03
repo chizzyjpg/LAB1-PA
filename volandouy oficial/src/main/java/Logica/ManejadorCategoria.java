@@ -20,7 +20,7 @@ public final class ManejadorCategoria{
 		Objects.requireNonNull(dto, "DataCategoria no puede ser null"); // Valida que dto no sea null; si lo es, lanza NullPointerException con mensaje.
 		Categoria c = new Categoria (dto.getNombre());
 		try {
-		    new CategoriaService().crearCategoria(c.getNombre());
+		    new CategoriaService().crearCategoria(c);
 		    JOptionPane.showMessageDialog(null, "Se insertó correctamente");
 		} catch (Exception ex) {
 		    JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
@@ -29,7 +29,7 @@ public final class ManejadorCategoria{
 		}
 	///// ENITIDAD -> DTO
 	
-	public static DataCategoria toDTO (Categoria c) {
+	public static DataCategoria toData (Categoria c) {
 		Objects.requireNonNull(c, "Categoria no puede ser null"); // Valida argumento no nulo.
 		return new DataCategoria (c.getNombre());			
 		}
@@ -42,7 +42,7 @@ public final class ManejadorCategoria{
 		}
 
 	public static List<DataCategoria> toDTOs(List<? extends Categoria> users) {// Convierte una lista de entidades a DTOs.
-		return users.stream().map(ManejadorCategoria::toDTO).collect(Collectors.toList());
+		return users.stream().map(ManejadorCategoria::toData).collect(Collectors.toList());
 	        //return user.stream() Stream sobre la lista de usuarios… // .map(ManejadorUsuario::toDTO mapea cada entidad a su DTO… // .collect(Collectors.toList y colecta en una List.
 		}
 	

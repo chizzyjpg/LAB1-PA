@@ -8,6 +8,7 @@ import BD.AerolineaService;
 import BD.CategoriaService;
 import BD.CiudadService;
 import BD.ClienteService;
+import BD.RutaVueloService;
 import BD.UsuarioService;
 
 
@@ -113,11 +114,21 @@ public class Sistema implements ISistema {
        // return ManejadorUsuario.toDTOs(new ArrayList<>(usuariosPorNickname.values()));
     }
     
+    private final UsuarioService usuarioService = new UsuarioService();
     @Override
     public List<DataAerolinea> listarAerolineas() {
-    	AerolineaService aerolineaService = new AerolineaService();
-    	return aerolineaService.listarAerolineas();
-		/*
+    	return usuarioService.listarUsuarios().stream()
+    	        .filter(DataAerolinea.class::isInstance)
+    	        .map(DataAerolinea.class::cast)
+    	        .sorted(Comparator.comparing(
+    	            a -> a.getNickname() == null ? "" : a.getNickname(),
+    	            String.CASE_INSENSITIVE_ORDER
+    	        ))
+    	        .collect(Collectors.toList());
+    
+    	/*
+    	UsuarioService aerolinea = new UsuarioService();
+    	return aerolinea.listarAerolineas();
     	List<DataAerolinea> aerolineas = new ArrayList<>();
     	for (Usuario u : usuariosPorNickname.values()) {
     		if (u instanceof Aerolinea a) {
@@ -149,10 +160,14 @@ public class Sistema implements ISistema {
 	 */
  
 	 public List<DataCliente> listarClientes() {
-		 // Usando BD
-		 
-		 ClienteService clienteService = new ClienteService();
-		 return clienteService.listarClientes();
+		 return usuarioService.listarUsuarios().stream()
+			        .filter(DataCliente.class::isInstance)
+			        .map(DataCliente.class::cast)
+			        .sorted(Comparator.comparing(
+			            c -> c.getNickname() == null ? "" : c.getNickname(),
+			            String.CASE_INSENSITIVE_ORDER
+			        ))
+			        .collect(Collectors.toList());
 	 }
 	 
     // ======================
@@ -237,9 +252,14 @@ public class Sistema implements ISistema {
     }
     
     @Override
-    public java.util.List<DataCategoria> listarCategorias() {
+    public List<DataCategoria> listarCategorias() {
     	CategoriaService categoriaService = new CategoriaService();
-    	return categoriaService.listarCategorias();
+    	List<Categoria> categorias = categoriaService.listarCategorias();
+    	List<DataCategoria> dataCategorias = new ArrayList<>();
+    	for (Categoria c : categorias) {
+    		dataCategorias.add(new DataCategoria(c.getNombre()));
+    	}
+    	return dataCategorias;
     } 
     
     // =========================
@@ -248,21 +268,12 @@ public class Sistema implements ISistema {
     
     @Override
     public void registrarRuta(DataRuta datos) {
-    	ManejadorRuta.toEntity(datos);
-    	
-    	System.out.println(datos.toString());
-    	/*
-		if (datos == null) throw new IllegalArgumentException("Los datos de la ruta no pueden ser nulos");
-		
-		
-	    Usuario u = usuariosPorNickname.get(canonical(nickAerolinea));	    
-		if (!(u instanceof Aerolinea a)) {
-			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
-		}
-		Ruta r = ManejadorRuta.toEntity(datos);
-		a.addRuta(r);
-		*/
-	}
+        // Usar directamente las instancias de Ciudad
+        if (datos != null) {
+            ManejadorRuta.toEntity(datos);
+            System.out.println(datos.toString());
+        }
+    }
     
 //    private void validarBasico(Ruta r) {
 //        if (r.getNombre()==null || r.getNombre().isBlank()) throw new IllegalArgumentException("nombre obligatorio");
@@ -304,7 +315,12 @@ public class Sistema implements ISistema {
 	@Override
 	public List<DataCiudad> listarCiudades() {
 		CiudadService ciudadService = new CiudadService();
-		return ciudadService.listarCiudades();
+		List<Ciudad> ciudades = ciudadService.listarCiudades();
+		List<DataCiudad> dataCiudades = new ArrayList<>();
+		for (Ciudad c : ciudades) {
+			dataCiudades.add(new DataCiudad(c.getNombre(), c.getPais(), c.getNombreAeropuerto(), c.getDescripcionAeropuerto(), c.getFechaAlta(), c.getSitioWeb()));
+		}
+		return dataCiudades;
 	}
 	
 	public Ciudad buscarCiudad(String nombre, String pais) {
@@ -394,14 +410,19 @@ public class Sistema implements ISistema {
 
 	@Override
 	public List<DataCliente> listarClientesParaCompra() {
-	    // Usamos tu ManejadorUsuario para convertir ENTIDAD -> DTO
-	    return usuariosPorNickname.values().stream()
+		ClienteService clienteService = new ClienteService();
+		return clienteService.listarClientes();
+		// Usamos tu ManejadorUsuario para convertir ENTIDAD -> DTO
+		/*
+		return usuariosPorNickname.values().stream()
 	            .filter(u -> u instanceof Cliente)
 	            .map(u -> (Cliente) u)
 	            .sorted(Comparator.comparing(Cliente::getNickname, String.CASE_INSENSITIVE_ORDER))
 	            .map(c -> (DataCliente) ManejadorUsuario.toDTO(c))
 	            .collect(Collectors.toList());
-	}
+	
+		 */
+		}
 	
 	@Override
 	public boolean clienteYaComproPaquete(String nicknameCliente, String nombrePaquete) {
@@ -565,7 +586,6 @@ public class Sistema implements ISistema {
 	             .filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombreRuta))
 	             .findFirst()
 	             .orElseThrow(() -> new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre"));
-	     
 	     //////////////////////////////////////////////////////////////////////////////////////////////////////
 	
          /*if (p == null || r == null || tipo == null)

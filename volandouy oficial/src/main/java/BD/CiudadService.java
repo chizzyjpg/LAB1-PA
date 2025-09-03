@@ -12,12 +12,11 @@ import Logica.DataCiudad;
 
 public class CiudadService {
 	
-	public void crearCiudad(String nombre,String pais,String nombreAeropuerto,String descripcionAeropuerto,Date fechaAlta,String sitioWeb) {
+	public void crearCiudad(Ciudad c) {
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
 			em.getTransaction().begin();
 			
-			Ciudad c = new Ciudad(nombre, pais, nombreAeropuerto, descripcionAeropuerto, fechaAlta, sitioWeb);
 			em.persist(c);
 			
 			em.getTransaction().commit();
@@ -29,18 +28,35 @@ public class CiudadService {
 		}
 	}
 	
-	public List<DataCiudad> listarCiudades(){
+	public List<Ciudad> listarCiudades(){
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
 			em.getTransaction().begin();
 			List<Ciudad> ciudades = em.createQuery("from Ciudad", Ciudad.class).getResultList();
 			em.getTransaction().commit();
-			return ciudades.stream().map(c -> new DataCiudad(c.getNombre(), c.getPais(), c.getNombreAeropuerto(), c.getDescripcionAeropuerto(), c.getFechaAlta(), c.getSitioWeb())).collect(Collectors.toList());
+			return ciudades;
 			} catch (RuntimeException ex) {
 				if (em.getTransaction().isActive()) em.getTransaction().rollback();
 				throw ex; // propagar para que la UI decida qué mostrar
 			} finally {
 					em.close();
-			}		
+			}
 		}
+	
+	public Ciudad buscarPorNombre(String nombre) {
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			em.getTransaction().begin();
+			List<Ciudad> ciudades = em.createQuery("from Ciudad c where c.nombre = :nombre", Ciudad.class)
+				.setParameter("nombre", nombre)
+				.getResultList();
+			em.getTransaction().commit();
+			return ciudades.isEmpty() ? null : ciudades.get(0);
+		} catch (RuntimeException ex) {
+			if (em.getTransaction().isActive()) em.getTransaction().rollback();
+			throw ex;
+		} finally {
+			em.close();
+		}
+	}
 	}

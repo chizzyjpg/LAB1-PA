@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.SpinnerDateModel;
 import java.util.Date;
+import java.util.List;
 import java.util.Calendar;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JButton;
@@ -22,12 +23,15 @@ import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultListCellRenderer;
 
+import Logica.Categoria;
+import Logica.Ciudad;
 import Logica.DataAerolinea;
 import Logica.DataCategoria;
 import Logica.DataCiudad;
 import Logica.DataRuta;
 import Logica.ISistema;
 import BD.CategoriaService;
+import BD.CiudadService;
 
 public class RegistrarRutaVuelo extends JInternalFrame {
 
@@ -150,20 +154,22 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		JComboBox<DataCiudad> comboBoxCiudadOrigen = new JComboBox<>();
 		comboBoxCiudadOrigen.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBoxCiudadOrigen.setBounds(155, 306, 240, 22);
-		for (DataCiudad dcd : sistema.listarCiudades()) comboBoxCiudadOrigen.addItem(dcd);
-		comboBoxCiudadOrigen.setRenderer(new DefaultListCellRenderer() {
-		    @Override
-		    public java.awt.Component getListCellRendererComponent(
-		            javax.swing.JList<?> list, Object value, int index,
-		            boolean isSelected, boolean cellHasFocus) {
-		        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-		        if (value instanceof DataCiudad c) {
-		            // Ajustá getters reales: getNombre(), getPais()
-		            setText(c.getNombre() + " — " + c.getPais());
-		        }
-		        return this;
-		    }
-		});
+		// Usar solo DTOs en la capa de presentación
+        for (DataCiudad dcd : sistema.listarCiudades()) {
+            comboBoxCiudadOrigen.addItem(dcd);
+        }
+        comboBoxCiudadOrigen.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof DataCiudad c) {
+                    setText(c.getNombre() + " — " + c.getPais());
+                }
+                return this;
+            }
+        });
 		getContentPane().add(comboBoxCiudadOrigen);
 		
 		JLabel lblCiudadDestino = new JLabel("Ciudad Destino:");
@@ -174,19 +180,21 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		JComboBox<DataCiudad> comboBoxCiudadDestino = new JComboBox<>();
 		comboBoxCiudadDestino.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		comboBoxCiudadDestino.setBounds(155, 342, 240, 22);
-		for (DataCiudad dcd : sistema.listarCiudades()) comboBoxCiudadDestino.addItem(dcd);
-		comboBoxCiudadDestino.setRenderer(new DefaultListCellRenderer() {
-		    @Override
-		    public java.awt.Component getListCellRendererComponent(
-		            javax.swing.JList<?> list, Object value, int index,
-		            boolean isSelected, boolean cellHasFocus) {
-		        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-		        if (value instanceof DataCiudad c) {
-		            setText(c.getNombre() + " — " + c.getPais());
-		        }
-		        return this;
-		    }
-		});
+		for (DataCiudad dcd : sistema.listarCiudades()) {
+            comboBoxCiudadDestino.addItem(dcd);
+        }
+        comboBoxCiudadDestino.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof DataCiudad c) {
+                    setText(c.getNombre() + " — " + c.getPais());
+                }
+                return this;
+            }
+        });
 		getContentPane().add(comboBoxCiudadDestino);
 		
 		JLabel lblFechaAlta = new JLabel("Fecha Alta:");
@@ -198,23 +206,25 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		fechaAlta.setBounds(155, 376, 145, 20);
 		getContentPane().add(fechaAlta);
 		
-		JComboBox<DataCategoria> comboBoxCategoria = new JComboBox();
+		JComboBox<DataCategoria> comboBoxCategoria = new JComboBox<>();
 		comboBoxCategoria.setBounds(155, 405, 145, 22);
-		for (DataCategoria dc : sistema.listarCategorias()) comboBoxCategoria.addItem(dc);
-		comboBoxCategoria.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		comboBoxCategoria.setRenderer(new DefaultListCellRenderer() {
-			@Override
-		    public Component getListCellRendererComponent(
-		            JList<?> list, Object value, int index,
-		            boolean isSelected, boolean cellHasFocus) {
-		        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-		        if (value instanceof DataCategoria c) {
-		            setText(c.getNombre());
-		        }
-		        return this;
-			}
-		});
-		
+		// Usar solo DTOs en la capa de presentación para categorías
+        for (DataCategoria dcg : sistema.listarCategorias()) {
+            comboBoxCategoria.addItem(dcg);
+        }
+        comboBoxCategoria.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        comboBoxCategoria.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(
+                    JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof DataCategoria c) {
+                    setText(c.getNombre());
+                }
+                return this;
+            }
+        });
 		getContentPane().add(comboBoxCategoria);
 		
 		JLabel lblCategoria = new JLabel("Categoría:");
@@ -235,16 +245,17 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		
 		JButton btnAceptar = new JButton("ACEPTAR");
 		btnAceptar.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
 		    	DataAerolinea aerolinea = (DataAerolinea) comboAerolinea.getSelectedItem();
 		        String nombre = textFieldNombre.getText().trim();
 		        String Descripcion = textAreaDesc.getText().trim();
 		        String turista = textFieldTurista.getText().trim();
 		        String ejecutivo = textFieldEjecutivo.getText().trim(); // hoy no lo usamos porque Ruta tiene un solo costo base
 		        String costo = textFieldEquipajeExtra.getText().trim();
-		        DataCiudad ciudadO = (DataCiudad) comboBoxCiudadOrigen.getSelectedItem();
-		        DataCiudad ciudadD = (DataCiudad) comboBoxCiudadDestino.getSelectedItem();
+		        DataCiudad dataCiudadO = (DataCiudad) comboBoxCiudadOrigen.getSelectedItem();
+		        DataCiudad dataCiudadD = (DataCiudad) comboBoxCiudadDestino.getSelectedItem();
 		        Date fecha = fechaAlta.getDate();
+		        DataCategoria dataCat = (DataCategoria) comboBoxCategoria.getSelectedItem();
 
 		        // Validaciones mínimas (las tuyas)
 		        if(nombre.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Nombre NO puede estar vacío", "Error Nombre" , JOptionPane.ERROR_MESSAGE); return; }
@@ -252,10 +263,10 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        if(turista.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Costo Turista NO puede estar vacío", "Error Costo" , JOptionPane.ERROR_MESSAGE); return; }
 		        if(ejecutivo.isEmpty()) { /* por ahora no lo usamos, pero dejo tu check */ JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Costo Ejecutivo NO puede estar vacío", "Error Costo" , JOptionPane.ERROR_MESSAGE); return; }
 		        if(costo.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Costo de Equipaje NO puede estar vacío", "Error Costo" , JOptionPane.ERROR_MESSAGE); return; }
-		        if(ciudadO == null) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Ciudad Origen NO puede estar vacía", "Error Ciudad Origen" , JOptionPane.ERROR_MESSAGE); return; }
-		        if(ciudadD == null) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Ciudad Destino NO puede estar vacía", "Error Ciudad Destino" , JOptionPane.ERROR_MESSAGE); return; }
+		        if(dataCiudadO == null) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Ciudad Origen NO puede estar vacía", "Error Ciudad Origen" , JOptionPane.ERROR_MESSAGE); return; }
+		        if(dataCiudadD == null) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Ciudad Destino NO puede estar vacía", "Error Ciudad Destino" , JOptionPane.ERROR_MESSAGE); return; }
 		        if(fecha == null) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Fecha NO puede estar vacía", "Error Fecha" , JOptionPane.ERROR_MESSAGE); return; }
-
+		        if(dataCat == null) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Categoría NO puede estar vacía", "Error Categoría" , JOptionPane.ERROR_MESSAGE); return; }
 		        // Pedimos PAÍS (mínimo cambio en UI)
 		        
 		        // Parseos
@@ -278,29 +289,28 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        int horaInt = cal.get(Calendar.HOUR_OF_DAY);
 
 		        try {
-		        	
-		        	DataRuta datos = new DataRuta(
-		        			nombre,
-		        			Descripcion,
-		        			ciudadO,
-		        			ciudadD,
-		        			horaInt,
-		        			fecha,
-		        			costoTurista,
-		        			costoEquipaje,
-		        			costoEjecutivo
-		        			);
-		        	
-		        	sistema.registrarRuta(datos);
+                    DataRuta datos = new DataRuta(
+                        nombre,
+                        Descripcion,
+                        dataCiudadO,
+                        dataCiudadD,
+                        horaInt,
+                        fecha,
+                        costoTurista,
+                        costoEquipaje,
+                        costoEjecutivo,
+                        dataCat
+                    );
+                    sistema.registrarRuta(datos);
 
-		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Ruta de Vuelo registrada correctamente!\nNombre: " + nombre, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
+                    //JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Ruta de Vuelo registrada correctamente!\nNombre: " + nombre, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
 
-		            // limpiar
-		            textFieldNombre.setText("");
-		            textFieldTurista.setText("");
-		            textFieldEjecutivo.setText("");
-		            textFieldEquipajeExtra.setText("");
-		            fechaAlta.setDate(null);
+                    // limpiar
+                    textFieldNombre.setText("");
+                    textFieldTurista.setText("");
+                    textFieldEjecutivo.setText("");
+                    textFieldEquipajeExtra.setText("");
+                    fechaAlta.setDate(null);
 
 		        } catch (IllegalArgumentException ex2) {
 		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, ex2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

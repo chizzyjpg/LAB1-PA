@@ -94,9 +94,9 @@ public class RegistroRutaVueloaPaquete extends JInternalFrame {
         btnGuardar.setBounds(370, 192, 120, 25);
         getContentPane().add(btnGuardar);
         
+        /* Precarga inicial
         comboBoxAerolineas.addActionListener(e -> cargarRutas());
 
-        // Precarga inicial
         cargarPaquetes();
         cargarAerolineas();
         
@@ -105,6 +105,7 @@ public class RegistroRutaVueloaPaquete extends JInternalFrame {
             cargarRutas();
         }
         //cargarRutas(); // en caso de que ya haya una aerolínea seleccionada
+    */
     }
 
     // ------------ CARGA DE DATOS UI ------------

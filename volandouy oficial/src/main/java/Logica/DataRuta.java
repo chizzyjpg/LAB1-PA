@@ -13,12 +13,12 @@ public class DataRuta {
     private BigDecimal costoTurista;
     private BigDecimal costoEjecutivo;
     private int costoEquipajeExtra;
-    private Categoria categoria;
+    private DataCategoria categoria;
     
     public DataRuta(String nombre, String descripcion,
                     DataCiudad ciudadOrigen, DataCiudad ciudadDestino,
                     int hora, Date fechaAlta,
-                    BigDecimal costoTurista, int costoEquipajeExtra, BigDecimal costoEjecutivo) {
+                    BigDecimal costoTurista, int costoEquipajeExtra, BigDecimal costoEjecutivo, DataCategoria categoria) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.ciudadOrigen = ciudadOrigen;
@@ -28,6 +28,7 @@ public class DataRuta {
         this.costoTurista = costoTurista;
         this.costoEquipajeExtra = costoEquipajeExtra;
         this.costoEjecutivo = costoEjecutivo;
+        this.categoria = categoria;
     }
 
     // Getters
@@ -41,10 +42,11 @@ public class DataRuta {
     public BigDecimal getCostoTurista() { return costoTurista; }
     public BigDecimal getCostoEjecutivo() { return costoEjecutivo; }
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
+    public DataCategoria getCategoria() { return categoria; }
     
     @Override
     public String toString() {
-    	return getNombre()+ getDescripcion() + getCiudadOrigen() + getCiudadDestino() + getHora() + getFechaAlta() + getCostoTurista() + getCostoEjecutivo() + getCostoEquipajeExtra();
+    	return getNombre()+ getDescripcion() + getCiudadOrigen() + getCiudadDestino() + getHora() + getFechaAlta() + getCostoTurista() + getCostoEjecutivo() + getCostoEquipajeExtra() + getCategoria();
     			
     }
 }

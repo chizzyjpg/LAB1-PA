@@ -5,32 +5,25 @@ import jakarta.persistence.EntityManager;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import Logica.Categoria;
 import Logica.Ciudad;
+import Logica.DataCategoria;
+import Logica.DataCiudad;
+import Logica.DataRuta;
 import Logica.JPAUtil;
 import Logica.Ruta;
 
 public class RutaVueloService {
 
-	public void crearRutaVuelo(String nombre, String descripcion, Ciudad ciudadOrigen,
-			Ciudad ciudadDestino, int hora, Date fechaAlta, BigDecimal costoTurista, int costoEquipajeExtra, BigDecimal costoEjecutivo) {
-		// TODO Auto-generated method stub
+	public void crearRutaVuelo(Ruta r) {
 		EntityManager em = JPAUtil.getEntityManager();
 		
 		try {
 			em.getTransaction().begin();
 			
-			// Verificar y persistir ciudadOrigen si es nueva
-			if (ciudadOrigen.getIdCiudad() == 0) {
-				em.persist(ciudadOrigen);
-			}
-			// Verificar y persistir ciudadDestino si es nueva
-			if (ciudadDestino.getIdCiudad() == 0) {
-				em.persist(ciudadDestino);
-			}
-
-			Ruta r = new Ruta(nombre, descripcion, ciudadOrigen, ciudadDestino, hora, fechaAlta, costoTurista, costoEquipajeExtra, costoEjecutivo);
 			em.persist(r);
 			
 			em.getTransaction().commit();
@@ -40,5 +33,48 @@ public class RutaVueloService {
 			} finally {
 					em.close();
 			}
+	}
+	
+	public List<DataRuta> listarRutas(){
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			em.getTransaction().begin();
+			List<Ruta> rutas = em.createQuery("from Ruta", Ruta.class).getResultList();
+			em.getTransaction().commit();
+			// Convertir Ruta a DataRuta usando DTOs
+			return rutas.stream()
+				.map(r -> new DataRuta(
+					r.getNombre(),
+					r.getDescripcion(),
+					new DataCiudad(
+						r.getOrigen().getNombre(),
+						r.getOrigen().getPais(),
+						r.getOrigen().getNombreAeropuerto(),
+						r.getOrigen().getDescripcionAeropuerto(),
+						r.getOrigen().getFechaAlta(),
+						r.getOrigen().getSitioWeb()
+					),
+					new DataCiudad(
+						r.getDestino().getNombre(),
+						r.getDestino().getPais(),
+						r.getDestino().getNombreAeropuerto(),
+						r.getDestino().getDescripcionAeropuerto(),
+						r.getDestino().getFechaAlta(),
+						r.getDestino().getSitioWeb()
+					),
+					r.getHora(),
+					r.getFechaAlta(),
+					r.getCostoTurista(),
+					r.getCostoEquipajeExtra(),
+					r.getCostoEjecutivo(),
+					new DataCategoria(r.getCategoriaR().getNombre())
+				))
+				.collect(Collectors.toList());
+		} catch (RuntimeException ex) {
+			if (em.getTransaction().isActive()) em.getTransaction().rollback();
+			throw ex; // propagar para que la UI decida qué mostrar
+		} finally {
+			em.close();
+		}
 	}
 }
