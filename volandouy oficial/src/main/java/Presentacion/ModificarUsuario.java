@@ -166,22 +166,20 @@ public class ModificarUsuario extends JInternalFrame {
 
     private void cargarUsuarios() {
     	try {
-            List<DataUsuarioAux> lista = sistema.listarUsuarios().stream()
-                .map(DataUsuarioAux::new)
-                .toList();
-            lista.sort(Comparator.comparing(u -> nvl(u.getNickname()), String.CASE_INSENSITIVE_ORDER));
-            comboUsuarios.setModel(new DefaultComboBoxModel<>(lista.toArray(new DataUsuarioAux[0])));
-            if (!lista.isEmpty()) {
-                comboUsuarios.setSelectedIndex(0);
-                onSeleccionarUsuario(); // carga el primero
-            } else {
-                bloquearTodo(true);
-            }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "No se pudo listar usuarios:\n" + ex.getMessage(),
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            bloquearTodo(true);
-        }
+    		bloquearTodo(true);
+	        comboUsuarios.removeAllItems();
+	        List<DataUsuario> usuarios = sistema.listarUsuarios();
+	        usuarios.stream()
+	            .map(DataUsuarioAux::new) // convertir a DataUsuarioAux
+	            .sorted(Comparator.comparing(DataUsuarioAux::getTipoUsuario)  // primero por tipo
+	                    .thenComparing(DataUsuarioAux::getNickname, String.CASE_INSENSITIVE_ORDER)) // luego por nickname
+	            .forEach(comboUsuarios::addItem);
+	        comboUsuarios.setSelectedIndex(-1); // nada seleccionado al inicio
+		} finally {
+			bloquearTodo(false);
+			limpiar();
+			mostrarCard(CARD_CLIENTE); // por defecto
+    	}
     }
 
     private void onSeleccionarUsuario() {

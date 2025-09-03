@@ -189,14 +189,23 @@ public class Sistema implements ISistema {
     @Override
     public void modificarCliente(String nickname, DataCliente nuevos) {
         if (nuevos == null) throw new IllegalArgumentException("Datos de cliente no pueden ser nulos");
-
+        
+        usuarioService.listarUsuarios();
+        DataUsuario usuario = usuarioService.verInfoUsuario(nickname);
+        if (!(usuario instanceof DataCliente dc))
+			throw new IllegalArgumentException("No existe un cliente con ese nickname");
+       
+        
+        
+        
+        /*
         String key = canonical(nickname);
         Usuario u = usuariosPorNickname.get(key);
         if (!(u instanceof Cliente c))
             throw new IllegalArgumentException("No existe un cliente con ese nickname");
 
         // Validar que NO se cambie email ni nickname (según caso de uso)
-        String emailActual = c.getEmail();
+        String emailActual = usuario.getEmail();
         String emailNuevo  = nuevos.getEmail();
         if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
             throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
@@ -204,14 +213,14 @@ public class Sistema implements ISistema {
         if (nuevos.getNickname() != null && !canonical(nuevos.getNickname()).equals(key)) {
             throw new IllegalArgumentException("No se permite modificar el nickname.");
         }
-
         // Actualizar SOLO campos básicos permitidos
-        c.setNombre(nuevos.getNombre());
-        c.setApellido(nuevos.getApellido());
-        c.setFechaNac(copia(nuevos.getFechaNac()));
-        c.setNacionalidad(nuevos.getNacionalidad());
-        c.setTipoDocumento(nuevos.getTipoDocumento());
-        c.setNumDocumento(nuevos.getNumDocumento());
+        dc.setNombre(nuevos.getNombre());
+        dc.setApellido(nuevos.getApellido());
+        dc.setFechaNac(copia(nuevos.getFechaNac()));
+        dc.setNacionalidad(nuevos.getNacionalidad());
+        dc.setTipoDocumento(nuevos.getTipoDocumento());
+        dc.setNumDocumento(nuevos.getNumDocumento());
+         */
     }
 
     @Override

@@ -173,4 +173,5 @@ public class UsuarioService {
 	            em.close();
 	        }
 	    }
+		
 }
