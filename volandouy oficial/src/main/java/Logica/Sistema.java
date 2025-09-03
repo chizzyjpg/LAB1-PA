@@ -26,10 +26,11 @@ public class Sistema implements ISistema {
     private final Map<String, Paquete> paquetesPorNombre = new HashMap<>(); // clave: nombre canónico
     private final List<CompraPaquete> compras = new ArrayList<>();
     private int compraIdSeq = 1;  // Contador de IDs para compras (auto incremental en memoria)
-    private final UsuarioService usuarioService = new UsuarioService();
     
+    private final UsuarioService usuarioService = new UsuarioService();
+    private final CategoriaService categoriaService = new CategoriaService();
+    private final CiudadService ciudadService = new CiudadService();
     public Sistema() {}
-
     
     
     // ======================
@@ -123,7 +124,12 @@ public class Sistema implements ISistema {
     
     @Override
     public List<DataUsuario> listarUsuarios() {
-    	return usuarioService.listarUsuarios();
+    	return usuarioService.listarUsuarios().stream()
+		        .sorted(Comparator.comparing(
+		            u -> u.getNickname() == null ? "" : u.getNickname(),
+		            String.CASE_INSENSITIVE_ORDER
+		        ))
+		        .collect(Collectors.toList());
     }
     
     
@@ -189,23 +195,13 @@ public class Sistema implements ISistema {
     @Override
     public void modificarCliente(String nickname, DataCliente nuevos) {
         if (nuevos == null) throw new IllegalArgumentException("Datos de cliente no pueden ser nulos");
-        
-        usuarioService.listarUsuarios();
-        DataUsuario usuario = usuarioService.verInfoUsuario(nickname);
-        if (!(usuario instanceof DataCliente dc))
-			throw new IllegalArgumentException("No existe un cliente con ese nickname");
-       
-        
-        
-        
-        /*
         String key = canonical(nickname);
-        Usuario u = usuariosPorNickname.get(key);
-        if (!(u instanceof Cliente c))
+        Cliente cliente = usuarioService.obtenerClientePorNickname(key);
+        if (cliente == null)
             throw new IllegalArgumentException("No existe un cliente con ese nickname");
 
-        // Validar que NO se cambie email ni nickname (según caso de uso)
-        String emailActual = usuario.getEmail();
+        // Validar que NO se cambie email ni nickname
+        String emailActual = cliente.getEmail();
         String emailNuevo  = nuevos.getEmail();
         if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
             throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
@@ -213,14 +209,15 @@ public class Sistema implements ISistema {
         if (nuevos.getNickname() != null && !canonical(nuevos.getNickname()).equals(key)) {
             throw new IllegalArgumentException("No se permite modificar el nickname.");
         }
-        // Actualizar SOLO campos básicos permitidos
-        dc.setNombre(nuevos.getNombre());
-        dc.setApellido(nuevos.getApellido());
-        dc.setFechaNac(copia(nuevos.getFechaNac()));
-        dc.setNacionalidad(nuevos.getNacionalidad());
-        dc.setTipoDocumento(nuevos.getTipoDocumento());
-        dc.setNumDocumento(nuevos.getNumDocumento());
-         */
+        // Actualizar SOLO campos permitidos usando setters de Cliente
+        cliente.setNombre(nuevos.getNombre());
+        cliente.setApellido(nuevos.getApellido());
+        cliente.setFechaNac(copia(nuevos.getFechaNac()));
+        cliente.setNacionalidad(nuevos.getNacionalidad());
+        cliente.setTipoDocumento(nuevos.getTipoDocumento());
+        cliente.setNumDocumento(nuevos.getNumDocumento());
+        // Persistir cambios en la base de datos usando el manejador
+        usuarioService.actualizarUsuario(cliente);// ESTO TIENE QUE USAR EL MANEJADOR CREO
     }
 
     @Override
@@ -228,12 +225,12 @@ public class Sistema implements ISistema {
         if (nuevos == null) throw new IllegalArgumentException("Datos de aerolínea no pueden ser nulos");
 
         String key = canonical(nickname);
-        Usuario u = usuariosPorNickname.get(key); //cambiar la validacion
-        if (!(u instanceof Aerolinea a))
+        Aerolinea aerolinea = usuarioService.obtenerAerolineaPorNickname(key);
+        if (aerolinea == null)
             throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 
         // Validar que NO se cambie email ni nickname
-        String emailActual = a.getEmail();
+        String emailActual = aerolinea.getEmail();
         String emailNuevo  = nuevos.getEmail();
         if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
             throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
@@ -243,9 +240,11 @@ public class Sistema implements ISistema {
         }
 
         // Actualizar SOLO campos básicos permitidos
-        a.setNombre(nuevos.getNombre());
-        a.setDescGeneral(nuevos.getDescripcion());
-        a.setLinkWeb(nuevos.getSitioWeb());
+        aerolinea.setNombre(nuevos.getNombre());
+        aerolinea.setDescGeneral(nuevos.getDescripcion());
+        aerolinea.setLinkWeb(nuevos.getSitioWeb());
+        
+        usuarioService.actualizarUsuario(aerolinea); // ESTO TIENE QUE USAR EL MANEJADOR CREO
     }
     
     // ======================
@@ -274,9 +273,13 @@ public class Sistema implements ISistema {
     
     @Override
     public List<DataCategoria> listarCategorias() {
-    	CategoriaService categoriaService = new CategoriaService();
-    	List<Categoria> categorias = categoriaService.listarCategorias();
-    	return ManejadorCategoria.toDTOs(categorias);
+    	return categoriaService.listarCategorias().stream()
+		        .map(ManejadorCategoria::toData)
+		        .sorted(Comparator.comparing(
+		            c -> c.getNombre() == null ? "" : c.getNombre(),
+		            String.CASE_INSENSITIVE_ORDER
+		        ))
+		        .collect(Collectors.toList());
     	/*
     	List<Categoria> categorias = categoriaService.listarCategorias();
     	List<DataCategoria> dataCategorias = new ArrayList<>();
@@ -344,8 +347,13 @@ public class Sistema implements ISistema {
 
 	@Override
 	public List<DataCiudad> listarCiudades() {
-		CiudadService ciudadService = new CiudadService();
-		return ManejadorCiudad.toDatas(ciudadService.listarCiudades());
+		return ciudadService.listarCiudades().stream()
+		        .map(ManejadorCiudad::toData)
+		        .sorted(Comparator.comparing(
+		            c -> c.getNombre() == null ? "" : c.getNombre(),
+		            String.CASE_INSENSITIVE_ORDER
+		        ))
+		        .collect(Collectors.toList());
 		/*
 		List<Ciudad> ciudades = ciudadService.listarCiudades();
 		List<DataCiudad> dataCiudades = new ArrayList<>();
@@ -441,8 +449,14 @@ public class Sistema implements ISistema {
 
 	@Override
 	public List<DataCliente> listarClientesParaCompra() {
-		ClienteService clienteService = new ClienteService();
-		return clienteService.listarClientes();
+		return usuarioService.listarUsuarios().stream()
+		        .filter(DataCliente.class::isInstance)
+		        .map(DataCliente.class::cast)
+		        .sorted(Comparator.comparing(
+		            c -> c.getNickname() == null ? "" : c.getNickname(),
+		            String.CASE_INSENSITIVE_ORDER
+		        ))
+		        .collect(Collectors.toList());
 		// Usamos tu ManejadorUsuario para convertir ENTIDAD -> DTO
 		/*
 		return usuariosPorNickname.values().stream()
@@ -541,6 +555,7 @@ public class Sistema implements ISistema {
         if (data.getFechaAlta() == null)
             throw new IllegalArgumentException("La fecha de alta es obligatoria");
         
+        ManejadorPaquete.altaToEntity(data);
         // Unicidad por nombre
         /*
         String key = canonical(data.getNombre());
@@ -549,7 +564,6 @@ public class Sistema implements ISistema {
         paquetesPorNombre.put(key, entity);
         Paquete entity = 
         */
-        ManejadorPaquete.altaToEntity(data);
 	}
 	
 	 @Override

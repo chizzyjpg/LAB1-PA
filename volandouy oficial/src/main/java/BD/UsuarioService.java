@@ -16,47 +16,11 @@ import Logica.DataRuta;
 import Logica.DataUsuario;
 import Logica.DataUsuarioAux;
 
-public class UsuarioService {
+	public class UsuarioService {
 	
-	public List<DataUsuario> listarUsuarios() {
-	    EntityManager em = JPAUtil.getEntityManager();
-	    try {
-	        em.getTransaction().begin();
-	        var usuarios = em.createQuery(
-	            "SELECT u FROM Usuario u ORDER BY LOWER(COALESCE(u.nickname, ''))",
-	            Usuario.class
-	        ).getResultList();
-	        em.getTransaction().commit();
-
-	        return usuarios.stream()
-	            .map(u -> {
-	                if (u instanceof Aerolinea a) {
-	                    // DataAerolinea extiende DataUsuario (concretA)
-	                    return new DataAerolinea(
-	                        a.getNombre(),
-	                        a.getNickname(),
-	                        a.getEmail(),
-	                        a.getDescGeneral(),
-	                        a.getLinkWeb()
-	                    );
-	                } else {
-	                    // “Usuario” genérico (Cliente u otros): usamos la concreta Aux
-	                    return new DataUsuarioAux(
-	                        u.getNombre(),
-	                        u.getNickname(),
-	                        u.getEmail()
-	                    );
-	                }
-	            })
-	            .collect(Collectors.toList());
-	    } catch (RuntimeException ex) {
-	        if (em.getTransaction().isActive()) em.getTransaction().rollback();
-	        throw ex;
-	    } finally {
-	        em.close();
-	    }
-	}
-
+		// ===============================
+		//  CREAR
+		// ===============================
 		
 		public void crearCliente (Cliente c) {
 			
@@ -92,6 +56,73 @@ public class UsuarioService {
 			}
 		}
 		
+		// ===============================
+		//  LISTAR
+		// ===============================
+	
+		public List<DataUsuario> listarUsuarios() {
+		    EntityManager em = JPAUtil.getEntityManager();
+		    try {
+		        em.getTransaction().begin();
+		        var usuarios = em.createQuery(
+		            "SELECT u FROM Usuario u ORDER BY LOWER(COALESCE(u.nickname, ''))",
+		            Usuario.class
+		        ).getResultList();
+		        em.getTransaction().commit();
+	
+		        return usuarios.stream()
+		            .map(u -> {
+		                if (u instanceof Aerolinea a) {
+		                    // DataAerolinea extiende DataUsuario (concretA)
+		                    return new DataAerolinea(
+		                        a.getNombre(),
+		                        a.getNickname(),
+		                        a.getEmail(),
+		                        a.getDescGeneral(),
+		                        a.getLinkWeb()
+		                    );
+		                } else {
+		                    // “Usuario” genérico (Cliente u otros): usamos la concreta Aux
+		                    return new DataUsuarioAux(
+		                        u.getNombre(),
+		                        u.getNickname(),
+		                        u.getEmail()
+		                    );
+		                }
+		            })
+		            .collect(Collectors.toList());
+		    } catch (RuntimeException ex) {
+		        if (em.getTransaction().isActive()) em.getTransaction().rollback();
+		        throw ex;
+		    } finally {
+		        em.close();
+		    }
+		}
+
+		public List<DataRuta> listarRutasPorAerolinea(String nicknameAerolinea) {
+	        EntityManager em = JPAUtil.getEntityManager();
+	        try {
+	            em.getTransaction().begin();
+	            List<Ruta> rutas = em.createQuery(
+	                "SELECT r FROM Ruta r WHERE r.aerolinea.nickname = :nickname", Ruta.class)
+	                .setParameter("nickname", nicknameAerolinea)
+	                .getResultList();
+	            em.getTransaction().commit();
+	            // Usar ManejadorRuta para convertir de entidad a DTO
+	            return rutas.stream()
+	                .map(ManejadorRuta::toData)
+	                .collect(Collectors.toList());
+	        } catch (RuntimeException ex) {
+	            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+	            throw ex;
+	        } finally {
+	            em.close();
+	        }
+	    }
+
+		// ===============================
+		//  VER INFO
+		// ===============================
 		public DataUsuario verInfoUsuario (String nickname){
 			EntityManager em = JPAUtil.getEntityManager();
 			try {
@@ -139,26 +170,9 @@ public class UsuarioService {
 			}
 		}
 		
-		public List<DataRuta> listarRutasPorAerolinea(String nicknameAerolinea) {
-	        EntityManager em = JPAUtil.getEntityManager();
-	        try {
-	            em.getTransaction().begin();
-	            List<Ruta> rutas = em.createQuery(
-	                "SELECT r FROM Ruta r WHERE r.aerolinea.nickname = :nickname", Ruta.class)
-	                .setParameter("nickname", nicknameAerolinea)
-	                .getResultList();
-	            em.getTransaction().commit();
-	            // Usar ManejadorRuta para convertir de entidad a DTO
-	            return rutas.stream()
-	                .map(ManejadorRuta::toData)
-	                .collect(Collectors.toList());
-	        } catch (RuntimeException ex) {
-	            if (em.getTransaction().isActive()) em.getTransaction().rollback();
-	            throw ex;
-	        } finally {
-	            em.close();
-	        }
-	    }
+		// ===============================
+		//  ACTUALIZAR
+		// ===============================
 		
 		public void actualizarUsuario(Usuario usuario) {
 	        EntityManager em = JPAUtil.getEntityManager();
@@ -173,5 +187,40 @@ public class UsuarioService {
 	            em.close();
 	        }
 	    }
+
+
+		// ===============================
+		//  OBTENER POR NICK
+		// ===============================
+		public Cliente obtenerClientePorNickname(String nickname) {
+		    EntityManager em = JPAUtil.getEntityManager();
+		    try {
+		        em.getTransaction().begin();
+		        List<Cliente> clientes = em.createQuery(
+		            "from Cliente c where c.nickname = :nickname", Cliente.class)
+		            .setParameter("nickname", nickname)
+		            .getResultList();
+		        em.getTransaction().commit();
+		        return clientes.isEmpty() ? null : clientes.get(0);
+		    } finally {
+		        em.close();
+		    }
+		}
+
+
+		public Aerolinea obtenerAerolineaPorNickname(String key) {
+			EntityManager em = JPAUtil.getEntityManager();
+		    try {
+		        em.getTransaction().begin();
+		        List<Aerolinea> aerolineas = em.createQuery(
+		            "from Aerolinea a where a.nickname = :nickname", Aerolinea.class)
+		            .setParameter("nickname", key)
+		            .getResultList();
+		        em.getTransaction().commit();
+		        return aerolineas.isEmpty() ? null : aerolineas.get(0);
+		    } finally {
+		        em.close();
+		    }
+		}
 		
 }
