@@ -97,14 +97,6 @@ public class Sistema implements ISistema {
 		   return (DataCliente) usuario;
 	   }
        return null;
-	   
-	   /*
-		Usuario u = usuariosPorNickname.get(canonical(nickname));
-		if (u instanceof Cliente c) {
-			return (DataCliente) ManejadorUsuario.toDTO(c);
-		}
-		return null;
-		*/
     }
 
     @Override
@@ -118,9 +110,7 @@ public class Sistema implements ISistema {
     
     @Override
     public List<DataUsuario> listarUsuarios() {
-    	UsuarioService usuarioService = new UsuarioService();
     	return usuarioService.listarUsuarios();
-       // return ManejadorUsuario.toDTOs(new ArrayList<>(usuariosPorNickname.values()));
     }
     
     

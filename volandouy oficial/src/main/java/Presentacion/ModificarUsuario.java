@@ -165,7 +165,7 @@ public class ModificarUsuario extends JInternalFrame {
     }
 
     private void cargarUsuarios() {
-        try {
+    	try {
             List<DataUsuarioAux> lista = sistema.listarUsuarios().stream()
                 .map(DataUsuarioAux::new)
                 .toList();
