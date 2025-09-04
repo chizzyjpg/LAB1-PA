@@ -30,6 +30,7 @@ public class Sistema implements ISistema {
     private final UsuarioService usuarioService = new UsuarioService();
     private final CategoriaService categoriaService = new CategoriaService();
     private final CiudadService ciudadService = new CiudadService();
+    private final PaqueteService paqueteService = new PaqueteService();
     public Sistema() {}
     
     
@@ -436,6 +437,16 @@ public class Sistema implements ISistema {
     
 	@Override
 	public List<DataPaquete> listarPaquetesDisponiblesParaCompra() {
+		PaqueteService paqueteService = new PaqueteService();
+		return paqueteService.listarPaquetes().stream()
+		        .filter(p -> p.getCantRutas() > 0)
+		        .map(ManejadorPaquete::toDTO)
+		        .sorted(Comparator.comparing(
+		            p -> p.getNombre() == null ? "" : p.getNombre(),
+		            String.CASE_INSENSITIVE_ORDER
+		        ))
+		        .collect(Collectors.toList());
+		/*
 		List<Paquete> elegibles = paquetesPorNombre.values().stream()
 	            .filter(p -> p.getCantRutas() > 0)
 	            .sorted(Comparator.comparing(Paquete::getNombre, String.CASE_INSENSITIVE_ORDER))
@@ -444,7 +455,7 @@ public class Sistema implements ISistema {
 		System.out.println(elegibles.toString());
 		
 	    return ManejadorPaquete.toDTOs(elegibles);
-	    
+	    */
 	}
 	
 
@@ -480,11 +491,13 @@ public class Sistema implements ISistema {
 	        throw new IllegalArgumentException("Datos de compra nulos");
 
 	    // Resuelvo ENTIDADES a partir de los identificadores del DTO
-	    Paquete paquete = paquetesPorNombre.get(canonical(compra.getNombrePaquete()));
+	    //Paquete paquete = paquetesPorNombre.get(canonical(compra.getNombrePaquete()));
+	    Paquete paquete = paqueteService.existePaquete(compra.getNombrePaquete());
 	    if (paquete == null) throw new IllegalArgumentException("Paquete inexistente: " + compra.getNombrePaquete());
 	    if (paquete.getCantRutas() <= 0) throw new IllegalStateException("El paquete no tiene rutas");
 
-	    Usuario u = usuariosPorNickname.get(canonical(compra.getNicknameCliente()));
+	    //Usuario u = usuariosPorNickname.get(canonical(compra.getNicknameCliente()));
+	    Usuario u = usuarioService.obtenerClientePorNickname(compra.getNicknameCliente());
 	    if (!(u instanceof Cliente cliente))
 	        throw new IllegalArgumentException("Cliente inexistente: " + compra.getNicknameCliente());
 

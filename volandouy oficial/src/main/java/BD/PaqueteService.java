@@ -72,7 +72,7 @@ import jakarta.persistence.EntityManager;
 	        try {
 	            em.getTransaction().begin();
 	            List<Ruta> rutas = em.createQuery(
-	                "SELECT r FROM Ruta r WHERE r.aerolinea.nickname = :nickname AND r.nombre = :nombre", Logica.Ruta.class)
+	                "SELECT r FROM Ruta r JOIN r.aerolineas a WHERE a.nickname = :nickname AND r.nombre = :nombre", Logica.Ruta.class)
 	                .setParameter("nickname", nicknameAerolinea)
 	                .setParameter("nombre", nombreRuta)
 	                .getResultList();
