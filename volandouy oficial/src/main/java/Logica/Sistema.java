@@ -495,7 +495,7 @@ public class Sistema implements ISistema {
 	    Paquete paquete = paqueteService.existePaquete(compra.getNombrePaquete());
 	    if (paquete == null) throw new IllegalArgumentException("Paquete inexistente: " + compra.getNombrePaquete());
 	    if (paquete.getCantRutas() <= 0) throw new IllegalStateException("El paquete no tiene rutas");
-
+	    
 	    //Usuario u = usuariosPorNickname.get(canonical(compra.getNicknameCliente()));
 	    Usuario u = usuarioService.obtenerClientePorNickname(compra.getNicknameCliente());
 	    if (!(u instanceof Cliente cliente))
