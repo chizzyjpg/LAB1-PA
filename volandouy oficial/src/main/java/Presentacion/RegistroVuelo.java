@@ -266,5 +266,25 @@ public class RegistroVuelo extends JInternalFrame {
 		        return this;
 		    }
 		});
+		comboBoxRutaVuelo.setRenderer(new javax.swing.DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(
+                    javax.swing.JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (value instanceof DataRuta dr) {
+                    String origen = "";
+                    String destino = "";
+                    if (dr.getCiudadOrigen() != null) {
+                        origen = dr.getCiudadOrigen().getPais() + " - " + dr.getCiudadOrigen().getNombre();
+                    }
+                    if (dr.getCiudadDestino() != null) {
+                        destino = dr.getCiudadDestino().getPais() + " - " + dr.getCiudadDestino().getNombre();
+                    }
+                    setText(origen + "  -->  " + destino);
+                }
+                return this;
+            }
+        });
 	}
 }
