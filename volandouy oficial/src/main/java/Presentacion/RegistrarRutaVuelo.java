@@ -299,7 +299,8 @@ public class RegistrarRutaVuelo extends JInternalFrame {
                         costoTurista,
                         costoEquipaje,
                         costoEjecutivo,
-                        dataCat
+                        dataCat,
+                        aerolinea.getNickname() // <-- Debes obtener este valor del formulario o contexto
                     );
                     sistema.registrarRuta(datos);
 

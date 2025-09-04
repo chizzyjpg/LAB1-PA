@@ -27,12 +27,7 @@ public class ManejadorRuta {
             data.getHora(), data.getFechaAlta(),
             data.getCostoTurista(), data.getCostoEquipajeExtra(), data.getCostoEjecutivo(), categoria
         );
-        try {
-            new RutaVueloService().crearRutaVuelo(r);
-            JOptionPane.showMessageDialog(null, "Se insertó correctamente");
-        }catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
-        }
+        // Ya no se persiste aquí, solo se crea la entidad
         return r;
     }
 
@@ -59,7 +54,8 @@ public class ManejadorRuta {
             r.getNombre(), r.getDescripcion(),
             origen, destino,
             r.getHora(), r.getFechaAlta(),
-            r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo(), categoria
+            r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo(), categoria,
+            "" // No se conoce el nicknameAerolinea aquí
         );
     }
     

@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import Logica.Aerolinea;
 import Logica.Categoria;
 import Logica.Ciudad;
 import Logica.DataCategoria;
@@ -15,25 +16,29 @@ import Logica.DataCiudad;
 import Logica.DataRuta;
 import Logica.JPAUtil;
 import Logica.Ruta;
+import BD.UsuarioService;
 
 public class RutaVueloService {
 
-	public void crearRutaVuelo(Ruta r) {
-		EntityManager em = JPAUtil.getEntityManager();
-		
-		try {
-			em.getTransaction().begin();
-			
-			em.persist(r);
-			
-			em.getTransaction().commit();
-			} catch (RuntimeException ex) {
-				if (em.getTransaction().isActive()) em.getTransaction().rollback();
-				throw ex; // propagar para que la UI decida qué mostrar
-			} finally {
-					em.close();
-			}
-	}
+	public void crearRutaVuelo(Ruta r, String nicknameAerolinea) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            // Obtener la aerolínea por nickname
+            UsuarioService usuarioService = new UsuarioService();
+            Aerolinea aerolinea = usuarioService.obtenerAerolineaPorNickname(nicknameAerolinea);
+            if (aerolinea != null) {
+                r.getAerolineas().add(aerolinea);
+            }
+            em.persist(r);
+            em.getTransaction().commit();
+        } catch (RuntimeException ex) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw ex; // propagar para que la UI decida qué mostrar
+        } finally {
+            em.close();
+        }
+    }
 	
 	public List<DataRuta> listarRutas(){
 		EntityManager em = JPAUtil.getEntityManager();
@@ -67,7 +72,8 @@ public class RutaVueloService {
 					r.getCostoTurista(),
 					r.getCostoEquipajeExtra(),
 					r.getCostoEjecutivo(),
-					new DataCategoria(r.getCategoriaR().getNombre())
+					new DataCategoria(r.getCategoriaR().getNombre()),
+					"" // No se conoce el nicknameAerolinea aquí
 				))
 				.collect(Collectors.toList());
 		} catch (RuntimeException ex) {

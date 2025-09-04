@@ -30,8 +30,7 @@ public class AerolineaService {
 	}
 	
 	public void crearAerolinea(Aerolinea a) {
-	
-		
+
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
 			em.getTransaction().begin();

@@ -144,7 +144,7 @@ public class RegistroRutaVueloaPaquete extends JInternalFrame {
                 comboBoxRutas.addItem(new Item<>(r.getNombre(), r.getNombre()));
             }
         } catch (Exception ex) {
-            //warn("No se pudieron cargar las rutas: " + ex.getMessage());
+            warn("No se pudieron cargar las rutas: " + ex.getMessage());
         }
     }
 

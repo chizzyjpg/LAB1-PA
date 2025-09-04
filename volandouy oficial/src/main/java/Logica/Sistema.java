@@ -295,9 +295,10 @@ public class Sistema implements ISistema {
     
     @Override
     public void registrarRuta(DataRuta datos) {
-        // Usar directamente las instancias de Ciudad
         if (datos != null) {
-            ManejadorRuta.toEntity(datos);
+            Ruta ruta = ManejadorRuta.toEntity(datos); // Solo crea la entidad, no la persiste
+            String nicknameAerolinea = datos.getNicknameAerolinea();
+            new RutaVueloService().crearRutaVuelo(ruta, nicknameAerolinea);
             System.out.println(datos.toString());
         }
     }
@@ -449,14 +450,8 @@ public class Sistema implements ISistema {
 
 	@Override
 	public List<DataCliente> listarClientesParaCompra() {
-		return usuarioService.listarUsuarios().stream()
-		        .filter(DataCliente.class::isInstance)
-		        .map(DataCliente.class::cast)
-		        .sorted(Comparator.comparing(
-		            c -> c.getNickname() == null ? "" : c.getNickname(),
-		            String.CASE_INSENSITIVE_ORDER
-		        ))
-		        .collect(Collectors.toList());
+		ClienteService clienteService = new ClienteService();
+		return clienteService.listarClientes();
 		// Usamos tu ManejadorUsuario para convertir ENTIDAD -> DTO
 		/*
 		return usuariosPorNickname.values().stream()
