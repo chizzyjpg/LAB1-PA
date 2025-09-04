@@ -11,6 +11,7 @@ import BD.ClienteService;
 import BD.PaqueteService;
 import BD.RutaVueloService;
 import BD.UsuarioService;
+import BD.VueloService;
 
 
 //import javax.swing.JOptionPane;
@@ -31,6 +32,7 @@ public class Sistema implements ISistema {
     private final CategoriaService categoriaService = new CategoriaService();
     private final CiudadService ciudadService = new CiudadService();
     private final PaqueteService paqueteService = new PaqueteService();
+    private final VueloService vueloService = new VueloService();
     public Sistema() {}
     
     
@@ -380,6 +382,10 @@ public class Sistema implements ISistema {
 	@Override
 	public void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos) {
 		if (datos == null) throw new IllegalArgumentException("Los datos del vuelo no pueden ser nulos");
+		usuarioService.listarUsuarios();
+		usuarioService.listarRutasPorAerolinea(nickname);
+		ManejadorVueloEspecifico.toEntity(datos);
+		/*
 		Usuario u = usuariosPorNickname.get(canonical(nickname));
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
@@ -392,22 +398,27 @@ public class Sistema implements ISistema {
 		}
 		VueloEspecifico v = ManejadorVueloEspecifico.toEntity(datos);
 		r.addVuelosEspecificos(v);
+		*/
 	}
 	
 	@Override
 	public List<DataVueloEspecifico> listarVuelos(String nickname, String nombre) {
-		Usuario u = usuariosPorNickname.get(canonical(nickname));
-		if (!(u instanceof Aerolinea a)) {
-			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
-		}
-		Ruta r = a.getRutas().stream()
-				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
-				.findFirst().orElse(null);
-		if (r == null) {
-			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
-		}
-		Collection<VueloEspecifico> vuelos = r.getVuelosEspecificos();
-		return ManejadorVueloEspecifico.toDatas(new ArrayList<>(vuelos));
+	    // Obtener la aerolínea desde la base de datos
+	    DataAerolinea aerolinea = verInfoAerolinea(nickname);
+	    if (aerolinea == null) {
+	        throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+	    }
+	    // Obtener la ruta desde la base de datos
+	    List<DataRuta> rutas = usuarioService.listarRutasPorAerolinea(nickname);
+	    DataRuta ruta = rutas.stream()
+	        .filter(r -> r.getNombre() != null && r.getNombre().equalsIgnoreCase(nombre))
+	        .findFirst().orElse(null);
+	    if (ruta == null) {
+	        throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+	    }
+	    // Obtener los vuelos específicos de la ruta desde la base de datos
+	    List<DataVueloEspecifico> vuelos = usuarioService.listarVuelosPorRuta(nickname, nombre);
+	    return vuelos == null ? Collections.emptyList() : vuelos;
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import Logica.DataCliente;
 import Logica.DataRuta;
 import Logica.DataUsuario;
 import Logica.DataUsuarioAux;
+import Logica.DataVueloEspecifico;
 
 	public class UsuarioService {
 	
@@ -241,5 +242,28 @@ import Logica.DataUsuarioAux;
 		    } finally {
 		        em.close();
 		    }
+		}
+
+		public List<DataVueloEspecifico> listarVuelosPorRuta(String nickname, String nombre) {
+			EntityManager em = JPAUtil.getEntityManager();
+			try {
+				em.getTransaction().begin();
+				List<DataVueloEspecifico> vuelos = em.createQuery(
+					"SELECT new DataVueloEspecifico(ve.nombre, ve.fecha, ve.duracion, ve.maxAsientosTur, ve.maxAsientosEjec, ve.fechaAlta) " +
+					"FROM VueloEspecifico ve " +
+					"JOIN ve.rutas r " +
+					"JOIN r.aerolineas a " +
+					"WHERE a.nickname = :nickname AND r.nombre = :nombre", DataVueloEspecifico.class)
+					.setParameter("nickname", nickname)
+					.setParameter("nombre", nombre)
+					.getResultList();
+				em.getTransaction().commit();
+				return vuelos;
+			} catch (RuntimeException ex) {
+				if (em.getTransaction().isActive()) em.getTransaction().rollback();
+				throw ex; // propagar para que la UI decida qué mostrar
+			} finally {
+				em.close();
+			}
 		}
 }

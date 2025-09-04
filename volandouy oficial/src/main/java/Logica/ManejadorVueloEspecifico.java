@@ -3,11 +3,13 @@ package Logica;
 import java.util.List;
 import java.util.Objects;
 
+import BD.VueloService;
+
 public class ManejadorVueloEspecifico {
 	
 	public static VueloEspecifico toEntity(DataVueloEspecifico v) {
 		Objects.requireNonNull(v, "Los datos no pueden ser nulos");
-		return new VueloEspecifico(
+		VueloEspecifico ve = new VueloEspecifico(
 				v.getNombre(),
 				v.getFecha(),
 				v.getDuracion(),
@@ -16,6 +18,13 @@ public class ManejadorVueloEspecifico {
 				v.getFechaAlta()//,
 				//v.getRuta()
 		);
+		
+		try {
+			new VueloService().registrarVuelo(ve);
+		} catch (Exception ex) {
+			throw new IllegalStateException("Error al crear el vuelo: " + ex.getMessage(), ex);
+		}
+		return ve;
 	}
 	
 	public static DataVueloEspecifico toData(VueloEspecifico v) {
