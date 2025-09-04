@@ -223,4 +223,23 @@ import Logica.DataUsuarioAux;
 		    }
 		}
 		
+		public boolean clienteYaComproPaquete(String nicknameCliente, String nombrePaquete) {
+			EntityManager em = JPAUtil.getEntityManager();
+					    try {
+		        em.getTransaction().begin();
+		        Long count = em.createQuery(
+		            "SELECT COUNT(cp) FROM CompraPaquete cp WHERE cp.cliente.nickname = :nickname AND cp.paquete.nombre = :nombre",
+		            Long.class)
+		            .setParameter("nickname", nicknameCliente)
+		            .setParameter("nombre", nombrePaquete)
+		            .getSingleResult();
+		        em.getTransaction().commit();
+		        return count != null && count > 0;
+		    } catch (RuntimeException ex) {
+		        if (em.getTransaction().isActive()) em.getTransaction().rollback();
+		        throw ex;
+		    } finally {
+		        em.close();
+		    }
+		}
 }

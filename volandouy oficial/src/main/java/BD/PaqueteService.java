@@ -2,6 +2,8 @@ package BD;
 
 import java.util.List;
 
+import Logica.Cliente;
+import Logica.CompraPaquete;
 import Logica.JPAUtil;
 import Logica.Paquete;
 import Logica.Ruta;
@@ -99,5 +101,35 @@ import jakarta.persistence.EntityManager;
 	            em.close();
 	        }
 	    }
+		
+		public CompraPaquete comprarPaquete(CompraPaquete cp, Cliente c, Paquete p) {
+			EntityManager em = JPAUtil.getEntityManager();
+			try {
+				em.getTransaction().begin();
+				
+				// Asociar el cliente y el paquete a la compra
+				cp.setCliente(c);
+				cp.setPaquete(p);
+				
+				// Persistir la compra
+				em.persist(cp);
+				/*
+				// Actualizar las relaciones en Cliente y Paquete
+				c.getNickname().add(cp);
+				p.getNombre().add(cp);
+				
+				// Hacer merge para actualizar las entidades
+				em.merge(c);
+				em.merge(p);
+				*/
+				em.getTransaction().commit();
+				return cp;
+			} catch (RuntimeException ex) {
+				if (em.getTransaction().isActive()) em.getTransaction().rollback();
+				throw ex; // propagar para que la UI decida qué mostrar
+			} finally {
+					em.close();
+			}
+		}
 		
 	}

@@ -477,12 +477,15 @@ public class Sistema implements ISistema {
 	
 	@Override
 	public boolean clienteYaComproPaquete(String nicknameCliente, String nombrePaquete) {
-	    String keyNick = canonical(nicknameCliente);
+	    /*
+		String keyNick = canonical(nicknameCliente);
 	    String keyPack = canonical(nombrePaquete);
 	    return compras.stream().anyMatch(cp ->
 	            canonical(cp.getCliente().getNickname()).equals(keyNick) &&
 	            canonical(cp.getPaquete().getNombre()).equals(keyPack)
 	    );
+	    */
+	    return usuarioService.clienteYaComproPaquete(nicknameCliente, nombrePaquete);
 	}
 	
 	@Override
@@ -509,13 +512,14 @@ public class Sistema implements ISistema {
 	        throw new IllegalArgumentException("La fecha de compra es obligatoria");
 
 	    // ENTIDAD a partir del DTO usando el Manejador de compras (nada de 'new' acá)
-	    CompraPaquete entidad = ManejadorCompraPaquete.toEntity(compra, cliente, paquete);
+		ManejadorCompraPaquete.toEntity(compra, cliente, paquete);
+		//CompraPaquete entidad = 
 	    
 	    // asignar id secuencial
-	    entidad.setId(compraIdSeq++);
+	    //entidad.setId(compraIdSeq++);
 
 	    // Registro en la “BD” en memoria
-	    compras.add(entidad);
+	    //compras.add(entidad);
 	}
 	
 			// ===============================

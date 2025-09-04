@@ -4,6 +4,8 @@ package Logica;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import BD.PaqueteService;
+
 public final class ManejadorCompraPaquete {
 
     private ManejadorCompraPaquete() {}
@@ -20,13 +22,19 @@ public final class ManejadorCompraPaquete {
         Date venc = (dto.getVencimiento() != null)? copy(dto.getVencimiento()) : addDays(fecha, paquete.getValidez());
 
         // IMPORTANTE: no hacemos 'new' en Sistema: lo hacemos acá.
-        return new CompraPaquete(
+        CompraPaquete cp = new CompraPaquete(
                 cliente,
                 paquete,
                 fecha,
                 venc,
                 costo
         );
+        try {
+        	new PaqueteService().comprarPaquete(cp, cliente, paquete);
+			} catch (Exception ex) {
+				throw new IllegalStateException("Error al crear la compra: " + ex.getMessage(), ex);
+			}
+        return cp;
     }
 
     public static DataCompraPaquete toDTO(CompraPaquete e) {

@@ -11,10 +11,11 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Paquete")
 public class Paquete {
-	
+	/*
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int idPaquete;
-	
+	*/
+	@Id
 	@Column(name = "Nombre", nullable = false, length = 50)
 	private String nombre;
 	
@@ -47,7 +48,7 @@ public class Paquete {
 	 private final Set<String> rutasIncluidas = new LinkedHashSet<>();*/
 	 
 	 @ElementCollection(fetch = FetchType.EAGER)
-	    @CollectionTable(name = "paquete_cupos_por_ruta", joinColumns = @JoinColumn(name = "paquete_id"))
+	    @CollectionTable(name = "paquete_cupos_por_ruta", joinColumns = @JoinColumn(name = "nombrepaquete_id"))
 	    @MapKeyColumn(name = "ruta")
 	    @Column(name = "cupos")
 	    private Map<String,Integer> cuposPorRuta = new LinkedHashMap<>();
@@ -157,7 +158,7 @@ public class Paquete {
 	}
 	
 	@Override public String toString() {
-		return "Paquete [idPaquete=" + idPaquete + ", nombre=" + nombre + ", descripcion=" + descripcion 
+		return "Paquete [nombre= " + nombre + ", descripcion=" + descripcion 
 				+ ", cantRutas=" + cantRutas + ", tipoAsiento=" + tipoAsiento 
 				+ ", descuento=" + descuento +/* ", fechaCompra=" + fechaCompra 
 				+ */", validez=" + validez + "]";
