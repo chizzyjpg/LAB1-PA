@@ -195,7 +195,9 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		
 		JDateChooser fechaAlta = new JDateChooser();
 		fechaAlta.setBounds(155, 376, 145, 20);
+		fechaAlta.setDate(new Date());
 		getContentPane().add(fechaAlta);
+		
 		
 		JComboBox<DataCategoria> comboBoxCategoria = new JComboBox();
 		comboBoxCategoria.setBounds(155, 405, 145, 22);
@@ -299,7 +301,8 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		            textFieldTurista.setText("");
 		            textFieldEjecutivo.setText("");
 		            textFieldEquipajeExtra.setText("");
-		            fechaAlta.setDate(null);
+		            textAreaDesc.setText("");
+		            fechaAlta.setDate(new Date());
 
 		        } catch (IllegalArgumentException ex2) {
 		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, ex2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

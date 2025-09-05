@@ -16,6 +16,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -130,9 +131,11 @@ public class RegistroVuelo extends JInternalFrame {
 		JDateChooser dateChooserFechaVuelo = new JDateChooser();
 		dateChooserFechaVuelo.setBounds(147, 197, 339, 57);
 		getContentPane().add(dateChooserFechaVuelo);
+		dateChooserFechaVuelo.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		dateChooserFechaVuelo.setDate(new Date());
 		
-		JLabel lblNewLabelDuracion = new JLabel("Duración");
-		lblNewLabelDuracion.setBounds(97, 283, 62, 17);
+		JLabel lblNewLabelDuracion = new JLabel("Duración (Minutos)");
+		lblNewLabelDuracion.setBounds(97, 283, 112, 17);
 		getContentPane().add(lblNewLabelDuracion);
 		lblNewLabelDuracion.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		
@@ -175,6 +178,9 @@ public class RegistroVuelo extends JInternalFrame {
 		JDateChooser dateChooserFechaAlta = new JDateChooser();
 		lblNewLabelFechaAlta.setLabelFor(dateChooserFechaAlta);
 		dateChooserFechaAlta.setBounds(219, 420, 124, 20);
+		dateChooserFechaAlta.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		dateChooserFechaAlta.setDate(new Date());
+		
 		// Botón Cancelar
 		JButton btnCancelar = new JButton("CANCELAR");
 		btnCancelar.setBackground(Color.RED);
@@ -232,6 +238,17 @@ public class RegistroVuelo extends JInternalFrame {
 		            JOptionPane.showMessageDialog(null, "Debe seleccionar ambas fechas.", "Error", JOptionPane.ERROR_MESSAGE);
 		            return;
 		        }
+		        
+		        Date fecha = dateChooserFechaVuelo.getDate();
+		        if (fecha.before(startOfToday())) {
+		            JOptionPane.showMessageDialog(
+		                RegistroVuelo.this,
+		                "La fecha no puede ser anterior a hoy.",
+		                "Error Fecha",
+		                JOptionPane.ERROR_MESSAGE
+		            );
+		            return;
+		        }
 
 		        try {
 		            int duracion = Integer.parseInt(textDuracion.getText().trim());
@@ -260,7 +277,7 @@ public class RegistroVuelo extends JInternalFrame {
 		            textCantTurista.setText("");
 		            textMaxEjecutivo.setText("");
 		            dateChooserFechaVuelo.setDate(null);
-		            dateChooserFechaAlta.setDate(null);
+		            dateChooserFechaAlta.setDate(new Date());
 
 		        } catch (NumberFormatException ex) {
 		            JOptionPane.showMessageDialog(null,
@@ -295,5 +312,14 @@ public class RegistroVuelo extends JInternalFrame {
 		        return this;
 		    }
 		});
+	}
+	
+	private static Date startOfToday() {
+	    java.util.Calendar cal = java.util.Calendar.getInstance();
+	    cal.set(java.util.Calendar.HOUR_OF_DAY, 0);
+	    cal.set(java.util.Calendar.MINUTE, 0);
+	    cal.set(java.util.Calendar.SECOND, 0);
+	    cal.set(java.util.Calendar.MILLISECOND, 0);
+	    return cal.getTime();
 	}
 }

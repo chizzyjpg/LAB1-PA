@@ -229,6 +229,38 @@ public class Sistema implements ISistema {
     @Override
     public void registrarRuta(String nickAerolinea, DataRuta datos) {
 		if (datos == null) throw new IllegalArgumentException("Los datos de la ruta no pueden ser nulos");
+		
+		String nombre = (datos.getNombre() == null) ? "" : datos.getNombre().trim();
+		if (nombre.isEmpty()) {
+		    throw new IllegalArgumentException("El nombre de la ruta no puede estar vacío");
+		}
+
+		// Busca en TODAS las rutas de TODAS las aerolíneas (igualdad exacta)
+		boolean existe = usuariosPorNickname.values().stream()
+		    .filter(Aerolinea.class::isInstance)
+		    .map(Aerolinea.class::cast)
+		    .flatMap(al -> al.getRutaMap().values().stream()) // o getRutas() si lo cambiás a Set
+		    .anyMatch(r -> nombre.equals(r.getNombre()));
+
+		if (existe) {
+		    throw new IllegalArgumentException("Ya existe una ruta llamada exactamente: " + nombre);
+		}
+		
+		
+		
+		/*String nombre = (datos.getNombre() == null) ? "" : datos.getNombre().trim();
+		if (nombre.isEmpty()) {
+		    throw new IllegalArgumentException("El nombre de la ruta no puede estar vacío");
+		}
+																										////////////////////////
+		Long cnt = em.createQuery(																		//// PARA JPA  /////////
+		    "select count(r) from Ruta r where r.nombre = :n", Long.class)								////////////////////////
+		    .setParameter("n", nombre)
+		    .getSingleResult();
+
+		if (cnt > 0) {
+		    throw new IllegalArgumentException("Ya existe una ruta llamada exactamente: " + nombre);
+		}*/
 
 	    Usuario u = usuariosPorNickname.get(canonical(nickAerolinea));	    
 		if (!(u instanceof Aerolinea a)) {
