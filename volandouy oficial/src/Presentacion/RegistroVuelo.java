@@ -276,7 +276,7 @@ public class RegistroVuelo extends JInternalFrame {
 		            textDuracion.setText("");
 		            textCantTurista.setText("");
 		            textMaxEjecutivo.setText("");
-		            dateChooserFechaVuelo.setDate(null);
+		            dateChooserFechaVuelo.setDate(new Date());
 		            dateChooserFechaAlta.setDate(new Date());
 
 		        } catch (NumberFormatException ex) {

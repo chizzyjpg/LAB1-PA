@@ -1,4 +1,3 @@
-
 package Logica;
 
 import java.math.BigDecimal;
@@ -679,6 +678,15 @@ public class Sistema implements ISistema {
 		if (v == null) {
 			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
 		}
+		
+		// Validación: no permitir reservas duplicadas para el mismo cliente y vuelo
+        boolean existe = v.getReserva().values().stream()
+            .anyMatch(rsv -> rsv.getCliente() != null &&
+                rsv.getCliente().getNickname().equalsIgnoreCase(datos.getNickCliente().getNickname()));
+        if (existe) {
+            throw new IllegalArgumentException("Ya existe una reserva para este cliente en este vuelo.");
+        }
+		
 		Reserva res = ManejadorReserva.toEntity(datos);
 		
 		int nuevoId = nextReservaId(v.getReserva());

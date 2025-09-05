@@ -25,9 +25,17 @@ public class ManejadorReserva {
 
 
     public static DataReserva toData(Reserva res) {
-    	Objects.requireNonNull(res, "La reserva no puede ser nula");
-		return new DataReserva(res.getIdReserva(), res.getFechaReserva(), res.getTipoAsiento(), res.getEquipaje(),
-							   res.getCantEquipajeExtra(), res.getCostoTotal(), ManejadorCliente.toData(res.getCliente()));
+        Objects.requireNonNull(res, "La reserva no puede ser nula");
+        DataReserva dr = new DataReserva(res.getIdReserva(), res.getFechaReserva(), res.getTipoAsiento(), res.getEquipaje(),
+                res.getCantEquipajeExtra(), res.getCostoTotal(), ManejadorCliente.toData(res.getCliente()));
+        // Copiar pasajes
+        if (res.getPasajes() != null && !res.getPasajes().isEmpty()) {
+            List<DataPasaje> dataPasajes = res.getPasajes().stream()
+                    .map(ManejadorPasaje::toData)
+                    .collect(Collectors.toList());
+            dr.setPasajes(dataPasajes);
+        }
+        return dr;
     }
     
     // HELLPERS

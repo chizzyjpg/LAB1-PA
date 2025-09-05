@@ -125,7 +125,8 @@ public class ConsultaVuelo extends JInternalFrame {
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof DataReserva r) {
-                    setText(r.toString()); // << antes no seteaba el texto
+                    String costo = (r.getCostoTotal() != null) ? String.format(" | Costo: $%.2f", r.getCostoTotal()) : "";
+                    setText(r.toString() + costo);
                 }
                 return this;
             }
