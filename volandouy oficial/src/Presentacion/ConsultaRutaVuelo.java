@@ -86,6 +86,7 @@ public class ConsultaRutaVuelo extends JInternalFrame {
                 if (value instanceof DataVueloEspecifico v) {
                     String f = (v.getFecha() != null) ? sdf.format(v.getFecha()) : "-";
                     setText(v.getNombre() + "  (" + f + ")");
+                    
                 }
                 return this;
             }
