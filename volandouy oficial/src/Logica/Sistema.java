@@ -387,7 +387,7 @@ public class Sistema implements ISistema {
 	            .sorted(Comparator.comparing(Paquete::getNombre, String.CASE_INSENSITIVE_ORDER))
 	            .collect(Collectors.toList());
 		
-		System.out.println(elegibles.toString());
+		//System.out.println(elegibles.toString());
 		
 	    return ManejadorPaquete.toDTOs(elegibles);
 	    
