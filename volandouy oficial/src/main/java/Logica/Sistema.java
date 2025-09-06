@@ -33,6 +33,7 @@ public class Sistema implements ISistema {
     private final CiudadService ciudadService = new CiudadService();
     private final PaqueteService paqueteService = new PaqueteService();
     private final VueloService vueloService = new VueloService();
+    private final ClienteService clienteService = new ClienteService();
     public Sistema() {}
     
     
@@ -181,6 +182,15 @@ public class Sistema implements ISistema {
 	 */
  
 	 public List<DataCliente> listarClientes() {
+		 return clienteService.listarClientes().stream()
+			        .sorted(Comparator.comparing(
+			            c -> c.getNickname() == null ? "" : c.getNickname(),
+			            String.CASE_INSENSITIVE_ORDER
+			        ))
+			        .collect(Collectors.toList());
+		 /*
+		 ClienteService clienteService = new ClienteService();
+		return clienteService.listarClientes();
 		 return usuarioService.listarUsuarios().stream()
 			        .filter(DataCliente.class::isInstance)
 			        .map(DataCliente.class::cast)
@@ -188,7 +198,7 @@ public class Sistema implements ISistema {
 			            c -> c.getNickname() == null ? "" : c.getNickname(),
 			            String.CASE_INSENSITIVE_ORDER
 			        ))
-			        .collect(Collectors.toList());
+			        .collect(Collectors.toList());*/
 	 }
 	 
     // ======================

@@ -190,8 +190,13 @@ public class RegistrarReservaVuelo extends JInternalFrame {
 
     private void cargarClientes() {
         comboCliente.removeAllItems();
-        for (DataCliente dc : sistema.listarClientes()) {
-            comboCliente.addItem(dc);
+        java.util.List<DataCliente> clientes = sistema.listarClientes();
+        System.out.println("Cantidad de clientes encontrados: " + (clientes != null ? clientes.size() : 0));
+        if (clientes != null) {
+            for (DataCliente dc : clientes) {
+                System.out.println("Cliente: " + dc);
+                comboCliente.addItem(dc);
+            }
         }
     }
 

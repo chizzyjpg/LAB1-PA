@@ -32,8 +32,6 @@ public class DataCiudad {
     
     @Override
     public String toString() {
-    			return "DataCiudad [nombre=" + nombre + ", pais=" + pais + ", nombreAeropuerto=" + nombreAeropuerto
-				+ ", descripcionAeropuerto=" + descripcionAeropuerto + ", fechaAlta=" + fechaAlta + ", sitioWeb="
-				+ sitioWeb + "]";
+        return nombre + pais; // Solo muestra el nombre de la ciudad
     }
 }

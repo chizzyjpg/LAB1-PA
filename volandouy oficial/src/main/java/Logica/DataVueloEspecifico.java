@@ -2,6 +2,7 @@ package Logica;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.sql.*;
 
 public class DataVueloEspecifico {
 	
@@ -21,6 +22,16 @@ public class DataVueloEspecifico {
 		this.maxAsientosEjec = maxAsientosEjec;
 		this.fechaAlta = fechaAlta;
 		this.Druta = Druta;
+	}
+	
+	public DataVueloEspecifico(String nombre, Date fecha, int duracion, int maxAsientosTur, int maxAsientosEjec, Date fechaAlta) {
+		this.nombre = nombre;
+		this.fecha = fecha;
+		this.duracion = duracion;
+		this.maxAsientosTur = maxAsientosTur;
+		this.maxAsientosEjec = maxAsientosEjec;
+		this.fechaAlta = fechaAlta;
+		this.Druta = null;
 	}
 	
 	public String getNombre() {

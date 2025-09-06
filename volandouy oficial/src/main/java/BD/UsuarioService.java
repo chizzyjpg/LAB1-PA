@@ -251,7 +251,7 @@ import Logica.DataVueloEspecifico;
 				List<DataVueloEspecifico> vuelos = em.createQuery(
 					"SELECT new DataVueloEspecifico(ve.nombre, ve.fecha, ve.duracion, ve.maxAsientosTur, ve.maxAsientosEjec, ve.fechaAlta) " +
 					"FROM VueloEspecifico ve " +
-					"JOIN ve.rutas r " +
+					"JOIN ve.ruta r " +
 					"JOIN r.aerolineas a " +
 					"WHERE a.nickname = :nickname AND r.nombre = :nombre", DataVueloEspecifico.class)
 					.setParameter("nickname", nickname)
