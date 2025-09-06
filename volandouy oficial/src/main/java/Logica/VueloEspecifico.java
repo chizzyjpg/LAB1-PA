@@ -30,12 +30,13 @@ public class VueloEspecifico {
 	@Column(name = "fechaAlta", nullable = false)
 	private Date fechaAlta;
 	
-	@ManyToMany(mappedBy = "vuelosEspecificos")
-	private Set<Ruta> rutas = new HashSet<>();
+	@ManyToOne(optional = false)
+    @JoinColumn(name = "idRuta", nullable = false)
+    private Ruta ruta;
 	
 	protected VueloEspecifico() {}
 	
-	public VueloEspecifico(String n, Date fecha, int dur, int maxTur, int maxEjec, Date fechaAlta/*, Ruta ruta*/) {
+	public VueloEspecifico(String n, Date fecha, int dur, int maxTur, int maxEjec, Date fechaAlta, Ruta ruta) {
 		this.nombre = n;
 		this.fecha = fecha;
 		this.duracion = dur;
@@ -43,6 +44,7 @@ public class VueloEspecifico {
 		this.maxAsientosEjec = maxEjec;
 		this.fechaAlta = fechaAlta;
 		this.reservas = new HashSet<>();
+		this.ruta = ruta;
 	}
 	
 	//Getters
@@ -72,7 +74,9 @@ public class VueloEspecifico {
 	public Set<Reserva> getReservas() {
 		return reservas;
 	}
-	public Set<Ruta> getRutas() { return rutas; }
+	public Ruta getRuta() {
+        return ruta;
+    }
 	
 	//Setters
 	public void setNombre(String n) {
@@ -93,18 +97,15 @@ public class VueloEspecifico {
 	public void setFechaAlta(Date fechaAlta) {
 		this.fechaAlta = fechaAlta;
 	}
-	public void setRutas(Set<Ruta> rutas) { this.rutas = rutas; }
 	public void setReservas(Set<Reserva> reservas) {
         this.reservas = reservas;
     }
-	/*
 	public void setRuta(Ruta ruta) {
-		this.ruta = ruta;
-	}
-	*/
+        this.ruta = ruta;
+    }
 	@Override public String toString() {
-		return "VueloEspecifico [idVueloEspecifico=" + idVueloEspecifico + ", nombre=" + nombre + ", fecha=" + fecha
-				+ ", duracion=" + duracion + ", maxAsientosTur=" + maxAsientosTur + ", maxAsientosEjec="
-				+ maxAsientosEjec + ", fechaAlta=" + fechaAlta + /*", ruta=" + ruta + */"]";
-	}
+        return "VueloEspecifico [idVueloEspecifico=" + idVueloEspecifico + ", nombre=" + nombre + ", fecha=" + fecha
+                + ", duracion=" + duracion + ", maxAsientosTur=" + maxAsientosTur + ", maxAsientosEjec="
+                + maxAsientosEjec + ", fechaAlta=" + fechaAlta + ", ruta=" + (ruta != null ? ruta.getIdRuta() : null) + "]";
+    }
 }

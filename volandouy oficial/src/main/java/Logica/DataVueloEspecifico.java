@@ -11,16 +11,16 @@ public class DataVueloEspecifico {
 	private int maxAsientosTur;
 	private int maxAsientosEjec;
 	private Date fechaAlta;
-	//private Ruta ruta;
+	private DataRuta Druta;
 	
-	public DataVueloEspecifico(String nombre, Date fecha, int duracion, int maxAsientosTur, int maxAsientosEjec, Date fechaAlta/*, Ruta ruta*/) {
+	public DataVueloEspecifico(String nombre, Date fecha, int duracion, int maxAsientosTur, int maxAsientosEjec, Date fechaAlta, DataRuta Druta) {
 		this.nombre = nombre;
 		this.fecha = fecha;
 		this.duracion = duracion;
 		this.maxAsientosTur = maxAsientosTur;
 		this.maxAsientosEjec = maxAsientosEjec;
 		this.fechaAlta = fechaAlta;
-		//this.ruta = ruta;
+		this.Druta = Druta;
 	}
 	
 	public String getNombre() {
@@ -47,6 +47,9 @@ public class DataVueloEspecifico {
 		return fechaAlta;
 	}
 	
+	public DataRuta getDRuta() {
+		return Druta;
+	}
 	public String toString() {
 
     	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

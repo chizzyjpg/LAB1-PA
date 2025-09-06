@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class DataRuta {
-    private String nombre;
+    private int idRuta;
+	private String nombre;
     private String descripcion;
     private DataCiudad ciudadOrigen;
     private DataCiudad ciudadDestino;
@@ -35,7 +36,7 @@ public class DataRuta {
     }
 
     // Getters
-
+	public int getIdRuta() { return idRuta; }
 	public String getNombre() { return nombre; }
     public String getDescripcion() { return descripcion; }
     public DataCiudad getCiudadOrigen() { return ciudadOrigen; }
@@ -53,4 +54,6 @@ public class DataRuta {
     	return getNombre()+ getDescripcion() + getCiudadOrigen() + getCiudadDestino() + getHora() + getFechaAlta() + getCostoTurista() + getCostoEjecutivo() + getCostoEquipajeExtra() + getCategoria();
     			
     }
+
+	
 }

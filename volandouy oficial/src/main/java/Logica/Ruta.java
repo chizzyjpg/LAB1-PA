@@ -13,15 +13,11 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Ruta")
 public class Ruta {
-	
-	@ManyToMany
-    @JoinTable(
-        name = "aerolinearuta",
-        joinColumns = @JoinColumn(name = "idRuta"),
-        inverseJoinColumns = @JoinColumn(name = "idVueloEspecifico")
-    )
-    private Set<VueloEspecifico> vuelosEspecificos = new HashSet<>();
 
+	// Cambiar ManyToMany a OneToMany
+    @OneToMany(mappedBy = "ruta")
+    private Set<VueloEspecifico> vuelosEspecificos = new HashSet<>();
+	 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private int idRuta;
 

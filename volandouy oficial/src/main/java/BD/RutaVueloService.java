@@ -83,4 +83,36 @@ public class RutaVueloService {
 			em.close();
 		}
 	}
+
+	public Integer buscarRutaPorNombreYObtenerId(String nombre) {
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			em.getTransaction().begin();
+			Ruta ruta = em.createQuery("SELECT r FROM Ruta r WHERE r.nombre = :nombre", Ruta.class)
+					.setParameter("nombre", nombre)
+					.getSingleResult();
+			em.getTransaction().commit();
+			return ruta != null ? ruta.getIdRuta() : null;
+		} catch (RuntimeException ex) {
+			if (em.getTransaction().isActive()) em.getTransaction().rollback();
+			throw ex; // propagar para que la UI decida qué mostrar
+		} finally {
+			em.close();
+		}
+	}
+
+	public Ruta buscarRutaPorId(Integer idRuta) {
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			em.getTransaction().begin();
+			Ruta ruta = em.find(Ruta.class, idRuta);
+			em.getTransaction().commit();
+			return ruta;
+		} catch (RuntimeException ex) {
+			if (em.getTransaction().isActive()) em.getTransaction().rollback();
+			throw ex; // propagar para que la UI decida qué mostrar
+		} finally {
+			em.close();
+		}
+	}
 }

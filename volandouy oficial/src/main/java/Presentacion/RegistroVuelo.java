@@ -216,7 +216,8 @@ public class RegistroVuelo extends JInternalFrame {
 		                duracion,
 		                cantTurista,
 		                maxEjecutivo,
-		                dateChooserFechaAlta.getDate()
+		                dateChooserFechaAlta.getDate(),
+		                rutaSeleccionada
 		            );
 
 		            sistema.registrarVuelo(aerolineaSeleccionada.getNickname(),
@@ -284,6 +285,20 @@ public class RegistroVuelo extends JInternalFrame {
                     setText(origen + "  -->  " + destino);
                 }
                 return this;
+            }
+        });
+		
+		comboAerolinea.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                comboBoxRutaVuelo.removeAllItems();
+                DataAerolinea aerolineaSeleccionada = (DataAerolinea) comboAerolinea.getSelectedItem();
+                if (aerolineaSeleccionada != null) {
+                    List<DataRuta> rutas = sistema.listarPorAerolinea(aerolineaSeleccionada.getNickname());
+                    for (DataRuta ruta : rutas) {
+                        comboBoxRutaVuelo.addItem(ruta);
+                    }
+                }
             }
         });
 	}

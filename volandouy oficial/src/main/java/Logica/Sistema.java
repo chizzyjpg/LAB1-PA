@@ -382,24 +382,44 @@ public class Sistema implements ISistema {
 	@Override
 	public void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos) {
 		if (datos == null) throw new IllegalArgumentException("Los datos del vuelo no pueden ser nulos");
-		usuarioService.listarUsuarios();
-		usuarioService.listarRutasPorAerolinea(nickname);
-		ManejadorVueloEspecifico.toEntity(datos);
+		// Buscar el id de la ruta persistida por nombre
+		RutaVueloService rutaService = new RutaVueloService();
+		Integer idRuta = rutaService.buscarRutaPorNombreYObtenerId(nombre);
+		if (idRuta == null) {
+			throw new IllegalArgumentException("No existe una ruta con ese nombre en la base de datos");
+		}
+		// Buscar la entidad Ruta persistida usando el id
+		Ruta ruta = rutaService.buscarRutaPorId(idRuta);
+		if (ruta == null) {
+			throw new IllegalArgumentException("No se encontró la Ruta con id: " + idRuta);
+		}
+		// Crear el vuelo específico usando el manejador, pero con la ruta persistida
+		//ANDA
+		VueloEspecifico vuelo = new VueloEspecifico(
+			    datos.getNombre(),
+			    datos.getFecha(),
+			    datos.getDuracion(),
+			    datos.getMaxAsientosTur(),
+			    datos.getMaxAsientosEjec(),
+			    datos.getFechaAlta(),
+			    ruta // Usa la entidad persistida directamente
+			);
+			vueloService.registrarVuelo(vuelo);
 		/*
-		Usuario u = usuariosPorNickname.get(canonical(nickname));
-		if (!(u instanceof Aerolinea a)) {
-			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
-		}
-		Ruta r = a.getRutas().stream()
-				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
-				.findFirst().orElse(null);
-		if (r == null) {
-			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
-		}
-		VueloEspecifico v = ManejadorVueloEspecifico.toEntity(datos);
-		r.addVuelosEspecificos(v);
+		 * NO ANDA
+		DataVueloEspecifico datosConRuta = new DataVueloEspecifico(
+			datos.getNombre(),
+			datos.getFecha(),
+			datos.getDuracion(),
+			datos.getMaxAsientosTur(),
+			datos.getMaxAsientosEjec(),
+			datos.getFechaAlta(),
+			ManejadorRuta.toData(ruta)
+		);
+		VueloEspecifico vuelo = ManejadorVueloEspecifico.toEntity(datosConRuta);
+		vueloService.registrarVuelo(vuelo);
 		*/
-	}
+		}
 	
 	@Override
 	public List<DataVueloEspecifico> listarVuelos(String nickname, String nombre) {
