@@ -405,7 +405,7 @@ public class Sistema implements ISistema {
 		}
 		// Crear el vuelo específico usando el manejador, pero con la ruta persistida
 		//ANDA
-		VueloEspecifico vuelo = new VueloEspecifico(
+		/*VueloEspecifico vuelo = new VueloEspecifico(
 			    datos.getNombre(),
 			    datos.getFecha(),
 			    datos.getDuracion(),
@@ -413,8 +413,10 @@ public class Sistema implements ISistema {
 			    datos.getMaxAsientosEjec(),
 			    datos.getFechaAlta(),
 			    ruta // Usa la entidad persistida directamente
-			);
-			vueloService.registrarVuelo(vuelo);
+			);*/
+		
+		ManejadorVueloEspecifico.toEntity(datos, ruta);
+			//vueloService.registrarVuelo(vuelo);
 		/*
 		 * NO ANDA
 		DataVueloEspecifico datosConRuta = new DataVueloEspecifico(

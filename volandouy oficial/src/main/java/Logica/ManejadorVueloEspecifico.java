@@ -64,5 +64,23 @@ public class ManejadorVueloEspecifico {
 					   .map(ManejadorVueloEspecifico::toData)
 					   .toList();
 	}
+	
+	// Nueva función: crea un VueloEspecifico usando una Ruta persistida
+    public static VueloEspecifico toEntity(DataVueloEspecifico v, Ruta ruta) {
+        Objects.requireNonNull(v, "Los datos no pueden ser nulos");
+        Objects.requireNonNull(ruta, "La ruta no puede ser nula");
+        VueloEspecifico vuelo = new VueloEspecifico(
+            v.getNombre(),
+            v.getFecha(),
+            v.getDuracion(),
+            v.getMaxAsientosTur(),
+            v.getMaxAsientosEjec(),
+            v.getFechaAlta(),
+            ruta
+        );
+        // Persistir el vuelo aquí
+        new VueloService().registrarVuelo(vuelo);
+        return vuelo;
+    }
 
 }
