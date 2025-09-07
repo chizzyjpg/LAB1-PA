@@ -11,6 +11,7 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollBar;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
@@ -31,7 +32,7 @@ public class RegistroCiudad extends JInternalFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -42,7 +43,7 @@ public class RegistroCiudad extends JInternalFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
@@ -117,6 +118,7 @@ public class RegistroCiudad extends JInternalFrame {
 		
 		JDateChooser fechaAlta = new JDateChooser();
 		fechaAlta.setBounds(154, 247, 135, 20);
+		fechaAlta.setDate(new Date());
 		getContentPane().add(fechaAlta);
 
 		JButton btnAceptar = new JButton("ACEPTAR");
@@ -183,7 +185,7 @@ public class RegistroCiudad extends JInternalFrame {
 		            textFieldAeropuerto.setText("");
 		            textAreaDesc.setText("");
 		            textFieldWeb.setText("");
-		            fechaAlta.setDate(null);
+		            fechaAlta.setDate(new Date());
 
 		        } catch (IllegalArgumentException ex) {
 		            // Errores de validación/duplicado del manejador
