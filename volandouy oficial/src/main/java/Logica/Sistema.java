@@ -737,7 +737,7 @@ public class Sistema implements ISistema {
 	
 	@Override
 	public List<DataReserva> listarReservas(String nickname, String nombre, String codigoVuelo) {
-		Usuario u = usuariosPorNickname.get(canonical(nickname));
+		Usuario u = usuarioService.obtenerAerolineaPorNickname(canonical(nickname));
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}
@@ -760,7 +760,7 @@ public class Sistema implements ISistema {
 	}
 	
 	public DataReserva buscarReserva(String nickname, String nombre, String codigoVuelo, int idReserva) {
-		Usuario u = usuariosPorNickname.get(canonical(nickname));
+		Usuario u = usuarioService.obtenerAerolineaPorNickname(canonical(nickname));
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}
@@ -788,7 +788,7 @@ public class Sistema implements ISistema {
 	@Override
 	public void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos) {
 		if (datos == null) throw new IllegalArgumentException("Los datos de la reserva no pueden ser nulos");
-		Usuario u = usuariosPorNickname.get(canonical(nickname));
+		Usuario u = usuarioService.obtenerAerolineaPorNickname(canonical(nickname));
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}

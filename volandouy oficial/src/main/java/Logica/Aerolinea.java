@@ -26,7 +26,6 @@ public class Aerolinea extends Usuario {
 		this.setLinkWeb(linkWeb);
 		this.setDescGeneral(descGeneral);
 		this.rutas = new HashSet<>();
-		// Getters
 	}
 
 	//Getters
