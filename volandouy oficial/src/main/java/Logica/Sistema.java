@@ -9,6 +9,7 @@ import BD.CategoriaService;
 import BD.CiudadService;
 import BD.ClienteService;
 import BD.PaqueteService;
+import BD.ReservaService;
 import BD.RutaVueloService;
 import BD.UsuarioService;
 import BD.VueloService;
@@ -34,6 +35,7 @@ public class Sistema implements ISistema {
     private final PaqueteService paqueteService = new PaqueteService();
     private final VueloService vueloService = new VueloService();
     private final ClienteService clienteService = new ClienteService();
+    private final ReservaService reservaService = new ReservaService();
     public Sistema() {}
     
     
@@ -599,6 +601,7 @@ public class Sistema implements ISistema {
 	        throw new IllegalArgumentException("La fecha de compra es obligatoria");
 
 	    // ENTIDAD a partir del DTO usando el Manejador de compras (nada de 'new' acá)
+	    //paquete.getTotalCupos();
 		ManejadorCompraPaquete.toEntity(compra, cliente, paquete);
 		//CompraPaquete entidad = 
 	    
@@ -860,9 +863,17 @@ public class Sistema implements ISistema {
 		Reserva res = ManejadorReserva.toEntity(datos);
 		int nuevoId = nextReservaId(v.getReservas());
 		res.setIdReserva(nuevoId);
-		v.getReservas().add(res);
+		res.setVueloEspecifico(v); // Asociar el vuelo específico a la reserva
+		// Asociar el cliente gestionado por la sesión
+		Cliente cliente = usuarioService.obtenerClientePorNickname(datos.getNickCliente().getNickname());
+		if (cliente == null) {
+		    throw new IllegalArgumentException("No existe el cliente con ese nickname");
+		}
+		res.setCliente(cliente);
+		reservaService.registrarReserva(res);
+		//v.getReservas().add(res);
 	}
 	
-	
+	 
 	
 }

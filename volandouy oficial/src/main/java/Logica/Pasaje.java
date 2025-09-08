@@ -16,6 +16,7 @@ public class Pasaje {
 	private String apellido;
 	
 	@ManyToOne
+	@JoinColumn(name = "idReserva")
 	private Reserva reserva;
 	
 	
@@ -39,6 +40,13 @@ public class Pasaje {
 	}
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+	
+	public Reserva getReserva() {
+		return reserva;
+	}
+	public void setReserva(Reserva reserva) {
+		this.reserva = reserva;
 	}
 	
 	@Override

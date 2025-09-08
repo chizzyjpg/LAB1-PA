@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "VueloEspecifico")
 public class VueloEspecifico {
-	@OneToMany(mappedBy = "vueloEspecifico")
+	@OneToMany(mappedBy = "vueloEspecifico", fetch = FetchType.EAGER)
 	private Set<Reserva> reservas = new HashSet<>();
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +30,7 @@ public class VueloEspecifico {
 	@Column(name = "fechaAlta", nullable = false)
 	private Date fechaAlta;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "idRuta", nullable = false)
     private Ruta ruta;
 	

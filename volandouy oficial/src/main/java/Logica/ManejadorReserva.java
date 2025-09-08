@@ -2,6 +2,7 @@ package Logica;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import BD.ReservaService;
 
 public class ManejadorReserva {
 
@@ -17,9 +18,11 @@ public class ManejadorReserva {
 		if (res.getPasajes() != null) {
 	        for (DataPasaje dp : res.getPasajes()) {
 	            Pasaje p = ManejadorPasaje.toEntity(dp);
-	             r.getPasajes().add(p);     // o agregar a la colección
+	            p.setReserva(r); // Setear la reserva en el pasaje
+	            r.getPasajes().add(p);
 	        }
 	    }
+		//new ReservaService().registrarReserva(r);
 	    return r;
     }
 

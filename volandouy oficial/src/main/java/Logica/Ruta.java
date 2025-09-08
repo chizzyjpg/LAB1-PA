@@ -15,7 +15,7 @@ import jakarta.persistence.*;
 public class Ruta {
 
 	// Cambiar ManyToMany a OneToMany
-    @OneToMany(mappedBy = "ruta")
+    @OneToMany(mappedBy = "ruta", fetch = FetchType.EAGER)
     private Set<VueloEspecifico> vuelosEspecificos = new HashSet<>();
 	 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)

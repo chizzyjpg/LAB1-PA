@@ -175,7 +175,7 @@ public class Paquete {
         
     }*/
 	
-	  void addCuposRuta(String nombreRuta, int cantidad) {
+	  void addCuposRuta(String nombreRuta, int cantidad) { //lo que hace es sumar una ruta al paquete existente
 	        String key = canonical(nombreRuta);
 	        if (key == null || key.isBlank() || cantidad <= 0) {
 	            throw new IllegalArgumentException("Ruta/cantidad inválidas");

@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Table(name = "Reserva")
 public class Reserva {
 	
-	@ManyToMany
+	@OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Pasaje> pasajes = new ArrayList<>();
 	
 	@ManyToOne
@@ -35,18 +35,16 @@ public class Reserva {
 	private Float costoTotal;
 	
 	@ManyToOne
-	private Cliente nickname;
-	
-	@ManyToOne
 	private VueloEspecifico vueloEspecifico;
 	
-	@ManyToOne
-	private Paquete paquete;	
+	//@ManyToOne
+	//private Paquete paquete;	
 	
 	
-	private String aerolinea;
 	@ManyToOne
 	private Ruta rutasVuelo;
+	
+	private String aerolinea;
 	private int cantPasajes;
 	private String nomPasajero;
 	private String apePasajero;
@@ -108,6 +106,9 @@ public class Reserva {
 	public List<Pasaje> getPasajes() {
 		return pasajes;
 	}
+	public VueloEspecifico getVueloEspecifico() {
+		return vueloEspecifico;
+	}
 	
 	//Setters
 	public void setAerolinea(String aerolinea) {
@@ -153,7 +154,9 @@ public class Reserva {
 	public void setIdReserva(int idReserva) {
 		this.idReserva = idReserva;
 	}
-	
+	public void setVueloEspecifico(VueloEspecifico vueloEspecifico) {
+		this.vueloEspecifico = vueloEspecifico;
+	}
 	@Override public String toString() {
 		return "Reserva [fechaReserva=" + fechaReserva + ", tipoAsiento=" + tipoAsiento
 				+ ", equipaje=" + equipaje + ", cantEquipajeExtra=" + cantEquipajeExtra + ", costoTotal=" + costoTotal
