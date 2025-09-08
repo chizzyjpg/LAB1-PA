@@ -65,6 +65,7 @@ public final class ManejadorPaquete {
                 /* validez */ dto.getValidez(),
                 /* costo */ null              // aún no definido
         );
+        p.setFechaAlta(dto.getFechaAlta());
         try {
         	new PaqueteService().crearPaquete(p);
         } catch (Exception ex) {

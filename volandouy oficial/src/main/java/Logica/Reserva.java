@@ -36,20 +36,19 @@ public class Reserva {
 	
 	@ManyToOne
 	private VueloEspecifico vueloEspecifico;
-	
-	//@ManyToOne
-	//private Paquete paquete;	
-	
-	
-	@ManyToOne
+
+	@Transient
 	private Ruta rutasVuelo;
 	
+	/*
+	@ManyToOne
+	private Paquete paquete;	
 	private String aerolinea;
 	private int cantPasajes;
 	private String nomPasajero;
 	private String apePasajero;
 	//private Pasajero pasajero;
-	
+	*/
 	protected Reserva() {}	
 	
 	public Reserva(Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal, Cliente nickCliente) {
@@ -66,15 +65,18 @@ public class Reserva {
 	public int getIdReserva() {
 		return idReserva;
 	}
+	/*
 	public String getAerolinea() {
 		return aerolinea;
 	}
+	 */
 	public Ruta getRutasVuelo() {
 		return rutasVuelo;
 	}
 	public Cliente getCliente() {
 		return cliente;
 	}
+	/*
 	public int getCantPasajes() {
 		return cantPasajes;
 	}
@@ -84,6 +86,7 @@ public class Reserva {
 	public String getApePasajero() {
 		return apePasajero;
 	}
+	 
 	/*public Pasajero getPasajero() {
 		return pasajero;
 	}*/
@@ -111,15 +114,18 @@ public class Reserva {
 	}
 	
 	//Setters
+	/*
 	public void setAerolinea(String aerolinea) {
 		this.aerolinea = aerolinea;
 	}
+	 */
 	public void setRutasVuelo(Ruta rutasVuelo) {
 		this.rutasVuelo = rutasVuelo;
 	}
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
+	/*
 	public void setCantPasajes(int cantPasajes) {
 		this.cantPasajes = cantPasajes;
 	}
