@@ -204,9 +204,11 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		
 		JDateChooser fechaAlta = new JDateChooser();
 		fechaAlta.setBounds(155, 376, 145, 20);
+		fechaAlta.setDate(new Date());
 		getContentPane().add(fechaAlta);
 		
-		JComboBox<DataCategoria> comboBoxCategoria = new JComboBox<>();
+		
+		JComboBox<DataCategoria> comboBoxCategoria = new JComboBox();
 		comboBoxCategoria.setBounds(155, 405, 145, 22);
 		// Usar solo DTOs en la capa de presentación para categorías
         for (DataCategoria dcg : sistema.listarCategorias()) {
@@ -306,12 +308,13 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 
                     //JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Ruta de Vuelo registrada correctamente!\nNombre: " + nombre, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
 
-                    // limpiar
-                    textFieldNombre.setText("");
-                    textFieldTurista.setText("");
-                    textFieldEjecutivo.setText("");
-                    textFieldEquipajeExtra.setText("");
-                    fechaAlta.setDate(null);
+		            // limpiar
+		            textFieldNombre.setText("");
+		            textFieldTurista.setText("");
+		            textFieldEjecutivo.setText("");
+		            textFieldEquipajeExtra.setText("");
+		            textAreaDesc.setText("");
+		            fechaAlta.setDate(new Date());
 
 		        } catch (IllegalArgumentException ex2) {
 		            JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, ex2.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

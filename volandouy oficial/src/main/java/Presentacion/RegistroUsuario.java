@@ -288,6 +288,13 @@ public class RegistroUsuario extends JInternalFrame {
 		            JOptionPane.showMessageDialog(this, "Fecha de Nacimiento no válida", "Validación", JOptionPane.ERROR_MESSAGE);
 		            return;
 		        }
+		        
+		        String docLimpio = nDoc.replaceAll("[.\\-\\s]", "");
+		        
+		        if (!docLimpio.matches("\\d+")) {
+		            JOptionPane.showMessageDialog(this, "Número de Documento no válido.", "Validación", JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
 
 		        // ... acá armás tu DataCliente usando fUtil para la fecha
 		        DataCliente data = new DataCliente(
@@ -298,7 +305,7 @@ public class RegistroUsuario extends JInternalFrame {
 		                fUtil,           // se mantiene como java.util.Date para el DTO
 		                nac,
 		                tipo,
-		                nDoc
+		                docLimpio
 		        );
 
 		        try {

@@ -27,12 +27,65 @@ public class ConsultaReserva extends JInternalFrame {
     }
 
     private static String formatear(DataReserva r) {
-        // Si todavía no quieres mapear campo por campo, mostramos toString()
-        // Para mapear, cambia este bloque por getters reales (cliente, fecha, asientos, etc.)
-        try {
-            return r.toString();
+    	StringBuilder sb = new StringBuilder();
+    	try {
+            sb.append(r.toString());
         } catch (Throwable t) {
-            return String.valueOf(r);
+        	 sb.append(String.valueOf(r));
+        }
+        // Mostrar costo total
+        try {
+            Float costo = r.getCostoTotal();
+            if (costo != null) {
+                sb.append("\n\nCosto total: $").append(String.format("%.2f", costo));
+            }
+        } catch (Throwable t) {
+            // Ignorar si no se puede obtener el costo
+        }
+    	// Pasajes (como texto)
+        sb.append("\n\nPasajes:\n");
+        sb.append(formatearPasajes(r));
+        return sb.toString();
+    }
+    
+    private static String formatearPasajes(DataReserva r) {
+        try {
+            // Busca un método getPasajes() en DataReserva
+            java.lang.reflect.Method m = r.getClass().getMethod("getPasajes");
+            Object value = m.invoke(r);
+
+            if (value instanceof java.util.Collection<?> col) {
+                if (col.isEmpty()) return "(sin pasajes)";
+                StringBuilder sb = new StringBuilder();
+                int i = 1;
+                for (Object p : col) {
+                    sb.append("  ").append(i++).append(") ")
+                      .append(describirPasaje(p))
+                      .append("\n");
+                }
+                return sb.toString();
+            }
+            return "(pasajes no disponibles)";
+        } catch (Exception e) {
+            return "(pasajes no disponibles)";
         }
     }
+
+    private static String describirPasaje(Object p) {
+        // Intenta usar getNombre() + getApellido(); si no, usa toString()
+        try {
+            java.lang.reflect.Method gn = p.getClass().getMethod("getNombre");
+            java.lang.reflect.Method ga = p.getClass().getMethod("getApellido");
+            Object nom = gn.invoke(p);
+            Object ape = ga.invoke(p);
+            String n = (nom == null ? "" : nom.toString().trim());
+            String a = (ape == null ? "" : ape.toString().trim());
+            String full = (n + " " + a).trim();
+            return full.isEmpty() ? String.valueOf(p) : full;
+        } catch (Exception e) {
+            return String.valueOf(p);
+        }
+    }
+    
+    
 }

@@ -15,12 +15,12 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
 
     private static final long serialVersionUID = 1L;
 
-    // --- IMPORTANTE: para WindowBuilder, tener un ctor sin args ---
-    /** Constructor solo para el diseñador. No usar en runtime. */
+
     public ConsultaPaqRutasVuelo() {
         this(null);
     }
-
+    
+    private boolean cargandoPaquetes = false; // <<< agregado
     private final ISistema sistema;
 
     private JComboBox<DataPaquete> comboPaquetes;
@@ -58,20 +58,16 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
                 return this;
             }
         });
-        getContentPane().add(comboPaquetes);
-
-        JButton btnAceptar = new JButton("ACEPTAR");
-        btnAceptar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-        btnAceptar.setBackground(new Color(5, 250, 79));
-        btnAceptar.setBounds(560, 15, 110, 26);
-        btnAceptar.addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
+        
+        comboPaquetes.addActionListener(e -> {
+            if (!cargandoPaquetes) {
                 mostrarDetalleSeleccionado();
             }
         });
-        getContentPane().add(btnAceptar);
+        
+        getContentPane().add(comboPaquetes);
 
-        JButton btnCancelar = new JButton("CANCELAR");
+        JButton btnCancelar = new JButton("CERRAR");
         btnCancelar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         btnCancelar.setBackground(new Color(241, 43, 14));
         btnCancelar.setBounds(680, 15, 110, 26);
@@ -180,19 +176,29 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
     }
 
     private void cargarPaquetes() {
-        comboPaquetes.removeAllItems();
-        List<DataPaquete> lista = sistema.listarPaquetes();
-        if (lista != null) {
-            lista.stream()
-                 .sorted((a,b) -> a.getNombre().compareToIgnoreCase(b.getNombre()))
-                 .forEach(comboPaquetes::addItem);
-        }
+    	cargandoPaquetes = true; // <<< agregado
+        
+    	try{
+    		comboPaquetes.removeAllItems();
+    		List<DataPaquete> lista = sistema.listarPaquetes();
+    		if (lista != null) {
+    			lista.stream().sorted((a,b) -> a.getNombre().compareToIgnoreCase(b.getNombre())).forEach(comboPaquetes::addItem);
+        	}
+    	} finally {
+			cargandoPaquetes = false; // <<< agregado
+		}
     }
 
     private void seleccionarPrimero() {
+    	
         if (comboPaquetes.getItemCount() > 0) {
-            comboPaquetes.setSelectedIndex(0);
-            mostrarDetalleSeleccionado();
+        	try {
+        		comboPaquetes.setSelectedIndex(0);
+        	} finally {
+        		cargandoPaquetes = false; // <<< agregado
+        	}
+        		
+        	mostrarDetalleSeleccionado();
         }
     }
 
@@ -221,6 +227,15 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
     }
 
     private void abrirConsultaRutaVuelo() {
+    	
+    	int row = tblRutas.getSelectedRow();
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this,
+                "Seleccioná una ruta en la tabla antes de continuar.",
+                "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+    	
         JDesktopPane dp = getDesktopPane();
         if (dp == null) {
             JOptionPane.showMessageDialog(this, "No se encontró el escritorio para abrir la ventana.",

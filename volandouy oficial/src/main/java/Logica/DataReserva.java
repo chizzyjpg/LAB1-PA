@@ -66,7 +66,15 @@ public class DataReserva {
 	}
 	
 	 public void setPasajes(List<DataPasaje> pasajes) {
-	        this.pasajes = (pasajes == null) ? List.of() : List.copyOf(pasajes);
+	        if (pasajes == null) {
+	            System.err.println("[DataReserva] Advertencia: Se intentó asignar una lista de pasajes null. Se usará lista vacía.");
+	            this.pasajes = new ArrayList<>();
+	        } else if (pasajes.isEmpty()) {
+	            System.err.println("[DataReserva] Advertencia: Se asignó una lista de pasajes vacía.");
+	            this.pasajes = new ArrayList<>();
+	        } else {
+	            this.pasajes = new ArrayList<>(pasajes);
+	        }
 	    }
 
 }
