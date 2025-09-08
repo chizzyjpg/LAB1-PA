@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.LinkedHashSet;
+//import java.util.LinkedHashMap;
+//import java.util.Map;
+//import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -44,14 +48,17 @@ public class Paquete {
 	 @Column(name = "fechaAlta", nullable = true)
 	 	private Date fechaAlta;
 	 
-	 /*@Column(name = "nombreRuta", nullable = false)
-	 private final Set<String> rutasIncluidas = new LinkedHashSet<>();*/
+	 // Usamos una lista de rutas incluidas (solo nombres, sin cupos)
+	 private final java.util.Set<String> rutasIncluidas = new java.util.LinkedHashSet<>();
 	 
 	 @ElementCollection(fetch = FetchType.EAGER)
 	    @CollectionTable(name = "paquete_cupos_por_ruta", joinColumns = @JoinColumn(name = "nombrepaquete_id"))
 	    @MapKeyColumn(name = "ruta")
 	    @Column(name = "cupos")
 	    private Map<String,Integer> cuposPorRuta = new LinkedHashMap<>();
+	 private int cuposMaximos;
+	 
+	 private int cuposDisponibles;
 	
 	protected Paquete() { } // JPA 
 	
@@ -64,6 +71,7 @@ public class Paquete {
 		//this.fechaCompra = fechaComp;
 		this.validez = val;
 		this.costo = costo;
+		this.cuposDisponibles = this.cuposMaximos = 0; // inicialmente 0, se seteará luego
 	}
 	
 	//Getters
@@ -96,14 +104,19 @@ public class Paquete {
 		return fechaAlta;
 	}
 	
-	 /*public Set<String> getRutasIncluidas() {
-	        // solo lectura hacia afuera
-	        return Collections.unmodifiableSet(rutasIncluidas);
-	    }*/
+	public java.util.Set<String> getRutasIncluidas() {
+	    // solo lectura hacia afuera
+	    return Collections.unmodifiableSet(rutasIncluidas);
+	}
+	 public int getCuposMaximos() {
+			return cuposMaximos;
+	}
+		
+	public int getCuposDisponibles() {
+		return cuposDisponibles;
+	}
+		
 	
-	public Map<String,Integer> getCuposPorRuta() {
-        return Collections.unmodifiableMap(cuposPorRuta);
-    }
 	/*
 	public double getCostoAsociado() {
 	    double costoBasePorRuta;
@@ -156,7 +169,12 @@ public class Paquete {
 	public void setFechaAlta(Date fecha) {
 		this.fechaAlta = fecha;
 	}
-	
+	public void setCuposMaximos(int cuposMaximos) {
+			this.cuposMaximos = cuposMaximos;
+	}	
+	public void setCuposDisponibles(int cuposDisponibles) {
+			this.cuposDisponibles = cuposDisponibles;
+	}
 	@Override public String toString() {
 		return "Paquete [nombre= " + nombre + ", descripcion=" + descripcion 
 				+ ", cantRutas=" + cantRutas + ", tipoAsiento=" + tipoAsiento 
@@ -164,35 +182,16 @@ public class Paquete {
 				+ */", validez=" + validez + "]";
 	}
 	
-	/*void addRutaPorNombre(String nombreRuta) {
-        String key = canonical(nombreRuta);
-        if (key == null || key.isBlank())
-            throw new IllegalArgumentException("Nombre de ruta inválido");
-
-        if (rutasIncluidas.add(key)) { // solo si no existía
-            this.cantRutas++;          // ++ una vez por ruta distinta
-        }
-        
-    }*/
-	
-	  void addCuposRuta(String nombreRuta, int cantidad) { //lo que hace es sumar una ruta al paquete existente
-	        String key = canonical(nombreRuta);
-	        if (key == null || key.isBlank() || cantidad <= 0) {
-	            throw new IllegalArgumentException("Ruta/cantidad inválidas");
-	        }
-	        boolean esNueva = !cuposPorRuta.containsKey(key);
-	        cuposPorRuta.merge(key, cantidad, Integer::sum);
-	        if (esNueva) this.cantRutas++;
+	// Método para agregar una ruta al paquete
+	public void addRutaPorNombre(String nombreRuta) {
+	    String key = canonical(nombreRuta);
+	    if (key == null || key.isBlank())
+	        throw new IllegalArgumentException("Nombre de ruta inválido");
+	    if (rutasIncluidas.add(key)) { // solo si no existía
+	        this.cantRutas++;          // ++ una vez por ruta distinta
 	    }
+	}
 
-	  public int getCuposDeTipo(String nombreRuta) {
-	        return cuposPorRuta.getOrDefault(canonical(nombreRuta), 0);
-	    }
-
-	  public int getTotalCupos() {
-	        return cuposPorRuta.values().stream().mapToInt(Integer::intValue).sum();
-	    }
-	
 	  private static String canonical(String s) {
 	        return (s == null) ? null : s.trim().toLowerCase(java.util.Locale.ROOT);
 	    }

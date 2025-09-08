@@ -579,8 +579,8 @@ public class Sistema implements ISistema {
 	
 	@Override
 	public void comprarPaquete(DataCompraPaquete compra) {
-	    if (compra == null)
-	        throw new IllegalArgumentException("Datos de compra nulos");
+        if (compra == null)
+            throw new IllegalArgumentException("Datos de compra nulos");
 
 	    // Resuelvo ENTIDADES a partir de los identificadores del DTO
 	    //Paquete paquete = paquetesPorNombre.get(canonical(compra.getNombrePaquete()));
@@ -592,13 +592,23 @@ public class Sistema implements ISistema {
 	    Usuario u = usuarioService.obtenerClientePorNickname(compra.getNicknameCliente());
 	    if (!(u instanceof Cliente cliente))
 	        throw new IllegalArgumentException("Cliente inexistente: " + compra.getNicknameCliente());
+        // Resuelvo ENTIDADES a partir de los identificadores del DTO
+        Paquete paquete = paquetesPorNombre.get(canonical(compra.getNombrePaquete()));
+        if (paquete == null) throw new IllegalArgumentException("Paquete inexistente: " + compra.getNombrePaquete());
+        if (paquete.getCantRutas() <= 0) throw new IllegalStateException("El paquete no tiene rutas");
 
-	    if (clienteYaComproPaquete(compra.getNicknameCliente(), compra.getNombrePaquete())) {
-	        throw new IllegalArgumentException("El cliente ya compró este paquete");
-	    }
+        // Verificar cupos disponibles antes de permitir la compra
+        if (paquete.getCuposDisponibles() <= 0) {
+            throw new IllegalStateException("No hay cupos disponibles para este paquete");
+        }
 
-	    if (compra.getFechaCompra() == null)
-	        throw new IllegalArgumentException("La fecha de compra es obligatoria");
+        Usuario u = usuariosPorNickname.get(canonical(compra.getNicknameCliente()));
+        if (!(u instanceof Cliente cliente))
+            throw new IllegalArgumentException("Cliente inexistente: " + compra.getNicknameCliente());
+
+        if (clienteYaComproPaquete(compra.getNicknameCliente(), compra.getNombrePaquete())) {
+            throw new IllegalArgumentException("El cliente ya compró este paquete");
+        }
 
 	    // ENTIDAD a partir del DTO usando el Manejador de compras (nada de 'new' acá)
 	    //paquete.getTotalCupos();
@@ -611,6 +621,21 @@ public class Sistema implements ISistema {
 	    // Registro en la “BD” en memoria
 	    //compras.add(entidad);
 	}
+        if (compra.getFechaCompra() == null)
+            throw new IllegalArgumentException("La fecha de compra es obligatoria");
+
+        // ENTIDAD a partir del DTO usando el Manejador de compras (nada de 'new' acá)
+        CompraPaquete entidad = ManejadorCompraPaquete.toEntity(compra, cliente, paquete);
+        
+        // asignar id secuencial
+        entidad.setId(compraIdSeq++);
+
+        // Registrar la compra en la “BD” en memoria
+        compras.add(entidad);
+
+        // Restar un cupo disponible al paquete
+        paquete.setCuposDisponibles(paquete.getCuposDisponibles() - 1);
+    }
 	
 			// ===============================
 			//  PRECARGA CLIENTES Y PAQUETES
@@ -768,6 +793,8 @@ public class Sistema implements ISistema {
 	     }
 	     // agregar ruta por NOMBRE (único)
 	     p.addCuposRuta(r.getNombre(), cantidad);
+		 p.setCuposDisponibles(cantidad);
+         p.setCuposMaximos(cantidad);
 	     paqueteService.actualizarPaquete(p);
 	     }
 
@@ -875,5 +902,6 @@ public class Sistema implements ISistema {
 	}
 	
 	 
+	
 	
 }
