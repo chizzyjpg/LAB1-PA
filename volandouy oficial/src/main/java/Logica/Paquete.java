@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.LinkedHashSet;
 //import java.util.LinkedHashMap;
 //import java.util.Map;
@@ -49,16 +50,21 @@ public class Paquete {
 	 	private Date fechaAlta;
 	 
 	 // Usamos una lista de rutas incluidas (solo nombres, sin cupos)
-	 private final java.util.Set<String> rutasIncluidas = new java.util.LinkedHashSet<>();
+	 private final Set<String> rutasIncluidas = new java.util.LinkedHashSet<>();
 	 
+	 /*
 	 @ElementCollection(fetch = FetchType.EAGER)
 	    @CollectionTable(name = "paquete_cupos_por_ruta", joinColumns = @JoinColumn(name = "nombrepaquete_id"))
 	    @MapKeyColumn(name = "ruta")
 	    @Column(name = "cupos")
 	    private Map<String,Integer> cuposPorRuta = new LinkedHashMap<>();
-	 private int cuposMaximos;
+	 */
 	 
-	 private int cuposDisponibles;
+	 @Column(name = "cuposMaximos", nullable = false)
+	 private Integer cuposMaximos;
+	 
+	 @Column(name = "cuposDisponibles", nullable = false)
+	 private Integer cuposDisponibles;
 	
 	protected Paquete() { } // JPA 
 	
@@ -104,7 +110,7 @@ public class Paquete {
 		return fechaAlta;
 	}
 	
-	public java.util.Set<String> getRutasIncluidas() {
+	public Set<String> getRutasIncluidas() {
 	    // solo lectura hacia afuera
 	    return Collections.unmodifiableSet(rutasIncluidas);
 	}
