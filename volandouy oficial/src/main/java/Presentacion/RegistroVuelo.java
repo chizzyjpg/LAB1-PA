@@ -117,7 +117,7 @@ public class RegistroVuelo extends JInternalFrame {
 		getContentPane().add(textDuracion);
 		textDuracion.setColumns(10);
 		
-		JLabel lblNewLabelCantTurista = new JLabel("cant.Turista");
+		JLabel lblNewLabelCantTurista = new JLabel("Cantidad Turista");
 		lblNewLabelCantTurista.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblNewLabelCantTurista.setBounds(97, 324, 124, 14);
 		getContentPane().add(lblNewLabelCantTurista);
@@ -129,7 +129,7 @@ public class RegistroVuelo extends JInternalFrame {
 		getContentPane().add(textCantTurista);
 		textCantTurista.setColumns(10);
 		
-		JLabel lblNewLabelMaxEjecutivos = new JLabel("Max. ejecutivos");
+		JLabel lblNewLabelMaxEjecutivos = new JLabel("Cantidad Ejecutivo");
 		lblNewLabelMaxEjecutivos.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblNewLabelMaxEjecutivos.setBounds(97, 372, 124, 14);
 		getContentPane().add(lblNewLabelMaxEjecutivos);
