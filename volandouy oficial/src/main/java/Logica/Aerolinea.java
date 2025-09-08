@@ -9,7 +9,7 @@ import java.util.Set;
 @PrimaryKeyJoinColumn(name = "nickname")
 public class Aerolinea extends Usuario {
 
-	@ManyToMany(mappedBy = "aerolineas")
+	@ManyToMany(mappedBy = "aerolineas", fetch = FetchType.EAGER)
 	private Set<Ruta> rutas = new HashSet<>();
 	
 	@Column(name = "descGeneral", nullable = false, length = 200)

@@ -289,7 +289,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        Calendar cal = Calendar.getInstance();
 		        cal.setTime(h);
 		        int horaInt = cal.get(Calendar.HOUR_OF_DAY);
-
+		        
 		        try {
                     DataRuta datos = new DataRuta(
                         nombre,
@@ -306,7 +306,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
                     );
                     sistema.registrarRuta(datos);
 
-                    //JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Ruta de Vuelo registrada correctamente!\nNombre: " + nombre, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "Ruta de Vuelo registrada correctamente!\nNombre: " + nombre, "ÉXITO!" , JOptionPane.INFORMATION_MESSAGE);
 
 		            // limpiar
 		            textFieldNombre.setText("");

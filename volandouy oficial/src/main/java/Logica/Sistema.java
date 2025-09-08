@@ -307,6 +307,7 @@ public class Sistema implements ISistema {
     // =========================
     
     @Override
+    /*
     public void registrarRuta(DataRuta datos) {
         if (datos != null) {
             Ruta ruta = ManejadorRuta.toEntity(datos); // Solo crea la entidad, no la persiste
@@ -314,22 +315,22 @@ public class Sistema implements ISistema {
             new RutaVueloService().crearRutaVuelo(ruta, nicknameAerolinea);
             System.out.println(datos.toString());
         }
-    }
-    public void registrarRuta(String nickAerolinea, DataRuta datos) {
+    }*/
+    public void registrarRuta(DataRuta datos) {
 		if (datos == null) throw new IllegalArgumentException("Los datos de la ruta no pueden ser nulos");
 		
 		String nombre = (datos.getNombre() == null) ? "" : datos.getNombre().trim();
 		if (nombre.isEmpty()) {
 		    throw new IllegalArgumentException("El nombre de la ruta no puede estar vacío");
 		}
-
+		String nickAerolinea = datos.getNicknameAerolinea();
 		// Busca en TODAS las rutas de TODAS las aerolíneas (igualdad exacta)
-		boolean existe = usuariosPorNickname.values().stream()
-		    .filter(Aerolinea.class::isInstance)
-		    .map(Aerolinea.class::cast)
-		    .flatMap(al -> al.getRutaMap().values().stream()) // o getRutas() si lo cambiás a Set
+		Aerolinea aerolinea = usuarioService.obtenerAerolineaPorNickname(nickAerolinea);
+		if (aerolinea == null) {
+		    throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+		}
+		boolean existe = aerolinea.getRutas().stream()
 		    .anyMatch(r -> nombre.equals(r.getNombre()));
-
 		if (existe) {
 		    throw new IllegalArgumentException("Ya existe una ruta llamada exactamente: " + nombre);
 		}
@@ -348,14 +349,15 @@ public class Sistema implements ISistema {
 
 		if (cnt > 0) {
 		    throw new IllegalArgumentException("Ya existe una ruta llamada exactamente: " + nombre);
-		}*/
 
-	    Usuario u = usuariosPorNickname.get(canonical(nickAerolinea));	    
+	    Usuario u = usuarioService.obtenerAerolineaPorNickname(nickAerolinea);  
 		if (!(u instanceof Aerolinea a)) {
 			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 		}
-		Ruta r = ManejadorRuta.toEntity(datos);
-		a.addRuta(r);
+		}*/
+		Ruta ruta = ManejadorRuta.toEntity(datos); // Solo crea la entidad, no la persiste
+        //String nicknameAerolinea = datos.getNicknameAerolinea();
+        new RutaVueloService().crearRutaVuelo(ruta, nickAerolinea);
 	}
     
 //    private void validarBasico(Ruta r) {
@@ -848,7 +850,7 @@ public class Sistema implements ISistema {
 		}
 		
 		// Validación: no permitir reservas duplicadas para el mismo cliente y vuelo
-        boolean existe = v.getReserva().values().stream()
+        boolean existe = v.getReservas().stream()
             .anyMatch(rsv -> rsv.getCliente() != null &&
                 rsv.getCliente().getNickname().equalsIgnoreCase(datos.getNickCliente().getNickname()));
         if (existe) {
