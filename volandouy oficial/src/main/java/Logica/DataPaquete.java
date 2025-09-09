@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class DataPaquete {
     private final String nombre;
@@ -14,15 +15,15 @@ public class DataPaquete {
     private final int validez;         // días
     private final BigDecimal costo;
 
-    // NUEVO: ruta -> cupos (inmutable hacia afuera)
-    private final Map<String, Integer> cuposPorRuta;
+
+    private final Set<String> rutasIncluidas;
 
     /* ================== CONSTRUCTORES ================== */
 
     // Nuevo constructor que recibe el mapa de cupos
     public DataPaquete(String nombre, String descripcion, int cantRutas,
                        TipoAsiento tipoAsiento, int descuento, int validez,
-                       BigDecimal costo, Map<String, Integer> cuposPorRuta) {
+                       BigDecimal costo, Set<String> rutasIncluidas) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.cantRutas = cantRutas;
@@ -30,16 +31,15 @@ public class DataPaquete {
         this.descuento = descuento;
         this.validez = validez;
         this.costo = costo;
-
-        // copia defensiva + vista inmutable
-        if (cuposPorRuta == null || cuposPorRuta.isEmpty()) {
-            this.cuposPorRuta = Collections.emptyMap();
+        // Defensive copy for rutasIncluidas
+        if (rutasIncluidas == null || rutasIncluidas.isEmpty()) {
+            this.rutasIncluidas = Collections.emptySet();
         } else {
-            this.cuposPorRuta = Collections.unmodifiableMap(new LinkedHashMap<>(cuposPorRuta));
+            this.rutasIncluidas = Collections.unmodifiableSet(Set.copyOf(rutasIncluidas));
         }
     }
 
-    // Constructor viejo (compatibilidad): si no pasan mapa, queda vacío
+    // Constructor viejo (compatibilidad): si no pasan mapa ni rutas, quedan vacíos
     public DataPaquete(String nombre, String descripcion, int cantRutas,
                        TipoAsiento tipoAsiento, int descuento, int validez, BigDecimal costo) {
         this(nombre, descripcion, cantRutas, tipoAsiento, descuento, validez, costo, null);
@@ -55,7 +55,7 @@ public class DataPaquete {
     public BigDecimal getCosto() { return costo; }
 
     // NUEVO
-    public Map<String, Integer> getCuposPorRuta() { return cuposPorRuta; }
+    public Set<String> getRutasIncluidas() { return rutasIncluidas; }
     
     @Override
     public String toString() {

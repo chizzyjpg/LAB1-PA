@@ -218,7 +218,7 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
         txtDescripcion.setText(safe(d.getDescripcion()));
 
         rutasModel.setRowCount(0);
-        Map<String, Integer> cupos = d.getCuposPorRuta(); // ya lo agregamos al DataPaquete
+        Set<String> cupos = d.getRutasIncluidas(); // ya lo agregamos al DataPaquete
         if (cupos != null && !cupos.isEmpty()) {
             cupos.entrySet().stream()
                     .sorted(Map.Entry.comparingByKey(String.CASE_INSENSITIVE_ORDER))
