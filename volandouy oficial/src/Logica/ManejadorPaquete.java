@@ -32,7 +32,7 @@ public final class ManejadorPaquete {
             p.getDescuento(),
             p.getValidez(),
             p.getCosto(),
-            p.getCuposPorRuta()
+            p.getRutasIncluidas() // ahora sí se pasa el set de rutas
         );
     }
 
