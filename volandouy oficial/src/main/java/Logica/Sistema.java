@@ -677,6 +677,7 @@ public class Sistema implements ISistema {
 	 @Override
 	    public List<DataPaquete> listarPaquetes() {
 	        // Devolver DTOs usando tu manejador
+		 	PaqueteService paqueteService = new PaqueteService();
 		 	List<Paquete> paquetes = paqueteService.listarPaquetes();
 		 	return ManejadorPaquete.toDTOs(paquetes);
 	    }
@@ -684,6 +685,7 @@ public class Sistema implements ISistema {
 	 @Override
 	 public DataPaquete verPaquete(String nombre) {
 	     if (nombre == null) return null;
+	     PaqueteService paqueteService = new PaqueteService();
 	     Paquete p = paqueteService.existePaquete(nombre);
 	     return (p == null) ? null : ManejadorPaquete.toDTO(p);
 	 }
@@ -695,6 +697,7 @@ public class Sistema implements ISistema {
 	 @Override
 	 public List<DataPaquete> listarPaquetesSinCompras() {
 	     // un paquete “con compras” es aquel que aparece en la lista compras
+	     PaqueteService paqueteService = new PaqueteService();
 	     List<Paquete> paquetes = paqueteService.listarPaquetes();
 		 Set<String> nombresConCompra = compras.stream()
 	             .map(cp -> canonical(cp.getPaquete().getNombre()))
@@ -721,6 +724,7 @@ public class Sistema implements ISistema {
 	     //System.out.println(nombrePaquete + " " + nicknameAerolinea + " " + nombreRuta + " " +  tipo + " " + cantidad );
 	
 	     // 1) Paquete (y no permitir si ya tiene compras)
+	     PaqueteService paqueteService = new PaqueteService();
 	     Paquete p = paqueteService.existePaquete(nombrePaquete);
 	     if (p == null) throw new IllegalArgumentException("No existe un paquete con ese nombre");
 	
