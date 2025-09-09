@@ -15,12 +15,11 @@ public class DataPaquete {
     private final int validez;         // días
     private final BigDecimal costo;
 
-
     private final Set<String> rutasIncluidas;
 
     /* ================== CONSTRUCTORES ================== */
 
-    // Nuevo constructor que recibe el mapa de cupos
+    // Nuevo constructor que recibe el mapa de cupos y set de rutas
     public DataPaquete(String nombre, String descripcion, int cantRutas,
                        TipoAsiento tipoAsiento, int descuento, int validez,
                        BigDecimal costo, Set<String> rutasIncluidas) {
@@ -31,15 +30,16 @@ public class DataPaquete {
         this.descuento = descuento;
         this.validez = validez;
         this.costo = costo;
-        // Defensive copy for rutasIncluidas
+     
+        
         if (rutasIncluidas == null || rutasIncluidas.isEmpty()) {
             this.rutasIncluidas = Collections.emptySet();
         } else {
-            this.rutasIncluidas = Collections.unmodifiableSet(Set.copyOf(rutasIncluidas));
+            this.rutasIncluidas = Collections.unmodifiableSet(new java.util.LinkedHashSet<>(rutasIncluidas));
         }
     }
 
-    // Constructor viejo (compatibilidad): si no pasan mapa ni rutas, quedan vacíos
+    // Constructor viejo (compatibilidad): si no pasan mapa ni set, quedan vacíos
     public DataPaquete(String nombre, String descripcion, int cantRutas,
                        TipoAsiento tipoAsiento, int descuento, int validez, BigDecimal costo) {
         this(nombre, descripcion, cantRutas, tipoAsiento, descuento, validez, costo, null);
@@ -54,7 +54,6 @@ public class DataPaquete {
     public int getValidez() { return validez; }
     public BigDecimal getCosto() { return costo; }
 
-    // NUEVO
     public Set<String> getRutasIncluidas() { return rutasIncluidas; }
     
     @Override
