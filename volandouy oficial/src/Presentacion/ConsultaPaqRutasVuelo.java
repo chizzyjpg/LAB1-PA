@@ -8,7 +8,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class ConsultaPaqRutasVuelo extends JInternalFrame {
@@ -26,6 +25,11 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
 
     private JTable tblRutas;
     private DefaultTableModel rutasModel;
+
+    // >>> NUEVO: contador de rutas debajo de la tabla
+    private JLabel lblCantRutasTabla;
+    private JTextField txtCantRutasTabla;
+    // <<<
 
     public ConsultaPaqRutasVuelo(ISistema sistema) {
         this.sistema = sistema;
@@ -120,9 +124,24 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
         spRutas.setBounds(10, y + 120, 780, 250);
         getContentPane().add(spRutas);
 
+        // >>> NUEVO: contador de rutas debajo de la tabla
+        int yContador = y + 380; // misma línea donde tenías el botón
+        lblCantRutasTabla = new JLabel("Cantidad de Rutas:");
+        lblCantRutasTabla.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        lblCantRutasTabla.setBounds(10, yContador, 140, 28);
+        getContentPane().add(lblCantRutasTabla);
+
+        txtCantRutasTabla = new JTextField("0");
+        txtCantRutasTabla.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        txtCantRutasTabla.setEditable(false);
+        txtCantRutasTabla.setHorizontalAlignment(SwingConstants.RIGHT);
+        txtCantRutasTabla.setBounds(150, yContador, 60, 28);
+        getContentPane().add(txtCantRutasTabla);
+        // <<<
+
         JButton btnVerRuta = new JButton("Ver ruta…");
         btnVerRuta.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-        btnVerRuta.setBounds(690, y + 380, 100, 28);
+        btnVerRuta.setBounds(690, yContador, 100, 28);
         btnVerRuta.addActionListener(e -> abrirConsultaRutaVuelo());
         getContentPane().add(btnVerRuta);
 
@@ -197,6 +216,10 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
                 .sorted(String.CASE_INSENSITIVE_ORDER)
                 .forEach(nombreRuta -> rutasModel.addRow(new Object[]{ nombreRuta }));
         }
+
+        // >>> NUEVO: actualizar contador (seguro con el modelo ya cargado)
+        txtCantRutasTabla.setText(String.valueOf(rutasModel.getRowCount()));
+        // <<<
     }
 
     private void abrirConsultaRutaVuelo() {
@@ -218,8 +241,7 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
         try {
             // Si tu frame de consulta de ruta admite el nombre de ruta:
             // ConsultaRutaVuelo frame = new ConsultaRutaVuelo(sistema, nombreRuta);
-            // Si no, usá el constructor actual y hacé la selección dentro de ese frame.
-            ConsultaRutaVuelo frame = new ConsultaRutaVuelo(sistema); // <-- ajustá si tenés sobrecarga con nombreRuta
+            ConsultaRutaVuelo frame = new ConsultaRutaVuelo(sistema); // ajustá si tenés sobrecarga con nombreRuta
             dp.add(frame);
             frame.setVisible(true);
             frame.toFront();
