@@ -14,12 +14,8 @@ public class DataPaquete {
     private final int validez;         // días
     private final BigDecimal costo;
 
-<<<<<<< HEAD:volandouy oficial/src/main/java/Logica/DataPaquete.java
-    private final Set<String> rutasIncluidas;
-=======
     // NUEVO: ruta -> cupos (inmutable hacia afuera)
     private final Map<String, Integer> cuposPorRuta;
->>>>>>> parent of 5a1a33d (coommm):volandouy oficial/src/Logica/DataPaquete.java
 
     /* ================== CONSTRUCTORES ================== */
 
@@ -58,12 +54,9 @@ public class DataPaquete {
     public int getValidez() { return validez; }
     public BigDecimal getCosto() { return costo; }
 
-<<<<<<< HEAD:volandouy oficial/src/main/java/Logica/DataPaquete.java
-    public Set<String> getRutasIncluidas() { return rutasIncluidas; }
-=======
+
     // NUEVO
     public Map<String, Integer> getCuposPorRuta() { return cuposPorRuta; }
->>>>>>> parent of 5a1a33d (coommm):volandouy oficial/src/Logica/DataPaquete.java
     
     @Override
     public String toString() {

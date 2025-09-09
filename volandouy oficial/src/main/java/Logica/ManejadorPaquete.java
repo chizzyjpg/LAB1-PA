@@ -34,12 +34,7 @@ public final class ManejadorPaquete {
             p.getTipoAsiento(),
             p.getDescuento(),
             p.getValidez(),
-<<<<<<< HEAD:volandouy oficial/src/main/java/Logica/ManejadorPaquete.java
-            p.getCosto(),
-            p.getRutasIncluidas() // rutasIncluidas
-=======
             p.getCosto()
->>>>>>> parent of 5a1a33d (coommm):volandouy oficial/src/Logica/ManejadorPaquete.java
         );
     }
 
