@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class DataPaquete {
     private final String nombre;
@@ -15,14 +14,19 @@ public class DataPaquete {
     private final int validez;         // días
     private final BigDecimal costo;
 
+<<<<<<< HEAD:volandouy oficial/src/main/java/Logica/DataPaquete.java
     private final Set<String> rutasIncluidas;
+=======
+    // NUEVO: ruta -> cupos (inmutable hacia afuera)
+    private final Map<String, Integer> cuposPorRuta;
+>>>>>>> parent of 5a1a33d (coommm):volandouy oficial/src/Logica/DataPaquete.java
 
     /* ================== CONSTRUCTORES ================== */
 
-    // Nuevo constructor que recibe el mapa de cupos y set de rutas
+    // Nuevo constructor que recibe el mapa de cupos
     public DataPaquete(String nombre, String descripcion, int cantRutas,
                        TipoAsiento tipoAsiento, int descuento, int validez,
-                       BigDecimal costo, Set<String> rutasIncluidas) {
+                       BigDecimal costo, Map<String, Integer> cuposPorRuta) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.cantRutas = cantRutas;
@@ -30,16 +34,16 @@ public class DataPaquete {
         this.descuento = descuento;
         this.validez = validez;
         this.costo = costo;
-     
-        
-        if (rutasIncluidas == null || rutasIncluidas.isEmpty()) {
-            this.rutasIncluidas = Collections.emptySet();
+
+        // copia defensiva + vista inmutable
+        if (cuposPorRuta == null || cuposPorRuta.isEmpty()) {
+            this.cuposPorRuta = Collections.emptyMap();
         } else {
-            this.rutasIncluidas = Collections.unmodifiableSet(new java.util.LinkedHashSet<>(rutasIncluidas));
+            this.cuposPorRuta = Collections.unmodifiableMap(new LinkedHashMap<>(cuposPorRuta));
         }
     }
 
-    // Constructor viejo (compatibilidad): si no pasan mapa ni set, quedan vacíos
+    // Constructor viejo (compatibilidad): si no pasan mapa, queda vacío
     public DataPaquete(String nombre, String descripcion, int cantRutas,
                        TipoAsiento tipoAsiento, int descuento, int validez, BigDecimal costo) {
         this(nombre, descripcion, cantRutas, tipoAsiento, descuento, validez, costo, null);
@@ -54,7 +58,12 @@ public class DataPaquete {
     public int getValidez() { return validez; }
     public BigDecimal getCosto() { return costo; }
 
+<<<<<<< HEAD:volandouy oficial/src/main/java/Logica/DataPaquete.java
     public Set<String> getRutasIncluidas() { return rutasIncluidas; }
+=======
+    // NUEVO
+    public Map<String, Integer> getCuposPorRuta() { return cuposPorRuta; }
+>>>>>>> parent of 5a1a33d (coommm):volandouy oficial/src/Logica/DataPaquete.java
     
     @Override
     public String toString() {

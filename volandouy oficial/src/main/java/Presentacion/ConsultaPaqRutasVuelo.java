@@ -7,17 +7,20 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class ConsultaPaqRutasVuelo extends JInternalFrame {
 
     private static final long serialVersionUID = 1L;
 
-    public ConsultaPaqRutasVuelo() { this(null); }
 
-    private boolean cargandoPaquetes = false;
+    public ConsultaPaqRutasVuelo() {
+        this(null);
+    }
+    
+    private boolean cargandoPaquetes = false; // <<< agregado
     private final ISistema sistema;
 
     private JComboBox<DataPaquete> comboPaquetes;
@@ -47,6 +50,7 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
         comboPaquetes = new JComboBox<>();
         comboPaquetes.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         comboPaquetes.setBounds(190, 16, 350, 24);
+        // Render para que muestre el nombre y no la dirección de memoria
         comboPaquetes.setRenderer(new DefaultListCellRenderer() {
             @Override public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -54,14 +58,22 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
                 return this;
             }
         });
-        comboPaquetes.addActionListener(e -> { if (!cargandoPaquetes) mostrarDetalleSeleccionado(); });
+        
+        comboPaquetes.addActionListener(e -> {
+            if (!cargandoPaquetes) {
+                mostrarDetalleSeleccionado();
+            }
+        });
+        
         getContentPane().add(comboPaquetes);
 
         JButton btnCancelar = new JButton("CERRAR");
         btnCancelar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         btnCancelar.setBackground(new Color(241, 43, 14));
         btnCancelar.setBounds(680, 15, 110, 26);
-        btnCancelar.addActionListener(e -> dispose());
+        btnCancelar.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) { dispose(); }
+        });
         getContentPane().add(btnCancelar);
 
         /* ----------- Datos del paquete ----------- */
@@ -70,18 +82,25 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
         txtCosto       = roField("Costo:",           10, y, 180, 28, 160);
         txtValidez     = roField("Validez (días):", 380, y, 150, 28, 120); y += 34;
         txtCantRutas   = roField("Cant. Rutas:",     10, y, 180, 28, 120);
+     // Cant. Rutas (queda igual)
+        txtCantRutas = roField("Cant. Rutas:", 10, y, 180, 28, 120);
 
+        // -------- Tipo de Asiento (label + campo) --------
         JLabel lblTipoAsiento = new JLabel("Tipo de Asiento:");
         lblTipoAsiento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        // Lo movemos después del campo de Cant. Rutas (que termina en x=318)
         lblTipoAsiento.setBounds(330, y, 140, 28);
         getContentPane().add(lblTipoAsiento);
 
         txtTipoAsiento = new JTextField();
         txtTipoAsiento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         txtTipoAsiento.setEditable(false);
-        txtTipoAsiento.setBounds(478, y, 150, 28);
+        // Campo alineado a continuación del label (330 + 140 + 8 = 478)
+        txtTipoAsiento.setBounds(478, y, 150, 28); // ocupa 478..628
         getContentPane().add(txtTipoAsiento);
 
+        // -------- Descuento (label + campo) --------
+        // Lo corremos más a la derecha para que no quede debajo del campo anterior
         JLabel lblDescuento = new JLabel("Descuento (%):");
         lblDescuento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         lblDescuento.setBounds(650, y, 120, 28);
@@ -90,10 +109,11 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
         txtDescuento = new JTextField();
         txtDescuento.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         txtDescuento.setEditable(false);
-        txtDescuento.setBounds(778, y, 80, 28);
+        // Campo a continuación del label (650 + 120 + 8 = 778)
+        txtDescuento.setBounds(778, y, 80, 28); // 80 px para que entre en el ancho del frame
         getContentPane().add(txtDescuento);
 
-        y += 40;
+        y += 40; // mantener tu incremento de fila y += 40;
 
         JLabel lblDesc = new JLabel("Descripción:");
         lblDesc.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
@@ -109,23 +129,30 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
         spDesc.setBounds(10, y + 20, 780, 90);
         getContentPane().add(spDesc);
 
-        /* ----------- Tabla de rutas (solo nombre) ----------- */
-        rutasModel = new DefaultTableModel(new Object[]{"Ruta"}, 0) {
+        /* ----------- Tabla de rutas ----------- */
+        rutasModel = new DefaultTableModel(new Object[]{"Ruta", "Cupos"}, 0) {
             @Override public boolean isCellEditable(int r, int c) { return false; }
-            @Override public Class<?> getColumnClass(int c) { return String.class; }
+            @Override public Class<?> getColumnClass(int c) { return c == 1 ? Integer.class : String.class; }
         };
         tblRutas = new JTable(rutasModel);
         JScrollPane spRutas = new JScrollPane(tblRutas);
         spRutas.setBorder(BorderFactory.createTitledBorder("Rutas que integran el paquete"));
+        // Reducimos altura para que el botón entre en el alto total del frame
         spRutas.setBounds(10, y + 120, 780, 250);
         getContentPane().add(spRutas);
 
         JButton btnVerRuta = new JButton("Ver ruta…");
         btnVerRuta.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+        // Ubicación visible dentro de la ventana
         btnVerRuta.setBounds(690, y + 380, 100, 28);
-        btnVerRuta.addActionListener(e -> abrirConsultaRutaVuelo());
+        btnVerRuta.addActionListener(new ActionListener() {
+            @Override public void actionPerformed(ActionEvent e) {
+                abrirConsultaRutaVuelo();
+            }
+        });
         getContentPane().add(btnVerRuta);
 
+        // Carga de datos (salteada si sistema==null para que WindowBuilder no falle)
         if (this.sistema != null) {
             cargarPaquetes();
             seleccionarPrimero();
@@ -149,28 +176,29 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
     }
 
     private void cargarPaquetes() {
-        cargandoPaquetes = true;
-        try {
-            comboPaquetes.removeAllItems();
-            List<DataPaquete> lista = sistema.listarPaquetes();
-            if (lista != null) {
-                lista.stream()
-                        .sorted((a, b) -> a.getNombre().compareToIgnoreCase(b.getNombre()))
-                        .forEach(comboPaquetes::addItem);
-            }
-        } finally {
-            cargandoPaquetes = false;
-        }
+    	cargandoPaquetes = true; // <<< agregado
+        
+    	try{
+    		comboPaquetes.removeAllItems();
+    		List<DataPaquete> lista = sistema.listarPaquetes();
+    		if (lista != null) {
+    			lista.stream().sorted((a,b) -> a.getNombre().compareToIgnoreCase(b.getNombre())).forEach(comboPaquetes::addItem);
+        	}
+    	} finally {
+			cargandoPaquetes = false; // <<< agregado
+		}
     }
 
     private void seleccionarPrimero() {
+    	
         if (comboPaquetes.getItemCount() > 0) {
-            try {
-                comboPaquetes.setSelectedIndex(0);
-            } finally {
-                cargandoPaquetes = false;
-            }
-            mostrarDetalleSeleccionado();
+        	try {
+        		comboPaquetes.setSelectedIndex(0);
+        	} finally {
+        		cargandoPaquetes = false; // <<< agregado
+        	}
+        		
+        	mostrarDetalleSeleccionado();
         }
     }
 
@@ -189,26 +217,25 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
         txtDescuento.setText(String.valueOf(d.getDescuento()));
         txtDescripcion.setText(safe(d.getDescripcion()));
 
-        // Cargar solo nombres de ruta
         rutasModel.setRowCount(0);
-        Set<String> rutas = d.getRutasIncluidas(); // ahora es un Set<String>
-        if (rutas != null && !rutas.isEmpty()) {
-            rutas.stream()
-                .sorted(String.CASE_INSENSITIVE_ORDER)
-                .forEach(nombreRuta -> rutasModel.addRow(new Object[]{ nombreRuta }));
+        Map<String, Integer> cupos = d.getCuposPorRuta(); // ya lo agregamos al DataPaquete
+        if (cupos != null && !cupos.isEmpty()) {
+            cupos.entrySet().stream()
+                    .sorted(Map.Entry.comparingByKey(String.CASE_INSENSITIVE_ORDER))
+                    .forEach(e -> rutasModel.addRow(new Object[]{ e.getKey(), e.getValue() }));
         }
     }
 
     private void abrirConsultaRutaVuelo() {
-        int row = tblRutas.getSelectedRow();
+    	
+    	int row = tblRutas.getSelectedRow();
         if (row == -1) {
             JOptionPane.showMessageDialog(this,
-                    "Seleccioná una ruta en la tabla antes de continuar.",
-                    "Validación", JOptionPane.WARNING_MESSAGE);
+                "Seleccioná una ruta en la tabla antes de continuar.",
+                "Validación", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        String nombreRuta = (String) rutasModel.getValueAt(row, 0);
-
+    	
         JDesktopPane dp = getDesktopPane();
         if (dp == null) {
             JOptionPane.showMessageDialog(this, "No se encontró el escritorio para abrir la ventana.",
@@ -216,10 +243,7 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
             return;
         }
         try {
-            // Si tu frame de consulta de ruta admite el nombre de ruta:
-            // ConsultaRutaVuelo frame = new ConsultaRutaVuelo(sistema, nombreRuta);
-            // Si no, usá el constructor actual y hacé la selección dentro de ese frame.
-            ConsultaRutaVuelo frame = new ConsultaRutaVuelo(sistema); // <-- ajustá si tenés sobrecarga con nombreRuta
+            ConsultaRutaVuelo frame = new ConsultaRutaVuelo(sistema); // usa tu constructor real
             dp.add(frame);
             frame.setVisible(true);
             frame.toFront();
