@@ -46,6 +46,7 @@ public class Paquete {
 	 @Column(name = "costo", nullable = true, precision = 12, scale = 2)
 	    private BigDecimal costo; // precio final promocional
 	
+	 @Temporal(TemporalType.DATE)
 	 @Column(name = "fechaAlta", nullable = true)
 	 	private Date fechaAlta;
 	 

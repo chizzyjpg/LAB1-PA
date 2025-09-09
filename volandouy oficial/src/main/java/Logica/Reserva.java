@@ -17,6 +17,7 @@ public class Reserva {
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int idReserva;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name = "fechaReserva", nullable = false)
 	private Date fechaReserva;
 	

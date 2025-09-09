@@ -101,25 +101,25 @@ import Logica.DataVueloEspecifico;
 		}
 
 		public List<DataRuta> listarRutasPorAerolinea(String nicknameAerolinea) {
-	        EntityManager em = JPAUtil.getEntityManager();
-	        try {
-	            em.getTransaction().begin();
-	            List<Ruta> rutas = em.createQuery(
-	                "SELECT r FROM Ruta r JOIN r.aerolineas a WHERE a.nickname = :nickname", Ruta.class)
-	                .setParameter("nickname", nicknameAerolinea)
-	                .getResultList();
-	            em.getTransaction().commit();
-	            // Usar ManejadorRuta para convertir de entidad a DTO
-	            return rutas.stream()
-	                .map(ManejadorRuta::toData)
-	                .collect(Collectors.toList());
-	        } catch (RuntimeException ex) {
-	            if (em.getTransaction().isActive()) em.getTransaction().rollback();
-	            throw ex;
-	        } finally {
-	            em.close();
-	        }
-	    }
+            EntityManager em = JPAUtil.getEntityManager();
+            try {
+                em.getTransaction().begin();
+                List<Ruta> rutas = em.createQuery(
+                    "SELECT r FROM Ruta r JOIN r.aerolineas a WHERE a.nickname = :nickname", Ruta.class)
+                    .setParameter("nickname", nicknameAerolinea)
+                    .getResultList();
+                em.getTransaction().commit();
+                // Usar ManejadorRuta para convertir de entidad a DTO
+                return rutas.stream()
+                    .map(ManejadorRuta::toData)
+                    .collect(Collectors.toList());
+            } catch (RuntimeException ex) {
+                if (em.getTransaction().isActive()) em.getTransaction().rollback();
+                throw ex;
+            } finally {
+                em.close();
+            }
+        }
 
 		// ===============================
 		//  VER INFO

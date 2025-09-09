@@ -15,6 +15,7 @@ public class VueloEspecifico {
 	@Column(name = "Nombre", nullable = false, length = 50)
 	private String nombre;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name = "Fecha", nullable = false)
 	private Date fecha;
 	
@@ -30,6 +31,7 @@ public class VueloEspecifico {
 	@Column(name = "fechaAlta", nullable = false)
 	private Date fechaAlta;
 	
+	@Temporal(TemporalType.DATE)
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "idRuta", nullable = false)
     private Ruta ruta;

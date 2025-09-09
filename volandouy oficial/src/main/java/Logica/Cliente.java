@@ -21,6 +21,7 @@ public class Cliente extends Usuario{
 	@Column(name = "Apellido", nullable = false, length = 40)
 	private String apellido;
 	
+	@Temporal(TemporalType.DATE)
 	@Column(name = "fechaNacimiento", nullable = false)
 	private Date fechaNac;
 	
