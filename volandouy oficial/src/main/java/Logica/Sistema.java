@@ -696,19 +696,21 @@ public class Sistema implements ISistema {
 	 	
 	 @Override
 	 public List<DataPaquete> listarPaquetesSinCompras() {
-	     // un paquete “con compras” es aquel que aparece en la lista compras
-	     PaqueteService paqueteService = new PaqueteService();
-	     List<Paquete> paquetes = paqueteService.listarPaquetes();
-		 Set<String> nombresConCompra = compras.stream()
-	             .map(cp -> canonical(cp.getPaquete().getNombre()))
-	             .collect(Collectors.toSet());
-		 
-	     return paquetes.stream()
-	             .filter(p -> !nombresConCompra.contains(canonical(p.getNombre())))
-	             .sorted(Comparator.comparing(Paquete::getNombre, String.CASE_INSENSITIVE_ORDER))
-	             .map(ManejadorPaquete::toDTO)
-	             .collect(Collectors.toList());
-	 }
+        // Obtener todos los paquetes
+        List<Paquete> paquetes = paqueteService.listarPaquetes();
+        // Obtener los nombres de los paquetes que han sido comprados (desde la base de datos)
+        Set<String> nombresConCompra = paqueteService.listarNombresPaquetesComprados()
+        	    .stream()
+        	    .map(Sistema::canonical)
+        	    .collect(Collectors.toSet());
+
+        // Filtrar los paquetes que no han sido comprados
+        return paquetes.stream()
+                .filter(p -> !nombresConCompra.contains(canonical(p.getNombre())))
+                .sorted(Comparator.comparing(Paquete::getNombre, String.CASE_INSENSITIVE_ORDER))
+                .map(ManejadorPaquete::toDTO)
+                .collect(Collectors.toList());
+    }
 	 	 
 	 @Override
 	 public void agregarRutaAPaquete(String nombrePaquete,

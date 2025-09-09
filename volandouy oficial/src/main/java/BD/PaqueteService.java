@@ -132,4 +132,15 @@ import jakarta.persistence.EntityManager;
 			}
 		}
 		
+		public List<String> listarNombresPaquetesComprados() {
+		    EntityManager em = JPAUtil.getEntityManager();
+		    try {
+		        return em.createQuery("SELECT DISTINCT cp.paquete.nombre FROM CompraPaquete cp", String.class)
+		                 .getResultList();
+		    } finally {
+		        em.close();
+		    }
+		}
+
+		
 	}
