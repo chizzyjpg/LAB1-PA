@@ -31,7 +31,8 @@ public final class ManejadorPaquete {
             p.getTipoAsiento(),
             p.getDescuento(),
             p.getValidez(),
-            p.getCosto()
+            p.getCosto(),
+            p.getRutasIncluidas() // ahora sí se pasa el set de rutas
         );
     }
 
