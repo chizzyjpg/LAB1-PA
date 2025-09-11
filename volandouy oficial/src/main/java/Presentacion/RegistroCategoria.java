@@ -76,6 +76,9 @@ public class RegistroCategoria extends JInternalFrame {
 		                    "Validación", JOptionPane.ERROR_MESSAGE);
 		            textFieldCategoria.requestFocusInWindow();
 		            textFieldCategoria.selectAll();
+				}catch (Exception ex) {
+					JOptionPane.showMessageDialog(RegistroCategoria.this, "Error al registrar la categoría: " + ex.getMessage(),
+	                        "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}

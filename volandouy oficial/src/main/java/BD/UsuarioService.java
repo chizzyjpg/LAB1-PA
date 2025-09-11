@@ -266,4 +266,65 @@ import Logica.DataVueloEspecifico;
 				em.close();
 			}
 		}
+		
+		// ===============================
+		//  VALIDACIONES
+		// ===============================
+		
+		public boolean existeNickname(String nickname) {
+			EntityManager em = JPAUtil.getEntityManager();
+		    try {
+		        em.getTransaction().begin();
+		        Long count = em.createQuery(
+		            "SELECT COUNT(u) FROM Usuario u WHERE u.nickname = :nickname",
+		            Long.class)
+		            .setParameter("nickname", nickname)
+		            .getSingleResult();
+		        em.getTransaction().commit();
+		        return count != null && count > 0;
+		    } catch (RuntimeException ex) {
+		        if (em.getTransaction().isActive()) em.getTransaction().rollback();
+		        throw ex;
+		    } finally {
+		        em.close();
+		    }
+		}
+		
+		public boolean existeEmail(String email) {
+			EntityManager em = JPAUtil.getEntityManager();
+		    try {
+		        em.getTransaction().begin();
+		        Long count = em.createQuery(
+		            "SELECT COUNT(u) FROM Usuario u WHERE u.email = :email",
+		            Long.class)
+		            .setParameter("email", email)
+		            .getSingleResult();
+		        em.getTransaction().commit();
+		        return count != null && count > 0;
+		    } catch (RuntimeException ex) {
+		        if (em.getTransaction().isActive()) em.getTransaction().rollback();
+		        throw ex;
+		    } finally {
+		        em.close();
+		    }
+		}
+		
+		public boolean existeCedula(String numDoc) {
+			EntityManager em = JPAUtil.getEntityManager();
+		    try {
+		        em.getTransaction().begin();
+		        Long count = em.createQuery(
+		            "SELECT COUNT(c) FROM Cliente c WHERE c.numDocumento = :numDoc",
+		            Long.class)
+		            .setParameter("numDoc", numDoc)
+		            .getSingleResult();
+		        em.getTransaction().commit();
+		        return count != null && count > 0;
+		    } catch (RuntimeException ex) {
+		        if (em.getTransaction().isActive()) em.getTransaction().rollback();
+		        throw ex;
+		    } finally {
+		        em.close();
+		    }
+		}
 }

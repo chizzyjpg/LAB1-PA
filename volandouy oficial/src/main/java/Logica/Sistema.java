@@ -69,6 +69,12 @@ public class Sistema implements ISistema {
     @Override
     public void registrarUsuario(DataUsuario data) {
         if (data == null) throw new IllegalArgumentException("Los datos no pueden ser nulos");
+        if(usuarioService.existeNickname(data.getNickname())) {
+			throw new IllegalArgumentException("El nickname ya está en uso");
+		}
+        if(usuarioService.existeEmail(data.getEmail())) {
+        	throw new IllegalArgumentException("El email ya está en uso");
+        }
         ManejadorUsuario.toEntity(data);
 
         /*
@@ -95,20 +101,6 @@ public class Sistema implements ISistema {
         //usuariosPorNickname.put(key, entity);
     }
 
-    @Override
-    public boolean existeNickname(String nickname) {
-        if (nickname == null) return false;
-        return usuariosPorNickname.containsKey(canonical(nickname));
-    }
-
-    @Override
-    public boolean existeEmail(String email) {
-        if (email == null) return false;
-        String e = canonical(email);
-        return usuariosPorNickname.values().stream()
-                .anyMatch(u -> u.getEmail() != null
-                        && canonical(u.getEmail()).equals(e));
-    }
 
     @Override
     public DataCliente verInfoCliente(String nickname) {
@@ -268,6 +260,9 @@ public class Sistema implements ISistema {
     
     @Override
     public void registrarCategoria(DataCategoria data) {
+    	if (existeCategoria(data.getNombre())) {
+			throw new IllegalArgumentException("El nombre de la categoría ya está en uso");
+		}
     	ManejadorCategoria.toEntity(data);
         /*
     	if (data == null || data.getNombre() == null || data.getNombre().isBlank())
@@ -283,7 +278,7 @@ public class Sistema implements ISistema {
     
     @Override
     public boolean existeCategoria(String nombre) {
-        return nombre != null && categoriasPorNombre.containsKey(canonical(nombre));
+        return categoriaService.existeCategoria(nombre);
     }
     
     @Override

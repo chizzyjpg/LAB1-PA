@@ -71,7 +71,7 @@ import Logica.DataCategoria;
 	        }
 	    }
 	    
-	    public boolean existeCategorias(String nombre) {
+	    public boolean existeCategoria(String nombre) {
 			return buscarPorNombre(nombre) != null;
 		}
 	}

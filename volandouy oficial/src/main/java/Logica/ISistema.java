@@ -7,8 +7,7 @@ import java.util.List;
 
 public interface ISistema {
 	
-    boolean existeNickname(String nickname);
-    boolean existeEmail(String email);
+
     boolean existeCategoria(String nombre);
     boolean clienteYaComproPaquete(String nicknameCliente, String nombrePaquete);
     boolean existePaquete(String nombre); 
