@@ -75,23 +75,13 @@ public final class ManejadorPaquete {
         p.setFechaAlta(copia(dto.getFechaAlta()));
         return p;
     }
-
-    /*public static DataPaquete altaToDTO(Paquete p) {
-        if (p == null) return null;
-        return new DataPaquete(								////////////////////DE MOMENTO NO SE NECESITA
-          
-        );
-    }*/
-
-    /*public static List<DataPaquete> altaToDTOs(List<Paquete> paquetes) {
-        return paquetes.stream().map(ManejadorPaquete::altaToDTO).collect(Collectors.toList());     ////////////////////DE MOMENTO NO SE NECESITA
-    }*/
     
     public static List<Paquete> altaToEntities(List<? extends DataPaqueteAlta> dtos) {
 		if (dtos == null) return Collections.emptyList();
 		return dtos.stream().filter(Objects::nonNull).map(ManejadorPaquete::altaToEntity).collect(Collectors.toList());
 	}
     
+    ///
     //////// HELPERS DE FECHA
     ///
     

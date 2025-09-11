@@ -1,24 +1,18 @@
 package Presentacion;
 
-import java.awt.EventQueue;
-
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JTextArea;
-import javax.swing.JScrollBar;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import com.toedter.calendar.JDateChooser;
-
-import BD.CiudadService;
-
 import java.awt.Color;
-import Logica.ManejadorCiudad;
+
 import Logica.DataCiudad;
 import Logica.ISistema;
 
@@ -172,7 +166,7 @@ public class RegistroCiudad extends JInternalFrame {
 		                web
 		            );
 
-		            // Alta en memoria (tu manejador)
+		            // Alta en memoria
 		            sistema.registrarCiudad(dto);
 		            // LIMPIA CAMPOS
 		            textFieldNomCiudad.setText("");

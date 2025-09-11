@@ -21,5 +21,4 @@ public class DataUsuarioAux extends DataUsuario {
     public String getTipoUsuario() {
         return tipoUsuario;
     }
-    // Puedes agregar métodos adicionales si es necesario
 }

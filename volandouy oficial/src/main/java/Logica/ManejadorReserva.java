@@ -2,16 +2,13 @@ package Logica;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import BD.ReservaService;
 
 public class ManejadorReserva {
 
     private ManejadorReserva() {}
 
-    // Obtener
     public static Reserva toEntity(DataReserva res) {
 		Objects.requireNonNull(res, "Los datos no pueden ser nulos");
-		//Cliente cli = ManejadorCliente.toEntity(res.getNickCliente());
 		Reserva r = new Reserva(res.getFechaReserva(), res.getTipoAsiento(), res.getEquipaje(),
 						   res.getCantEquipajeExtra(), res.getCostoTotal(), ManejadorCliente.toEntity(res.getNickCliente()));
 		
@@ -22,7 +19,6 @@ public class ManejadorReserva {
 	            r.getPasajes().add(p);
 	        }
 	    }
-		//new ReservaService().registrarReserva(r);
 	    return r;
     }
 

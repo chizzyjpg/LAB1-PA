@@ -60,14 +60,6 @@ public class CompraPaqueteIF extends JInternalFrame {
         dcFechaCompra.setDate(new java.util.Date());
         header.add(dcFechaCompra, "growx");
 
-        /*JLabel label_2 = new JLabel("Costo (opcional):");
-        label_2.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-        header.add(label_2);
-        txtCosto = new JTextField();
-        txtCosto.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-        txtCosto.setToolTipText("Dejar vacío para usar el costo del paquete");
-        header.add(txtCosto, "growx");*/
-
         btnRefrescar = new JButton("Refrescar listas");
         btnRefrescar.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
         btnRefrescar.addActionListener(e -> {
@@ -169,8 +161,6 @@ public class CompraPaqueteIF extends JInternalFrame {
                 showWarn("Ese cliente ya compró este paquete.");
                 return;
             }
-
-            //BigDecimal costoOverride = parseBigDecimalNullable(txtCosto.getText().trim());
 
             DataCompraPaquete dto = new DataCompraPaquete(
                     nombrePaquete,

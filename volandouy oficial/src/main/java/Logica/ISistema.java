@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface ISistema {
 	
-
     boolean existeCategoria(String nombre);
     boolean clienteYaComproPaquete(String nicknameCliente, String nombrePaquete);
     boolean existePaquete(String nombre); 
@@ -17,7 +16,6 @@ public interface ISistema {
     DataPaquete verPaquete(String nombre);  
     DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo);
     DataReserva buscarReserva(String nickname, String nombre, String codigoVuelo, int idReserva);
-    
 
     List<DataUsuario> listarUsuarios();
     List<DataAerolinea> listarAerolineas();
@@ -43,10 +41,6 @@ public interface ISistema {
 	void registrarPaquete(DataPaqueteAlta data);  
 	void agregarRutaAPaquete(String nombrePaquete,String nicknameAerolinea,String nombreRuta, TipoAsiento tipo, int cantidad);
 	void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos);
-	//void registrarReservaConPasajeros(String nickname, String nombreRuta, String codigoVuelo, DataReserva datos, List<DataPasaje> pasajeros);
 
-	//void precargaDemo();	
-	
-	
 	Ciudad buscarCiudad(String nombre, String pais);	
 }

@@ -1,7 +1,4 @@
-
 package Logica;
-
-
 
 import java.util.Date;
 import java.util.List;
@@ -23,9 +20,9 @@ public final class ManejadorUsuario {
     public static Usuario toEntity(DataUsuario dto) { // Convierte un DTO (capa de transporte) a Entidad de dominio.
         Objects.requireNonNull(dto, "DataUsuario no puede ser null"); // Valida que dto no sea null; si lo es, lanza NullPointerException con mensaje.
 
-        if (dto instanceof DataCliente dc) { // Pattern matching de instanceof
+        if (dto instanceof DataCliente dc) {
             Cliente c = new Cliente(				 // si dto es DataCliente, lo "captura" en la variable dc ya casteada. // Crea una entidad Cliente desde el DTO DataCliente.
-                /* nombre   */ dc.getNombre(), // Mapea 1:1 los campos…
+                /* nombre   */ dc.getNombre(),
                 /* nickname */ dc.getNickname(),
                 /* email    */ dc.getEmail(),
                 /* apellido */ dc.getApellido(),
@@ -60,9 +57,6 @@ public final class ManejadorUsuario {
     	
  
         }
-        
-        //INSERT PARA PASAR A JPA
-
         throw new IllegalArgumentException("Tipo de DataUsuario no soportado: " + dto.getClass()); // Si llega aquí, el tipo de dto no es ninguno de los soportados.
     }
 

@@ -1,6 +1,5 @@
 package Logica;
 
-//import java.util.*;
 
 public class DataPasaje {
 	private String nombre;

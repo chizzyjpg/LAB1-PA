@@ -12,7 +12,6 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.SpinnerDateModel;
 import java.util.Date;
-import java.util.List;
 import java.util.Calendar;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.JButton;
@@ -23,15 +22,11 @@ import java.math.BigDecimal;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultListCellRenderer;
 
-import Logica.Categoria;
-import Logica.Ciudad;
 import Logica.DataAerolinea;
 import Logica.DataCategoria;
 import Logica.DataCiudad;
 import Logica.DataRuta;
 import Logica.ISistema;
-import BD.CategoriaService;
-import BD.CiudadService;
 
 public class RegistrarRutaVuelo extends JInternalFrame {
 
@@ -302,7 +297,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
                         costoEquipaje,
                         costoEjecutivo,
                         dataCat,
-                        aerolinea.getNickname() // <-- Debes obtener este valor del formulario o contexto
+                        aerolinea.getNickname()
                     );
                     sistema.registrarRuta(datos);
 
@@ -331,8 +326,8 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		
 		comboAerolinea.setRenderer(new DefaultListCellRenderer() {
 		    @Override
-		    public java.awt.Component getListCellRendererComponent(
-		            javax.swing.JList<?> list, Object value, int index,
+		    public Component getListCellRendererComponent(
+		            JList<?> list, Object value, int index,
 		            boolean isSelected, boolean cellHasFocus) {
 		        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		        if (value instanceof DataAerolinea da) {

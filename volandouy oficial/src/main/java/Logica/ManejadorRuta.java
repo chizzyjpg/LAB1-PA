@@ -3,11 +3,9 @@ package Logica;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import javax.swing.JOptionPane;
 
 import BD.CategoriaService;
 import BD.CiudadService;
-import BD.RutaVueloService;
 
 public class ManejadorRuta {
 

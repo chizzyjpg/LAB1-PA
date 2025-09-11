@@ -1,6 +1,5 @@
 package Presentacion;
 
-import java.awt.EventQueue;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -114,9 +113,6 @@ public class IngresarPasajero extends JInternalFrame {
 				if(sexo.isEmpty()) {
 					JOptionPane.showMessageDialog(IngresarPasajero.this, "Debe seleccionar un sexo.", "Error", JOptionPane.ERROR_MESSAGE);
 				}
-				
-				//ACA SE LLAMA A UNA FUNCION DEL SISTEMA PARA QUE VALIDE LOS DATOS y ESTA LLAMA AL MANEJADOR PARA QUE CREE LOS OBJETOS PASAJES, EL SISTEMA CREA LA RESERVA
-				// Y GUARDA EN LA RESERVA LA LISTA DE PASAJES, O ALGO POR EL ESTILO
 				
 				//Si pasa las validaciones, se ingresa el pasajero
 				JOptionPane.showMessageDialog(IngresarPasajero.this, "Pasajero ingresado:\nNombre: " + nombre + "\nApellido: " + apellido + "\nSexo: " + sexo, "Éxito", JOptionPane.INFORMATION_MESSAGE);

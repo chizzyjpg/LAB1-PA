@@ -56,6 +56,4 @@ public class DataRuta {
             + ciudadDestino.getNombre() + " - " + ciudadDestino.getPais();
     }
 
-
-	
 }

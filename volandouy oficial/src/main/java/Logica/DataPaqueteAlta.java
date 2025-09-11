@@ -1,4 +1,3 @@
-// DataPaqueteAlta.java
 package Logica;
 
 import java.util.Date;

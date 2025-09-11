@@ -40,16 +40,7 @@ public class Reserva {
 
 	@Transient
 	private Ruta rutasVuelo;
-	
-	/*
-	@ManyToOne
-	private Paquete paquete;	
-	private String aerolinea;
-	private int cantPasajes;
-	private String nomPasajero;
-	private String apePasajero;
-	//private Pasajero pasajero;
-	*/
+
 	protected Reserva() {}	
 	
 	public Reserva(Date fechaReserva, TipoAsiento tipoAsiento, Equipaje equipaje, int cantEquipajeExtra, Float costoTotal, Cliente nickCliente) {
@@ -66,31 +57,12 @@ public class Reserva {
 	public int getIdReserva() {
 		return idReserva;
 	}
-	/*
-	public String getAerolinea() {
-		return aerolinea;
-	}
-	 */
 	public Ruta getRutasVuelo() {
 		return rutasVuelo;
 	}
 	public Cliente getCliente() {
 		return cliente;
 	}
-	/*
-	public int getCantPasajes() {
-		return cantPasajes;
-	}
-	public String getNomPasajero() {
-		return nomPasajero;
-	}
-	public String getApePasajero() {
-		return apePasajero;
-	}
-	 
-	/*public Pasajero getPasajero() {
-		return pasajero;
-	}*/
 	public Date getFechaReserva() {
 		return fechaReserva;
 	}
@@ -115,30 +87,12 @@ public class Reserva {
 	}
 	
 	//Setters
-	/*
-	public void setAerolinea(String aerolinea) {
-		this.aerolinea = aerolinea;
-	}
-	 */
 	public void setRutasVuelo(Ruta rutasVuelo) {
 		this.rutasVuelo = rutasVuelo;
 	}
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	/*
-	public void setCantPasajes(int cantPasajes) {
-		this.cantPasajes = cantPasajes;
-	}
-	public void setNomPasajero(String nomPasajero) {
-		this.nomPasajero = nomPasajero;
-	}
-	public void setApePasajero(String apePasajero) {
-		this.apePasajero = apePasajero;
-	}
-	/*public void setPasajero(Pasajero pasajero) {
-		this.pasajero = pasajero;
-	}*/
 	public void setFechaReserva(Date fechaReserva) {
 		this.fechaReserva = fechaReserva;	
 	}
@@ -169,9 +123,4 @@ public class Reserva {
 				+ ", equipaje=" + equipaje + ", cantEquipajeExtra=" + cantEquipajeExtra + ", costoTotal=" + costoTotal
 				+ "]";
 	}
-
-	
-
-	
-	
 }

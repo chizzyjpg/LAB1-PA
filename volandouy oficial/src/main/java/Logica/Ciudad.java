@@ -1,18 +1,8 @@
 package Logica;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 
 import jakarta.persistence.*;
-
-//private boolean ciudadMatch(Ciudad c, String nombre, String pais) {
-//    if (nombre == null && pais == null) return true;
-//    if (c == null) return false;
-//    boolean okNombre = (nombre == null) || (c.getNombre()!=null && c.getNombre().equalsIgnoreCase(nombre));
-//    boolean okPais   = (pais   == null) || (c.getPais()!=null   && c.getPais().equalsIgnoreCase(pais));
-//    return okNombre && okPais;
-//}
 
 @Entity
 @Table(name = "Ciudad")
@@ -83,6 +73,4 @@ public class Ciudad {
     public String getSitioWeb() { return sitioWeb; }
     public void setSitioWeb(String sitioWeb) { this.sitioWeb = sitioWeb; }
 
-    // ===== Clase Id compuesta =====
-    // Eliminada la clase CiudadId porque no se usa @IdClass
 }

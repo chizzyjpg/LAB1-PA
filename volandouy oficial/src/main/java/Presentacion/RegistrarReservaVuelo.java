@@ -304,14 +304,8 @@ public class RegistrarReservaVuelo extends JInternalFrame {
             
             String nomCliente = (dc != null) ? /* dc.getNombre() */ "" : "";
             String apeCliente = (dc != null) ? /* dc.getApellido() */ "" : "";
-            
-            // 2) pedimos los pasajeros
-            //java.util.List<DataPasaje> pasajeros = java.util.Collections.emptyList();
-            
-            
+ 
          // 2) pedir pasajeros
-            //boolean exigirPrimeroIgualCliente = true; // <- ponelo en false si tu backend NO lo exige
-            
             PasajerosDialog dlg = new PasajerosDialog(
                     SwingUtilities.getWindowAncestor(this),
                     cantPasajes,

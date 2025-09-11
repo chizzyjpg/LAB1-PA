@@ -279,7 +279,7 @@ public class ConsultaVuelo extends JInternalFrame {
         // Si DataReserva tiene getIdReserva(), usamos el ID para traer el detalle actualizado
         DataReserva detalle;
         try {
-            int id = sel.getIdReserva(); // <-- ajusta si tu getter tiene otro nombre
+            int id = sel.getIdReserva();
             detalle = sistema.buscarReserva(a.getNickname(), r.getNombre(), v.getNombre(), id);
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "No se pudo cargar la reserva:\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

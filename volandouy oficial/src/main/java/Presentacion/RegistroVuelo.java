@@ -1,18 +1,10 @@
 package Presentacion;
 
-import java.awt.EventQueue;
-
 import javax.swing.JInternalFrame;
-import java.awt.GridBagLayout;
 import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.JSpinner;
 import com.toedter.calendar.JDateChooser;
-import java.awt.BorderLayout;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -20,8 +12,6 @@ import java.util.Date;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
-
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 

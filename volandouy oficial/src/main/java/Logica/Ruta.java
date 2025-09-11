@@ -14,7 +14,6 @@ import jakarta.persistence.*;
 @Table(name = "Ruta")
 public class Ruta {
 
-	// Cambiar ManyToMany a OneToMany
     @OneToMany(mappedBy = "ruta", fetch = FetchType.EAGER)
     private Set<VueloEspecifico> vuelosEspecificos = new HashSet<>();
 	 
@@ -27,7 +26,6 @@ public class Ruta {
     @Column(name = "Descripcion", nullable = false, length = 200)
     private String descripcion;
     
-    // Ahora el ManyToOne es por idCiudad
     @ManyToOne(optional = false)
     @JoinColumn(name = "origen_idCiudad", nullable = false, referencedColumnName = "idCiudad")
     private Ciudad origen;
@@ -52,7 +50,7 @@ public class Ruta {
     @Column(name = "costoEquipajeExtra", nullable = false)
     private int costoEquipajeExtra;
 
- // si Categoria es enum:
+    //si Categoria es enum:
     @ManyToOne(optional = false)
     @JoinColumn(name = "categoria_nombre", nullable = false, referencedColumnName = "nombre")
     private Categoria categoria;

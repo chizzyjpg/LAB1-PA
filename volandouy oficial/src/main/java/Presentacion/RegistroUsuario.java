@@ -1,14 +1,9 @@
 package Presentacion;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
-import java.awt.GridLayout;
-import javax.swing.BoxLayout;
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JRadioButton;
@@ -26,9 +21,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import Logica.DataAerolinea;
 import Logica.DataCliente;
-import Logica.Sistema;
 import Logica.ISistema;
-import Logica.TipoAsiento;
 import Logica.TipoDocumento;
 import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
@@ -296,7 +289,7 @@ public class RegistroUsuario extends JInternalFrame {
 		            return;
 		        }
 
-		        // ... acá armás tu DataCliente usando fUtil para la fecha
+		        // Crear DataCliente y registrar
 		        DataCliente data = new DataCliente(
 		                textFieldNombre.getText().trim(),
 		                textFieldNickname.getText().trim(),
@@ -321,8 +314,8 @@ public class RegistroUsuario extends JInternalFrame {
 		    } else { // Aerolínea
 		        String descripcion = textAreaDescripcion.getText().trim();
 		        String sitio       = textFieldSitioWeb.getText().trim(); // opcional
-		        // validar y registrar Aerolínea...
 		        
+		        // validar y registrar Aerolínea...
 		        DataAerolinea data = new DataAerolinea(
 		                nombre,
 		                nickname,
@@ -331,46 +324,27 @@ public class RegistroUsuario extends JInternalFrame {
 		                sitio
 		        );
 		        sistema.registrarUsuario(data);
-		        /*
-		        try {
-		            JOptionPane.showMessageDialog(this, "Aerolínea registrada con éxito");
-		        } catch (IllegalArgumentException ex) {
-		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
-		        }
-		        
-		         * */
-		        
-		        
-		        
 		        
 		        if (descripcion.isEmpty()) {
 		            JOptionPane.showMessageDialog(this, "La descripción de la aerolínea es obligatoria.", "Validación", JOptionPane.ERROR_MESSAGE);
 		            return;
 		        }
-		            
-		         // TODO: guardar en tu servicio/DAO.
-		         // usuarioService.registrarAerolinea(nick, nombre, email, descripcion, sitioWeb.isEmpty()? null : sitioWeb);
 		        
-		        //JOptionPane.showMessageDialog(this, "Aerolínea guardada.");
 		        limpiarFormulario(); // ⬅ limpiar al final
-
 		        }
-		    
-		    
-		    
 		});
 		
 		// Cambiar tarjeta según radio seleccionado
 		rdbtnCliente.addActionListener(e -> {
-		    ((java.awt.CardLayout) panelCards.getLayout()).show(panelCards, "CLIENTE");
+		    ((CardLayout) panelCards.getLayout()).show(panelCards, "CLIENTE");
 		});
 
 		rdbtnAerolinea.addActionListener(e -> {
-		    ((java.awt.CardLayout) panelCards.getLayout()).show(panelCards, "AEROLINEA");
+		    ((CardLayout) panelCards.getLayout()).show(panelCards, "AEROLINEA");
 		});
 
 		// Mostrar CLIENTE por defecto al abrir
-		((java.awt.CardLayout) panelCards.getLayout()).show(panelCards, "CLIENTE");
+		((CardLayout) panelCards.getLayout()).show(panelCards, "CLIENTE");
 
 	}
 

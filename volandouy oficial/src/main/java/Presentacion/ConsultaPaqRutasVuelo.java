@@ -239,8 +239,6 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
             return;
         }
         try {
-            // Si tu frame de consulta de ruta admite el nombre de ruta:
-            // ConsultaRutaVuelo frame = new ConsultaRutaVuelo(sistema, nombreRuta);
             ConsultaRutaVuelo frame = new ConsultaRutaVuelo(sistema); // ajustá si tenés sobrecarga con nombreRuta
             dp.add(frame);
             frame.setVisible(true);

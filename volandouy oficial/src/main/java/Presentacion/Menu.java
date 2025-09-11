@@ -47,11 +47,10 @@ public class Menu extends JFrame {
 	public Menu() {
         //initComponents();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 958, 766);
+		setBounds(100, 100, 1200, 900);
 		
 		CConexion con = new CConexion();
 		con.getConexion();
-		//sistema.precargaDemo();
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);

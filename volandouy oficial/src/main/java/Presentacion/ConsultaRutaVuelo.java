@@ -9,7 +9,6 @@ import Logica.DataVueloEspecifico;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -189,17 +188,9 @@ public class ConsultaRutaVuelo extends JInternalFrame {
         }
 
         try {
-            // ⬇️ Usa el constructor que tengas en tu proyecto.
-            // Opción 1 (recomendada): pasamos sistema + identificadores
             ConsultaVuelo frame = new ConsultaVuelo(
                     sistema
             );
-
-            // --- Si tu constructor es diferente, usa alguna de estas variantes ---
-            // ConsultaVuelo frame = new ConsultaVuelo(sistema, v);                    // pasa el DTO completo
-            // ConsultaVuelo frame = new ConsultaVuelo(a.getNickname(), r.getNombre(), v.getNombre());
-            // ConsultaVuelo frame = new ConsultaVuelo(v.getId());                     // si usás ID
-
             dp.add(frame);
             frame.setVisible(true);
             frame.toFront();
@@ -221,7 +212,6 @@ public class ConsultaRutaVuelo extends JInternalFrame {
                 : "-";
         String f = (r.getFechaAlta() != null) ? sdf.format(r.getFechaAlta()) : "-";
 
-        // getHora() es int primitivo
         String h = String.format("%02d:00", r.getHora());
 
         // Acepta BigDecimal o números (int, Integer, etc.)
