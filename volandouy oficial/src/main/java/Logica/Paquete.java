@@ -29,9 +29,6 @@ public class Paquete {
 	@Column(name = "descuento", nullable = false)
 	private int descuento;
 	
-	/*@Column(name = "fechaCompra", nullable = false)
-	private Date fechaCompra;*/
-	
 	@Column(name = "Validez", nullable = false)
 	private int validez;
 	
