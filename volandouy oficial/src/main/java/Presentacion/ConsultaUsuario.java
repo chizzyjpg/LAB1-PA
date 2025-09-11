@@ -200,6 +200,7 @@ public class ConsultaUsuario extends JInternalFrame {
         });
         btnVerRuta.addActionListener(e -> {
             if (lstRutas.getSelectedValue() != null) abrirConsultaRuta(lstRutas.getSelectedValue());
+            else JOptionPane.showMessageDialog(this, "Seleccioná una ruta de vuelo.", "Atención", JOptionPane.INFORMATION_MESSAGE);
         });
 
         lstReservas.addMouseListener(new MouseAdapter() {
@@ -209,6 +210,7 @@ public class ConsultaUsuario extends JInternalFrame {
         });
         btnVerVuelo.addActionListener(e -> {
             if (lstReservas.getSelectedValue() != null) abrirConsultaVuelo(lstReservas.getSelectedValue());
+            else JOptionPane.showMessageDialog(this, "Seleccioná una reserva de vuelo.", "Atención", JOptionPane.INFORMATION_MESSAGE);
         });
 
         lstPaquetes.addMouseListener(new MouseAdapter() {
@@ -218,6 +220,7 @@ public class ConsultaUsuario extends JInternalFrame {
         });
         btnVerPaquete.addActionListener(e -> {
             if (lstPaquetes.getSelectedValue() != null) abrirConsultaPaquete(lstPaquetes.getSelectedValue());
+            else JOptionPane.showMessageDialog(this, "Seleccioná un paquete comprado.", "Atención", JOptionPane.INFORMATION_MESSAGE);
         });
 
         // --- Carga inicial ---
@@ -252,7 +255,11 @@ public class ConsultaUsuario extends JInternalFrame {
 
     private void consultarSeleccion() {
         DataUsuario du = (DataUsuario) comboUsuarios.getSelectedItem();
-        if (du == null) return;
+        //if (du == null) return;
+        if (du == null) {
+            JOptionPane.showMessageDialog(this, "Seleccioná un usuario", "Atención", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
 
         String nick = nvl(du.getNickname());
         StringBuilder sb = new StringBuilder();
