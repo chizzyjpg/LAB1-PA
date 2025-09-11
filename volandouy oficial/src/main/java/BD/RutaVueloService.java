@@ -3,20 +3,15 @@ package BD;
 
 import jakarta.persistence.EntityManager;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import Logica.Aerolinea;
-import Logica.Categoria;
-import Logica.Ciudad;
 import Logica.DataCategoria;
 import Logica.DataCiudad;
 import Logica.DataRuta;
 import Logica.JPAUtil;
 import Logica.Ruta;
-import BD.UsuarioService;
 
 public class RutaVueloService {
 
