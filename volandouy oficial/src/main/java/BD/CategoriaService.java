@@ -4,7 +4,6 @@ import Logica.Categoria;
 import Logica.JPAUtil;
 import jakarta.persistence.EntityManager;
 import java.util.List;
-import Logica.DataCategoria;
 
 
 	public class CategoriaService {

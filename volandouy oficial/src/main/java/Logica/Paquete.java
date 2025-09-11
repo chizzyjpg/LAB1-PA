@@ -43,6 +43,7 @@ public class Paquete {
 	 	private Date fechaAlta;
 	 
 	 // Usamos una lista de rutas incluidas (solo nombres, sin cupos)
+	 @Transient
 	 @ElementCollection(fetch = FetchType.EAGER)
 	 private Set<String> rutasIncluidas = new LinkedHashSet<>();
 	 

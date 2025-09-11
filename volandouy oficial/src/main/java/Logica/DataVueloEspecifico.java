@@ -2,7 +2,6 @@ package Logica;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.sql.*;
 
 public class DataVueloEspecifico {
 	

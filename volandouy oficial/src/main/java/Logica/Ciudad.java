@@ -32,6 +32,7 @@ public class Ciudad {
     @Column(name = "sitio_web", length = 200, nullable = true)
     private String sitioWeb;
 
+    @Transient
     @ManyToOne(optional = true)
     @JoinColumn(name = "idRuta", nullable = true, referencedColumnName = "idRuta")
     private Ruta ruta;

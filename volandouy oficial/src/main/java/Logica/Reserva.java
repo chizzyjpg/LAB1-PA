@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 @Table(name = "Reserva")
 public class Reserva {
 	
+	@Transient
 	@OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private List<Pasaje> pasajes = new ArrayList<>();
 	
