@@ -4,7 +4,7 @@
   /* 1) degradado  2) imagen */
   background-image:
     linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.18)),
-    url("../img/bannerVolandoUY1920x1080.png");
+    url("../img/avioncito2.jpg");
 
   /* que ambas capas no se repitan */
   background-repeat: no-repeat, no-repeat;
@@ -15,10 +15,10 @@
   /* 🔽 acá achicás la imagen:
      - el degradado ocupa todo (100% 100%)
      - la imagen mide 60vw de ancho y alto automático */
-  background-size: 100% 100%, 80vw auto;
+  background-size: 100% 100%, 100vw auto;
 
   /* opcional: que la imagen se quede fija al hacer scroll */
-  /* background-attachment: scroll, fixed; */
+  background-attachment: scroll, fixed; 
 }
 
 /* Ajuste para celus: que no quede demasiado grande */
