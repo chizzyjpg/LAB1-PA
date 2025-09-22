@@ -1,0 +1,39 @@
+.page-bg{
+  min-height: 85vh;
+
+  /* 1) degradado  2) imagen */
+  background-image:
+    linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.18)),
+    url("../img/bannerVolandoUY1920x1080.png");
+
+  /* que ambas capas no se repitan */
+  background-repeat: no-repeat, no-repeat;
+
+  /* posiciones de cada capa (degradado centrado, imagen centrada un poco alta) */
+  background-position: center, center 20%;
+
+  /* 🔽 acá achicás la imagen:
+     - el degradado ocupa todo (100% 100%)
+     - la imagen mide 60vw de ancho y alto automático */
+  background-size: 100% 100%, 80vw auto;
+
+  /* opcional: que la imagen se quede fija al hacer scroll */
+  /* background-attachment: scroll, fixed; */
+}
+
+/* Ajuste para celus: que no quede demasiado grande */
+@media (max-width: 576px){
+  .page-bg{
+    background-size: 100% 100%, contain;
+    background-position: center, center 10%;
+  }
+}
+
+.btn-panel{
+  padding: 1.25rem;
+  border-radius: .75rem;
+  background: rgba(141, 144, 147, 0.28); /* gris (secondary) con transparencia */
+  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+  backdrop-filter: blur(3px);         /* opcional: efecto “glass” */
+  -webkit-backdrop-filter: blur(3px); /* compatibilidad Safari */
+}
