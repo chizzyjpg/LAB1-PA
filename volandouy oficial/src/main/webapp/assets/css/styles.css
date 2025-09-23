@@ -97,10 +97,9 @@
     overflow-x: hidden; /* Sin scroll horizontal */
 }
 
-
 /* Body sin scroll - toda la interacción es dentro del div */
 .registro-page,
-.index-pages,
+.index-page,
 .login-page {
     padding-top: 40px;
     overflow: hidden; /* Sin scroll en el body */
