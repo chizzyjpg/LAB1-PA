@@ -32,3 +32,10 @@
   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
   backdrop-filter: blur(3px);         /*efecto “glass” */
 }
+
+.form-label{
+  color: #fffefe;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra horizontalmente el contenido dentro del div */
+}
