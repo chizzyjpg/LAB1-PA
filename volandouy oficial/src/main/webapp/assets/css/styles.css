@@ -49,3 +49,9 @@
 #clienteFields, #aerolineaFields {
     display: none; /* Por defecto ocultos */
 }
+.form-label{
+  color: #fffefe;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra horizontalmente el contenido dentro del div */
+}
