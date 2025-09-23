@@ -34,24 +34,64 @@
 }
 
 .registro-page {
-    padding-top: 60px; /* Espacio para la navbar fija */
+    padding-top: 40px; /* Reducido de 50px a 40px para navbar más pequeña */
+}
+
+/* Navbar compacta */
+.navbar-compact {
+    padding: 0.25rem 0; /* Padding vertical reducido */
+    min-height: 40px; /* Altura mínima reducida */
+}
+
+.navbar-compact .navbar-brand {
+    font-size: 1.1rem; /* Tamaño de fuente un poco más pequeño */
+    padding: 0.25rem 0; /* Padding reducido para el brand */
 }
 
 /* Sobrescribimos estilos de .portada específicamente para la página de registro */
 .registro-page .portada {
     display: flex !important; /* Usamos flex en lugar de grid */
     align-items: flex-start !important; /* Alineamos al inicio en lugar de centrar */
-    min-height: calc(100vh - 60px); /* Altura mínima menos el padding del navbar */
-    height: auto !important; /* Permitimos que crezca según el contenido */
+    min-height: 100vh; /* Altura completa de la pantalla */
+    height: 100vh !important; /* Altura fija para evitar scroll del body */
+    overflow: hidden; /* Sin scroll en la portada */
+    background-attachment: fixed; /* La imagen se mantiene fija */
+    background-size: cover !important; /* Mantener el tamaño de imagen consistente */
+    background-position: center center !important; /* Centrar la imagen */
 }
 
 /* Campos que se muestran/ocultan dinámicamente */
 #clienteFields, #aerolineaFields {
     display: none; /* Por defecto ocultos */
 }
+
 .form-label{
-  color: #fffefe;
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Centra horizontalmente el contenido dentro del div */
+  color: #333; /* Texto oscuro para que sea visible en la tarjeta blanca */
+  display: block; /* Comportamiento normal de etiqueta */
+  margin-bottom: 0.5rem; /* Espaciado estándar */
+}
+
+/* Mejoras para el formulario de registro */
+.registro-page .card {
+    background: rgba(255, 255, 255, 0.95); /* Fondo semi-transparente */
+    border: none;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px); /* Efecto glass */
+    max-height: 85vh; /* Altura máxima para controlar el scroll */
+    overflow-y: auto; /* Scroll interno en la tarjeta */
+    overflow-x: hidden; /* Sin scroll horizontal */
+}
+
+/* Container sin scroll */
+.registro-page .container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 100%; /* Altura completa disponible */
+}
+
+/* Body sin scroll - toda la interacción es dentro del div */
+.registro-page {
+    padding-top: 40px;
+    overflow: hidden; /* Sin scroll en el body */
+    height: 100vh; /* Altura fija del body */
 }

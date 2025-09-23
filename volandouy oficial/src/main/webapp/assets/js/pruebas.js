@@ -4,3 +4,6 @@ window.PRUEBA_USERS = [
   { nick: "air_uy",   email: "contacto@airuy.com",   pass: "admin", rol: "Aerolínea"  },
   { nick: "ezequiel", email: "eze@volando.uy",   pass: "clave", rol: "Cliente"    }
 ];
+
+
+
