@@ -1,36 +1,35 @@
-.page-bg{
-  height: clamp(520px, 86svh, 720px);
+.portada{
+  height: clamp(520px, 86svh, 720px); /*height: fija la altura de la portada .clamp(min, ideal, max): intenta usar el valor ideal 86svh (86% del alto visible “seguro” en móviles),*/
   display: grid !important;        /* forzamos grid sobre d-flex */
-  place-items: center;
-  padding-top: 0 !important;       /* neutralizamos py-5 */
+  place-items: center;            /* centra el contenido horizontal y verticalmente (equivale a justify-items:center + align-items:center */
+  padding-top: 0 !important;       /* neutralizamos py-5  Pisan el padding vertical que agrega py-5 de Bootstrap del <main> para que el bloque quede realmente centrado.*/
   padding-bottom: 0 !important;
 
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.35)),
-    url("../img/avioncito2.jpg");
+  background: /*dos capas de fondo, separadas por coma:*/
+    linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.35)), /*es una película oscura encima de la foto. Como los dos colores RGBA son iguales, no hay degradado real: es un velo uniforme del 35% de negro (se usa para mejorar el contraste).*/
+    url("../img/avioncito2.jpg"); /*imagen de fondo.*/
   background-repeat: no-repeat, no-repeat;
-  background-position: center center, center 37%;
-  background-size: 100% 100%, cover;
-}
+  background-position: center center, center 37%; /*1er back centro centro, 2do back la imagen se alinea centrada en X y al 37% en Y.*/
+  background-size: 100% 100%, cover; /*cover → la imagen cubre todo el contenedor manteniendo proporción (puede recortarse en los bordes).*/
+}                                     /*contain es imagen completa sin recortes, lo cambie para que sea vea mejor*/
 
-.page-bg .row{ margin-top: 0 !important; }
+.portada .row{ margin-top: 0 !important; } /*anulás ese margen superior dentro de la portada*/
 
-/* Ajuste para celus: que no quede demasiado grande  SI QUIERO QUE AL ACHICAR SE AJUSTE LA IMAGEN PARA VER
-/*@media (max-width: 576px){
-  .page-bg{
-    background-size: 100% 100%, contain;
-    background-position: center center, center 10%;
+ /*Ajuste para celus: que no quede demasiado grande  CUANDO ACHICO PONGO LA POSITION 100 100 PARA CUBRIR TODO EL CONTENEDOR */
+@media (max-width: 1080px){
+  .portada{
+    background-size: 100% 100%, 100% 100%;
+    background-position: center center, center center;
   }
-}*/
+}
 @media (min-width: 1400px){
-  .page-bg .col-lg-6{ max-width: 600px; }
+  .portada .col-lg-6{ max-width: 600px; } /*En pantallas muy anchas (≥1400px) limita el ancho de la columna a 600px para que el panel de botones no se haga gigante.*/
 }
 
-.btn-panel{
+.btn-panel{ /*Panel traslucido*/
   padding: 1.25rem;
   border-radius: .75rem;
   background: rgba(141, 144, 147, 0.28); /* gris (secondary) con transparencia */
   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
-  backdrop-filter: blur(3px);         /* opcional: efecto “glass” */
-  -webkit-backdrop-filter: blur(3px); /* compatibilidad Safari */
+  backdrop-filter: blur(3px);         /*efecto “glass” */
 }
