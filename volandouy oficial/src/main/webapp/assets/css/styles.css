@@ -127,3 +127,12 @@
     right: 0;
     z-index: 1000; /* Por encima de todo */
 }
+
+.label-login{
+    font: bold;
+    color: #ffffff;
+}
+
+.btn-cancelar-registro {
+    margin-top: 10px;
+}
