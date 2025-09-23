@@ -33,6 +33,22 @@
   backdrop-filter: blur(3px);         /*efecto “glass” */
 }
 
+.registro-page {
+    padding-top: 60px; /* Espacio para la navbar fija */
+}
+
+/* Sobrescribimos estilos de .portada específicamente para la página de registro */
+.registro-page .portada {
+    display: flex !important; /* Usamos flex en lugar de grid */
+    align-items: flex-start !important; /* Alineamos al inicio en lugar de centrar */
+    min-height: calc(100vh - 60px); /* Altura mínima menos el padding del navbar */
+    height: auto !important; /* Permitimos que crezca según el contenido */
+}
+
+/* Campos que se muestran/ocultan dinámicamente */
+#clienteFields, #aerolineaFields {
+    display: none; /* Por defecto ocultos */
+}
 .form-label{
   color: #fffefe;
   display: flex;
