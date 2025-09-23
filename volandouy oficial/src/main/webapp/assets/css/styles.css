@@ -51,7 +51,9 @@
 /* Sobrescribimos estilos de .portada específicamente para la página de registro */
 .registro-page .portada {
     display: flex !important; /* Usamos flex en lugar de grid */
-    align-items: flex-start !important; /* Alineamos al inicio en lugar de centrar */
+    flex-direction: column !important; /* Columna para permitir footer abajo */
+    align-items: center !important; /* Centramos horizontalmente */
+    justify-content: space-between !important; /* Espacio entre contenido y footer */
     min-height: 100vh; /* Altura completa de la pantalla */
     height: 100vh !important; /* Altura fija para evitar scroll del body */
     overflow: hidden; /* Sin scroll en la portada */
@@ -94,4 +96,18 @@
     padding-top: 40px;
     overflow: hidden; /* Sin scroll en el body */
     height: 100vh; /* Altura fija del body */
+}
+
+/* Footer dentro de la portada */
+.registro-page footer {
+    background: transparent !important;
+    border: none !important;
+    margin-top: auto; /* Se empuja hacia abajo */
+    width: 100%;
+    z-index: 10;
+}
+
+.registro-page footer small {
+    color: rgba(255, 255, 255, 0.8) !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
