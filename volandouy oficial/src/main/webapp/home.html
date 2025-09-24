@@ -10,22 +10,9 @@
   <!-- Tu CSS -->
   <link href="assets/css/styles.css" rel="stylesheet">
 
-  <style>
-    /* --- Ajustes rápidos para navbar fija + sidebar tipo docs --- */
-    body { padding-top: 56px; } /* alto aprox navbar fixed-top */
-    .sidebar { 
-      top: 56px;                 /* que no quede debajo de la navbar */
-      max-height: calc(100vh - 56px);
-      overflow: auto;
-    }
-    .list-group-item.active {
-      background-color: #0d6efd;
-      border-color: #0d6efd;
-      color: #fff;
-    }
-  </style>
+
 </head>
-<body>
+<body class="home-page">
   <!-- NAVBAR -->
   <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container d-flex align-items-center">
@@ -66,16 +53,30 @@
       <aside class="col-lg-3 col-xl-2 d-none d-lg-block border-end bg-body-tertiary">
         <nav class="sidebar position-sticky sticky-top">
           <div class="p-3">
-            <h6 class="text-uppercase text-muted mb-3">Casos de uso</h6>
+            <h6 class="text-uppercase text-muted mb-3">Registros</h6>
             <div class="list-group list-group-flush">
-              <a href="home.html" class="list-group-item list-group-item-action active">Inicio</a>
-              <a href="usuarios-consulta.html" class="list-group-item list-group-item-action">Consulta de Usuario</a>
-              <a href="rutas-alta.html" class="list-group-item list-group-item-action">Alta de Ruta</a>
-              <a href="rutas-consulta.html" class="list-group-item list-group-item-action">Consulta de Rutas</a>
-              <a href="vuelos-alta.html" class="list-group-item list-group-item-action">Alta de Vuelo</a>
-              <a href="vuelos-consulta.html" class="list-group-item list-group-item-action">Consulta de Vuelos</a>
-              <a href="paquetes.html" class="list-group-item list-group-item-action">Paquetes</a>
-              <a href="reservas.html" class="list-group-item list-group-item-action">Reservas</a>
+              <a href="front/registroCategoria.html" class="list-group-item list-group-item-action active">Registrar Categoria</a>
+              <a href="front/registroCiudad.html" class="list-group-item list-group-item-action">Registrar Ciudad</a>
+              <a href="front/registroVuelo.html" class="list-group-item list-group-item-action">Registrar Vuelo</a>
+              <a href="front/registroRutaVuelo.html" class="list-group-item list-group-item-action">Registrar Ruta de Vuelo</a>
+              <a href="front/registroPaqRutasVuelo.html" class="list-group-item list-group-item-action">Crear Paquetes de Rutas de Vuelo</a>
+              <a href="front/registroRutasVueloenPaquete.html" class="list-group-item list-group-item-action">Registrar Rutas de Vuelo en Paquete</a>
+            </div>
+            <h6 class="text-uppercase text-muted mb-3">Consultas</h6>
+            <div class="list-group list-group-flush">
+              <a href="front/consultaUsuario.html" class="list-group-item list-group-item-action">Usuario</a>
+              <a href="front/consultaRutasVuelo.html" class="list-group-item list-group-item-action">Ruta de Vuelo</a>
+              <a href="front/consultaVuelo.html" class="list-group-item list-group-item-action">Vuelo</a>
+              <a href="front/consultaPaqRutasVuelo.html" class="list-group-item list-group-item-action">Paquete de Rutas de Vuelo</a>
+            </div>
+            <h6 class="text-uppercase text-muted mb-3">Modificaciones</h6>
+            <div class="list-group list-group-flush mb-4">
+              <a href="front/modificarUsuario.html" class="list-group-item list-group-item-action">Modificar Datos de Usuario</a>
+            </div>
+            <h6 class="text-uppercase text-muted mb-3">Reserva / Compra</h6>
+            <div class="list-group list-group-flush">
+              <a href="front/reservarVuelo.html" class="list-group-item list-group-item-action">Reservar Vuelo</a>
+              <a href="front/comprarPaquete.html" class="list-group-item list-group-item-action">Comprar Paquete</a>
             </div>
           </div>
         </nav>
@@ -84,7 +85,7 @@
       <!-- CONTENIDO -->
       <main class="col-12 col-lg-9 col-xl-10 py-4">
         <div class="container">
-          <h1 class="display-6 mb-3">Bienvenid@ a Volando.uy</h1>
+          <h1>Bienvenid@ a Volando.uy</h1>
           <p class="lead">Este es el panel principal. Usá el menú de la izquierda para navegar los casos de uso.</p>
 
           <section class="mt-4">
