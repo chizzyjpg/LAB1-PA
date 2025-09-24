@@ -5,7 +5,10 @@ import java.util.Date;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Ciudad")
+@Table(
+    name = "Ciudad",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"nombre", "pais"})
+)
 public class Ciudad {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)

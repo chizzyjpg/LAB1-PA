@@ -258,10 +258,7 @@ public class Sistema implements ISistema {
 		if (data == null) throw new IllegalArgumentException("Los datos no pueden ser nulos");
 
 		// Validaciones de unicidad
-		long hash = data.getNombre().toLowerCase().hashCode() + 31 * data.getPais().toLowerCase().hashCode();
-		if (CiudadPorHash.containsKey(hash)) {
-			throw new IllegalArgumentException("La ciudad ya está registrada");
-		}
+		if (ciudadService.existeCiudad(data.getNombre(), data.getPais())) { throw new IllegalArgumentException("La ciudad ya está registrada"); }
 
 		ManejadorCiudad.toEntity(data);
 	}
