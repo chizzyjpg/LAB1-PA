@@ -27,8 +27,7 @@
   </style>
 </head>
 
-
-<body class="consulta-usuario">
+<body class="consulta-vuelo">
   <!-- NAVBAR -->
   <nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container d-flex align-items-center">
@@ -58,6 +57,8 @@
     </div>
   </nav>
 
+
+
   <!-- LAYOUT: SIDEBAR + CONTENIDO -->
   <div class="container-fluid">
     <div class="row">
@@ -67,12 +68,12 @@
           <div class="p-3">
             <h6 class="text-uppercase text-muted mb-3">Registros</h6>
             <div class="list-group list-group-flush">
-              <a href="registroCategoria.html" class="list-group-item list-group-item-action">Registrar Categoria</a>
-              <a href="registroCiudad.html" class="list-group-item list-group-item-action">Registrar Ciudad</a>
-              <a href="registroVuelo.html" class="list-group-item list-group-item-action">Registrar Vuelo</a>
-              <a href="registroRutaVuelo.html" class="list-group-item list-group-item-action">Registrar Ruta de Vuelo</a>
-              <a href="registroPaqRutasVuelo.html" class="list-group-item list-group-item-action">Crear Paquetes de Rutas de Vuelo</a>
-              <a href="registroRutasVueloenPaquete.html" class="list-group-item list-group-item-action">Registrar Rutas de Vuelo en Paquete</a>
+              <a href="./registroCategoria.html" class="list-group-item list-group-item-action">Registrar Categoria</a>
+              <a href="./registroCiudad.html" class="list-group-item list-group-item-action">Registrar Ciudad</a>
+              <a href="./registroVuelo.html" class="list-group-item list-group-item-action">Registrar Vuelo</a>
+              <a href="./registroRutaVuelo.html" class="list-group-item list-group-item-action">Registrar Ruta de Vuelo</a>
+              <a href="./registroPaqRutasVuelo.html" class="list-group-item list-group-item-action">Crear Paquetes de Rutas de Vuelo</a>
+              <a href="./registroRutasVueloenPaquete.html" class="list-group-item list-group-item-action">Registrar Rutas de Vuelo en Paquete</a>
             </div>
 
             <h6 class="text-uppercase text-muted my-3">Consultas</h6>
@@ -98,56 +99,54 @@
         </nav>
       </aside>
 
-      <!-- CONTENIDO (container interno para centrar/limitar ancho) -->
+
+    <!-- CONTENIDO (container interno para centrar/limitar ancho) -->
       <main class="col-12 col-lg-9 col-xl-10 py-4">
         <div class="container">
-          <!-- 👇 clase específica para el título -->
-          <h1 class="text-center mb-4 titulo-consulta">CONSULTA DE USUARIO</h1>
-                    <!-- Filtros -->
-          <section class="mb-3">
-            <form id="userFilters" class="row g-2 align-items-end">
-              <div class="col-sm-7 col-md-8">
-                <label class="form-label" for="filterText">Buscar</label>
-                <input id="filterText" type="search" class="form-control" placeholder="Nombre, nickname o email…">
-              </div>
-              <div class="col-sm-5 col-md-3">
-                <label class="form-label" for="filterRol">Rol</label>
-                <select id="filterRol" class="form-select">
-              <option value="" selected>Todos</option>   <!-- ← selected -->
-              <option value="Cliente">Cliente</option>
-              <option value="Aerolínea">Aerolínea</option>
+        <h1 class="text-center mb-4">CONSULTA DE VUELO</h1>
+
+        <!-- Filtros -->
+        <form id="flightFilters" class="row g-2 align-items-end mb-3">
+        <div class="col-md-4">
+            <label for="fltAerolinea" class="form-label">Aerolínea</label>
+            <select id="fltAerolinea" class="form-select" required>
+            <option value="" selected>Elegir…</option>
+            <!-- opciones por JS -->
             </select>
-
-              </div>
-            </form>
-          </section>
-
-          <!-- Lista de usuarios -->
-          <section>
-            <div id="userList" class="list-group" aria-live="polite"></div>
-            <p id="userCount" class="text-muted small mt-2"></p>
-          </section>
-
-          <!-- Modal de perfil -->
-          <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 id="userModalLabel" class="modal-title">Perfil de usuario</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body"><!-- se completa por JS --></div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
-      </main>
-    </div>
-  </div>
+        <div class="col-md-5">
+            <label for="fltRuta" class="form-label">Ruta (Confirmada)</label>
+            <select id="fltRuta" class="form-select" disabled required>
+            <option value="" selected>Elegir aerolínea primero…</option>
+            <!-- opciones por JS -->
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="fltTexto" class="form-label">Buscar</label>
+            <input id="fltTexto" type="search" class="form-control" placeholder="Código, origen, destino…">
+        </div>
+        </form>
+
+        <!-- Lista de vuelos -->
+        <div id="flightList" class="list-group"></div>
+        <p id="flightCount" class="text-muted small mt-2"></p>
+
+        <!-- Modal de vuelo -->
+        <div class="modal fade" id="flightModal" tabindex="-1" aria-labelledby="flightModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="flightModalLabel" class="modal-title">Detalle de vuelo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body"><!-- lo completa JS --></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
 
   <!-- FOOTER -->
   <footer class="mt-auto py-3 bg-transparent">
@@ -159,11 +158,7 @@
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Si consultaUsuario.html está en la RAÍZ -->
-<script src="../assets/js/consulta-usuario.js"></script>
-
-<!-- Si está dentro de /front/, usa: -->
-<!-- <script src="../assets/js/consulta-usuario.js"></script> -->
+  <script src="../assets/js/consulta-vuelo.js"></script>
 
 </body>
 </html>
