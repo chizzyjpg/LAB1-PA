@@ -37,7 +37,10 @@
 .index-page .navbar-compact,
 .registro-page .navbar-compact,
 .login-page .navbar-compact,
-.home-page .navbar {
+.home-page .navbar-compact,
+.cat-page .navbar-compact,
+.ciudad-page .navbar-compact,
+.regVuelo-page .navbar-compact {
     padding: 0.25rem 0;
     min-height: 40px;
 }
@@ -139,7 +142,11 @@
     margin-top: 10px;
 }
 
-
+/* 
+//////////////////////////////////
+////// HOME /////////////////////
+//////////////////////////////////
+*/
 /* Sidebar docs-like */
 .home-page .sidebar {
   top: 56px;                 /* que no quede debajo de la navbar */
@@ -153,4 +160,51 @@
 
 .home-page h1{
   text-align: center;
+}
+
+/*
+//////////////////////////////////
+////// CATEGORIA /////////////////////
+//////////////////////////////////
+*/
+.cat-page .container-fluid {
+    padding-top: 60px;
+}
+.cat-page h1 {
+    text-align: center;
+}
+
+.cat-page footer {
+    position: fixed; /* Fijo en la parte inferior */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Por encima de todo */
+}
+/*
+//////////////////////////////////
+////// CIUDAD /////////////////////
+//////////////////////////////////
+*/
+.ciudad-page .container-fluid {
+    padding-top: 60px;
+}
+
+.ciudad-page h1 {
+    text-align: center;
+    margin-top: 40px;
+}
+
+/*
+//////////////////////////////////
+////// REGISTRO VUELO /////////////////////
+//////////////////////////////////
+*/
+
+.regVuelo-page {
+    padding-top: 40px; /* Espacio para que no se esconda detrás de navbar */
+}
+
+.regVuelo-page h1 {
+    text-align: center;
 }
