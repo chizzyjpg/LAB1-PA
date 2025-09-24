@@ -207,8 +207,8 @@ h1.display-6 {
 //////////////////////////////////
 */
 
-.regVuelo-page {
-    padding-top: 40px; /* Espacio para que no se esconda detrás de navbar */
+.regVuelo-page .container-fluid  {
+    padding-top: 60px; /* Espacio para que no se esconda detrás de navbar */
 }
 
 .regVuelo-page h1 {
