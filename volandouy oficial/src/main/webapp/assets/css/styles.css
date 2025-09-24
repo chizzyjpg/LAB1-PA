@@ -136,3 +136,17 @@
 .btn-cancelar-registro {
     margin-top: 10px;
 }
+
+/* Altura útil debajo de la navbar fixed-top (56px aprox.) */
+body.index-page, body.registro-page { padding-top: 56px; }
+
+/* Sidebar docs-like */
+.sidebar {
+  top: 56px;                 /* que no quede debajo de la navbar */
+  max-height: calc(100vh - 56px);
+  overflow: auto;
+}
+.list-group-item.active {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
