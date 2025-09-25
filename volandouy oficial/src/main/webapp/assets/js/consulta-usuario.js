@@ -4,17 +4,42 @@
   "use strict";
 
   const USERS = [
-    { id: 1,  rol: 'Cliente',   nickname: 'maria23',  nombre: 'María',  apellido: 'Suárez',   email: 'maria@correo.com',  imagen: 'https://i.pravatar.cc/80?img=5' },
-    { id: 2,  rol: 'Cliente',   nickname: 'marko',    nombre: 'Marco',  apellido: 'Pérez',    email: 'marco@correo.com',  imagen: 'https://i.pravatar.cc/80?img=12' },
-    { id: 3,  rol: 'Aerolínea', nickname: 'air_uy',   nombre: 'AirUY',  apellido: '',         email: 'contacto@airuy.com', imagen: '' },
-    { id: 4,  rol: 'Aerolínea', nickname: 'condor',   nombre: 'Cóndor', apellido: 'Air',      email: 'hola@condor.air',     imagen: '' },
-    { id: 5,  rol: 'Cliente',   nickname: 'lucas88',  nombre: 'Lucas',  apellido: 'Rodríguez',email: 'lucas@correo.com',   imagen: 'https://i.pravatar.cc/80?img=20' },
-    { id: 6,  rol: 'Cliente',   nickname: 'ani.g',    nombre: 'Ana',    apellido: 'García',   email: 'ana@correo.com',     imagen: 'https://i.pravatar.cc/80?img=32' },
-    { id: 7,  rol: 'Aerolínea', nickname: 'pampas',   nombre: 'Pampas', apellido: 'Air',      email: 'info@pampas.air',     imagen: '' },
-    { id: 8,  rol: 'Cliente',   nickname: 'sofi_uy',  nombre: 'Sofía',  apellido: 'Martínez', email: 'sofia@correo.com',   imagen: 'https://i.pravatar.cc/80?img=15' },
-    { id: 9,  rol: 'Cliente',   nickname: 'diego_r',  nombre: 'Diego',  apellido: 'Ramos',    email: 'diego@correo.com',   imagen: 'https://i.pravatar.cc/80?img=41' },
-    { id: 10, rol: 'Aerolínea', nickname: 'aurora',   nombre: 'Aurora', apellido: 'Air',      email: 'contacto@aurora.air', imagen: '' },
+    { id: 1,  rol: 'Cliente',   nickname: 'maria23',  nombre: 'María',  apellido: 'Suárez',   email: 'maria@correo.com',  imagen: 'https://i.pravatar.cc/80?img=5', pass: 1235 },
+    { id: 2,  rol: 'Cliente',   nickname: 'marko',    nombre: 'Marco',  apellido: 'Pérez',    email: 'marco@correo.com',  imagen: 'https://i.pravatar.cc/80?img=12', pass: "asd" },
+    { id: 3,  rol: 'Aerolínea', nickname: 'air_uy',   nombre: 'AirUY',  apellido: '',         email: 'contacto@airuy.com', imagen: '', pass: '1235' },
+    { id: 4,  rol: 'Aerolínea', nickname: 'condor',   nombre: 'Cóndor', apellido: 'Air',      email: 'hola@condor.air',     imagen: '', pass: '1235' },
+    { id: 5,  rol: 'Cliente',   nickname: 'lucas88',  nombre: 'Lucas',  apellido: 'Rodríguez',email: 'lucas@correo.com',   imagen: 'https://i.pravatar.cc/80?img=15', pass: 1235 },
+    { id: 6,  rol: 'Cliente',   nickname: 'ani.g',    nombre: 'Ana',    apellido: 'García',   email: 'ana@correo.com',     imagen: 'https://i.pravatar.cc/80?img=32', pass: 1235 },
+    { id: 7,  rol: 'Aerolínea', nickname: 'pampas',   nombre: 'Pampas', apellido: 'Air',      email: 'info@pampas.air',     imagen: '', pass: '1235' },
+    { id: 8,  rol: 'Cliente',   nickname: 'sofi_uy',  nombre: 'Sofía',  apellido: 'Martínez', email: 'sofia@correo.com',   imagen: 'https://i.pravatar.cc/80?img=20', pass: 1235 },
+    { id: 9,  rol: 'Cliente',   nickname: 'diego_r',  nombre: 'Diego',  apellido: 'Ramos',    email: 'diego@correo.com',   imagen: 'https://i.pravatar.cc/80?img=4', pass: 1235 },
+    { id: 10, rol: 'Aerolínea', nickname: 'aurora',   nombre: 'Aurora', apellido: 'Air',      email: 'contacto@aurora.air', imagen: '', pass: '1235' },
   ];
+
+  // === Exponer buscador (Front-only / Parte 1) ===
+  window.Volando = window.Volando || {};
+
+  // Para depurar: mostrar lista de nicks en consola si querés
+  window.Volando.debugListUsers = () => console.table((USERS || []).map(u => ({
+    id: u.id, rol: u.rol, nickname: u.nickname, email: u.email
+  })));
+
+  // Login por nickname + pass
+  window.Volando.findUser = (nickname, pass) => {
+    try {
+      const nick = String(nickname ?? "").trim();
+      const p    = String(pass ?? "");
+      if (!nick || !p) return null;
+
+      return (USERS || []).find(u =>
+        String(u.nickname) === nick && String(u.pass) === p
+      ) || null;
+    } catch { return null; }
+  };
+
+// (Opcional, solo lectura)
+Object.defineProperty(window.Volando, 'USERS', { get: () => USERS });
+
 
   // Toma referencias del DOM
   const listEl   = document.getElementById('userList');
@@ -111,4 +136,6 @@
     qInput.addEventListener('input', applyFilters);
     rolSel.addEventListener('change', applyFilters);
   });
+
+
 })();

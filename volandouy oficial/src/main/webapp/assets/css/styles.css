@@ -253,14 +253,14 @@ h1.display-6 {
 }
 
 /* título */
-.consulta-usuario .titulo-consulta{
-  color: #0d6efd;            /* azul marca */
+/*.consulta-usuario .titulo-consulta{
+  color: #0d6efd;            /* azul marca 
   font-weight: 800;
   letter-spacing: -.02em;
   text-transform: none;
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.08);
-}
+}*/
 
 /* ancho cómodo del contenido */
 .consulta-usuario main > .container{
@@ -274,9 +274,6 @@ h1.display-6 {
   box-shadow: 0 .5rem 1rem rgba(0,0,0,.08);
 }
 
-.consulta-usuario h1.titulo-consulta {
-   color:#0d6efd; 
-  }
 
   /* Lista de usuarios - Consulta de Usuario */
 .consulta-usuario #userList img{ object-fit: cover; }
