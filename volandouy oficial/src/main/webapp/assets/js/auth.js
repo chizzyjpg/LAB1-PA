@@ -1,14 +1,14 @@
 (() => {
   "use strict";
 
-  // === Sesión en el Front (se borra al cerrar la pestaña) ===
+  // === Persistencia local (se mantiene al cerrar el navegador) ===
   const Session = {
     get() {
-      try { return JSON.parse(sessionStorage.getItem("auth") || "null"); }
+      try { return JSON.parse(localStorage.getItem("auth") || "null"); }
       catch { return null; }
     },
-    set(auth) { sessionStorage.setItem("auth", JSON.stringify(auth)); },
-    clear()    { sessionStorage.removeItem("auth"); }
+    set(auth) { localStorage.setItem("auth", JSON.stringify(auth)); },
+    clear()    { localStorage.removeItem("auth"); }
   };
 
   // === Render según estado de sesión ===
