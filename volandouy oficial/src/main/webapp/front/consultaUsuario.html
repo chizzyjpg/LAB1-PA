@@ -28,35 +28,13 @@
 </head>
 
 
-<body class="consulta-usuario">
+<body class="consultaUsuario-page">
   <!-- NAVBAR -->
-  <nav class="navbar navbar-dark bg-dark fixed-top">
-    <div class="container d-flex align-items-center">
-      <a class="navbar-brand fw-bold me-3" href="../home.html">Volando.uy</a>
-
-      <button class="btn btn-outline-light d-lg-none me-2"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#sidebarOffcanvas"
-              aria-controls="sidebarOffcanvas">
-        Menú
-      </button>
-
-      <div class="flex-grow-1 d-none d-md-flex justify-content-center">
-        <form class="search-bar" role="search">
-          <div class="input-group input-group-sm" style="max-width: 420px;">
-            <span class="input-group-text">Buscar</span>
-            <input class="form-control form-control-sm" type="search" placeholder="Vuelos, rutas..." aria-label="Buscar">
-          </div>
-        </form>
-      </div>
-
-      <div class="ms-3 d-none d-md-block">
-        <a href="../login.html" class="btn btn-sm btn-outline-light me-2">Iniciar sesión</a>
-        <a href="../registro.html" class="btn btn-sm btn-primary">Registrarse</a>
-      </div>
-    </div>
-  </nav>
+    <nav class="navbar navbar-dark bg-dark fixed-top navbar-compact">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="../home.html">Volando.uy</a>
+        </div>
+    </nav>
 
   <!-- LAYOUT: SIDEBAR + CONTENIDO -->
   <div class="container-fluid">
@@ -67,7 +45,6 @@
           <div class="p-3">
             <h6 class="text-uppercase text-muted mb-3">Registros</h6>
             <div class="list-group list-group-flush">
-              <a href="registroCategoria.html" class="list-group-item list-group-item-action">Registrar Categoria</a>
               <a href="registroCiudad.html" class="list-group-item list-group-item-action">Registrar Ciudad</a>
               <a href="registroVuelo.html" class="list-group-item list-group-item-action">Registrar Vuelo</a>
               <a href="registroRutaVuelo.html" class="list-group-item list-group-item-action">Registrar Ruta de Vuelo</a>
