@@ -40,7 +40,8 @@
 .home-page .navbar-compact,
 .cat-page .navbar-compact,
 .ciudad-page .navbar-compact,
-.regVuelo-page .navbar-compact {
+.regVuelo-page .navbar-compact,
+.regRutaVuelo-page .navbar-compact {
     padding: 0.25rem 0;
     min-height: 40px;
 }
@@ -214,6 +215,22 @@ h1.display-6 {
 .regVuelo-page h1 {
     text-align: center;
 }
+
+/*
+//////////////////////////////////
+////// REGISTRO RUTA VUELO /////////////////////
+//////////////////////////////////
+*/
+
+.regRutaVuelo-page .container-fluid  {
+    padding-top: 60px; /* Espacio para que no se esconda detrás de navbar */
+}
+
+.regRutaVuelo-page h1 {
+    text-align: center;
+}
+
+
 /* ===== Consulta de Usuario ===== */
 .consulta-usuario .sidebar{
   top: 56px;
