@@ -19,10 +19,36 @@
     const guestArea = document.getElementById("guestArea");
     const userArea  = document.getElementById("userArea");
     const nickSpan  = document.getElementById("nicknameSpan");
+    const avatarWrapper = document.getElementById('avatarWrapper');
+    const avatarImg = document.getElementById('avatarImg');
+    const avatarFallback = document.getElementById('avatarFallback');
 
     if (guestArea) guestArea.classList.toggle("d-none", isLogged);
     if (userArea)  userArea.classList.toggle("d-none", !isLogged);
     if (nickSpan && isLogged) nickSpan.textContent = auth.nickname || "usuario";
+
+    // Render avatar: si hay URL válida, mostrar <img>, sino fallback con inicial
+    if (avatarWrapper) {
+      if (isLogged && auth.avatar) {
+        if (avatarImg) {
+          avatarImg.src = auth.avatar;
+          avatarImg.alt = (auth.nickname || 'usuario') + " avatar";
+          avatarImg.classList.remove('d-none');
+        }
+        if (avatarFallback) avatarFallback.classList.add('d-none');
+      } else if (isLogged) {
+        // generar iniciales
+        if (avatarImg) avatarImg.classList.add('d-none');
+        if (avatarFallback) {
+          avatarFallback.classList.remove('d-none');
+          avatarFallback.textContent = (auth.nickname || 'U').slice(0,1).toUpperCase();
+        }
+      } else {
+        // no logueado: ocultar ambos
+        if (avatarImg) avatarImg.classList.add('d-none');
+        if (avatarFallback) avatarFallback.classList.add('d-none');
+      }
+    }
 
     // Si querés ocultar bloques según rol en páginas futuras:
     // Usa data-roles="Cliente,Aerolínea" en el bloque
@@ -58,7 +84,8 @@
         rol: user.rol,           // 'Cliente' o 'Aerolínea' (tal como están en tu mock)
         nickname: user.nickname,
         nombre: user.nombre,
-        email: user.email
+        email: user.email,
+        avatar: user.avatar || null
       });
 
       // Cerrar modal y refrescar UI
@@ -82,9 +109,32 @@
     });
   }
 
+  // === Renderizar perfil ===
+  function renderProfile() {
+    const auth = Session.get();
+    if (!auth) return;
+
+    // Actualizar elementos del perfil
+    const nameEl = document.getElementById("profileName");
+    const emailEl = document.getElementById("profileEmail");
+    const avatarEl = document.getElementById("profileAvatar");
+
+    if (nameEl) nameEl.textContent = auth.nombre || "Nombre no disponible";
+    if (emailEl) emailEl.textContent = auth.email || "Email no disponible";
+    if (avatarEl && auth.avatar) {
+      avatarEl.src = auth.avatar;
+      avatarEl.alt = `${auth.nombre || "Usuario"} avatar`;
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     renderAuthUI();
     bindLogin();
     bindLogout();
+
+    // Renderizar perfil si estamos en la página de perfil
+    if (window.location.pathname.includes("perfil.html")) {
+      renderProfile();
+    }
   });
 })();

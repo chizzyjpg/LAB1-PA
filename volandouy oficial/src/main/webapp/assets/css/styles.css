@@ -179,6 +179,10 @@ h1.display-6 {
   text-align: center;
 }
 
+.home-page .img1{
+  max-height: 50%;
+  max-width: 50%;
+}
 /*
 //////////////////////////////////
 ////// CATEGORIA /////////////////////
@@ -310,4 +314,47 @@ h1.display-6 {
 
 .perfil-page .container-fluid{
   padding-top: 60px;          /* espacio para que no se esconda detrás de navbar */
+}
+
+/* Avatares en la navbar */
+.avatar-sm {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    border: 2px solid rgba(255,255,255,0.15);
+}
+
+.avatar-fallback {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    font-weight: 600;
+    margin-right: 8px;
+    border: 2px solid rgba(255,255,255,0.15);
+}
+
+/* Contenedor para avatar + nombre en navbar */
+.auth-user {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* espacio entre avatar y nombre */
+}
+
+#profileAvatar{
+  max-width: 150px;
+}
+
+/* Ajuste responsivo pequeño: reducir tamaño del avatar en pantallas pequeñas */
+@media (max-width: 480px) {
+  .avatar-sm { width: 28px; height: 28px; }
+  .avatar-fallback { width: 28px; height: 28px; font-size: 0.85rem; }
 }

@@ -12,7 +12,7 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-dark bg-dark fixed-top navbar-compact">
         <div class="container">
-        <a class="navbar-brand fw-bold" href="#">Volando.uy</a>
+        <a class="navbar-brand fw-bold" href="../home.html">Volando.uy</a>
 
         <!-- Botón menú (solo mobile) -->
         <button class="btn btn-outline-light d-lg-none me-2"
@@ -42,13 +42,19 @@
         </div>
         <!-- Estado: logueado -->
         <div id="userArea" class="d-none align-items-center gap-2">
-            <span class="text-light small">Hola, <strong id="nicknameSpan">usuario</strong></span>
+            <div class="auth-user text-light small">
+                <span id="avatarWrapper" class="d-flex align-items-center">
+                    <img id="avatarImg" src="" alt="avatar" class="avatar-sm d-none">
+                    <span id="avatarFallback" class="avatar-fallback d-none">U</span>
+                </span>
+                <span>Hola, <strong id="nicknameSpan">usuario</strong></span>
+            </div>
             <div class="btn-group">
                 <button class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">Cuenta</button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li><a class="dropdown-item" href="front/perfil.html">Mi perfil</a></li>
                     <li><hr class="dropdown-divider" /></li>
-                    <li><button class="dropdown-item text-danger" id="btnLogout"    >Cerrar sesión</button></li>
+                    <li><button class="dropdown-item text-danger" id="btnLogout">Cerrar sesión</button></li>
                     </ul>
                 </div>
         </div>
@@ -70,7 +76,13 @@
                     </div>
                 </nav>
             </aside>
-            <main class="col-lg-9 col-xl-10"></main>
+            <main class="col-lg-9 col-xl-10">
+                <div class="profile-container p-4">
+                    <h1 id="profileName" class="display-5">Cargando...</h1>
+                    <p id="profileEmail" class="text-muted">Cargando...</p>
+                    <img id="profileAvatar" class="avatar-lg rounded-circle" src="" alt="Avatar del usuario">
+                </div>
+            </main>
         <!-- FOOTER -->
     <footer class="mt-auto py-3 bg-transparent">
     <div class="container text-center">
