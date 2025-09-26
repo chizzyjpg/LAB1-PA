@@ -47,10 +47,11 @@
 .consultaRutasVuelo-page .navbar-compact,
 .perfil-page .navbar-compact {
     padding: 0.25rem 0;
+    min-height: 40px;
 }
 
 .navbar-compact .navbar-brand {
-    font-size: 1.1rem; /* Tamaño de fuente un poco más pequeño */ 
+    font-size: 1.1rem; /* Tamaño de fuente un poco más pequeño 
     padding: 0.25rem 0; /* Padding reducido para el brand */
 }
 
@@ -325,7 +326,6 @@ h1.display-6 {
     vertical-align: middle;
     margin-right: 8px;
     border: 2px solid rgba(255,255,255,0.15);
-    flex-shrink: 0; /* Evita que el avatar se reduzca */
 }
 
 .avatar-fallback {
@@ -340,8 +340,6 @@ h1.display-6 {
     font-weight: 600;
     margin-right: 8px;
     border: 2px solid rgba(255,255,255,0.15);
-    flex-shrink: 0; /* Evita que el avatar se reduzca */
-    font-size: 0.9rem;
 }
 
 /* Contenedor para avatar + nombre en navbar */
@@ -349,10 +347,7 @@ h1.display-6 {
   display: inline-flex;
   align-items: center;
   gap: 8px; /* espacio entre avatar y nombre */
-  height: 40px; /* Altura fija para evitar cambios en la navbar */
-  line-height: 1; /* Línea compacta */
 }
-
 
 #profileAvatar{
   max-width: 150px;
