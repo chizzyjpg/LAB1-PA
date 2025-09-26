@@ -59,6 +59,26 @@
     });
   }
 
+  // === Login programático (para uso desde páginas de login) ===
+  window.Volando = window.Volando || {};
+  window.Volando.loginUser = (user) => {
+    if (!user) return false;
+    
+    // Guardar sesión usando el mismo formato que el modal
+    Session.set({
+      id: user.id,
+      rol: user.rol,
+      nickname: user.nickname,
+      nombre: user.nombre,
+      email: user.email,
+      avatar: user.imagen || null  // Nota: 'imagen' en lugar de 'avatar'
+    });
+
+    // Refrescar UI si estamos en una página que la tiene
+    renderAuthUI();
+    return true;
+  };
+
   // === Login desde modal ===
   function bindLogin() {
     const form = document.getElementById("loginForm");
@@ -85,7 +105,7 @@
         nickname: user.nickname,
         nombre: user.nombre,
         email: user.email,
-        avatar: user.avatar || null
+        avatar: user.imagen || null  // Usar 'imagen' del modelo de datos
       });
 
       // Cerrar modal y refrescar UI
