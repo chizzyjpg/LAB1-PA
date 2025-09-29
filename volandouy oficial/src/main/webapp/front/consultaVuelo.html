@@ -28,32 +28,47 @@
 </head>
 
 <body class="consulta-vuelo">
-  <!-- NAVBAR -->
-  <nav class="navbar navbar-dark bg-dark fixed-top">
-    <div class="container d-flex align-items-center">
-      <a class="navbar-brand fw-bold me-3" href="../home.html">Volando.uy</a>
+  <nav class="navbar navbar-dark bg-dark fixed-top navbar-compact">
+        <div class="container">
+        <a class="navbar-brand fw-bold" href="../home.html">Volando.uy</a>
 
-      <button class="btn btn-outline-light d-lg-none me-2"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#sidebarOffcanvas"
-              aria-controls="sidebarOffcanvas">
-        Menú
-      </button>
 
-      <div class="flex-grow-1 d-none d-md-flex justify-content-center">
+        <!-- Buscador centrado -->
+        <div class="flex-grow-1 d-none d-md-flex justify-content-center">
         <form class="search-bar" role="search">
-          <div class="input-group input-group-sm" style="max-width: 420px;">
+            <div class="input-group input-group-sm" style="max-width: 420px;">
             <span class="input-group-text">Buscar</span>
             <input class="form-control form-control-sm" type="search" placeholder="Vuelos, rutas..." aria-label="Buscar">
-          </div>
+            </div>
         </form>
-      </div>
+        </div>
 
-      <div class="ms-3 d-none d-md-block">
-        <a href="../login.html" class="btn btn-sm btn-outline-light me-2">Iniciar sesión</a>
-        <a href="../registro.html" class="btn btn-sm btn-primary">Registrarse</a>
-      </div>
+        <!-- Acciones auth (mock) -->
+        <div id="authArea" class="d-flex align-items-center gap-2">
+        <!-- Estado: invitado -->
+        <div id="guestArea" class="d-flex align-items-center gap-2">
+            <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar sesión</button>
+            <a class="btn btn-warning btn-sm" href="../registro.html" role="button">Registrarse</a>
+        </div>
+        <!-- Estado: logueado -->
+        <div id="userArea" class="d-none align-items-center gap-2">
+            <div class="auth-user text-light small">
+                <span id="avatarWrapper" class="d-flex align-items-center">
+                    <img id="avatarImg" src="" alt="avatar" class="avatar-sm d-none">
+                    <span id="avatarFallback" class="avatar-fallback d-none">U</span>
+                </span>
+                <span>Hola, <strong id="nicknameSpan">usuario</strong></span>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">Cuenta</button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="perfil.html">Mi perfil</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li><a href="../index.html" class = "dropdown-item text-danger" id="btnLogout">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+        </div>
+        </div>
     </div>
   </nav>
 
@@ -156,8 +171,34 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/consulta-vuelo.js">
+  </script><script src="../assets/js/auth.js"></script>
 
-  <script src="../assets/js/consulta-vuelo.js"></script>
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" id="loginForm">
+        <div class="modal-header">
+            <h5 class="modal-title">Iniciar sesión</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+            <label class="form-label">Nickname</label>
+            <input name="nickname" class="form-control" placeholder="p. ej., maria23" required>
+            </div>
+            <div class="mb-2">
+            <label class="form-label">Contraseña</label>
+            <input name="pass" type="password" class="form-control" placeholder="1235" required>
+            </div>
+            <div id="loginError" class="text-danger small d-none">Credenciales inválidas.</div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancelar</button>
+            <button class="btn btn-primary" type="submit">Entrar</button>
+        </div>
+        </form>
+    </div>
+  </div>
 
 </body>
 </html>

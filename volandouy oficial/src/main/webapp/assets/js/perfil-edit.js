@@ -91,7 +91,7 @@
     });
   }
 
-  // --- Password override (igual que tenías)
+  // --- Password override (modo demo, solo local)
   function getPwOverrides() {
     try { return JSON.parse(localStorage.getItem("pwOverrides") || "{}"); }
     catch { return {}; }
@@ -99,6 +99,34 @@
   function setPwOverrides(map) {
     localStorage.setItem("pwOverrides", JSON.stringify(map || {}));
   }
+
+  function verifyCurrentPassword(nickname, currentPass) {
+  const curr = String((currentPass ?? "")).trim();
+  const nick = String((nickname ?? "")).trim();
+  if (!nick) return false;
+
+  // 1) Preferimos el login real del mock: respeta overrides si patchFindUser los aplicó
+  try {
+    const fn = window.Volando?.findUser;
+    if (typeof fn === "function") {
+      const u = fn(nick, curr);
+      if (u) return true;
+    }
+  } catch {}
+
+  // 2) Fallback manual: acepta override O la del mock original
+  try {
+    const overrides = getPwOverrides();
+    if (overrides[nick] != null && String(overrides[nick]) === curr) return true;
+
+    const USERS = window.Volando?.USERS || [];
+    const u = USERS.find(x => String(x.nickname) === nick);
+    if (u && String(u.pass) === curr) return true;
+  } catch {}
+
+  return false;
+}
+
   function patchFindUser() {
     const originalFind = window.Volando?.findUser;
     if (!originalFind || originalFind.__patched) return;
@@ -158,21 +186,27 @@
         } // si no tocó nada, queda como estaba
 
         // Cambio de contraseña (demo)
-        const curr = $("#pwdCurrent").value;
-        const n1   = $("#pwdNew").value;
-        const n2   = $("#pwdNew2").value;
+        const curr = ($("#pwdCurrent").value || "").trim();
+        const n1   = ($("#pwdNew").value || "").trim();
+        const n2   = ($("#pwdNew2").value || "").trim();
+
         if (n1 || n2 || curr) {
-          const overrides = getPwOverrides();
-          let currentValid = overrides[a.nickname] ?? null;
-          if (currentValid == null) {
-            const USERS = window.Volando?.USERS || [];
-            const u = (USERS || []).find(x => String(x.nickname) === String(a.nickname));
-            currentValid = u ? String(u.pass) : null;
+          if (!curr) { alert("Ingresá tu contraseña actual."); return; }
+          if (!verifyCurrentPassword(a.nickname, curr)) {
+            alert("La contraseña actual no es correcta.");
+            return;
           }
-          if (!currentValid) { alert("No puedo verificar la contraseña actual en modo demo."); return; }
-          if (String(curr) !== String(currentValid)) { alert("La contraseña actual no es correcta."); return; }
-          if (n1.length < 4) { alert("La nueva contraseña debe tener al menos 4 caracteres (demo)."); return; }
-          if (n1 !== n2) { alert("Las contraseñas nuevas no coinciden."); return; }
+          if (n1.length < 4) {
+            alert("La nueva contraseña debe tener al menos 4 caracteres (demo).");
+            return;
+          }
+          if (n1 !== n2) {
+            alert("Las contraseñas nuevas no coinciden.");
+            return;
+          }
+
+          // Guarda/actualiza override
+          const overrides = getPwOverrides();
           overrides[a.nickname] = String(n1);
           setPwOverrides(overrides);
         }
