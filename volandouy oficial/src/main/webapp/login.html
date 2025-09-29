@@ -23,7 +23,7 @@
       <div class="row justify-content-center mt-4 mt-md-5">
         <div class="col-11 col-sm-10 col-md-8 col-lg-6">
           <div class="d-grid gap-3 btn-panel">
-            <form action="home.html" method="get">
+            <form id="loginForm">
                 <div class="mb-3">
                     <label for="loginId" class="form-label label-login">Nickname o email</label>
                     <input type="text" class="form-control" id="loginId" name="id" placeholder="ej: nickname o correo@dominio.com" required pattern="(^[a-zA-Z0-9._-]{3,30}$)|(^\S+@\S+\.\S+$)" autocomplete="username"> 
@@ -32,6 +32,12 @@
                 <div class="mb-3">
                     <label for="loginPass" class="form-label label-login">Contraseña</label>
                     <input type="password" class="form-control" id="loginPass" name="pass" placeholder="••••••" minlength="3" required autocomplete="current-password"> 
+                </div>
+
+                <div class="mb-3" id="loginError" style="display: none;">
+                    <div class="alert alert-danger" role="alert">
+                        Usuario o contraseña incorrectos
+                    </div>
                 </div>
 
                 <div class="d-grid gap-2">
@@ -53,7 +59,10 @@
 
   <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/consulta-usuario.js"></script>
+    <script src="assets/js/auth.js"></script>
     <script src="assets/js/pruebas.js"></script>
+    <script src="assets/js/login.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

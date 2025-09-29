@@ -18,15 +18,6 @@
         <div class="container">
         <a class="navbar-brand fw-bold" href="#">Volando.uy</a>
 
-      <!-- Botón menú (solo mobile) -->
-      <button class="btn btn-outline-light d-lg-none me-2"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#sidebarOffcanvas"
-              aria-controls="sidebarOffcanvas">
-        Menú
-      </button>
-
       <!-- Buscador centrado -->
       <div class="flex-grow-1 d-none d-md-flex justify-content-center">
         <form class="search-bar" role="search">
@@ -46,15 +37,21 @@
         </div>
         <!-- Estado: logueado -->
         <div id="userArea" class="d-none align-items-center gap-2">
-            <span class="text-light small">Hola, <strong id="nicknameSpan">usuario</strong></span>
+            <div class="auth-user text-light small">
+                <span id="avatarWrapper" class="d-flex align-items-center">
+                    <img id="avatarImg" src="" alt="avatar" class="avatar-sm d-none">
+                    <span id="avatarFallback" class="avatar-fallback d-none">U</span>
+                </span>
+                <span>Hola, <strong id="nicknameSpan">usuario</strong></span>
+            </div>
             <div class="btn-group">
                 <button class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">Cuenta</button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="front/perfil.html">Mi perfil</a></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><button class="dropdown-item text-danger" id="btnLogout">Cerrar sesión</button></li>
-                    </ul>
-                </div>
+                  <li><a class="dropdown-item" href="front/perfil.html">Mi perfil</a></li>
+                  <li><hr class="dropdown-divider" /></li>
+                  <li><button class="dropdown-item text-danger" id="btnLogout">Cerrar sesión</button></li>
+                </ul>
+            </div>
         </div>
         </div>
     </div>
@@ -183,28 +180,6 @@
     </div>
   </div>
   
-
-  <!-- OFFCANVAS (sidebar para mobile) -->
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel">
-    <div class="offcanvas-header">
-      <h5 id="sidebarOffcanvasLabel" class="mb-0">Casos de uso</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
-    </div>
-    <div class="offcanvas-body p-0">
-      <div class="list-group list-group-flush">
-        <a href="home.html" class="list-group-item list-group-item-action active" data-bs-dismiss="offcanvas">Inicio</a>
-        <a href="registro.html" class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas">Alta de Usuario</a>
-        <a href="login.html" class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas">Iniciar sesión</a>
-        <a href="ConsultaUsuario.html" class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas">Consulta de Usuario</a>
-        <a href="rutas-alta.html" class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas">Alta de Ruta</a>
-        <a href="rutas-consulta.html" class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas">Consulta de Rutas</a>
-        <a href="vuelos-alta.html" class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas">Alta de Vuelo</a>
-        <a href="vuelos-consulta.html" class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas">Consulta de Vuelos</a>
-        <a href="paquetes.html" class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas">Paquetes</a>
-        <a href="reservas.html" class="list-group-item list-group-item-action" data-bs-dismiss="offcanvas">Reservas</a>
-      </div>
-    </div>
-  </div>
 
   <!-- FOOTER -->
   <footer class="mt-auto py-3 bg-transparent">
