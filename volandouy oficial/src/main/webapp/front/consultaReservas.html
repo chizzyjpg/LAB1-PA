@@ -90,12 +90,12 @@
             </div><br>
             <h6 class="text-uppercase text-muted mb-3">Consultas</h6>
             <div class="list-group list-group-flush">
-              <a href="consultaUsuario.html" class="list-group-item list-group-item-action active">Usuario</a>
+              <a href="consultaUsuario.html" class="list-group-item list-group-item-action">Usuario</a>
               <a href="consultaRutasVuelo.html" class="list-group-item list-group-item-action">Ruta de Vuelo</a>
               <a href="consultaVuelo.html" class="list-group-item list-group-item-action">Vuelo</a>
               <a href="consultaPaqRutasVuelo.html" class="list-group-item list-group-item-action">Paquete de Rutas de Vuelo</a>
-              <a href="consultaReservas.html" data-roles="Cliente" class="list-group-item list-group-item-action">Mis Reservas de Vuelo</a>
-              <a href="consultaReservas.html" data-roles="Aerolínea" class="list-group-item list-group-item-action">Reservas de Nuestros Vuelos</a>
+              <a href="consultaReservas.html" data-roles="Cliente" class="list-group-item list-group-item-action active">Mis Reservas de Vuelo</a>
+              <a href="consultaReservas.html" data-roles="Aerolínea" class="list-group-item list-group-item-action active">Reservas de Nuestros Vuelos</a>
             </div><br>
             <h6 class="text-uppercase text-muted mb-3" data-roles="Aerolínea,Cliente">Modificaciones</h6>
             <div class="list-group list-group-flush mb-4" data-roles="Aerolínea,Cliente">
@@ -111,52 +111,8 @@
       </aside>
 
       <!-- CONTENIDO (container interno para centrar/limitar ancho) -->
-      <main class="col-12 col-lg-9 col-xl-10 py-4">
-        <div class="container">
-          <!-- 👇 clase específica para el título -->
-          <h1 class="text-center mb-4 titulo-consulta">Consulta de Usuario</h1>
-                    <!-- Filtros -->
-          <section class="mb-3">
-            <form id="userFilters" class="row g-2 align-items-end">
-              <div class="col-sm-7 col-md-8">
-                <label class="form-label" for="filterText">Buscar</label>
-                <input id="filterText" type="search" class="form-control" placeholder="Nombre, nickname o email…">
-              </div>
-              <div class="col-sm-5 col-md-3">
-                <label class="form-label" for="filterRol">Rol</label>
-                <select id="filterRol" class="form-select">
-              <option value="" selected>Todos</option>   <!-- ← selected -->
-              <option value="Cliente">Cliente</option>
-              <option value="Aerolínea">Aerolínea</option>
-            </select>
-
-              </div>
-            </form>
-          </section>
-
-          <!-- Lista de usuarios -->
-          <section>
-            <div id="userList" class="list-group" aria-live="polite"></div>
-            <p id="userCount" class="text-muted small mt-2"></p>
-          </section>
-
-          <!-- Modal de perfil -->
-          <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 id="userModalLabel" class="modal-title">Perfil de usuario</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body"><!-- se completa por JS --></div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
+      <main>
+        
       </main>
     </div>
   </div>
@@ -170,10 +126,11 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
   <script src="../assets/js/consulta-usuario.js"></script>
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/roles.js"></script>
-
 
 </body>
 </html>

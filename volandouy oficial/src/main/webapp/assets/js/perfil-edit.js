@@ -196,12 +196,16 @@
             alert("La contraseña actual no es correcta.");
             return;
           }
-          if (n1.length < 4) {
-            alert("La nueva contraseña debe tener al menos 4 caracteres (demo).");
+          if (n1.length < 3) {
+            alert("La nueva contraseña debe tener al menos 3 caracteres (demo).");
             return;
           }
           if (n1 !== n2) {
-            alert("Las contraseñas nuevas no coinciden.");
+            alert("Las nueva contraseña no coincide en ambos campos.");
+            return;
+          }
+          if(n1 === curr) {
+            alert("La nueva contraseña debe ser diferente a la actual.");
             return;
           }
 
