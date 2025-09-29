@@ -109,11 +109,17 @@
 /* Body sin scroll - toda la interacción es dentro del div */
 .registro-page,
 .index-page,
-.login-page,
-.home-page {
+.login-page {
     padding-top: 40px;
     overflow: hidden; /* Sin scroll en el body */
     height: 100vh; /* Altura fija del body */
+}
+
+/* Home page con scroll natural */
+.home-page {
+    padding-top: 56px; /* Espacio para navbar fija */
+    overflow: auto; /* Permitir scroll natural */
+    min-height: 100vh; /* Altura mínima completa */
 }
 
 /* Footer dentro de la portada */
@@ -162,6 +168,7 @@
 /* Contenido principal */
 .home-page .container-fluid {
     padding-top: 20px; /* Espacio para que no se esconda detrás de navbar */
+    padding-bottom: 40px; /* Espacio al final para scroll cómodo */
 }
 
 .home-page .list-group-item.active {
