@@ -315,6 +315,94 @@ h1.display-6 {
 
 /*
 //////////////////////////////////
+////// CONSULTA PAQUETES RUTAS VUELO /////////////////////
+//////////////////////////////////
+*/
+
+/* Ajustes generales de página */
+.consultaPaqRutasVuelo-page {
+  padding-top: 56px; /* alto aprox navbar fixed-top */
+}
+
+.consultaPaqRutasVuelo-page .sidebar {
+  top: 56px; /* que no quede debajo de la navbar */
+  max-height: calc(100vh - 56px);
+  overflow: auto;
+}
+
+.consultaPaqRutasVuelo-page .list-group-item.active {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+}
+
+/* Estilos para las tarjetas de paquetes */
+.paquete-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.paquete-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Animaciones suaves */
+#listView, #detailView {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mejoras visuales para la información */
+.consultaPaqRutasVuelo-page .badge {
+  font-size: 0.75em;
+}
+
+.consultaPaqRutasVuelo-page .card-img-top {
+  transition: transform 0.3s ease;
+}
+
+.paquete-card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+/* Estilos para rutas clickeables */
+.ruta-card {
+  transition: all 0.2s ease;
+}
+
+.ruta-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-color: #007bff !important;
+}
+
+.hover-row:hover {
+  background-color: rgba(0,123,255,0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .consultaPaqRutasVuelo-page .paquete-card {
+    margin-bottom: 1rem;
+  }
+  
+  .consultaPaqRutasVuelo-page #detailInfo .row {
+    text-align: center;
+  }
+  
+  .consultaPaqRutasVuelo-page .ruta-card .col-md-4 {
+    text-align: center !important;
+    margin-top: 1rem;
+  }
+}
+
+/*
+//////////////////////////////////
 ////// PERFIL /////////////////////
 //////////////////////////////////
 */
@@ -364,4 +452,132 @@ h1.display-6 {
 @media (max-width: 480px) {
   .avatar-sm { width: 28px; height: 28px; }
   .avatar-fallback { width: 28px; height: 28px; font-size: 0.85rem; }
+}
+
+/*
+//////////////////////////////////
+////// COMPRA PAQUETE ////////////
+//////////////////////////////////
+*/
+
+.compraPaquete-page {
+  padding-top: 56px; /* alto aprox navbar fixed-top */
+}
+
+.compraPaquete-page .sidebar {
+  top: 56px; /* que no quede debajo de la navbar */
+  max-height: calc(100vh - 56px);
+  overflow: auto;
+}
+
+.compraPaquete-page main {
+  padding-top: 0; /* remover padding extra del main */
+  min-height: calc(100vh - 56px); /* altura mínima para ocupar toda la pantalla */
+}
+
+.compraPaquete-page .list-group-item.active {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+}
+
+/* Estilos específicos para las tarjetas de paquetes */
+.compraPaquete-page .paquete-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.compraPaquete-page .paquete-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.compraPaquete-page .paquete-card .card-img-top {
+  transition: transform 0.3s ease;
+}
+
+.compraPaquete-page .paquete-card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+/* Estilos para el modal de compra */
+.compraPaquete-page .modal-content {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.compraPaquete-page .modal-header {
+  border-radius: 15px 15px 0 0;
+  border-bottom: none;
+}
+
+.compraPaquete-page .modal-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0 0 15px 15px;
+}
+
+/* Animaciones para notificaciones */
+.compraPaquete-page .alert {
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Estilos para botones de acción en tarjetas */
+.compraPaquete-page .paquete-card .btn-group,
+.compraPaquete-page .paquete-card .d-flex {
+  gap: 0.5rem;
+}
+
+.compraPaquete-page .paquete-card .btn-sm {
+  font-size: 0.875rem;
+  padding: 0.375rem 0.75rem;
+}
+
+/* Estilos específicos para modal de cancelación */
+.compraPaquete-page #modalCancelarCompra .modal-header {
+  background-color: #dc3545 !important;
+}
+
+.compraPaquete-page #modalCancelarCompra .alert-warning {
+  border-left: 4px solid #ffc107;
+  background-color: #fff3cd;
+  border-color: #ffeaa7;
+}
+
+.compraPaquete-page #modalCancelarCompra .btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .compraPaquete-page .modal-dialog {
+    margin: 1rem;
+  }
+  
+  .compraPaquete-page .paquete-card {
+    margin-bottom: 1rem;
+  }
+  
+  .compraPaquete-page .paquete-card .d-flex {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .compraPaquete-page .paquete-card .btn-sm {
+    width: 100%;
+  }
 }

@@ -11,24 +11,11 @@
   <link href="../assets/css/styles.css" rel="stylesheet">
 
 
-  <style>
-    /* --- Ajustes rápidos para navbar fija + sidebar tipo docs --- */
-    body { padding-top: 56px; } /* alto aprox navbar fixed-top */
-    .sidebar{
-      top: 56px;                 /* que no quede debajo de la navbar */
-      max-height: calc(100vh - 56px);
-      overflow: auto;
-    }
-    .list-group-item.active {
-      background-color: #0d6efd;
-      border-color: #0d6efd;
-      color: #fff;
-    }
-  </style>
+
 </head>
 
 
-<body class="consultaUsuario-page">
+<body class="compraPaquete-page">
   <!-- NAVBAR -->
     <nav class="navbar navbar-dark bg-dark fixed-top navbar-compact">
         <div class="container">
@@ -110,9 +97,19 @@
         </nav>
       </aside>
 
-      <!-- CONTENIDO (container interno para centrar/limitar ancho) -->
-      <main>
-        
+      <!-- CONTENIDO PRINCIPAL -->
+      <main class="col-lg-9 col-xl-10">
+        <!-- El contenido se genera dinámicamente con JavaScript -->
+        <div class="container-fluid px-4 py-4">
+          <div class="row">
+            <div class="col-12 text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+              <p class="mt-3 text-muted">Cargando paquetes disponibles...</p>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   </div>
@@ -131,6 +128,7 @@
   <script src="../assets/js/consulta-usuario.js"></script>
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/roles.js"></script>
+  <script src="../assets/js/comprar-paquetes.js"></script>
 
 </body>
 </html>
