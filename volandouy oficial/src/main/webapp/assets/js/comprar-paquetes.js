@@ -139,14 +139,14 @@
     );
 
     const html = `
-      <div class="container-fluid px-4">
+      <div class="container-fluid py-4">
         <div class="row">
           <div class="col-12">
             <div class="d-flex justify-content-between align-items-center mb-4">
-              <h2 class="text-primary fw-bold">
+              <h1 class="col-12 col-lg-9 col-xl-10 py-4 text-center">
                 <i class="fas fa-shopping-cart me-2"></i>
                 Comprar Paquete de Rutas de Vuelo
-              </h2>
+              </h1>
               <div class="text-muted">
                 <i class="fas fa-package me-1"></i>
                 ${paquetesConRutas.length} paquetes disponibles
@@ -196,7 +196,7 @@
           </div>
           
           <div class="card-body d-flex flex-column">
-            <h5 class="card-title text-primary">${paquete.nombre}</h5>
+            <h5 class="card-title">${paquete.nombre}</h5>
             <p class="card-text text-muted">${paquete.descripcion}</p>
             
             <div class="mt-auto">
