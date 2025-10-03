@@ -107,9 +107,119 @@ Object.defineProperty(window.Volando, 'USERS', { get: () => USERS });
     render(filtered);
   }
 
-  // Abre modal con detalle
+  // Utilidades de datos cruzados
+  function getAuth() {
+    try { return JSON.parse(localStorage.getItem('auth') || 'null'); } catch { return null; }
+  }
+  function esPropio(u) {
+    const a = getAuth();
+    return !!(a && a.nickname && a.nickname === u.nickname);
+  }
+  function reservasDelCliente(nick) {
+    const rs = JSON.parse(localStorage.getItem('volando_reservas') || '{}');
+    // El formato de reservas es por código de vuelo; no tiene cliente.
+    // Para mock: si es propio, mostramos todas; si no, ninguna.
+    return Object.values(rs);
+  }
+  function comprasDelCliente(nick) {
+    try { return JSON.parse(localStorage.getItem(`compras_${nick}`) || '[]'); } catch { return []; }
+  }
+  function catalogoRutasPorAero() {
+    const paqs = window.PaquetesRutasVuelo?.getAllPaquetes?.() || [];
+    const map = {};
+    for (const p of paqs) for (const r of p.rutas_vuelo) {
+      const aero = r.aerolinea;
+      (map[aero] ||= []).push(r);
+    }
+    return map;
+  }
+  function groupRutasPorEstado(rutas) {
+    const g = { Confirmada: [], Ingresada: [], Rechazada: [] };
+    for (const r of rutas) {
+      (g[r.estado] ||= []);
+      if (g[r.estado]) g[r.estado].push(r);
+    }
+    return g;
+  }
+
+  // Abre modal con detalle enriquecido según caso de uso
   function openModal(u) {
     modalTitle.textContent = `${(u.nombre || '')} ${(u.apellido || '')}`.trim() || u.nickname;
+
+    const propio = esPropio(u);
+    const isAir = u.rol === 'Aerolínea';
+    const isCli = u.rol === 'Cliente';
+
+    // Secciones dinámicas
+    let extraHTML = '';
+
+    if (isAir) {
+      // Rutas confirmadas; si propio, también ingresadas y rechazadas
+      const porAero = catalogoRutasPorAero();
+      const nombreAero = u.nombre && u.apellido ? `${u.nombre} ${u.apellido}`.trim() : u.nombre || u.nickname;
+      const rutasAero = porAero[nombreAero] || porAero[u.nombre] || porAero[u.nickname] || [];
+      const grouped = groupRutasPorEstado(rutasAero);
+
+      const bloqueRutas = [];
+      const pintarLista = (title, arr) => arr && arr.length ? `
+        <div class="mb-3">
+          <h6 class="mb-2">${title} <span class="badge bg-secondary">${arr.length}</span></h6>
+          <div class="list-group">
+            ${arr.map(r => `
+              <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-kind="ruta" data-id="${r.id}">
+                <span><i class="fas fa-route me-2"></i>${r.nombre}</span>
+                <span class="badge ${r.estado === 'Confirmada' ? 'bg-success' : r.estado === 'Ingresada' ? 'bg-warning text-dark' : 'bg-danger'}">${r.estado}</span>
+              </a>
+            `).join('')}
+          </div>
+        </div>` : '';
+
+      bloqueRutas.push(pintarLista('Rutas Confirmadas', grouped.Confirmada));
+      if (propio) {
+        bloqueRutas.push(pintarLista('Rutas Ingresadas', grouped.Ingresada));
+        bloqueRutas.push(pintarLista('Rutas Rechazadas', grouped.Rechazada));
+      }
+
+      if (bloqueRutas.join('').trim()) {
+        extraHTML += `<hr><h5 class="mb-3">Rutas de Vuelo</h5>${bloqueRutas.join('')}`;
+      }
+    }
+
+    if (isCli && propio) {
+      // Reservas del cliente y paquetes comprados
+      const reservas = reservasDelCliente(u.nickname);
+      const compras  = comprasDelCliente(u.nickname);
+
+      if (reservas && reservas.length) {
+        extraHTML += `
+          <hr><h5 class="mb-3">Mis Reservas</h5>
+          <div class="list-group mb-3">
+            ${reservas.map(rv => `
+              <a href="#" class="list-group-item list-group-item-action" data-kind="reserva" data-cod="${rv.codigo}">
+                <div class="d-flex justify-content-between">
+                  <span><i class="fas fa-ticket-alt me-2"></i>${rv.codigo} — ${rv.ruta}</span>
+                  <span class="text-muted small">${new Date(rv.fecha).toLocaleString('es-UY')}</span>
+                </div>
+                <div class="small text-muted">Pax: ${rv.pax} · Pago: ${rv.formaPago === 'paquete' ? 'Paquete' : 'General'}${rv.usadosPkg ? ` · Usados Paquete: ${rv.usadosPkg}` : ''}</div>
+              </a>
+            `).join('')}
+          </div>`;
+      }
+
+      if (compras && compras.length) {
+        extraHTML += `
+          <h5 class="mb-3">Mis Paquetes Comprados</h5>
+          <div class="list-group">
+            ${compras.map(cp => `
+              <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" data-kind="paquete" data-nombre="${cp.nombre_paquete}">
+                <span><i class="fas fa-box-open me-2"></i>${cp.nombre_paquete}</span>
+                <span class="badge ${cp.estado === 'Activa' ? 'bg-success' : 'bg-secondary'}">${cp.estado}</span>
+              </a>
+            `).join('')}
+          </div>`;
+      }
+    }
+
     modalBody.innerHTML = `
       <div class="d-flex align-items-center gap-3 mb-3">
         <img src="${avatarFor(u, 96)}" alt="" width="72" height="72"
@@ -120,9 +230,74 @@ Object.defineProperty(window.Volando, 'USERS', { get: () => USERS });
           <div><strong>Email:</strong> <a href="mailto:${u.email}">${u.email}</a></div>
         </div>
       </div>
-      <p class="text-muted small mb-0">* Datos simulados (Parte 1).</p>
+      ${extraHTML || '<p class="text-muted small mb-0">* No hay información adicional para mostrar.</p>'}
+      <p class="text-muted small mb-0 mt-3">* Datos simulados.</p>
     `;
+
+    // Delegación de clicks para abrir detalles
+    modalBody.querySelectorAll('a.list-group-item').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const kind = el.getAttribute('data-kind');
+        if (kind === 'ruta') {
+          const id = Number(el.getAttribute('data-id'));
+          if (window.mostrarDetallesRuta) window.mostrarDetallesRuta(id);
+        } else if (kind === 'reserva') {
+          const cod = el.getAttribute('data-cod');
+          mostrarDetalleReserva(cod);
+        } else if (kind === 'paquete') {
+          const nombre = el.getAttribute('data-nombre');
+          abrirPaquetePorNombre(nombre);
+        }
+      });
+    });
+
     bsModal.show();
+  }
+
+  function abrirPaquetePorNombre(nombre) {
+    const paqs = window.PaquetesRutasVuelo?.getAllPaquetes?.() || [];
+    const p = paqs.find(x => x.nombre.toLowerCase() === String(nombre||'').toLowerCase());
+    if (p && window.mostrarDetallesPaquete) window.mostrarDetallesPaquete(p.id);
+  }
+
+  function mostrarDetalleReserva(codigo) {
+    const rs = JSON.parse(localStorage.getItem('volando_reservas') || '{}');
+    const r = rs[codigo];
+    if (!r) { alert('Reserva no encontrada'); return; }
+
+    // Modal sencillo para reserva
+    const id = 'reservaModal';
+    const prev = document.getElementById(id);
+    if (prev) prev.remove();
+    const html = `
+      <div class="modal fade" id="${id}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Reserva ${r.codigo}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <div><strong>Ruta:</strong> ${r.ruta}</div>
+              <div><strong>Aerolínea:</strong> ${r.aerolinea}</div>
+              <div><strong>Asiento:</strong> ${r.asiento}</div>
+              <div><strong>Pasajeros:</strong> ${r.pax}</div>
+              <div><strong>Equipaje:</strong> ${r.equipaje}</div>
+              <div><strong>Forma de pago:</strong> ${r.formaPago === 'paquete' ? 'Paquete' : 'General'}</div>
+              ${r.usadosPkg ? `<div><strong>Usados de paquete:</strong> ${r.usadosPkg}</div>` : ''}
+              <div class="mt-2"><strong>Total:</strong> $${r.total}</div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    document.body.insertAdjacentHTML('beforeend', html);
+    const m = new bootstrap.Modal(document.getElementById(id));
+    m.show();
+    document.getElementById(id).addEventListener('hidden.bs.modal', function(){ this.remove(); });
   }
 
   // Inicialización

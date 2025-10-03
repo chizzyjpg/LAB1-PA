@@ -279,7 +279,11 @@ h1.display-6 {
   max-height: calc(100vh - 56px);
   overflow: auto;
 }
-
+.list-group-item.active {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  color: #fff;
+}
 /* título */
 /*.consulta-usuario .titulo-consulta{
   color: #0d6efd;            /* azul marca 
