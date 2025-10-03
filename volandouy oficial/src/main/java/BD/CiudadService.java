@@ -56,4 +56,22 @@ public class CiudadService {
 			em.close();
 		}
 	}
+	
+	public boolean existeCiudad(String nombre, String pais) {
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			em.getTransaction().begin();
+			Long count = em.createQuery("SELECT COUNT(c) FROM Ciudad c WHERE c.nombre = :nombre AND c.pais = :pais", Long.class)
+					.setParameter("nombre", nombre)
+					.setParameter("pais", pais)
+					.getSingleResult();
+			em.getTransaction().commit();
+			return count > 0;
+		} catch (RuntimeException ex) {
+			if (em.getTransaction().isActive()) em.getTransaction().rollback();
+			throw ex;
+		} finally {
+			em.close();
+		}
 	}
+}
