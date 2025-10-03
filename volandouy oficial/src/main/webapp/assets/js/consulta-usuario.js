@@ -6,14 +6,17 @@
   const USERS = [
     { id: 1,  rol: 'Cliente',   nickname: 'maria23',  nombre: 'María',  apellido: 'Suárez',   email: 'maria@correo.com',  imagen: 'https://i.pravatar.cc/80?img=5', pass: 1235 },
     { id: 2,  rol: 'Cliente',   nickname: 'marko',    nombre: 'Marco',  apellido: 'Pérez',    email: 'marco@correo.com',  imagen: 'https://i.pravatar.cc/80?img=12', pass: "asd" },
-    { id: 3,  rol: 'Aerolínea', nickname: 'air_uy',   nombre: 'AirUY',  apellido: '',         email: 'contacto@airuy.com', imagen: '', pass: '1235' },
-    { id: 4,  rol: 'Aerolínea', nickname: 'condor',   nombre: 'Cóndor', apellido: 'Air',      email: 'hola@condor.air',     imagen: '', pass: '1235' },
+    { id: 3,  rol: 'Aerolínea', nickname: 'air_uy',   nombre: 'AirUY',  apellido: '',         email: 'contacto@airuy.com', imagen: '', pass: '1235', aerolinea: 'AirUY' },
+    { id: 4,  rol: 'Aerolínea', nickname: 'condor',   nombre: 'Cóndor', apellido: 'Air',      email: 'hola@condor.air',     imagen: '', pass: '1235', aerolinea: 'Cóndor Air' },
     { id: 5,  rol: 'Cliente',   nickname: 'lucas88',  nombre: 'Lucas',  apellido: 'Rodríguez',email: 'lucas@correo.com',   imagen: 'https://i.pravatar.cc/80?img=15', pass: 1235 },
     { id: 6,  rol: 'Cliente',   nickname: 'ani.g',    nombre: 'Ana',    apellido: 'García',   email: 'ana@correo.com',     imagen: 'https://i.pravatar.cc/80?img=32', pass: 1235 },
-    { id: 7,  rol: 'Aerolínea', nickname: 'pampas',   nombre: 'Pampas', apellido: 'Air',      email: 'info@pampas.air',     imagen: '', pass: '1235' },
+    { id: 7,  rol: 'Aerolínea', nickname: 'pampas',   nombre: 'Pampas', apellido: 'Air',      email: 'info@pampas.air',     imagen: '', pass: '1235', aerolinea: 'Pampas Air' },
     { id: 8,  rol: 'Cliente',   nickname: 'sofi_uy',  nombre: 'Sofía',  apellido: 'Martínez', email: 'sofia@correo.com',   imagen: 'https://i.pravatar.cc/80?img=20', pass: 1235 },
     { id: 9,  rol: 'Cliente',   nickname: 'diego_r',  nombre: 'Diego',  apellido: 'Ramos',    email: 'diego@correo.com',   imagen: 'https://i.pravatar.cc/80?img=4', pass: 1235 },
-    { id: 10, rol: 'Aerolínea', nickname: 'aurora',   nombre: 'Aurora', apellido: 'Air',      email: 'contacto@aurora.air', imagen: '', pass: '1235' },
+    { id: 10, rol: 'Aerolínea', nickname: 'aurora',   nombre: 'Aurora', apellido: 'Air',      email: 'contacto@aurora.air', imagen: '', pass: '1235', aerolinea: 'Aurora' },
+    { id: 11, rol: 'Aerolínea', nickname: 'iberia',   nombre: 'Iberia', apellido: '',         email: 'contacto@iberia.air', imagen: '', pass: '1235', aerolinea: 'Iberia' },
+    { id: 12, rol: 'Aerolínea', nickname: 'copa',     nombre: 'Copa',  apellido: 'Airlines',  email: 'contacto@copa.air', imagen: '', pass: '1235', aerolinea: 'Copa Airlines' },
+    { id: 13, rol: 'Aerolínea', nickname: 'zuly',     nombre: 'Zuly',  apellido: 'Fly',        email: 'contacto@zuly.air', imagen: '', pass: '1235', aerolinea: 'ZulyFly' }
   ];
 
   // === Exponer buscador (Front-only / Parte 1) ===

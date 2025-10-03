@@ -374,6 +374,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const precio = Number(vueloActual.precio);
     const basePagable = Math.max(0, pax - usadosPkg);
     const total = basePagable * precio + equipaje * 25;
+    const authCli = (window.Volando?.session?.get && window.Volando.session.get()) || null;
 
     const reserva = {
       codigo:    vueloActual.codigo,
@@ -388,7 +389,11 @@ document.addEventListener("DOMContentLoaded", () => {
       paqueteId,
       usadosPkg,
       precioUnit: precio,
-      total
+      total,
+      clienteId:    authCli?.id ?? null,
+      clienteNick:  authCli?.nickname ?? null,
+      clienteEmail: authCli?.email ?? null,
+      clienteNombre: [authCli?.nombre, authCli?.apellido].filter(Boolean).join(" ") || null,
     };
 
     reservas[vueloActual.codigo] = reserva; // reemplaza si ya existía

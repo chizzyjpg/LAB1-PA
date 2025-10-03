@@ -106,7 +106,8 @@
       nombre: user.nombre,
       apellido: user.apellido,
       email: user.email,
-      avatar: user.imagen || null    // tu campo 'imagen'
+      avatar: user.imagen || null,    // tu campo 'imagen'
+      aerolinea: user.aerolinea || null // nombre o ID de la aerolínea (solo si rol = Aerolínea)
     });
     renderAuthUI(); // refresca áreas de usuario/invitado
     return true;
@@ -138,7 +139,8 @@
         nombre: user.nombre,
         apellido: user.apellido,
         email: user.email,
-        avatar: user.imagen || null
+        avatar: user.imagen || null,
+        aerolinea: user.aerolinea || null
       });
 
       // Cerrar modal y refrescar

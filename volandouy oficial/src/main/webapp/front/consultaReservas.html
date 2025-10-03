@@ -14,16 +14,6 @@
   <style>
     /* --- Ajustes rápidos para navbar fija + sidebar tipo docs --- */
     body { padding-top: 56px; } /* alto aprox navbar fixed-top */
-    .sidebar{
-      top: 56px;                 /* que no quede debajo de la navbar */
-      max-height: calc(100vh - 56px);
-      overflow: auto;
-    }
-    .list-group-item.active {
-      background-color: #0d6efd;
-      border-color: #0d6efd;
-      color: #fff;
-    }
   </style>
 </head>
 
@@ -111,9 +101,62 @@
       </aside>
 
       <!-- CONTENIDO (container interno para centrar/limitar ancho) -->
-      <main>
-        
-      </main>
+    <main class="col-12 col-lg-9 col-xl-10 py-4">
+      <div class="container-fluid text-center">
+
+        <!-- Encabezado dinámico por rol -->
+        <div id="tituloConsulta" class="mb-2">
+          <!-- lo completa JS -->
+        </div>
+        <p id="subtituloConsulta" class="text-muted mb-3">
+          <!-- lo completa JS -->
+        </p>
+
+        <!-- Filtros de selección -->
+        <form id="frmFiltros" class="row g-3 align-items-end mb-3">
+          <div class="col-12 col-md-4">
+            <label for="selAerolinea" class="form-label">Aerolínea</label>
+            <select id="selAerolinea" class="form-select" required>
+              <option value="" selected disabled>Seleccionar…</option>
+            </select>
+          </div>
+
+          <div class="col-12 col-md-5">
+            <label for="selRuta" class="form-label">Ruta</label>
+            <select id="selRuta" class="form-select" disabled required>
+              <option value="" selected disabled>Seleccionar…</option>
+            </select>
+          </div>
+
+          <div class="col-12 col-md-3">
+            <label for="selVuelo" class="form-label">Vuelo</label>
+            <select id="selVuelo" class="form-select" disabled required>
+              <option value="" selected disabled>Seleccionar…</option>
+            </select>
+          </div>
+
+          <div class="col-12 col-md-auto">
+            <button id="btnVer" type="submit" class="btn btn-primary">Ver</button>
+          </div>
+        </form>
+
+        <hr>
+
+        <!-- Resumen filtros -->
+        <div id="resumenSeleccion" class="small text-muted mb-3"></div>
+
+        <!-- Resultados -->
+        <div id="areaResultados">
+          <!-- Cliente: tarjeta con mi reserva
+              Aerolínea: tabla de reservas -->
+        </div>
+
+        <!-- Panel de detalle (Aerolínea) -->
+        <div id="areaDetalle" class="mt-3">
+          <!-- JS renderiza detalle de la reserva seleccionada -->
+        </div>
+      </div>
+    </main>
     </div>
   </div>
 
@@ -131,6 +174,7 @@
   <script src="../assets/js/consulta-usuario.js"></script>
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/roles.js"></script>
+  <script src="../assets/js/consulta-reservas.js"></script>
 
 </body>
 </html>
