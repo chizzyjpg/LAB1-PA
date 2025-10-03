@@ -314,7 +314,7 @@
 
     areaResultados.innerHTML = `
       <div class="table-responsive">
-        <table class="table table-sm align-middle">
+        <table class="table table-sm align-middle table-hover clickable-rows">
           <thead>
             <tr>
               <th>Reserva</th>

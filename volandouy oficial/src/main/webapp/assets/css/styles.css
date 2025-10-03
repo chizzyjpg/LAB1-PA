@@ -652,4 +652,7 @@ h1.display-6 {
   .compraPaquete-page .paquete-card .btn-sm {
     width: 100%;
   }
+
+  .clickable-rows tbody tr { cursor: pointer; }
+
 }
