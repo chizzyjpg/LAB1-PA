@@ -3,12 +3,12 @@ package Logica;
 public class DataUsuarioAux extends DataUsuario {
     private String tipoUsuario;
 
-    public DataUsuarioAux(String nombre, String nickname, String email) {
-        super(nombre, nickname, email);
+    public DataUsuarioAux(String nombre, String nickname, String email, String contra) {
+        super(nombre, nickname, email, contra);
     }
 
     public DataUsuarioAux(DataUsuario du) {
-        super(du.getNombre(), du.getNickname(), du.getEmail());
+        super(du.getNombre(), du.getNickname(), du.getEmail(), du.getContrasenia());
         if (du instanceof DataCliente) {
             tipoUsuario = "Cliente";
         } else if (du instanceof DataAerolinea) {

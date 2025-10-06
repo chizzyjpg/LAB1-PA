@@ -21,8 +21,8 @@ public class Aerolinea extends Usuario {
 
 	protected Aerolinea() {}
 
-	public Aerolinea(String n, String nick, String email, String descGeneral, String linkWeb) {
-		super(n, nick, email);
+	public Aerolinea(String n, String nick, String email, String contra, String descGeneral, String linkWeb) {
+		super(n, nick, email, contra);
 		this.setLinkWeb(linkWeb);
 		this.setDescGeneral(descGeneral);
 		this.rutas = new HashSet<>();

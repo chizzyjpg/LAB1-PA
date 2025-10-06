@@ -17,7 +17,7 @@ public class ClienteService {
 			em.getTransaction().commit();
 			// Convertir Cliente a DataCliente
 			return clientes.stream()
-				.map(c -> new DataCliente(c.getNombre(), c.getNickname(), c.getEmail(),c.getApellido(), c.getFechaNac(),c.getNacionalidad(),c.getTipoDocumento(),c.getNumDocumento()))
+				.map(c -> new DataCliente(c.getNombre(), c.getNickname(), c.getEmail(), c.getContrasenia(), c.getApellido(), c.getFechaNac(),c.getNacionalidad(),c.getTipoDocumento(),c.getNumDocumento()))
 				.collect(Collectors.toList());
 		} catch (RuntimeException ex) {
 			if (em.getTransaction().isActive()) em.getTransaction().rollback();

@@ -35,8 +35,8 @@ public class Cliente extends Usuario{
 
 	protected Cliente() {}
 	
-	public Cliente(String n, String nick, String email, String ap, Date fechaNac, String nac, TipoDocumento tipoDoc, String numDoc) {
-		super(n, nick, email);
+	public Cliente(String n, String nick, String email, String contra, String ap, Date fechaNac, String nac, TipoDocumento tipoDoc, String numDoc) {
+		super(n, nick, email, contra);
 		this.apellido = ap;
 		this.fechaNac = fechaNac;
 		this.nacionalidad = nac;
