@@ -5,9 +5,9 @@ public class DataAerolinea extends DataUsuario {
     private String descGeneral;
     private String sitioWeb;
 
-    public DataAerolinea(String nombre, String nickname, String email,
+    public DataAerolinea(String nombre, String nickname, String email, String contra,
                          String descripcion, String sitioWeb) {
-        super(nombre, nickname, email);
+        super(nombre, nickname, email, contra);
         this.descGeneral = descripcion;
         this.sitioWeb = sitioWeb;
     }

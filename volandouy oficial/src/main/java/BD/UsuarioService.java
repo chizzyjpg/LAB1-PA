@@ -79,6 +79,7 @@ import Logica.DataVueloEspecifico;
 		                        a.getNombre(),
 		                        a.getNickname(),
 		                        a.getEmail(),
+		                        a.getContrasenia(),
 		                        a.getDescGeneral(),
 		                        a.getLinkWeb()
 		                    );
@@ -87,7 +88,8 @@ import Logica.DataVueloEspecifico;
 		                    return new DataUsuarioAux(
 		                        u.getNombre(),
 		                        u.getNickname(),
-		                        u.getEmail()
+		                        u.getEmail(),
+		                        u.getContrasenia()
 		                    );
 		                }
 		            })
@@ -141,6 +143,7 @@ import Logica.DataVueloEspecifico;
 			                c.getNombre(),
 			                c.getNickname(),
 			                c.getEmail(),
+			                c.getContrasenia(),
 			                c.getApellido(),
 			                c.getFechaNac(),
 			                c.getNacionalidad(),
@@ -152,6 +155,7 @@ import Logica.DataVueloEspecifico;
 			                a.getNombre(),
 			                a.getNickname(),
 			                a.getEmail(),
+			                a.getContrasenia(),
 			                a.getDescGeneral(),
 			                a.getLinkWeb()
 			            );
@@ -159,7 +163,8 @@ import Logica.DataVueloEspecifico;
 					return new DataUsuarioAux(
 	                        u.getNombre(),
 	                        u.getNickname(),
-	                        u.getEmail()
+	                        u.getEmail(),
+	                        u.getContrasenia()
 	                    );
 				}
 				

@@ -7,11 +7,13 @@ public abstract class DataUsuario {
     private String nombre;
     private String nickname;
     private String email;
+    private String contrasenia;
     
-    public DataUsuario(String nombre, String nickname, String email){
+    public DataUsuario(String nombre, String nickname, String email, String contrasenia) {
         this.nombre = nombre;
         this.nickname = nickname;
         this.email = email;
+        this.contrasenia = contrasenia;
     }
     
     //Getters
@@ -25,5 +27,7 @@ public abstract class DataUsuario {
     public String getEmail(){
         return email;
     }
-    
+    public String getContrasenia(){
+		return contrasenia;
+	}
 }

@@ -25,6 +25,7 @@ public final class ManejadorUsuario {
                 /* nombre   */ dc.getNombre(),
                 /* nickname */ dc.getNickname(),
                 /* email    */ dc.getEmail(),
+                /* contra   */ dc.getContrasenia(),
                 /* apellido */ dc.getApellido(),
                 /* fechaNac */ copy(dc.getFechaNac()), // Copia defensiva del Date (Date es mutable).
                 /* nacional */ dc.getNacionalidad(),
@@ -44,6 +45,7 @@ public final class ManejadorUsuario {
                 /* nombre     */ da.getNombre(),
                 /* nickname   */ da.getNickname(),
                 /* email      */ da.getEmail(),
+                /* contra	 */ da.getContrasenia(),
                 /* descripcion*/ da.getDescripcion(),
                 /* sitioWeb   */ da.getSitioWeb()
             );
@@ -71,6 +73,7 @@ public final class ManejadorUsuario {
                 /* nombre   */ c.getNombre(),
                 /* nickname */ c.getNickname(),
                 /* email    */ c.getEmail(),
+                /* contra   */ c.getContrasenia(),
                 /* apellido */ c.getApellido(),
                 /* fechaNac */ copy(c.getFechaNac()), // Copia defensiva del Date.
                 /* nacional */ c.getNacionalidad(),
@@ -84,6 +87,7 @@ public final class ManejadorUsuario {
                 /* nombre     */ a.getNombre(),
                 /* nickname   */ a.getNickname(),
                 /* email      */ a.getEmail(),
+                /* contra	 */ a.getContrasenia(),
                 /* descripcion*/ a.getDescGeneral(), // Nota: nombres de getters distintos a los del DTO.
                 /* sitioWeb   */ a.getLinkWeb()
             );

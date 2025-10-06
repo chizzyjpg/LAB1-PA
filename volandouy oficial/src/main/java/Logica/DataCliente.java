@@ -14,13 +14,14 @@ public class DataCliente extends DataUsuario {
             String nombre,
             String nickname,
             String email,
+            String contra,
             String apellido,
             Date fechaNac,
             String nacionalidad,
             TipoDocumento tipo,
             String numeroDocumento
     ) {
-        super(nombre, nickname, email);
+        super(nombre, nickname, email, contra);
         this.apellido = apellido;
         // copia defensiva para no exponer el Date interno
         this.fechaNac = (fechaNac == null) ? null : new Date(fechaNac.getTime());

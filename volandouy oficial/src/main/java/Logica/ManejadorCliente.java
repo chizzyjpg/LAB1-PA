@@ -10,14 +10,14 @@ public class ManejadorCliente {
 	// Obtener
 	public static Cliente toEntity(DataCliente cli) {
 		Objects.requireNonNull(cli, "Los datos no pueden ser nulos");
-		return new Cliente(cli.getNombre(), cli.getNickname(), cli.getEmail(), cli.getApellido(), cli.getFechaNac(),
+		return new Cliente(cli.getNombre(), cli.getNickname(), cli.getEmail(), cli.getContrasenia(), cli.getApellido(), cli.getFechaNac(),
 						   cli.getNacionalidad(), cli.getTipoDocumento(), cli.getNumDocumento());
 		
 	}
 	
 	public static DataCliente toData(Cliente c) {
 		Objects.requireNonNull(c, "El cliente no puede ser nulo");
-		return new DataCliente(c.getNombre(), c.getNickname(), c.getEmail(), c.getApellido(), c.getFechaNac(),
+		return new DataCliente(c.getNombre(), c.getNickname(), c.getEmail(), c.getContrasenia(), c.getApellido(), c.getFechaNac(),
 				   c.getNacionalidad(), c.getTipoDocumento(), c.getNumDocumento());
 	}
 	

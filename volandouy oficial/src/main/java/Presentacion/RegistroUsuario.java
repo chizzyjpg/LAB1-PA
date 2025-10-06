@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
 
 public class RegistroUsuario extends JInternalFrame {
 
@@ -51,6 +52,8 @@ public class RegistroUsuario extends JInternalFrame {
 	private JPanel panelCliente;
 	private JPanel panelAerolinea;
 	private JTextArea textAreaDescripcion;
+	private JPasswordField passwordField;
+	private JPasswordField confirmPasswordField;
 	//private final ISistema sistema;
 	/**
 	 * Launch the application.
@@ -87,7 +90,7 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		JPanel panelUsuario = new JPanel();
 		contentPane.add(panelUsuario, BorderLayout.NORTH);
-		panelUsuario.setLayout(new MigLayout("", "[][grow][]", "[][][][]"));
+		panelUsuario.setLayout(new MigLayout("", "[][grow][]", "[][][][][][]")); // se agregan dos filas para contraseñas
 		
 		JLabel lblTipo = new JLabel("Tipo:");
 		lblTipo.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
@@ -133,6 +136,28 @@ public class RegistroUsuario extends JInternalFrame {
 		textFieldEmail.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textFieldEmail.setColumns(10);
 		panelUsuario.add(textFieldEmail, "cell 1 3,growx");
+		
+		// Campo Contraseña
+		JLabel lblPassword = new JLabel("Contraseña");
+		lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPassword.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+		panelUsuario.add(lblPassword, "cell 0 4,alignx trailing");
+		
+		passwordField = new JPasswordField();
+		passwordField.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		passwordField.setColumns(10);
+		panelUsuario.add(passwordField, "cell 1 4,growx");
+		
+		// Campo Confirmar Contraseña
+		JLabel lblConfirmPassword = new JLabel("Confirmar Contraseña");
+		lblConfirmPassword.setHorizontalAlignment(SwingConstants.CENTER);
+		lblConfirmPassword.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+		panelUsuario.add(lblConfirmPassword, "cell 0 5,alignx trailing");
+		
+		confirmPasswordField = new JPasswordField();
+		confirmPasswordField.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		confirmPasswordField.setColumns(10);
+		panelUsuario.add(confirmPasswordField, "cell 1 5,growx");
 		
 		JPanel panelCards = new JPanel();
 		contentPane.add(panelCards, BorderLayout.CENTER);
@@ -238,101 +263,109 @@ public class RegistroUsuario extends JInternalFrame {
 		
 		panel.add(btnGuardar);
 		btnGuardar.addActionListener(e -> {
-		    String nickname = textFieldNickname.getText().trim();
-		    String nombre   = textFieldNombre.getText().trim();
-		    String email    = textFieldEmail.getText().trim();
-		    
-		    if (nickname.isEmpty() || nombre.isEmpty() || email.isEmpty() ) {
-	            JOptionPane.showMessageDialog(this, "Complete todos los campos.", "Validación", JOptionPane.ERROR_MESSAGE);
-	            return;
-	        }
-		    
-		    String emailVerificacion = textFieldEmail.getText().trim();
-		    if (!emailValido(emailVerificacion)) {
-		        JOptionPane.showMessageDialog(RegistroUsuario.this,"Email inválido. Ejemplo: nombre@dominio.com", "Validación", JOptionPane.ERROR_MESSAGE);
-		        textFieldEmail.requestFocus();
-		        return;
-		    }
-
-		    if (rdbtnCliente.isSelected()) {
-		        String apellido = textFieldApellido.getText().trim();
-		        java.util.Date fUtil = dcFechaNac.getDate();
-		        String nac = textFieldNacionalidad.getText().trim();
-		        TipoDocumento tipo = (TipoDocumento) comboBox.getSelectedItem();
-		        String nDoc = textFieldNumeroDocumento.getText().trim();
-
-		        if (textFieldNickname.getText().trim().isEmpty()
-		            || textFieldNombre.getText().trim().isEmpty()
-		            || textFieldEmail.getText().trim().isEmpty()
-		            || fUtil == null || nac.isEmpty() || tipo == null || nDoc.isEmpty()) {
-		            JOptionPane.showMessageDialog(this, "Complete todos los campos de Cliente.", "Validación", JOptionPane.ERROR_MESSAGE);
-		            return;
-		        }
-
-		        LocalDate hoy = LocalDate.now();
-		        LocalDate minFecha = hoy.minusYears(120);
-
-		        // una sola conversión a LocalDate
-		        LocalDate fechaNacimiento = fUtil.toInstant()
-		                .atZone(ZoneId.systemDefault())
-		                .toLocalDate();
-
-		        if (fechaNacimiento.isAfter(hoy) || fechaNacimiento.isBefore(minFecha)) {
-		            JOptionPane.showMessageDialog(this, "Fecha de Nacimiento no válida", "Validación", JOptionPane.ERROR_MESSAGE);
-		            return;
-		        }
-		        
-		        String docLimpio = nDoc.replaceAll("[.\\-\\s]", "");
-		        
-		        if (!docLimpio.matches("\\d+")) {
-		            JOptionPane.showMessageDialog(this, "Número de Documento no válido.", "Validación", JOptionPane.ERROR_MESSAGE);
-		            return;
-		        }
-
-		        // Crear DataCliente y registrar
-		        DataCliente data = new DataCliente(
-		                textFieldNombre.getText().trim(),
-		                textFieldNickname.getText().trim(),
-		                textFieldEmail.getText().trim(),
-		                apellido,
-		                fUtil,           // se mantiene como java.util.Date para el DTO
-		                nac,
-		                tipo,
-		                docLimpio
-		        );
-
-		        try {
-		            sistema.registrarUsuario(data); // usar la instancia inyectada
-		            JOptionPane.showMessageDialog(this, "Cliente registrado con éxito");
-		        } catch (IllegalArgumentException ex) {
-		            JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
-		        }       
-		        
-		        limpiarFormulario();
-		        
-		        
-		    } else { // Aerolínea
-		        String descripcion = textAreaDescripcion.getText().trim();
-		        String sitio       = textFieldSitioWeb.getText().trim(); // opcional
-		        
-		        // validar y registrar Aerolínea...
-		        DataAerolinea data = new DataAerolinea(
-		                nombre,
-		                nickname,
-		                email,
-		                descripcion,
-		                sitio
-		        );
-		        sistema.registrarUsuario(data);
-		        
-		        if (descripcion.isEmpty()) {
-		            JOptionPane.showMessageDialog(this, "La descripción de la aerolínea es obligatoria.", "Validación", JOptionPane.ERROR_MESSAGE);
-		            return;
-		        }
-		        
-		        limpiarFormulario(); // ⬅ limpiar al final
-		        }
-		});
+            String nickname = textFieldNickname.getText().trim();
+            String nombre   = textFieldNombre.getText().trim();
+            String email    = textFieldEmail.getText().trim();
+            String password = new String(passwordField.getPassword()).trim();
+            String confirm  = new String(confirmPasswordField.getPassword()).trim();
+            
+            // Validaciones básicas
+            if (nickname.isEmpty() || nombre.isEmpty() || email.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Complete todos los campos obligatorios.", "Validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Validación contraseña (se exige pero NO se pasa al DTO)
+            if (password.isEmpty() || confirm.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese y confirme la contraseña.", "Validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!password.equals(confirm)) {
+                JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden.", "Validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            // Validación email
+            if (!emailValido(email)) {
+                JOptionPane.showMessageDialog(this, "Email inválido. Ejemplo: nombre@dominio.com", "Validación", JOptionPane.ERROR_MESSAGE);
+                textFieldEmail.requestFocus();
+                return;
+            }
+            
+            if (rdbtnCliente.isSelected()) {
+                String apellido = textFieldApellido.getText().trim();
+                java.util.Date fUtil = dcFechaNac.getDate();
+                String nac = textFieldNacionalidad.getText().trim();
+                TipoDocumento tipo = (TipoDocumento) comboBox.getSelectedItem();
+                String nDoc = textFieldNumeroDocumento.getText().trim();
+                
+                if (apellido.isEmpty() || fUtil == null || nac.isEmpty() || tipo == null || nDoc.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Complete todos los campos de Cliente.", "Validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                LocalDate hoy = LocalDate.now();
+                LocalDate minFecha = hoy.minusYears(120);
+                LocalDate fechaNacimiento = fUtil.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                if (fechaNacimiento.isAfter(hoy) || fechaNacimiento.isBefore(minFecha)) {
+                    JOptionPane.showMessageDialog(this, "Fecha de Nacimiento no válida.", "Validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                String docLimpio = nDoc.replaceAll("[.\\-\\s]", "");
+                if (!docLimpio.matches("\\d+")) {
+                    JOptionPane.showMessageDialog(this, "Número de Documento no válido.", "Validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                // Crear DTO SIN contraseña
+                DataCliente data = new DataCliente(
+                        nombre,
+                        nickname,
+                        email,
+                        password, // Se pasa la contraseña al constructor del DTO
+                        apellido,
+                        fUtil,
+                        nac,
+                        tipo,
+                        docLimpio
+                );
+                
+                try {
+                    sistema.registrarUsuario(data);
+                    JOptionPane.showMessageDialog(this, "Cliente registrado con éxito");
+                    limpiarFormulario();
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
+                }
+                
+            } else { // Aerolínea
+                String descripcion = textAreaDescripcion.getText().trim();
+                String sitio = textFieldSitioWeb.getText().trim();
+                
+                if (descripcion.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "La descripción de la aerolínea es obligatoria.", "Validación", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                
+                DataAerolinea data = new DataAerolinea(
+                        nombre,
+                        nickname,
+                        email,
+                        password, // Se pasa la contraseña al constructor del DTO
+                        descripcion,
+                        sitio
+                );
+                
+                try {
+                    sistema.registrarUsuario(data);
+                    JOptionPane.showMessageDialog(this, "Aerolínea registrada con éxito");
+                    limpiarFormulario();
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Validación", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 		
 		// Cambiar tarjeta según radio seleccionado
 		rdbtnCliente.addActionListener(e -> {
@@ -366,7 +399,9 @@ public class RegistroUsuario extends JInternalFrame {
 	    	textAreaDescripcion.setText("");
 	        textFieldSitioWeb.setText("");
 	    }
-
+	    
+	    if (passwordField != null) passwordField.setText("");
+	    if (confirmPasswordField != null) confirmPasswordField.setText("");
 	}
 	
 	private static final java.util.regex.Pattern EMAIL_RX =
