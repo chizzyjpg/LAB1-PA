@@ -70,7 +70,7 @@ public class RutaVueloService {
 	                    r.getCostoEjecutivo(),
 	                    new DataCategoria(r.getCategoriaR().getNombre()),
 	                    "",            // no conocemos el nicknameAerolinea aquí
-	                    r.getEstado()
+	                    r.getEstado(), r.getDescripcionCorta()
 	                );
 	                dto.setIdRuta(r.getIdRuta());   // ← CLAVE: pasar el ID real
 	                return dto;

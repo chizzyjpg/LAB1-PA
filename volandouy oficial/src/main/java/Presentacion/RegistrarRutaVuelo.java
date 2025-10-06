@@ -91,9 +91,19 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		lblDesc.setBounds(8, 89, 87, 20);
 		getContentPane().add(lblDesc);
 		
+		JLabel lblDescCorta = new JLabel("Descripción corta:");
+		lblDescCorta.setFont(new Font("Comic Sans MS", Font.PLAIN, 14));
+		lblDescCorta.setBounds(8, 147, 145, 20);
+		getContentPane().add(lblDescCorta);
+		
+		JTextArea textAreaDescCorta = new JTextArea();
+		textAreaDescCorta.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		textAreaDescCorta.setBounds(155, 148, 379, 25);
+		getContentPane().add(textAreaDescCorta);
+		
 		JTextArea textAreaDesc = new JTextArea();
 		textAreaDesc.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		textAreaDesc.setBounds(155, 91, 379, 78);
+		textAreaDesc.setBounds(155, 91, 379, 46);
 		getContentPane().add(textAreaDesc);
 		
 		JLabel lblHora = new JLabel("Hora:");
@@ -247,6 +257,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		    	DataAerolinea aerolinea = (DataAerolinea) comboAerolinea.getSelectedItem();
 		        String nombre = textFieldNombre.getText().trim();
 		        String Descripcion = textAreaDesc.getText().trim();
+		        String descCorta = textAreaDescCorta.getText().trim();
 		        String turista = textFieldTurista.getText().trim();
 		        String ejecutivo = textFieldEjecutivo.getText().trim(); // hoy no lo usamos porque Ruta tiene un solo costo base
 		        String costo = textFieldEquipajeExtra.getText().trim();
@@ -258,6 +269,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        // Validaciones mínimas (las tuyas)
 		        if(nombre.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Nombre NO puede estar vacío", "Error Nombre" , JOptionPane.ERROR_MESSAGE); return; }
 		        if(Descripcion.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Descripción NO puede estar vacía", "Error Descripción" , JOptionPane.ERROR_MESSAGE); return; }
+		        if(descCorta.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "La Descripción Corta NO puede estar vacía", "Error Descripción Corta" , JOptionPane.ERROR_MESSAGE); return; }
 		        if(turista.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Costo Turista NO puede estar vacío", "Error Costo" , JOptionPane.ERROR_MESSAGE); return; }
 		        if(ejecutivo.isEmpty()) { /* por ahora no lo usamos, pero dejo tu check */ JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Costo Ejecutivo NO puede estar vacío", "Error Costo" , JOptionPane.ERROR_MESSAGE); return; }
 		        if(costo.isEmpty()) { JOptionPane.showMessageDialog(RegistrarRutaVuelo.this, "El Costo de Equipaje NO puede estar vacío", "Error Costo" , JOptionPane.ERROR_MESSAGE); return; }
@@ -299,7 +311,8 @@ public class RegistrarRutaVuelo extends JInternalFrame {
                         costoEjecutivo,
                         dataCat,
                         aerolinea.getNickname(),
-                        EstadoRuta.INGRESADA
+                        EstadoRuta.INGRESADA,
+						descCorta
                     );
                     sistema.registrarRuta(datos);
 
@@ -341,6 +354,8 @@ public class RegistrarRutaVuelo extends JInternalFrame {
 		        return this;
 		    }
 		});
+		
+		
 
 	}
 }

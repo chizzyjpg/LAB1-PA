@@ -23,7 +23,7 @@ public class ManejadorRuta {
             data.getNombre(), data.getDescripcion(),
             origen, destino,
             data.getHora(), data.getFechaAlta(),
-            data.getCostoTurista(), data.getCostoEquipajeExtra(), data.getCostoEjecutivo(), categoria
+            data.getCostoTurista(), data.getCostoEquipajeExtra(), data.getCostoEjecutivo(), categoria, data.getDescripcionCorta()
         );
         // Ya no se persiste aquí, solo se crea la entidad
         return r;
@@ -54,7 +54,7 @@ public class ManejadorRuta {
             r.getHora(), r.getFechaAlta(),
             r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo(), categoria,
             "" // No se conoce el nicknameAerolinea aquí
-            , r.getEstado()
+            , r.getEstado(), r.getDescripcionCorta()
         );
         dto.setIdRuta(r.getIdRuta());
         return dto;

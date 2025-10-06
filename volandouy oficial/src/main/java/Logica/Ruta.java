@@ -26,6 +26,9 @@ public class Ruta {
     @Column(name = "Descripcion", nullable = false, length = 200)
     private String descripcion;
     
+    @Column(name = "Descripcion corta", nullable = true, length = 200)
+    private String descripcionCorta;
+    
     @ManyToOne(optional = false)
     @JoinColumn(name = "origen_idCiudad", nullable = false, referencedColumnName = "idCiudad")
     private Ciudad origen;
@@ -73,7 +76,7 @@ public class Ruta {
     public Ruta(String n, String desc,
                 Ciudad origen, Ciudad destino,
                 int hora, Date fechaAlta,
-                BigDecimal costoTurista, int costoEquipajeExtra, BigDecimal costoEjecutivo, Categoria categoria) {
+                BigDecimal costoTurista, int costoEquipajeExtra, BigDecimal costoEjecutivo, Categoria categoria, String descCorta) {
         this.nombre = n;
         this.descripcion = desc;
         this.origen = origen;
@@ -86,6 +89,7 @@ public class Ruta {
         this.costoEjecutivo = costoEjecutivo;
         this.categoria = categoria;
         this.estado = EstadoRuta.INGRESADA;
+        this.descripcionCorta = descCorta;
     }
 
     // getters
@@ -103,6 +107,7 @@ public class Ruta {
     public Set<VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
     public Set<Aerolinea> getAerolineas() { return aerolineas; }
     public EstadoRuta getEstado() { return estado; }
+    public String getDescripcionCorta() { return descripcionCorta; }
 
     // setters
     public void setNombre(String n) { this.nombre = n; }
@@ -118,11 +123,13 @@ public class Ruta {
     public void setVuelosEspecificos(Set<VueloEspecifico> vuelos) { this.vuelosEspecificos = vuelos; }
     public void setAerolineas(Set<Aerolinea> aerolineas) { this.aerolineas = aerolineas; }
     public void setEstado(EstadoRuta estado) { this.estado = estado; }
+    public void setDescripcionCorta(String descCorta) { this.descripcionCorta = descCorta; }
 
     @Override public String toString() {
         return "Ruta [idRuta=" + idRuta +
                ", nombre=" + nombre +
                ", descripcion=" + descripcion +
+               ", descripcionCorta=" + descripcionCorta +
                ", origen=" + (origen!=null ? (origen.getNombre()+", "+origen.getPais()) : null) +
                ", destino=" + (destino!=null ? (destino.getNombre()+", "+destino.getPais()) : null) +
                ", hora=" + hora +
