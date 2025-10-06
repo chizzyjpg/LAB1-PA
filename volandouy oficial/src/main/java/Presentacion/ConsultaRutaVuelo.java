@@ -218,9 +218,11 @@ public class ConsultaRutaVuelo extends JInternalFrame {
         String ct = anyMoney(r.getCostoTurista());
         String ce = anyMoney(r.getCostoEquipajeExtra());
         String cj = anyMoney(r.getCostoEjecutivo());
+        String dc = nullToDash(r.getDescripcionCorta());
 
         return """
                Nombre: %s
+               Descripción Corta: %s
                Descripción: %s
                Origen: %s
                Destino: %s
@@ -230,7 +232,7 @@ public class ConsultaRutaVuelo extends JInternalFrame {
                Costo equipaje extra: %s
                Costo Ejecutivo: %s
                """.formatted(
-                r.getNombre(),
+                r.getNombre(), dc,
                 nullToDash(r.getDescripcion()),
                 o, d, h, f,
                 ct, ce, cj
