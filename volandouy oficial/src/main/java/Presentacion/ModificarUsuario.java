@@ -231,6 +231,7 @@ public class ModificarUsuario extends JInternalFrame {
                         txtNombre.getText().trim(),
                         dcActual.getNickname(),        // nickname NO cambia
                         dcActual.getEmail(),           // email NO cambia
+                        dcActual.getContrasenia(),    // contraseña NO cambia
                         txtApellido.getText().trim(),
                         dcFechaNac.getDate(),
                         txtNacionalidad.getText().trim(),
@@ -252,6 +253,7 @@ public class ModificarUsuario extends JInternalFrame {
                         txtNombre.getText().trim(),
                         daActual.getNickname(),        // nickname NO cambia
                         daActual.getEmail(),           // email NO cambia
+                        daActual.getContrasenia(),    // contraseña NO cambia
                         areaDesc.getText().trim(),
                         txtSitio.getText().trim()
                 );
