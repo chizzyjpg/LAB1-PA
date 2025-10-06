@@ -620,5 +620,30 @@ public class Sistema implements ISistema {
 		res.setCliente(cliente);
 		reservaService.registrarReserva(res);
 	}
+	
+		// ======================
+	    //  CAMBIAR ESTADO RUTA
+	    // ======================
 
+	@Override
+	public void cambiarEstadoRuta(int idRuta, EstadoRuta nuevoEstado) {
+		if (nuevoEstado == null) throw new IllegalArgumentException("El nuevo estado no puede ser nulo");
+		RutaVueloService rutaService = new RutaVueloService();
+		Ruta ruta = rutaService.buscarRutaPorId(idRuta);
+		if (ruta == null) {
+			throw new IllegalArgumentException("No existe una ruta con ese ID");
+		}
+		if (ruta.getEstado() == nuevoEstado) {
+			throw new IllegalArgumentException("La ruta ya está en el estado indicado");
+		}
+		if (ruta.getEstado() != EstadoRuta.INGRESADA) {
+			throw new IllegalStateException("Solo se pueden cambiar rutas en estado \"Ingresada\"");
+		}
+		if (nuevoEstado == EstadoRuta.INGRESADA) {
+			throw new IllegalArgumentException("No se puede cambiar a estado \"Ingresada\"");
+		}
+		ruta.setEstado(nuevoEstado);
+		rutaService.actualizarRuta(ruta);
+
+	}
 }

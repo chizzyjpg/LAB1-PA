@@ -35,49 +35,56 @@ public class RutaVueloService {
         }
     }
 	
-	public List<DataRuta> listarRutas(){
-		EntityManager em = JPAUtil.getEntityManager();
-		try {
-			em.getTransaction().begin();
-			List<Ruta> rutas = em.createQuery("from Ruta", Ruta.class).getResultList();
-			em.getTransaction().commit();
-			// Convertir Ruta a DataRuta usando DTOs
-			return rutas.stream()
-				.map(r -> new DataRuta(
-					r.getNombre(),
-					r.getDescripcion(),
-					new DataCiudad(
-						r.getOrigen().getNombre(),
-						r.getOrigen().getPais(),
-						r.getOrigen().getNombreAeropuerto(),
-						r.getOrigen().getDescripcionAeropuerto(),
-						r.getOrigen().getFechaAlta(),
-						r.getOrigen().getSitioWeb()
-					),
-					new DataCiudad(
-						r.getDestino().getNombre(),
-						r.getDestino().getPais(),
-						r.getDestino().getNombreAeropuerto(),
-						r.getDestino().getDescripcionAeropuerto(),
-						r.getDestino().getFechaAlta(),
-						r.getDestino().getSitioWeb()
-					),
-					r.getHora(),
-					r.getFechaAlta(),
-					r.getCostoTurista(),
-					r.getCostoEquipajeExtra(),
-					r.getCostoEjecutivo(),
-					new DataCategoria(r.getCategoriaR().getNombre()),
-					"" // No se conoce el nicknameAerolinea aquí
-				))
-				.collect(Collectors.toList());
-		} catch (RuntimeException ex) {
-			if (em.getTransaction().isActive()) em.getTransaction().rollback();
-			throw ex; // propagar para que la UI decida qué mostrar
-		} finally {
-			em.close();
-		}
+	public List<DataRuta> listarRutas() {
+	    EntityManager em = JPAUtil.getEntityManager();
+	    try {
+	        em.getTransaction().begin();
+	        List<Ruta> rutas = em.createQuery("from Ruta", Ruta.class).getResultList();
+	        em.getTransaction().commit();
+
+	        return rutas.stream()
+	            .map(r -> {
+	                DataRuta dto = new DataRuta(
+	                    r.getNombre(),
+	                    r.getDescripcion(),
+	                    new DataCiudad(
+	                        r.getOrigen().getNombre(),
+	                        r.getOrigen().getPais(),
+	                        r.getOrigen().getNombreAeropuerto(),
+	                        r.getOrigen().getDescripcionAeropuerto(),
+	                        r.getOrigen().getFechaAlta(),
+	                        r.getOrigen().getSitioWeb()
+	                    ),
+	                    new DataCiudad(
+	                        r.getDestino().getNombre(),
+	                        r.getDestino().getPais(),
+	                        r.getDestino().getNombreAeropuerto(),
+	                        r.getDestino().getDescripcionAeropuerto(),
+	                        r.getDestino().getFechaAlta(),
+	                        r.getDestino().getSitioWeb()
+	                    ),
+	                    r.getHora(),
+	                    r.getFechaAlta(),
+	                    r.getCostoTurista(),
+	                    r.getCostoEquipajeExtra(),
+	                    r.getCostoEjecutivo(),
+	                    new DataCategoria(r.getCategoriaR().getNombre()),
+	                    "",            // no conocemos el nicknameAerolinea aquí
+	                    r.getEstado()
+	                );
+	                dto.setIdRuta(r.getIdRuta());   // ← CLAVE: pasar el ID real
+	                return dto;
+	            })
+	            .collect(Collectors.toList());
+
+	    } catch (RuntimeException ex) {
+	        if (em.getTransaction().isActive()) em.getTransaction().rollback();
+	        throw ex;
+	    } finally {
+	        em.close();
+	    }
 	}
+
 
 	public Integer buscarRutaPorNombreYObtenerId(String nombre) {
 		EntityManager em = JPAUtil.getEntityManager();
@@ -103,6 +110,20 @@ public class RutaVueloService {
 			Ruta ruta = em.find(Ruta.class, idRuta);
 			em.getTransaction().commit();
 			return ruta;
+		} catch (RuntimeException ex) {
+			if (em.getTransaction().isActive()) em.getTransaction().rollback();
+			throw ex; // propagar para que la UI decida qué mostrar
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void actualizarRuta(Ruta r) {
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.merge(r);
+			em.getTransaction().commit();
 		} catch (RuntimeException ex) {
 			if (em.getTransaction().isActive()) em.getTransaction().rollback();
 			throw ex; // propagar para que la UI decida qué mostrar
