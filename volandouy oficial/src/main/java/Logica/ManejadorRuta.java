@@ -48,13 +48,16 @@ public class ManejadorRuta {
             r.getDestino().getSitioWeb()
         );
         DataCategoria categoria = new DataCategoria(r.getCategoriaR().getNombre());
-        return new DataRuta(
+        DataRuta dto = new DataRuta(
             r.getNombre(), r.getDescripcion(),
             origen, destino,
             r.getHora(), r.getFechaAlta(),
             r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo(), categoria,
             "" // No se conoce el nicknameAerolinea aquí
+            , r.getEstado()
         );
+        dto.setIdRuta(r.getIdRuta());
+        return dto;
     }
     
     // HELLPERS

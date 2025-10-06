@@ -16,12 +16,13 @@ public class DataRuta {
     private int costoEquipajeExtra;
     private DataCategoria categoria;
     private String nicknameAerolinea;
+    private EstadoRuta estado;
     
     public DataRuta(String nombre, String descripcion,
                     DataCiudad ciudadOrigen, DataCiudad ciudadDestino,
                     int hora, Date fechaAlta,
                     BigDecimal costoTurista, int costoEquipajeExtra, BigDecimal costoEjecutivo, DataCategoria categoria,
-                    String nicknameAerolinea) {
+                    String nicknameAerolinea, EstadoRuta estado) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.ciudadOrigen = ciudadOrigen;
@@ -33,6 +34,7 @@ public class DataRuta {
         this.costoEjecutivo = costoEjecutivo;
         this.categoria = categoria;
         this.nicknameAerolinea = nicknameAerolinea;
+        this.estado = estado;
     }
 
     // Getters
@@ -48,6 +50,10 @@ public class DataRuta {
     public int getCostoEquipajeExtra() { return costoEquipajeExtra; }
     public DataCategoria getCategoria() { return categoria; }
     public String getNicknameAerolinea() { return nicknameAerolinea; }
+    public EstadoRuta getEstado() { return estado; }
+    
+    public void setIdRuta(int idRuta) { this.idRuta = idRuta; }
+
     
     @Override
     public String toString() {

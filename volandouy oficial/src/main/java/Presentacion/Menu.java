@@ -247,6 +247,24 @@ public class Menu extends JFrame {
 		    compraPaquete.toFront();
 		});
 		
+		JMenu mnNewMenu_4 = new JMenu("Aceptar / Rechazar");
+		menuBar.add(mnNewMenu_4);
+		
+		JMenuItem mntmNewMenuItem_14 = new JMenuItem("Ruta de Vuelo");
+		mntmNewMenuItem_14.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AceptarRechazarRuta nuevaResVuelo = new AceptarRechazarRuta(sistema);
+				nuevaResVuelo.setVisible(true);
+				desktopPane.add(nuevaResVuelo);
+				desktopPane.revalidate();
+				desktopPane.repaint();
+
+			}
+		});
+		
+		mnNewMenu_4.add(mntmNewMenuItem_14);
+		
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -258,5 +276,4 @@ public class Menu extends JFrame {
 		desktopPane.repaint();
 	
 	}
-
 }

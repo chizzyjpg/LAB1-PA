@@ -41,6 +41,7 @@ public interface ISistema {
 	void registrarPaquete(DataPaqueteAlta data);  
 	void agregarRutaAPaquete(String nombrePaquete,String nicknameAerolinea,String nombreRuta, TipoAsiento tipo, int cantidad);
 	void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos);
+	void cambiarEstadoRuta(int idRuta, EstadoRuta nuevoEstado);
 
 	Ciudad buscarCiudad(String nombre, String pais);	
 }

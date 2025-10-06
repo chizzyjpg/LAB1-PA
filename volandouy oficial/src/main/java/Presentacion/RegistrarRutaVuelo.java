@@ -26,6 +26,7 @@ import Logica.DataAerolinea;
 import Logica.DataCategoria;
 import Logica.DataCiudad;
 import Logica.DataRuta;
+import Logica.EstadoRuta;
 import Logica.ISistema;
 
 public class RegistrarRutaVuelo extends JInternalFrame {
@@ -297,7 +298,8 @@ public class RegistrarRutaVuelo extends JInternalFrame {
                         costoEquipaje,
                         costoEjecutivo,
                         dataCat,
-                        aerolinea.getNickname()
+                        aerolinea.getNickname(),
+                        EstadoRuta.INGRESADA
                     );
                     sistema.registrarRuta(datos);
 

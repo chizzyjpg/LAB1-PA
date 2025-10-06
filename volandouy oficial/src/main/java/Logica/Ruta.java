@@ -49,7 +49,7 @@ public class Ruta {
 
     @Column(name = "costoEquipajeExtra", nullable = false)
     private int costoEquipajeExtra;
-
+    
     //si Categoria es enum:
     @ManyToOne(optional = false)
     @JoinColumn(name = "categoria_nombre", nullable = false, referencedColumnName = "nombre")
@@ -61,7 +61,12 @@ public class Ruta {
         joinColumns = @JoinColumn(name = "idRuta"),
         inverseJoinColumns = @JoinColumn(name = "nicknameAerolinea", referencedColumnName = "nickname")
     )
+    
     private Set<Aerolinea> aerolineas = new HashSet<>();
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado", nullable = false, length = 15)
+    private EstadoRuta estado = EstadoRuta.INGRESADA;
     
     protected Ruta() {}
 
@@ -80,6 +85,7 @@ public class Ruta {
         this.vuelosEspecificos = new HashSet<>();
         this.costoEjecutivo = costoEjecutivo;
         this.categoria = categoria;
+        this.estado = EstadoRuta.INGRESADA;
     }
 
     // getters
@@ -96,6 +102,7 @@ public class Ruta {
     public Categoria getCategoriaR() { return categoria; }
     public Set<VueloEspecifico> getVuelosEspecificos() { return vuelosEspecificos; }
     public Set<Aerolinea> getAerolineas() { return aerolineas; }
+    public EstadoRuta getEstado() { return estado; }
 
     // setters
     public void setNombre(String n) { this.nombre = n; }
@@ -110,6 +117,7 @@ public class Ruta {
     public void setCategoriaR(Categoria categoria) { this.categoria = categoria; }
     public void setVuelosEspecificos(Set<VueloEspecifico> vuelos) { this.vuelosEspecificos = vuelos; }
     public void setAerolineas(Set<Aerolinea> aerolineas) { this.aerolineas = aerolineas; }
+    public void setEstado(EstadoRuta estado) { this.estado = estado; }
 
     @Override public String toString() {
         return "Ruta [idRuta=" + idRuta +
@@ -123,7 +131,8 @@ public class Ruta {
                ", costoEjecutivo=" + costoEjecutivo +
                ", costoEquipajeExtra=" + costoEquipajeExtra +
                ", categoria=" + categoria + "]" +
-               " vuelosEspecificos=" + vuelosEspecificos + "]";
+               " vuelosEspecificos=" + vuelosEspecificos + "]" +
+               " estado=" + estado + "]";
     }
 
 	public void addVuelosEspecificos(VueloEspecifico v) {
