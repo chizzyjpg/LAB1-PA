@@ -238,7 +238,7 @@ public class AceptarRechazarRuta extends JInternalFrame {
         Font f = new Font("Comic Sans MS", Font.PLAIN, 14);
         applyFontRec(root, f);
         if (tbl.getTableHeader() != null) {
-            tbl.getTableHeader().setFont(f.deriveFont(Font.BOLD));
+            tbl.getTableHeader().setFont(f.deriveFont(Font.PLAIN));
         }
         setFont(f);
     }
