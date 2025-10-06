@@ -19,7 +19,7 @@ public class AerolineaService {
 			em.getTransaction().commit();
 			// Convertir Aerolinea a DataAerolinea
 			return aerolineas.stream()
-				.map(a -> new DataAerolinea(a.getNombre(), a.getNickname(), a.getEmail(), a.getDescGeneral(), a.getLinkWeb()))
+				.map(a -> new DataAerolinea(a.getNombre(), a.getNickname(), a.getEmail(), a.getContrasenia(), a.getDescGeneral(), a.getLinkWeb()))
 				.collect(Collectors.toList());
 		} catch (RuntimeException ex) {
 			if (em.getTransaction().isActive()) em.getTransaction().rollback();
