@@ -1,0 +1,25 @@
+package BD;
+
+import Logica.VueloEspecifico;
+import Logica.JPAUtil;
+import jakarta.persistence.EntityManager;
+
+public class VueloService {
+	
+	public void registrarVuelo(VueloEspecifico datos) {
+		
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			em.getTransaction().begin();
+			
+			em.persist(datos);
+			
+			em.getTransaction().commit();
+		} catch (RuntimeException ex) {
+			if (em.getTransaction().isActive()) em.getTransaction().rollback();
+			throw ex; // propagar para que la UI decida qué mostrar
+		} finally {
+			em.close();
+		}
+	}
+}
