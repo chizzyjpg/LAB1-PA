@@ -7,7 +7,7 @@
 
   background: /*dos capas de fondo, separadas por coma:*/
     linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.35)), /*es una película oscura encima de la foto. Como los dos colores RGBA son iguales, no hay degradado real: es un velo uniforme del 35% de negro (se usa para mejorar el contraste).*/
-    url("../img/avioncito2.jpg"); /*imagen de fondo.*/
+    url("../images/avioncito2.jpg"); /*imagen de fondo.*/
   background-position: center center, center 37%; /*1er back centro centro, 2do back la imagen se alinea centrada en X y al 37% en Y.*/
   background-size: 100% 100%, cover; /*cover → la imagen cubre todo el contenedor manteniendo proporción (puede recortarse en los bordes).*/
 }                                     /*contain es imagen completa sin recortes, lo cambie para que sea vea mejor*/
