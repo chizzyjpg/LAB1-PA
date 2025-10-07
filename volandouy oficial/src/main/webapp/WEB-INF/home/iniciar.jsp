@@ -12,7 +12,7 @@
       <div class="row justify-content-center mt-4 mt-md-5">
         <div class="col-11 col-sm-10 col-md-8 col-lg-6">
           <div class="d-grid gap-3 btn-panel">
-            <a href="login.html"    class="btn btn-primary">Iniciar sesión</a>
+            <a href="iniciar-sesion"    class="btn btn-primary">Iniciar sesión</a>
             <a href="registro.html" class="btn btn-primary">Registrarse</a>
             <a href="home.html"     class="btn btn-secondary">Entrar como visitante</a>
           </div>

@@ -332,4 +332,36 @@ import Logica.DataVueloEspecifico;
 		        em.close();
 		    }
 		}
-}
+		
+		// ===============================
+		//  AUTENTICACIÓN
+		// ===============================
+
+		public Usuario autenticarUsuario(String login, String password) {
+			EntityManager em = JPAUtil.getEntityManager();
+			try {
+				em.getTransaction().begin();
+				List<Usuario> usuarios = em.createQuery(
+					"from Usuario u where u.nickname = :login or u.email = :login", Usuario.class)
+					.setParameter("login", login)
+					.getResultList();
+				em.getTransaction().commit();
+				if (usuarios.isEmpty()) return null;
+				
+				Usuario u = usuarios.get(0);
+				// En un sistema real, la contraseña debería estar hasheada y se compararía el hash
+				if (u.getContrasenia().equals(password)) {
+					return u;
+				} else {
+					return null;
+				}
+			} catch (RuntimeException ex) {
+				if (em.getTransaction().isActive()) em.getTransaction().rollback();
+				throw ex; // propagar para que la UI decida qué mostrar
+			} finally {
+				em.close();
+			}
+		}
+	
+	}
+	
