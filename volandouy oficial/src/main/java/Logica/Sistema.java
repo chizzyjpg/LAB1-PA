@@ -119,6 +119,18 @@ public class Sistema implements ISistema {
 			        .collect(Collectors.toList());
 	 }
 	 
+	 @Override
+	 public DataUsuario loguearUsuario(String nickname, String password) {
+	     if (nickname == null || password == null) {
+	         throw new IllegalArgumentException("Nickname y contraseña no pueden ser nulos");
+	     }
+	     Usuario u = usuarioService.autenticarUsuario(nickname, password);
+	     if (u == null) {
+	         return null; // Autenticación fallida
+	     }
+	     return usuarioService.verInfoUsuario(nickname);
+	 }
+	 
     // ======================
     //  MODIFICAR USUARIOS
     // ======================

@@ -44,8 +44,9 @@ public class Login extends HttpServlet {
 		String password = request.getParameter("password");
 		EstadoSesion nuevoEstado;
 
-		UsuarioService servicio = new UsuarioService();
-		Usuario usr = servicio.autenticarUsuario(login, password);
+		DataUsuario usr = Sistema.loguearUsuario(login, password);
+		
+		System.out.println("Login: " + login + " Pass: " + password);
 		
 		if (usr == null) {
 			nuevoEstado = EstadoSesion.LOGIN_INCORRECTO;
