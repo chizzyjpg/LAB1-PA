@@ -48,13 +48,6 @@
 	<jsp:include page="/WEB-INF/template/footer.jsp" />
   </main>
 
-  <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/consulta-usuario.js"></script>
-    <script src="assets/js/auth.js"></script>
-    <script src="assets/js/pruebas.js"></script>
-    <script src="assets/js/login.js"></script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
 </body>
 </html>

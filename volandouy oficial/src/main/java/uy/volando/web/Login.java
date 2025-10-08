@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import BD.UsuarioService;
+import Logica.DataUsuario;
+import Logica.Sistema;
 import Logica.Usuario;
 
 import uy.volando.exceptions.UsuarioNoEncontrado;
@@ -39,26 +41,47 @@ public class Login extends HttpServlet {
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession objSesion = request.getSession();
-		String login = request.getParameter("login");
-		String password = request.getParameter("password");
-		EstadoSesion nuevoEstado;
 
-		DataUsuario usr = Sistema.loguearUsuario(login, password);
-		
-		System.out.println("Login: " + login + " Pass: " + password);
-		
-		if (usr == null) {
-			nuevoEstado = EstadoSesion.LOGIN_INCORRECTO;
-		} else {
-			nuevoEstado = EstadoSesion.LOGIN_CORRECTO;
-			// setea el usuario logueado
-			request.getSession().setAttribute("usuario_logueado", usr);
-		}
-		
-		objSesion.setAttribute("estado_sesion", nuevoEstado);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/home");
-		dispatcher.forward(request, response);
+	    System.out.println("[DEBUG] Entrando a processRequest");
+	    request.setCharacterEncoding("UTF-8");
+
+	    HttpSession objSesion = request.getSession();
+	    String login = request.getParameter("login");       // nickname (por ahora)
+	    String password = request.getParameter("password");
+	    System.out.println("[DEBUG] login param: " + login);
+	    System.out.println("[DEBUG] password param: " + password);
+
+	    EstadoSesion nuevoEstado;
+	    Sistema sistema = new Sistema();
+
+	    System.out.println("[LOGIN] params -> nick=" + login + " , pass.len=" + (password != null ? password.length() : null));
+
+	    DataUsuario dto = null;
+	    try {
+	        System.out.println("[DEBUG] Llamando a loguearUsuario");
+	        dto = sistema.loguearUsuario(login, password); // nickname + plano
+	        System.out.println("[DEBUG] Resultado loguearUsuario: " + (dto != null ? "OK" : "NULL"));
+	    } catch (Exception e) {
+	        System.out.println("[ERROR] Excepción en loguearUsuario: " + e.getMessage());
+	        e.printStackTrace();
+	        objSesion.setAttribute("estado_sesion", EstadoSesion.LOGIN_INCORRECTO);
+	        request.getRequestDispatcher("/WEB-INF/home/login.jsp").forward(request, response);
+	        return;
+	    }
+
+	    if (dto == null) {
+	        System.out.println("[DEBUG] Login incorrecto, dto es null");
+	        nuevoEstado = EstadoSesion.LOGIN_INCORRECTO;
+	        objSesion.setAttribute("estado_sesion", nuevoEstado);
+	        request.getRequestDispatcher("/WEB-INF/home/login.jsp").forward(request, response);
+	        return;
+	    }
+
+	    System.out.println("[DEBUG] Login correcto, redirigiendo a /home");
+	    nuevoEstado = EstadoSesion.LOGIN_CORRECTO;
+	    objSesion.setAttribute("usuario_logueado", dto);
+	    objSesion.setAttribute("estado_sesion", nuevoEstado);
+	    response.sendRedirect(request.getContextPath() + "/home");
 	}
 	
 	/**
@@ -68,7 +91,8 @@ public class Login extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 	        throws ServletException, IOException {
-	    // 🔸 Simplemente redirigir a login.jsp
+	    // Solo mostrar el formulario de login, no procesar login
+	    System.out.println("[LOGIN] doGet: mostrando login.jsp");
 	    RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/home/login.jsp");
 	    dispatcher.forward(request, response);
 	}
@@ -77,9 +101,10 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		processRequest(request, response);	
+	        throws ServletException, IOException {
+	    System.out.println("[LOGIN] Entrando a doPost");
+	    processRequest(request, response);	
 	}		
 }

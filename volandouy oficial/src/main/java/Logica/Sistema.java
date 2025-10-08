@@ -124,11 +124,16 @@ public class Sistema implements ISistema {
 	     if (nickname == null || password == null) {
 	         throw new IllegalArgumentException("Nickname y contraseña no pueden ser nulos");
 	     }
-	     Usuario u = usuarioService.autenticarUsuario(nickname, password);
+
+	     // 1) Autenticar SOLO por nickname (plano) para la prueba
+	     Usuario u = usuarioService.autenticarPorNicknamePlano(nickname, password);
 	     if (u == null) {
-	         return null; // Autenticación fallida
+	         return null; // falla autenticación
 	     }
+
+	     // 2) Traer el DTO como ya lo haces (no toco tu verInfoUsuario)
 	     return usuarioService.verInfoUsuario(nickname);
+	     
 	 }
 	 
     // ======================

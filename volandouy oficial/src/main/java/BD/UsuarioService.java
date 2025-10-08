@@ -5,6 +5,8 @@ import Logica.JPAUtil;
 import Logica.ManejadorRuta;
 import Logica.Ruta;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -362,6 +364,34 @@ import Logica.DataVueloEspecifico;
 				em.close();
 			}
 		}
+		
+		public Usuario findByNickname(String nickname) {
+	        if (nickname == null) return null;
+	        String nick = nickname.trim();  // normalizo básico
+
+	        EntityManager em = JPAUtil.getEntityManager();
+	        try {
+	            return em.createQuery(
+	                    "SELECT u FROM Usuario u WHERE u.nickname = :nick",
+	                    Usuario.class)
+	                .setParameter("nick", nick)
+	                .getSingleResult();
+	        } catch (NoResultException e) {
+	            return null;
+	        } finally {
+	            em.close();
+	        }
+	    }
+
+	    /** Provisorio PARA PRUEBA: compara plano vs plano (jet / 1234) */
+	    public Usuario autenticarPorNicknamePlano(String nickname, String passwordPlain) {
+	        if (nickname == null || passwordPlain == null) return null;
+
+	        Usuario u = findByNickname(nickname);
+	        if (u == null) return null;
+
+	        // ⚠ Solo para desarrollo: contraseña en texto plano
+	        return passwordPlain.equals(u.getContrasenia()) ? u : null;
+	    }
 	
 	}
-	
