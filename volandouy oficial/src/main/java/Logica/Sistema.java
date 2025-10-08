@@ -119,6 +119,23 @@ public class Sistema implements ISistema {
 			        .collect(Collectors.toList());
 	 }
 	 
+	 @Override
+	 public DataUsuario loguearUsuario(String nickname, String password) {
+	     if (nickname == null || password == null) {
+	         throw new IllegalArgumentException("Nickname y contraseña no pueden ser nulos");
+	     }
+
+	     // 1) Autenticar SOLO por nickname (plano) para la prueba
+	     Usuario u = usuarioService.autenticarPorNicknamePlano(nickname, password);
+	     if (u == null) {
+	         return null; // falla autenticación
+	     }
+
+	     // 2) Traer el DTO como ya lo haces (no toco tu verInfoUsuario)
+	     return usuarioService.verInfoUsuario(nickname);
+	     
+	 }
+	 
     // ======================
     //  MODIFICAR USUARIOS
     // ======================
