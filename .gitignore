@@ -17,3 +17,17 @@ Servers/Tomcat v10.1 Server at localhost-config/catalina.properties
 Servers/Tomcat v10.1 Server at localhost-config/context.xml
 volandouy oficial/.settings/org.eclipse.wst.common.component
 volandouy oficial/.settings/org.eclipse.wst.common.project.facet.core.xml
+Servers/apache-tomcat-10.1.36 at localhost-config/context.xml
+Servers/.settings/org.eclipse.wst.common.project.facet.core.xml
+Servers/apache-tomcat-10.1.36 at localhost-config/catalina.policy
+Servers/apache-tomcat-10.1.36 at localhost-config/catalina.properties
+Servers/apache-tomcat-10.1.36 at localhost-config/tomcat-users.xml
+Servers/apache-tomcat-10.1.36 at localhost-config/server.xml
+Servers/apache-tomcat-10.1.36 at localhost-config/web.xml
+Servers/Tomcat v10.1 Server at localhost-config/catalina.policy
+Servers/Tomcat v10.1 Server at localhost-config/catalina.properties
+Servers/Tomcat v10.1 Server at localhost-config/context.xml
+Servers/Tomcat v10.1 Server at localhost-config/server.xml
+Servers/Tomcat v10.1 Server at localhost-config/tomcat-users.xml
+Servers/Tomcat v10.1 Server at localhost-config/web.xml
+volandouy oficial/.classpath
