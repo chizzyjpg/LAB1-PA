@@ -102,7 +102,7 @@
   
 
   <build>
-	  <finalName>volnadouy-oficial</finalName>
+	  <finalName>volandouy-oficial</finalName>
 	  <plugins>
 	    <plugin>
 	      <groupId>org.apache.maven.plugins</groupId>

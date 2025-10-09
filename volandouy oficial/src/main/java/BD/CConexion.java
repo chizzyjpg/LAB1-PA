@@ -7,17 +7,17 @@ import javax.swing.JOptionPane;
 
 public class CConexion {
 
-	Connection con = null;
+	static Connection con = null;
 	
-	String usuario = "postgres";
-	String password = "admin";
-	String bd = "pa2025";
-	String ip = "localhost";
-	String puerto = "5432";
+	static String usuario = "postgres";
+	static String password = "admin";
+	static String bd = "pa2025";
+	static String ip = "localhost";
+	static String puerto = "5432";
 	
-	String cadena = "jdbc:postgresql://"+ip+":"+puerto+"/"+bd;
+	static String cadena = "jdbc:postgresql://"+ip+":"+puerto+"/"+bd;
 	
-	public Connection getConexion() {
+	public static Connection getConexion() {
 		try {
 			Class.forName("org.postgresql.Driver");
 			con = DriverManager.getConnection(cadena, usuario, password);
