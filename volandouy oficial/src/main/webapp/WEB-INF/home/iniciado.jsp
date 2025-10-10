@@ -135,10 +135,10 @@
   <!-- FOOTER -->
 	<jsp:include page="/WEB-INF/template/footer.jsp" />
 
-  <!-- Bootstrap JS -->
+  <!-- Bootstrap JS 
+  <script src="assets/js/auth.js"></script>-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="assets/js/consulta-usuario.js"></script>
-  <script src="assets/js/auth.js"></script>
   <script src="assets/js/roles.js"></script>
 
   <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
@@ -166,6 +166,8 @@
       </form>
   </div>
   </div>
+
+  <% System.out.println("DEBUG iniciado.jsp usuario_logueado=" + session.getAttribute("usuario_logueado")); %>
 </body>
 <!-- Modal Login (Front-only, mock) -->
 
