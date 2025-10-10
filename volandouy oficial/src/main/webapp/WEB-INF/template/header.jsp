@@ -1,7 +1,7 @@
 <!-- NAVBAR -->
     <nav class="navbar navbar-dark bg-dark fixed-top navbar-compact">
         <div class="container">
-        <a class="navbar-brand fw-bold" href="#">Volando.uy</a>
+        <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">Volando.uy</a>
 
       <!-- Buscador centrado -->
       <div class="flex-grow-1 d-none d-md-flex justify-content-center">

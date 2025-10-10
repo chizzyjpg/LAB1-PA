@@ -29,9 +29,20 @@
             </aside>
             <main class="col-lg-9 col-xl-10">
                 <div class="profile-container p-4">
-                    <h1 id="profileName" class="display-5">Cargando...</h1>
-                    <p id="profileEmail" class="text-muted">Cargando...</p>
-                    <img id="profileAvatar" class="avatar-lg rounded-circle" src="" alt="Avatar del usuario">
+                    <% Object usuario = request.getAttribute("usuario"); 
+                    String tipo = usuario.getClass().getSimpleName(); 
+                    String nombre = ""; 
+                    String email = ""; 
+                    if ("DataCliente".equals(tipo)) { 
+	                    nombre = ((Logica.DataCliente)usuario).getNombre(); 
+	                    email = ((Logica.DataCliente)usuario).getEmail(); 
+                    } else if ("DataAerolinea".equals(tipo)) { 
+                    	nombre = ((Logica.DataAerolinea)usuario).getNombre(); 
+                    	email = ((Logica.DataAerolinea)usuario).getEmail(); 
+                    } %>
+					<h1 id="profileName" class="display-5"><%= nombre %></h1>
+					<p id="profileEmail" class="text-muted"><%= email %></p>
+					<img id="profileAvatar" class="avatar-lg rounded-circle" src="" alt="Avatar del usuario">
                         <!-- DETALLE + EDICIÓN -->
                     <section class="container p-4">
                     <div class="card shadow-sm">
@@ -43,10 +54,6 @@
 
                         <!-- Vista (solo lectura) -->
                         <div id="profileView">
-						<%
-						    Object usuario = request.getAttribute("usuario");
-						    String tipo = usuario.getClass().getSimpleName();
-						%>
 						<dl class="row mb-0">
 						<% if ("DataCliente".equals(tipo)) { %>
 						    <dt class="col-sm-3">Nombre</dt>
