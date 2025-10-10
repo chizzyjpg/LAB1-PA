@@ -39,7 +39,7 @@
             <div class="btn-group">
                 <button class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">Cuenta</button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="front/perfil.html">Mi perfil</a></li>
+                  <li><a class="dropdown-item" href="${pageContext.request.contextPath}/perfil">Mi perfil</a></li>
                   <li><hr class="dropdown-divider" /></li>
                   <li><form action="cerrar-sesion" method="post" style="margin:0;"><button type="submit" class="dropdown-item text-danger" id="btnLogout">Cerrar sesión</button></form></li>
                 </ul>
