@@ -160,9 +160,9 @@
     <!--
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/js/roles.js"></script>
-    <script src="../assets/js/perfil-edit.js"></script>
     <script src="../assets/js/consulta-usuario.js"></script>
      -->
+    <script src="../assets/js/perfil-edit.js"></script>
 	
     <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
