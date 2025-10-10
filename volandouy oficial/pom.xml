@@ -97,6 +97,13 @@
 	  <artifactId>jgoodies-common</artifactId>
 	  <version>1.8.1</version>
 	</dependency>
+	
+	<!-- Gson-->
+	<dependency>
+	  <groupId>com.google.code.gson</groupId>
+	  <artifactId>gson</artifactId>
+	  <version>2.13.2</version>
+	</dependency>
 </dependencies>
   
   
