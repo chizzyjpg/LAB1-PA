@@ -19,7 +19,7 @@
             <div class="list-group list-group-flush" data-roles="Aerolínea">
               
               <a href="front/registroVuelo.html" class="list-group-item list-group-item-action">Nuevo Vuelo</a>
-              <a href="front/registroRutaVuelo.html" class="list-group-item list-group-item-action">Nueva Ruta de Vuelo</a>
+              <a href="${pageContext.request.contextPath}/regRutVuelo" class="list-group-item list-group-item-action">Nueva Ruta de Vuelo</a>
 
             </div><br>
             <h6 class="text-uppercase text-muted mb-3">Consultas</h6>

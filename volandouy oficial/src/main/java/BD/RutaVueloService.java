@@ -131,4 +131,18 @@ public class RutaVueloService {
 			em.close();
 		}
 	}
+
+	public Ruta buscarRutaPorNombre(String nombre) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            List<Ruta> rutas = em.createQuery("from Ruta r where r.nombre = :nombre", Ruta.class)
+                    .setParameter("nombre", nombre)
+                    .getResultList();
+            em.getTransaction().commit();
+            return rutas.isEmpty() ? null : rutas.get(0);
+        } finally {
+            em.close();
+        }
+    }
 }
