@@ -86,7 +86,7 @@
                 <div class="card h-100 shadow-sm">
                   <div class="row g-0 align-items-center">
                     <div class="col-12 col-sm-4">
-                      <img src="/media/images/nyc.jpg" alt="Nueva York" class="img-fluid card-img-top rounded-start">
+                      <img src="${pageContext.request.contextPath}/media/images/nyc.jpg" alt="Nueva York" class="img-fluid card-img-top rounded-start">
                     </div>
                     <div class="col-12 col-sm-8">
                       <div class="card-body">
@@ -108,7 +108,7 @@
                 <div class="card h-100 shadow-sm">
                   <div class="row g-0 align-items-center">
                     <div class="col-12 col-sm-4">
-                      <img src="/media/images/rio.jpg" alt="Río de Janeiro" class="img-fluid card-img-top rounded-start">
+                      <img src="${pageContext.request.contextPath}/media/images/rio.jpg" alt="Río de Janeiro" class="img-fluid card-img-top rounded-start">
                     </div>
                     <div class="col-12 col-sm-8">
                       <div class="card-body">
