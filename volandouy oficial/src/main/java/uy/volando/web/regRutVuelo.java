@@ -10,6 +10,7 @@ import BD.RutaVueloService;
 import Logica.Ciudad;
 import Logica.Categoria;
 import Logica.Ruta;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -27,7 +28,11 @@ public class regRutVuelo extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Obtener ciudades y categorías desde la base de datos
+	    HttpSession session = request.getSession();
+	    Object usuario = session.getAttribute("usuario");
+	    request.setAttribute("usuario", usuario);
+	    
+    	// Obtener ciudades y categorías desde la base de datos
         CiudadService ciudadService = new CiudadService();
         CategoriaService categoriaService = new CategoriaService();
         List<Ciudad> ciudades = ciudadService.listarCiudades();
@@ -40,7 +45,11 @@ public class regRutVuelo extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Procesar los datos enviados desde el formulario
+	    HttpSession session = request.getSession();
+	    Object usuario = session.getAttribute("usuario");
+	    request.setAttribute("usuario", usuario);
+	    
+    	// Procesar los datos enviados desde el formulario
         String nombre = request.getParameter("nombreRutaVuelo");
         String descripcionCorta = request.getParameter("descCorta");
         String descripcion = request.getParameter("descLarga");

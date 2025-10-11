@@ -3,11 +3,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<%@ include file="/WEB-INF/template/head.jsp" %>
+	<jsp:include page="/WEB-INF/template/head.jsp" />
 	<title>Registro de Ruta de Vuelo - Volando.uy</title>
 </head>
 <body class="regRutaVuelo-page">
-    <%@ include file="/WEB-INF/template/header.jsp" %>
+    <jsp:include page="/WEB-INF/template/header.jsp" />
     <!-- LAYOUT: SIDEBAR + CONTENIDO -->
     <div class="container-fluid">
     <div class="row">
@@ -130,7 +130,7 @@
         </main>
         </div>
     </div>
-    <%@ include file="/WEB-INF/template/footer.jsp" %>
+    <jsp:include page="/WEB-INF/template/footer.jsp" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/js/roles.js"></script>
