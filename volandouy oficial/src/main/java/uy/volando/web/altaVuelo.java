@@ -29,7 +29,7 @@ public class altaVuelo extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    HttpSession session = request.getSession();
-	    Object usuario = session.getAttribute("usuario");
+	    Object usuario = session.getAttribute("usuario_logueado");
 	    request.setAttribute("usuario", usuario);
 
 		AerolineaService aerolineaService = new AerolineaService();
@@ -53,7 +53,7 @@ public class altaVuelo extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    HttpSession session = request.getSession();
-	    Object usuario = session.getAttribute("usuario");
+	    Object usuario = session.getAttribute("usuario_logueado");
 	    request.setAttribute("usuario", usuario);
 
 	    String aerolineaId = request.getParameter("aerolineaId");

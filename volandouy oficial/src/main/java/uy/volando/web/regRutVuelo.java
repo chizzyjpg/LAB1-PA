@@ -29,7 +29,7 @@ public class regRutVuelo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    HttpSession session = request.getSession();
-	    Object usuario = session.getAttribute("usuario");
+	    Object usuario = session.getAttribute("usuario_logueado");
 	    request.setAttribute("usuario", usuario);
 	    
     	// Obtener ciudades y categorías desde la base de datos
@@ -46,7 +46,7 @@ public class regRutVuelo extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    HttpSession session = request.getSession();
-	    Object usuario = session.getAttribute("usuario");
+	    Object usuario = session.getAttribute("usuario_logueado");
 	    request.setAttribute("usuario", usuario);
 	    
     	// Procesar los datos enviados desde el formulario

@@ -38,7 +38,7 @@
             <h6 class="text-uppercase text-muted mb-3" data-roles="Cliente">Reserva / Compra</h6>
             <div class="list-group list-group-flush" data-roles="Cliente">
               <a href="front/reservarVuelo.html" class="list-group-item list-group-item-action">Reservar Vuelo</a>
-              <a href="front/comprarPaquete.html" class="list-group-item list-group-item-action">Comprar Paquete</a>
+              <a href="${pageContext.request.contextPath}/compraPaquete" class="list-group-item list-group-item-action">Comprar Paquete</a>
             </div>
           </div>
         </nav>
