@@ -44,10 +44,11 @@ public interface ISistema {
 	void agregarRutaAPaquete(String nombrePaquete,String nicknameAerolinea,String nombreRuta, TipoAsiento tipo, int cantidad);
 	void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos);
 	void cambiarEstadoRuta(int idRuta, EstadoRuta nuevoEstado);
-	void actualizarPerfilCliente(PerfilClienteUpdate datos);
-    void actualizarPerfilAerolinea(PerfilAerolineaUpdate datos);
+	DataCliente actualizarPerfilCliente(PerfilClienteUpdate datos);
+    DataAerolinea actualizarPerfilAerolinea(PerfilAerolineaUpdate datos);
     void cambiarPassword(String nickname, String pwdCurrent, String pwdNew);
     
     
 	Ciudad buscarCiudad(String nombre, String pais);	
+	byte[] obtenerAvatar(String nickname);
 }

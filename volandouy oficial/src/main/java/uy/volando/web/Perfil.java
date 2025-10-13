@@ -21,15 +21,15 @@ import uy.volando.model.EstadoSesion;
 public class Perfil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
+	private ISistema sistema;
 	   
 	 @Override
-	 public void init() throws ServletException {
-	   super.init();
-	   // 1) intentamos tomar uno compartido del contexto (reutilizable entre servlets)
-	   Object s = getServletContext().getAttribute("sistema");
-	   if (s instanceof ISistema) {
-	     this.sistema = (ISistema) s;}
+	 public void init() throws ServletException { 
+		 super.init();
+		 this.sistema = (ISistema) getServletContext().getAttribute("sistema");
+	     if (this.sistema == null) {
+	        throw new ServletException("El sistema no fue inicializado por InicioServlet.");
+	    }
 	 }
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -167,6 +167,8 @@ public class Perfil extends HttpServlet {
 		  final boolean wantsPwdChange = !pwdCurrent.isBlank() || !pwdNew.isBlank() || !pwdNew2.isBlank();
 
 		  try {
+			  
+			  Object usuarioActualizado = null;
 		    
 		    if ("DataCliente".equals(tipo)) {
 		    	final String nombre   = req.getParameter("nombre");
@@ -207,9 +209,11 @@ public class Perfil extends HttpServlet {
 		      final String desc   = req.getParameter("descripcion");
 
 		      var upd = new Logica.PerfilAerolineaUpdate(
-		          nickname, email, nombre, sitio, desc, avatarBytes, clearPhoto
+		          nickname, email, nombre, desc, sitio, avatarBytes, clearPhoto
 		      );
-		      sistema.actualizarPerfilAerolinea(upd);
+		      
+		      usuarioActualizado = sistema.actualizarPerfilAerolinea(upd);
+		      req.getSession().setAttribute("usuario_logueado", usuarioActualizado);
 
 		    } else {
 		      throw new IllegalArgumentException("Tipo de usuario no soportado: " + tipo);
@@ -218,7 +222,7 @@ public class Perfil extends HttpServlet {
 		    // Cambio de contraseña (validaciones mínimas de forma; la verificación real la hace ISistema)
 		    if (wantsPwdChange) {
 		      if (pwdCurrent.isBlank())             throw new IllegalArgumentException("Ingresá tu contraseña actual.");
-		      if (pwdNew.length() < 6)              throw new IllegalArgumentException("La nueva contraseña debe tener al menos 6 caracteres.");
+		      if (pwdNew.length() < 3)              throw new IllegalArgumentException("La nueva contraseña debe tener al menos 3 caracteres.");
 		      if (!pwdNew.equals(pwdNew2))          throw new IllegalArgumentException("Las contraseñas no coinciden.");
 		      if (pwdNew.equals(pwdCurrent))        throw new IllegalArgumentException("La nueva contraseña debe ser diferente a la actual.");
 		      sistema.cambiarPassword(nickname, pwdCurrent, pwdNew);

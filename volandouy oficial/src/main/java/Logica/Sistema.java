@@ -136,6 +136,23 @@ public class Sistema implements ISistema {
 	     
 	 }
 	 
+	 @Override
+	 public byte[] obtenerAvatar(String nickname) {
+	     if (nickname == null || nickname.isBlank()) {
+	         return null;
+	     }
+	     
+	     Usuario u = usuarioService.obtenerClientePorNickname(canonical(nickname));
+	     if (u == null) {
+	    	 u = usuarioService.obtenerAerolineaPorNickname(canonical(nickname));
+	     }
+	     
+	     if (u == null || u.getAvatar() == null) {
+	         return null;
+	     }
+	     return Arrays.copyOf(u.getAvatar(), u.getAvatar().length);
+	 }
+	 
     // ======================
     //  MODIFICAR USUARIOS
     // ======================
@@ -170,7 +187,7 @@ public class Sistema implements ISistema {
     }
     
     @Override
-    public void actualizarPerfilCliente (PerfilClienteUpdate upd) {
+    public DataCliente actualizarPerfilCliente (PerfilClienteUpdate upd) {
     	if (upd == null) throw new IllegalArgumentException("Datos de actualización nulos");
     	String key = canonical(upd.getNickname());
     	Cliente cliente = usuarioService.obtenerClientePorNickname(key);
@@ -195,8 +212,11 @@ public class Sistema implements ISistema {
     	cliente.setTipoDocumento(upd.getTipoDocumento());
     	cliente.setNumDocumento(upd.getNumDocumento());
     	cliente.setFechaNac(copia(upd.getFechaNac()));
+    	cliente.setAvatar(upd.getAvatar());
     	
     	usuarioService.actualizarUsuario(cliente);
+    	DataUsuario usuario = usuarioService.verInfoUsuario(upd.getNickname());
+    	return usuario instanceof DataCliente ? (DataCliente) usuario : null;
     }
 
     @Override
@@ -251,7 +271,7 @@ public class Sistema implements ISistema {
 	}
     
     @Override
-    public void actualizarPerfilAerolinea (PerfilAerolineaUpdate upd) {
+    public DataAerolinea actualizarPerfilAerolinea (PerfilAerolineaUpdate upd) {
 		if (upd == null) throw new IllegalArgumentException("Datos de actualización nulos");
 		String key = canonical(upd.getNickname());
 		Aerolinea aerolinea = usuarioService.obtenerAerolineaPorNickname(key);
@@ -282,6 +302,8 @@ public class Sistema implements ISistema {
 		
 		usuarioService.actualizarUsuario(aerolinea);
     	
+		DataUsuario usuario = usuarioService.verInfoUsuario(upd.getNickname());
+		return usuario instanceof DataAerolinea ? (DataAerolinea) usuario : null;
     }
      
     

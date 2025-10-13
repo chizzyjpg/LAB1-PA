@@ -17,9 +17,6 @@ public class Aerolinea extends Usuario {
 	
 	@Column(name = "linkWeb", nullable = false, length = 50)
 	private String linkWeb;
-	
-	@Column(name = "avatar", nullable = true)
-	private byte[] avatar;
 		
 
 	protected Aerolinea() {}
@@ -29,14 +26,6 @@ public class Aerolinea extends Usuario {
 		this.setLinkWeb(linkWeb);
 		this.setDescGeneral(descGeneral);
 		this.rutas = new HashSet<>();
-	}
-	
-	public Aerolinea(String n, String nick, String email, String contra, String descGeneral, String linkWeb, byte[] avatar) {
-		super(n, nick, email, contra);
-		this.setLinkWeb(linkWeb);
-		this.setDescGeneral(descGeneral);
-		this.rutas = new HashSet<>();
-		this.avatar = avatar;
 	}
 
 	//Getters
@@ -53,9 +42,6 @@ public class Aerolinea extends Usuario {
 		return rutas;
 	}
 	
-	public byte[] getAvatar() {
-		return avatar;
-	}
 
 	//Setters
 	
@@ -67,9 +53,6 @@ public class Aerolinea extends Usuario {
 		this.descGeneral = descGeneral;
 	}
 	
-	public void setAvatar(byte[] avatar) {
-		this.avatar = avatar;
-	}
 	
 	
 		//Metodos
