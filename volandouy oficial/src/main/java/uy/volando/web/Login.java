@@ -81,6 +81,13 @@ public class Login extends HttpServlet {
 	    nuevoEstado = EstadoSesion.LOGIN_CORRECTO;
 	    objSesion.setAttribute("usuario_logueado", dto);
 	    objSesion.setAttribute("estado_sesion", nuevoEstado);
+	    String rol = null; // null = visitante
+	    if (dto instanceof Logica.DataCliente) {
+	        rol = "Cliente";
+	    } else if (dto instanceof Logica.DataAerolinea) {
+	        rol = "Aerolínea";
+	    }
+	    objSesion.setAttribute("rol", rol);
 	    response.sendRedirect(request.getContextPath() + "/home");
 	}
 	
