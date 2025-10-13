@@ -131,4 +131,70 @@ public class RutaVueloService {
 			em.close();
 		}
 	}
+
+	public Ruta buscarRutaPorNombre(String nombre) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            List<Ruta> rutas = em.createQuery("from Ruta r where r.nombre = :nombre", Ruta.class)
+                    .setParameter("nombre", nombre)
+                    .getResultList();
+            em.getTransaction().commit();
+            return rutas.isEmpty() ? null : rutas.get(0);
+        } finally {
+            em.close();
+        }
+    }
+
+	public List<DataRuta> listarRutasPorAerolinea(String nicknameAerolinea) {
+	    EntityManager em = JPAUtil.getEntityManager();
+	    try {
+	        em.getTransaction().begin();
+	        List<Ruta> rutas = em.createQuery(
+	            "SELECT r FROM Ruta r JOIN r.aerolineas a WHERE a.nickname = :nickname", Ruta.class)
+	            .setParameter("nickname", nicknameAerolinea)
+	            .getResultList();
+	        em.getTransaction().commit();
+
+	        return rutas.stream()
+	            .map(r -> {
+	                DataRuta dto = new DataRuta(
+	                    r.getNombre(),
+	                    r.getDescripcion(),
+	                    new DataCiudad(
+	                        r.getOrigen().getNombre(),
+	                        r.getOrigen().getPais(),
+	                        r.getOrigen().getNombreAeropuerto(),
+	                        r.getOrigen().getDescripcionAeropuerto(),
+	                        r.getOrigen().getFechaAlta(),
+	                        r.getOrigen().getSitioWeb()
+	                    ),
+	                    new DataCiudad(
+	                        r.getDestino().getNombre(),
+	                        r.getDestino().getPais(),
+	                        r.getDestino().getNombreAeropuerto(),
+	                        r.getDestino().getDescripcionAeropuerto(),
+	                        r.getDestino().getFechaAlta(),
+	                        r.getDestino().getSitioWeb()
+	                    ),
+	                    r.getHora(),
+	                    r.getFechaAlta(),
+	                    r.getCostoTurista(),
+	                    r.getCostoEquipajeExtra(),
+	                    r.getCostoEjecutivo(),
+	                    new DataCategoria(r.getCategoriaR().getNombre()),
+	                    nicknameAerolinea, // setea el nickname de la aerolínea asociada
+	                    r.getEstado(), r.getDescripcionCorta()
+	                );
+	                dto.setIdRuta(r.getIdRuta());
+	                return dto;
+	            })
+	            .collect(Collectors.toList());
+	    } catch (RuntimeException ex) {
+	        if (em.getTransaction().isActive()) em.getTransaction().rollback();
+	        throw ex;
+	    } finally {
+	        em.close();
+	    }
+	}
 }

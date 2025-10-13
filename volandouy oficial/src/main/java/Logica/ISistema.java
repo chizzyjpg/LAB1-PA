@@ -16,6 +16,8 @@ public interface ISistema {
     DataPaquete verPaquete(String nombre);  
     DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo);
     DataReserva buscarReserva(String nickname, String nombre, String codigoVuelo, int idReserva);
+    DataUsuario loguearUsuario(String nickname, String password); // null si no existe o password incorrecta
+   
 
     List<DataUsuario> listarUsuarios();
     List<DataAerolinea> listarAerolineas();
@@ -42,6 +44,11 @@ public interface ISistema {
 	void agregarRutaAPaquete(String nombrePaquete,String nicknameAerolinea,String nombreRuta, TipoAsiento tipo, int cantidad);
 	void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos);
 	void cambiarEstadoRuta(int idRuta, EstadoRuta nuevoEstado);
-
+	DataCliente actualizarPerfilCliente(PerfilClienteUpdate datos);
+    DataAerolinea actualizarPerfilAerolinea(PerfilAerolineaUpdate datos);
+    void cambiarPassword(String nickname, String pwdCurrent, String pwdNew);
+    
+    
 	Ciudad buscarCiudad(String nombre, String pais);	
+	byte[] obtenerAvatar(String nickname);
 }

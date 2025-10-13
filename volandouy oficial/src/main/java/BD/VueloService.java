@@ -3,6 +3,7 @@ package BD;
 import Logica.VueloEspecifico;
 import Logica.JPAUtil;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 public class VueloService {
 	
@@ -21,5 +22,18 @@ public class VueloService {
 		} finally {
 			em.close();
 		}
+	}
+
+	public boolean existeVueloConNombre(String nombreVuelo) {
+	    EntityManager em = JPAUtil.getEntityManager();
+	    try {
+	        TypedQuery<Long> query = em.createQuery(
+	            "SELECT COUNT(v) FROM VueloEspecifico v WHERE v.nombre = :nombre", Long.class);
+	        query.setParameter("nombre", nombreVuelo);
+	        Long count = query.getSingleResult();
+	        return count != null && count > 0;
+	    } finally {
+	        em.close();
+	    }
 	}
 }

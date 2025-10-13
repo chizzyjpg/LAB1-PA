@@ -18,9 +18,5 @@
     <url-pattern>/ping</url-pattern>
   </servlet-mapping>
 
-  <!-- Página de inicio -->
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-  </welcome-file-list>
 
 </web-app>

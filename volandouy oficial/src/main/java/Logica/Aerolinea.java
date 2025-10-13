@@ -17,7 +17,7 @@ public class Aerolinea extends Usuario {
 	
 	@Column(name = "linkWeb", nullable = false, length = 50)
 	private String linkWeb;
-	
+		
 
 	protected Aerolinea() {}
 
@@ -41,6 +41,7 @@ public class Aerolinea extends Usuario {
 	public Set<Ruta> getRutas() {
 		return rutas;
 	}
+	
 
 	//Setters
 	
@@ -51,6 +52,7 @@ public class Aerolinea extends Usuario {
 	public void setDescGeneral(String descGeneral) {
 		this.descGeneral = descGeneral;
 	}
+	
 	
 	
 		//Metodos
