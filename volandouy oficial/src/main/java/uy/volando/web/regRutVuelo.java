@@ -1,15 +1,15 @@
 package uy.volando.web;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
-import BD.CiudadService;
-import BD.CategoriaService;
-import BD.RutaVueloService;
 import Logica.Ciudad;
 import Logica.Categoria;
-import Logica.Ruta;
+import Logica.DataRuta;
+import Logica.DataCiudad;
+import Logica.DataCategoria;
+import Logica.ISistema;
+import Logica.Sistema;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -28,35 +28,35 @@ public class regRutVuelo extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    HttpSession session = request.getSession();
-	    Object usuario = session.getAttribute("usuario_logueado");
-	    request.setAttribute("usuario", usuario);
-	    
-    	// Obtener ciudades y categorías desde la base de datos
-        CiudadService ciudadService = new CiudadService();
-        CategoriaService categoriaService = new CategoriaService();
-        List<Ciudad> ciudades = ciudadService.listarCiudades();
-        List<Categoria> categorias = categoriaService.listarCategorias();
+        HttpSession session = request.getSession();
+        Object usuario = session.getAttribute("usuario_logueado");
+        request.setAttribute("usuario", usuario);
+
+        ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
+        List<DataCiudad> ciudades = sistema.listarCiudades();
+        List<DataCategoria> categorias = sistema.listarCategorias();
         request.setAttribute("ciudades", ciudades);
         request.setAttribute("categorias", categorias);
-        // Mostrar el formulario de alta de ruta de vuelo
         request.getRequestDispatcher("/WEB-INF/vuelo/regRutaVuelo.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    HttpSession session = request.getSession();
-	    Object usuario = session.getAttribute("usuario_logueado");
-	    request.setAttribute("usuario", usuario);
-	    
-    	// Procesar los datos enviados desde el formulario
+        HttpSession session = request.getSession();
+        Object usuario = session.getAttribute("usuario_logueado");
+        request.setAttribute("usuario", usuario);
+
+        ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
+        String nicknameAerolinea = null;
+        if (usuario instanceof Logica.DataAerolinea) {
+            nicknameAerolinea = ((Logica.DataAerolinea) usuario).getNickname();
+        }
         String nombre = request.getParameter("nombreRutaVuelo");
         String descripcionCorta = request.getParameter("descCorta");
         String descripcion = request.getParameter("descLarga");
         String horaStr = request.getParameter("hora");
         int hora = 0;
         if (horaStr != null && horaStr.contains(":")) {
-            // Si el formato es "HH:mm", tomar solo la hora
             hora = Integer.parseInt(horaStr.split(":")[0]);
         } else if (horaStr != null) {
             hora = Integer.parseInt(horaStr);
@@ -66,50 +66,76 @@ public class regRutVuelo extends HttpServlet {
         int costoEquipajeExtra = Integer.parseInt(request.getParameter("costoEquipajeExtra"));
         String ciudadOrigenNombre = request.getParameter("ciudadOrigen");
         String ciudadDestinoNombre = request.getParameter("ciudadDestino");
-        String categoriaNombre = request.getParameter("categorias"); // Si solo se permite una categoría
+        String[] categoriasSeleccionadas = request.getParameterValues("categorias");
         String imagen = request.getParameter("imagen");
         java.util.Date fechaAlta = new java.util.Date();
-        String nicknameAerolinea = (String) request.getSession().getAttribute("nicknameAerolinea");
 
-        RutaVueloService rutaService = new RutaVueloService();
-        Ruta rutaExistente = rutaService.buscarRutaPorNombre(nombre);
-        if (rutaExistente != null) {
-            // Recargar listas para el JSP
-            CiudadService ciudadService = new CiudadService();
-            CategoriaService categoriaService = new CategoriaService();
-            List<Ciudad> ciudades = ciudadService.listarCiudades();
-            List<Categoria> categoriasList = categoriaService.listarCategorias();
-            request.setAttribute("ciudades", ciudades);
-            request.setAttribute("categorias", categoriasList);
-            request.setAttribute("error", "Ya existe una ruta de vuelo con ese nombre. Por favor, elija otro nombre.");
-            request.getRequestDispatcher("/WEB-INF/vuelo/regRutaVuelo.jsp").forward(request, response);
+        if (nombre == null || nombre.isBlank() || descripcionCorta == null || descripcionCorta.isBlank() || descripcion == null || descripcion.isBlank() || ciudadOrigenNombre == null || ciudadDestinoNombre == null || categoriasSeleccionadas == null || categoriasSeleccionadas.length == 0) {
+            recargarListasYError(request, response, "Todos los campos obligatorios deben estar completos.");
             return;
         }
-        // Buscar objetos Ciudad y Categoria
-        CiudadService ciudadService = new CiudadService();
-        CategoriaService categoriaService = new CategoriaService();
-        Ciudad origen = ciudadService.listarCiudades().stream().filter(c -> c.getNombre().equals(ciudadOrigenNombre)).findFirst().orElse(null);
-        Ciudad destino = ciudadService.listarCiudades().stream().filter(c -> c.getNombre().equals(ciudadDestinoNombre)).findFirst().orElse(null);
-        Categoria categoria = categoriaService.listarCategorias().stream().filter(cat -> cat.getNombre().equals(categoriaNombre)).findFirst().orElse(null);
-        // Validar que los objetos existan
-        if (origen == null || destino == null || categoria == null) {
-            List<Ciudad> ciudades = ciudadService.listarCiudades();
-            List<Categoria> categoriasList = categoriaService.listarCategorias();
-            request.setAttribute("ciudades", ciudades);
-            request.setAttribute("categorias", categoriasList);
-            request.setAttribute("error", "Error al seleccionar ciudad o categoría. Verifique los datos e intente nuevamente.");
-            request.getRequestDispatcher("/WEB-INF/vuelo/regRutaVuelo.jsp").forward(request, response);
+
+        List<DataCiudad> ciudades = sistema.listarCiudades();
+        List<DataCategoria> categorias = sistema.listarCategorias();
+
+        DataCiudad ciudadOrigen = ciudades.stream()
+            .filter(c -> c.getNombre().equals(ciudadOrigenNombre))
+            .findFirst().orElse(null);
+        DataCiudad ciudadDestino = ciudades.stream()
+            .filter(c -> c.getNombre().equals(ciudadDestinoNombre))
+            .findFirst().orElse(null);
+
+        DataCategoria categoria = categorias.stream()
+            .filter(cat -> cat.getNombre().equals(categoriasSeleccionadas[0]))
+            .findFirst().orElse(null);
+
+        if (ciudadOrigen == null || ciudadDestino == null || categoria == null) {
+            recargarListasYError(request, response, "Ciudad o categoría seleccionada no válida.");
             return;
         }
-        // Crear la ruta
-        Ruta nuevaRuta = new Ruta(nombre, descripcion, origen, destino, hora, fechaAlta, costoTurista, costoEquipajeExtra, costoEjecutivo, categoria, descripcionCorta);
-        rutaService.crearRutaVuelo(nuevaRuta, nicknameAerolinea);
-        // Recargar listas para el JSP
-        List<Ciudad> ciudades = ciudadService.listarCiudades();
-        List<Categoria> categoriasList = categoriaService.listarCategorias();
+
+        DataRuta dataRuta = new DataRuta(
+            nombre,
+            descripcion,
+            ciudadOrigen,
+            ciudadDestino,
+            hora,
+            fechaAlta,
+            costoTurista,
+            costoEquipajeExtra,
+            costoEjecutivo,
+            categoria,
+            nicknameAerolinea,
+            null,
+            descripcionCorta
+        );
+        // Si necesitas asignar imagen, usa un setter si existe
+
+        try {
+            sistema.registrarRuta(dataRuta);
+            recargarListasYExito(request, response, "Ruta de vuelo registrada exitosamente.");
+        } catch (Exception ex) {
+            recargarListasYError(request, response, ex.getMessage());
+        }
+    }
+
+    private void recargarListasYError(HttpServletRequest request, HttpServletResponse response, String errorMsg) throws ServletException, IOException {
+        ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
+        List<DataCiudad> ciudades = sistema.listarCiudades();
+        List<DataCategoria> categoriasList = sistema.listarCategorias();
         request.setAttribute("ciudades", ciudades);
         request.setAttribute("categorias", categoriasList);
-        request.setAttribute("exito", "Ruta de vuelo registrada exitosamente.");
+        request.setAttribute("error", errorMsg);
+        request.getRequestDispatcher("/WEB-INF/vuelo/regRutaVuelo.jsp").forward(request, response);
+    }
+
+    private void recargarListasYExito(HttpServletRequest request, HttpServletResponse response, String exitoMsg) throws ServletException, IOException {
+        ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
+        List<DataCiudad> ciudades = sistema.listarCiudades();
+        List<DataCategoria> categoriasList = sistema.listarCategorias();
+        request.setAttribute("ciudades", ciudades);
+        request.setAttribute("categorias", categoriasList);
+        request.setAttribute("exito", exitoMsg);
         request.getRequestDispatcher("/WEB-INF/vuelo/regRutaVuelo.jsp").forward(request, response);
     }
 }

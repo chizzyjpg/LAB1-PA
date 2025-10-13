@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ page import="java.util.List,Logica.Ciudad,Logica.Categoria" %>
+<%@ page import="java.util.List,Logica.DataCiudad,Logica.DataCategoria" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,37 +12,7 @@
     <div class="container-fluid">
     <div class="row">
         <!-- SIDEBAR (visible en ≥ lg) -->
-        <aside class="col-lg-3 col-xl-2 d-none d-lg-block border-end bg-body-tertiary">
-        <nav class="sidebar position-sticky sticky-top">
-          <div class="p-3">
-            <h6 class="text-uppercase text-muted mb-3" data-roles="Aerolínea">Registros</h6>
-            <div class="list-group list-group-flush" data-roles="Aerolínea">
-              
-              <a href="registroVuelo.html" class="list-group-item list-group-item-action">Nuevo Vuelo</a>
-              <a href="registroRutaVuelo.html" class="list-group-item list-group-item-action active">Nueva Ruta de Vuelo</a>
-
-            </div><br>
-            <h6 class="text-uppercase text-muted mb-3">Consultas</h6>
-            <div class="list-group list-group-flush">
-              <a href="consultaUsuario.html" class="list-group-item list-group-item-action">Usuario</a>
-              <a href="consultaRutasVuelo.html" class="list-group-item list-group-item-action">Ruta de Vuelo</a>
-              <a href="consultaVuelo.html" class="list-group-item list-group-item-action">Vuelo</a>
-              <a href="consultaPaqRutasVuelo.html" class="list-group-item list-group-item-action">Paquete de Rutas de Vuelo</a>
-              <a href="consultaReservas.html" data-roles="Cliente" class="list-group-item list-group-item-action">Mis Reservas de Vuelo</a>
-              <a href="consultaReservas.html" data-roles="Aerolínea" class="list-group-item list-group-item-action">Reservas de Nuestros Vuelos</a>
-            </div><br>
-            <h6 class="text-uppercase text-muted mb-3" data-roles="Aerolínea,Cliente">Modificaciones</h6>
-            <div class="list-group list-group-flush mb-4" data-roles="Aerolínea,Cliente">
-              <a href="perfil.html" class="list-group-item list-group-item-action">Modificar mis datos</a>
-            </div>
-            <h6 class="text-uppercase text-muted mb-3" data-roles="Cliente">Reserva / Compra</h6>
-            <div class="list-group list-group-flush" data-roles="Cliente">
-              <a href="reservarVuelo.html" class="list-group-item list-group-item-action">Reservar Vuelo</a>
-              <a href="comprarPaquete.html" class="list-group-item list-group-item-action">Comprar Paquete</a>
-            </div>
-          </div>
-        </nav>
-    </aside>
+        <jsp:include page="/WEB-INF/template/sidebar.jsp" />
 
     <!-- CONTENIDO -->
     <main class="col-12 col-lg-9 col-xl-10 py-4">
@@ -91,9 +61,9 @@
                     <div class="mb-3">
                         <label for="ciudadOrigen" class="form-label">Ciudad de Origen</label>
                         <select class="form-select" id="ciudadOrigen" name="ciudadOrigen" required>
-                            <% List<Logica.Ciudad> ciudades = (List<Logica.Ciudad>) request.getAttribute("ciudades");
+                            <% List<Logica.DataCiudad> ciudades = (List<Logica.DataCiudad>) request.getAttribute("ciudades");
                                if (ciudades != null) {
-                                   for (Logica.Ciudad ciudad : ciudades) { %>
+                                   for (Logica.DataCiudad ciudad : ciudades) { %>
                                        <option value="<%= ciudad.getNombre() %>"><%= ciudad.getNombre() %></option>
                             <%   }
                                } %>
@@ -103,7 +73,7 @@
                         <label for="ciudadDestino" class="form-label">Ciudad de Destino</label>
                         <select class="form-select" id="ciudadDestino" name="ciudadDestino" required>
                             <% if (ciudades != null) {
-                                   for (Logica.Ciudad ciudad : ciudades) { %>
+                                   for (Logica.DataCiudad ciudad : ciudades) { %>
                                        <option value="<%= ciudad.getNombre() %>"><%= ciudad.getNombre() %></option>
                             <%   }
                                } %>
@@ -112,9 +82,9 @@
                     <div class="mb-3">
                         <label for="categorias" class="form-label">Categorías Disponibles</label>
                         <select class="form-select" id="categorias" name="categorias" required multiple>
-                            <% List<Logica.Categoria> categorias = (List<Logica.Categoria>) request.getAttribute("categorias");
+                            <% List<Logica.DataCategoria> categorias = (List<Logica.DataCategoria>) request.getAttribute("categorias");
                                if (categorias != null) {
-                                   for (Logica.Categoria cat : categorias) { %>
+                                   for (Logica.DataCategoria cat : categorias) { %>
                                        <option value="<%= cat.getNombre() %>"><%= cat.getNombre() %></option>
                             <%   }
                                } %>
@@ -125,7 +95,7 @@
                         <input type="url" class="form-control" id="imagen" name="imagen" placeholder="https://ejemplo.com/mi-imagen.jpg">
                     </div>
                     <button type="submit" class="btn btn-primary" >Registrar Ruta de Vuelo</button>
-                    <a href="../home.html" class="btn btn-secondary">Cancelar</a>
+                    <a href="${pageContext.request.contextPath}/home" class="btn btn-secondary">Cancelar</a>
                 </form>
         </main>
         </div>

@@ -10,13 +10,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import BD.AerolineaService;
-import Logica.Aerolinea;
 import Logica.DataAerolinea;
 import Logica.DataRuta;
-import BD.RutaVueloService;
-import Logica.Ruta;
-import BD.VueloService;
+import Logica.DataVueloEspecifico;
+import Logica.ISistema;
 
 @WebServlet ("/altaVuelo")
 public class altaVuelo extends HttpServlet {
@@ -32,22 +29,20 @@ public class altaVuelo extends HttpServlet {
 	    Object usuario = session.getAttribute("usuario_logueado");
 	    request.setAttribute("usuario", usuario);
 
-		AerolineaService aerolineaService = new AerolineaService();
-		RutaVueloService rutaVueloService = new RutaVueloService();
-		List<DataAerolinea> aerolineas = aerolineaService.listarAerolineas();
-		request.setAttribute("aerolineas", aerolineas);
+	    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
+	    if (usuario == null || !(usuario instanceof DataAerolinea)) {
+	        request.setAttribute("errorMsg", "Debes iniciar sesión como aerolínea para registrar un vuelo.");
+	        request.getRequestDispatcher("/WEB-INF/vuelo/altaVuelo.jsp").forward(request, response);
+	        return;
+	    }
+	    DataAerolinea aerolinea = (DataAerolinea) usuario;
+	    String aerolineaId = aerolinea.getNickname();
+	    request.setAttribute("aerolineaSeleccionada", aerolineaId);
+	    request.setAttribute("aerolineaNombre", aerolinea.getNombre());
 
-		String aerolineaId = request.getParameter("aerolineaId");
-		List<DataRuta> rutas;
-		if (aerolineaId != null && !aerolineaId.isEmpty()) {
-			rutas = rutaVueloService.listarRutasPorAerolinea(aerolineaId);
-			request.setAttribute("aerolineaSeleccionada", aerolineaId);
-		} else {
-			rutas = rutaVueloService.listarRutas();
-			request.setAttribute("aerolineaSeleccionada", "");
-		}
-		request.setAttribute("rutas", rutas);
-		request.getRequestDispatcher("/WEB-INF/vuelo/altaVuelo.jsp").forward(request, response);
+	    List<DataRuta> rutas = sistema.listarPorAerolinea(aerolineaId);
+	    request.setAttribute("rutas", rutas);
+	    request.getRequestDispatcher("/WEB-INF/vuelo/altaVuelo.jsp").forward(request, response);
 	}
 
 	@Override
@@ -56,20 +51,47 @@ public class altaVuelo extends HttpServlet {
 	    Object usuario = session.getAttribute("usuario_logueado");
 	    request.setAttribute("usuario", usuario);
 
-	    String aerolineaId = request.getParameter("aerolineaId");
+	    if (usuario == null || !(usuario instanceof DataAerolinea)) {
+	        request.setAttribute("errorMsg", "Debes iniciar sesión como aerolínea para registrar un vuelo.");
+	        doGet(request, response);
+	        return;
+	    }
+	    DataAerolinea aerolinea = (DataAerolinea) usuario;
+	    String aerolineaId = aerolinea.getNickname();
+
 	    String rutaId = request.getParameter("rutaId");
 	    String nombreVuelo = request.getParameter("nombreVuelo");
 	    String fechaStr = request.getParameter("fecha");
 	    String duracionStr = request.getParameter("duracion");
 	    String cantMaxTuristasStr = request.getParameter("cantMaxTuristas");
 	    String cantMaxEjecutivosStr = request.getParameter("cantMaxEjecutivos");
+	    //String imagenVuelo = request.getParameter("imagenVuelo");
 
-	    VueloService vueloService = new VueloService();
-	    RutaVueloService rutaVueloService = new RutaVueloService();
+	    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
+	    if (sistema == null) {
+	        request.setAttribute("errorMsg", "Error interno: sistema no disponible.");
+	        doGet(request, response);
+	        return;
+	    }
 
-	    // Validar nombre único
-	    if (vueloService.existeVueloConNombre(nombreVuelo)) {
-	        request.setAttribute("errorMsg", "Ya existe un vuelo con ese nombre. Por favor, elija otro nombre.");
+	    // Obtener el nombre de la ruta a partir del id
+	    List<DataRuta> rutas = sistema.listarPorAerolinea(aerolineaId);
+	    String nombreRuta = rutas.stream()
+	        .filter(r -> Integer.toString(r.getIdRuta()).equals(rutaId))
+	        .map(DataRuta::getNombre)
+	        .findFirst()
+	        .orElse(null);
+	    if (nombreRuta == null) {
+	        request.setAttribute("errorMsg", "Ruta seleccionada no válida.");
+	        doGet(request, response);
+	        return;
+	    }
+
+	    // Validar nombre único en la ruta de la aerolínea
+	    List<DataVueloEspecifico> vuelos = sistema.listarVuelos(aerolineaId, nombreRuta);
+	    boolean existeVuelo = vuelos.stream().anyMatch(v -> v.getNombre().equalsIgnoreCase(nombreVuelo));
+	    if (existeVuelo) {
+	        request.setAttribute("errorMsg", "Ya existe un vuelo con ese nombre en la ruta seleccionada.");
 	        doGet(request, response);
 	        return;
 	    }
@@ -84,35 +106,27 @@ public class altaVuelo extends HttpServlet {
 	        doGet(request, response);
 	        return;
 	    }
-	    int duracion = Integer.parseInt(duracionStr);
-	    int cantMaxTuristas = Integer.parseInt(cantMaxTuristasStr);
-	    int cantMaxEjecutivos = Integer.parseInt(cantMaxEjecutivosStr);
-
-	    // Buscar la entidad Ruta
-	    Ruta ruta = null;
+	    int duracion, cantMaxTuristas, cantMaxEjecutivos;
 	    try {
-	        int idRuta = Integer.parseInt(rutaId);
-	        ruta = rutaVueloService.buscarRutaPorId(idRuta);
+	        duracion = Integer.parseInt(duracionStr);
+	        cantMaxTuristas = Integer.parseInt(cantMaxTuristasStr);
+	        cantMaxEjecutivos = Integer.parseInt(cantMaxEjecutivosStr);
 	    } catch (Exception e) {
-	        request.setAttribute("errorMsg", "Ruta de vuelo inválida.");
+	        request.setAttribute("errorMsg", "Duración o cantidad inválida.");
 	        doGet(request, response);
 	        return;
 	    }
-	    if (ruta == null) {
-	        request.setAttribute("errorMsg", "Ruta de vuelo no encontrada.");
-	        doGet(request, response);
-	        return;
-	    }
-
-	    // Crear el VueloEspecifico
+	    
 	    java.util.Date fechaAlta = new java.util.Date();
-	    Logica.VueloEspecifico vuelo = new Logica.VueloEspecifico(
-	        nombreVuelo, fecha, duracion, cantMaxTuristas, cantMaxEjecutivos, fechaAlta, ruta
-	    );
+	    // Crear DTO de vuelo
+	    DataVueloEspecifico dataVuelo = new DataVueloEspecifico(nombreVuelo, fecha, duracion, cantMaxTuristas, cantMaxEjecutivos, fechaAlta);
 
-	    // Registrar el vuelo
-	    vueloService.registrarVuelo(vuelo);
-	    request.setAttribute("successMsg", "Vuelo registrado exitosamente.");
+	    try {
+	        sistema.registrarVuelo(aerolineaId, rutaId, dataVuelo);
+	        request.setAttribute("successMsg", "Vuelo registrado exitosamente.");
+	    } catch (Exception e) {
+	        request.setAttribute("errorMsg", e.getMessage());
+	    }
 	    doGet(request, response);
 	}
 }

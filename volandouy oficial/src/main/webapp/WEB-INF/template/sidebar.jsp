@@ -32,9 +32,9 @@
       <c:if test="${isAerolinea}">
         <h6 class="text-uppercase text-muted mb-3">Registros</h6>
         <div class="list-group list-group-flush">
-          <a href="${pageContext.request.contextPath}/registroVuelo.jsp"
+          <a href="${pageContext.request.contextPath}/altaVuelo"
              class="list-group-item list-group-item-action">Nuevo Vuelo</a>
-          <a href="${pageContext.request.contextPath}/registroRutaVuelo.jsp"
+          <a href="${pageContext.request.contextPath}/regRutVuelo"
              class="list-group-item list-group-item-action">Nueva Ruta de Vuelo</a>
         </div>
         <br/>
@@ -83,7 +83,7 @@
         <div class="list-group list-group-flush">
           <a href="${pageContext.request.contextPath}/reservarVuelo.jsp"
              class="list-group-item list-group-item-action">Reservar Vuelo</a>
-          <a href="${pageContext.request.contextPath}/comprarPaquete.jsp"
+          <a href="${pageContext.request.contextPath}/compraPaquete"
              class="list-group-item list-group-item-action">Comprar Paquete</a>
         </div>
       </c:if>

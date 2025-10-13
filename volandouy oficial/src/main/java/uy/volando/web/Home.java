@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import uy.volando.model.EstadoSesion;
+import Logica.ISistema;
+import Logica.Sistema;
 /**
  * Servlet implementation class Home
  */
@@ -92,5 +94,12 @@ public class Home extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		processRequest(request, response);
+	}
+
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		ISistema sistema = new Sistema();
+		getServletContext().setAttribute("sistema", sistema);
 	}
 }
