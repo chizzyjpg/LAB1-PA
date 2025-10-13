@@ -118,7 +118,7 @@ public class altaUsuario extends HttpServlet {
 	    }
 
 	    if (exito) {
-	        response.sendRedirect(request.getContextPath() + "/usuario/listaUsuarios"); // Redirige a la lista de usuarios
+	        response.sendRedirect(request.getContextPath() + "/home"); // Redirige a la lista de usuarios
 	    } else {
 	        request.setAttribute("errorMsg", errorMsg);
 	        request.getRequestDispatcher("/WEB-INF/registro/altaUsuario.jsp").forward(request, response);
