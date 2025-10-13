@@ -46,7 +46,7 @@
         <a href="${pageContext.request.contextPath}/consultaUsuario.jsp"
            class="list-group-item list-group-item-action">Usuario</a>
 
-        <a href="${pageContext.request.contextPath}/consultaRutasVuelo.jsp"
+        <a href="${pageContext.request.contextPath}/consultaRutaVuelo"
            class="list-group-item list-group-item-action">Ruta de Vuelo</a>
 
         <a href="${pageContext.request.contextPath}/consultaVuelo.jsp"

@@ -48,13 +48,18 @@ public class ManejadorRuta {
             r.getDestino().getSitioWeb()
         );
         DataCategoria categoria = new DataCategoria(r.getCategoriaR().getNombre());
+        // Extraer el nickname de la aerolínea desde la relación (Set<Aerolinea>)
+        String nicknameAerolinea = "";
+        if (r.getAerolineas() != null && !r.getAerolineas().isEmpty()) {
+            Aerolinea aerolinea = r.getAerolineas().iterator().next();
+            nicknameAerolinea = aerolinea.getNickname();
+        }
         DataRuta dto = new DataRuta(
             r.getNombre(), r.getDescripcion(),
             origen, destino,
             r.getHora(), r.getFechaAlta(),
             r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo(), categoria,
-            "" // No se conoce el nicknameAerolinea aquí
-            , r.getEstado(), r.getDescripcionCorta()
+            nicknameAerolinea, r.getEstado(), r.getDescripcionCorta()
         );
         dto.setIdRuta(r.getIdRuta());
         return dto;
