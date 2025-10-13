@@ -9,13 +9,13 @@
   <jsp:include page="/WEB-INF/template/header.jsp" />
 
   <!-- ===== LAYOUT: SIDEBAR + CONTENIDO (Grid) ===== -->
-  <div class="container-fluid">        
-    <div class="row g-0">            
+  <div class="container-fluid">       
+    <div class="row g-0">
 
       <%-- 3) columna izquierda: sidebar --%>
       <jsp:include page="/WEB-INF/template/sidebar.jsp" />
 
-      <main class="col-12 col-lg-9 col-xl-10 py-4">
+     <main class="col-12 col-lg-9 col-xl-10 py-4">
           <h1>Bienvenid@ a Volando.uy</h1>
 
           <section class="mt-4">
@@ -91,16 +91,14 @@
 
             </div>
           </section>
-        </div>
       </main>
 
-    </div> 
-  </div>    
+    </div>
+  </div>  
 
   <!-- FOOTER -->
   <jsp:include page="/WEB-INF/template/footer.jsp" />
 
-  <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <% System.out.println("DEBUG iniciado.jsp usuario_logueado=" + session.getAttribute("usuario_logueado")); %>
