@@ -1,4 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ page import="Logica.DataCliente, Logica.DataAerolinea" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,7 +11,27 @@
 <body class="perfil-page">
     <!-- NAVBAR -->
 	<jsp:include page="/WEB-INF/template/header.jsp" />
+	
+	<c:set var="rol" value="${sessionScope.rol}" />
 
+
+	<%
+	    String rolCalc = (String) pageContext.findAttribute("rol"); // puede venir null
+	    if (rolCalc == null) {
+	        Object u = session.getAttribute("usuario_logueado");
+	        if (u instanceof DataCliente) {
+	            rolCalc = "Cliente";
+	        } else if (u instanceof DataAerolinea) {
+	            rolCalc = "Aerolínea";
+	        } else {
+	            rolCalc = null; // sigue siendo visitante
+	        }
+	        request.setAttribute("rol", rolCalc);
+	    }
+	%>
+	<c:set var="isCliente"   value="${rol == 'Cliente'}" />
+	<c:set var="isAerolinea" value="${rol == 'Aerolínea'}" />
+	
     <!-- LAYOUT: SIDEBAR + CONTENIDO -->
     <div class="container-fluid">
         <div class="row">
@@ -16,14 +39,18 @@
                 <nav class="sidebar position-sticky sticky-top">
                     <div class="p-3">
                         <h6 class="text-uppercase text-muted mb-3">Mi Perfil</h6>
-                        <div class="list-group list-group-flush" data-roles="Cliente">
-                            <a href="reservarVuelo.html" data-roles="Cliente" class="list-group-item list-group-item-action">Reservar Vuelo</a>
-                            <a href="comprarPaquete.html" data-roles="Cliente" class="list-group-item list-group-item-action">Comprar Paquete</a>
-                        </div>
-                        <div class="list-group list-group-flush" data-roles="Aerolínea">
-                        <a href="registroVuelo.html" data-roles="Aerolínea" class="list-group-item list-group-item-action">Nuevo Vuelo</a>
-                            <a href="registroRutaVuelo.html" data-roles="Aerolínea" class="list-group-item list-group-item-action">Nueva Ruta</a>
-                        </div>
+                        <c:if test="${isCliente}">
+	                        <div class="list-group list-group-flush">
+	                            <a href="${pageContext.request.contextPath}/" class="list-group-item list-group-item-action">Reservar Vuelo</a>
+	                            <a href="${pageContext.request.contextPath}/comprarPaquete" class="list-group-item list-group-item-action">Comprar Paquete</a>
+	                        </div>
+                        </c:if>
+                        <c:if test="${isAerolinea}">
+	                        <div class="list-group list-group-flush"">
+	                        	<a href="registroVuelo.html"class="list-group-item list-group-item-action">Nuevo Vuelo</a>
+	                            <a href="${pageContext.request.contextPath}/regRutVuelo" class="list-group-item list-group-item-action">Nueva Ruta</a>
+	                        </div>
+                        </c:if>
                     </div>
                 </nav>
             </aside>
