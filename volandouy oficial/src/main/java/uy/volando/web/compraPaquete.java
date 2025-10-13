@@ -1,6 +1,8 @@
 package uy.volando.web;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import jakarta.servlet.ServletException;
@@ -11,9 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import Logica.DataCliente;
-import BD.PaqueteService;
-import BD.UsuarioService;
-import Logica.Paquete;
+import Logica.DataCompraPaquete;
+import Logica.ISistema;
 
 @WebServlet("/compraPaquete")
 public class compraPaquete extends HttpServlet {
@@ -27,9 +28,10 @@ public class compraPaquete extends HttpServlet {
 	    HttpSession session = request.getSession();
 	    Object usuario = session.getAttribute("usuario_logueado");
 	    request.setAttribute("usuario", usuario);
-		// Obtener la lista de paquetes disponibles desde el servicio
-	    PaqueteService paqueteService = new PaqueteService();
-	    List<Paquete> paquetesDisponibles = paqueteService.listarPaquetes();
+	    // Obtener la instancia de ISistema desde el contexto
+	    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
+	    // Obtener la lista de paquetes disponibles desde ISistema
+	    List<Logica.DataPaquete> paquetesDisponibles = sistema.listarPaquetes();
 	    request.setAttribute("paquetesDisponibles", paquetesDisponibles);
 
 	    // Redirigir al JSP para mostrar los paquetes
@@ -48,35 +50,25 @@ public class compraPaquete extends HttpServlet {
 	    }
 	    DataCliente dataCliente = (DataCliente) usuarioObj;
 	    String nickname = dataCliente.getNickname();
-
-	    PaqueteService paqueteService = new PaqueteService();
-	    Paquete paquete = paqueteService.existePaquete(nombrePaquete);
-	    if (paquete == null) {
+	    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
+	    boolean existePaquete = sistema.existePaquete(nombrePaquete);
+	    if (!existePaquete) {
 	        request.setAttribute("mensaje", "El paquete seleccionado no existe.");
 	        doGet(request, response);
 	        return;
 	    }
-	    UsuarioService usuarioService = new UsuarioService();
-	    boolean yaComprado = usuarioService.clienteYaComproPaquete(nickname, nombrePaquete);
+	    boolean yaComprado = sistema.clienteYaComproPaquete(nickname, nombrePaquete);
 	    if (yaComprado) {
 	        request.setAttribute("mensaje", "Ya has comprado este paquete. Elige otro o cancela.");
 	        doGet(request, response);
 	        return;
 	    }
-	    Logica.Cliente cliente = usuarioService.obtenerClientePorNickname(nickname);
-	    java.util.Date fechaCompra = new java.util.Date();
-	    java.util.Calendar cal = java.util.Calendar.getInstance();
-	    cal.setTime(fechaCompra);
-	    cal.add(java.util.Calendar.DATE, paquete.getValidez());
-	    java.util.Date fechaVencimiento = cal.getTime();
-	    Logica.CompraPaquete compra = new Logica.CompraPaquete(
-	        cliente,
-	        paquete,
-	        fechaCompra,
-	        fechaVencimiento,
-	        paquete.getCosto()
-	    );
-	    paqueteService.comprarPaquete(compra, cliente, paquete);
+	    // Obtener el costo del paquete desde ISistema
+	    BigDecimal costo = null;
+	    Date fechaCompra = new Date();
+	    Date vencimiento = null;
+	    DataCompraPaquete compra = new DataCompraPaquete(nombrePaquete, nickname, fechaCompra, costo, vencimiento);
+	    sistema.comprarPaquete(compra);
 	    request.setAttribute("mensaje", "¡Compra realizada con éxito!");
 	    doGet(request, response);
 	}
