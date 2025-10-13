@@ -1,4 +1,3 @@
-
 package Logica;
 
 //import java.math.BigDecimal;
@@ -45,4 +44,9 @@ public interface ISistema {
 	void cambiarEstadoRuta(int idRuta, EstadoRuta nuevoEstado);
 
 	Ciudad buscarCiudad(String nombre, String pais);	
+	
+	boolean existeNickname(String nickname);
+    boolean existeEmail(String email);
+    void altaCliente(DataCliente cliente);
+    void altaAerolinea(DataAerolinea aerolinea);
 }

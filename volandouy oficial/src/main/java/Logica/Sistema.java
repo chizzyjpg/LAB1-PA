@@ -663,4 +663,24 @@ public class Sistema implements ISistema {
 		rutaService.actualizarRuta(ruta);
 
 	}
+
+	@Override
+    public boolean existeNickname(String nickname) {
+        return usuarioService.existeNickname(nickname);
+    }
+
+    @Override
+    public boolean existeEmail(String email) {
+        return usuarioService.existeEmail(email);
+    }
+
+    @Override
+    public void altaCliente(DataCliente cliente) {
+        registrarUsuario(cliente);
+    }
+
+    @Override
+    public void altaAerolinea(DataAerolinea aerolinea) {
+        registrarUsuario(aerolinea);
+    }
 }

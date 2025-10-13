@@ -19,53 +19,56 @@
                 <div class="col-11 col-sm-10 col-md-8 col-lg-6">
                     <div class="card p-4">
                         <h2 class="mb-4 text-center">Registro</h2>
-                       
-                        <form class="registro-form" action="login.html"> <!-- Esto hay que cambiarlo poniendo un id y haciendo un script que primero valide los campos -->
+                        <% String errorMsg = (String) request.getAttribute("errorMsg");
+                       if (errorMsg != null) { %>
+                        <div class="alert alert-danger"><%= errorMsg %></div>
+                    <% } %>
+                        <form class="registro-form" action="${pageContext.request.contextPath}/altaUsuario" method="post" id="registroForm">
                             <div class="mb-3">
                                 <label for="userType" class="form-label">Tipo de Usuario</label>
-                                <select class="form-control" id="userType" required onchange="toggleFields()">
+                                <select class="form-control" id="userType" name="tipoUsuario" required onchange="toggleFields()">
                                     <option value="">Selecciona el tipo de usuario</option>
-                                    <option value="cliente">Cliente</option>
-                                    <option value="aerolinea">Aerolínea</option>
+                                    <option value="Cliente">Cliente</option>
+                                    <option value="Aerolinea">Aerolínea</option>
                                 </select>
                             </div>
                             
                             <!-- Campos comunes -->
                             <div class="mb-3">
                                 <label for="username" class="form-label">Nickname</label>
-                                <input type="text" class="form-control" id="username" required>
+                                <input type="text" class="form-control" id="username" name="nickname" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Correo electrónico</label>
-                                <input type="email" class="form-control" id="email" required>
+                                <input type="email" class="form-control" id="email" name="email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" id="password" required>
+                                <input type="password" class="form-control" id="password" name="password" required>
                             </div>
                             <div class="mb-3">
                                 <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-                                <input type="password" class="form-control" id="confirmPassword" required>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                             </div>
                             <div class="mb-3">
                                 <label for="image" class="form-label">Imagen de Perfil (URL)</label>
-                                <input type="url" class="form-control" id="image" placeholder="https://ejemplo.com/mi-foto.jpg">
+                                <input type="url" class="form-control" id="image" name="imagenURL" placeholder="https://ejemplo.com/mi-foto.jpg">
                                 <div class="form-text">Puedes usar servicios como Imgur, Google Drive o cualquier URL de imagen pública</div>
                             </div>
                             
                             <!-- Campos específicos para Cliente -->
-                            <div id="clienteFields">
+                            <div id="clienteFields" style="display:none;">
                                 <div class="mb-3">
                                     <label for="nombre" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="nombre">
+                                    <input type="text" class="form-control" id="nombre" name="nombre">
                                 </div>
                                 <div class="mb-3">
                                     <label for="apellido" class="form-label">Apellido</label>
-                                    <input type="text" class="form-control" id="apellido">
+                                    <input type="text" class="form-control" id="apellido" name="apellido">
                                 </div>
                                 <div class="mb-3">
                                     <label for="tipoDocumento" class="form-label">Tipo de Documento</label>
-                                    <select class="form-control" id="tipoDocumento">
+                                    <select class="form-control" id="tipoDocumento" name="tipoDocumento">
                                         <option value="">Selecciona tipo de documento</option>
                                         <option value="cedula">Cédula</option>
                                         <option value="pasaporte">Pasaporte</option>
@@ -73,31 +76,35 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="numeroDocumento" class="form-label">Número de Documento</label>
-                                    <input type="text" class="form-control" id="numeroDocumento">
+                                    <input type="text" class="form-control" id="numeroDocumento" name="numeroDocumento">
                                 </div>
                                 <div class="mb-3">
                                     <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
-                                    <input type="date" class="form-control" id="fechaNacimiento">
+                                    <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento">
                                 </div>
                                 <div class="mb-3">
                                     <label for="nacionalidad" class="form-label">Nacionalidad</label>
-                                    <input type="text" class="form-control" id="nacionalidad">
+                                    <input type="text" class="form-control" id="nacionalidad" name="nacionalidad">
                                 </div>
                             </div>
                             
                             <!-- Campos específicos para Aerolínea -->
-                            <div id="aerolineaFields">
+                            <div id="aerolineaFields" style="display:none;">
                                 <div class="mb-3">
                                     <label for="nombreAerolinea" class="form-label">Nombre de la Aerolínea</label>
-                                    <input type="text" class="form-control" id="nombreAerolinea">
+                                    <input type="text" class="form-control" id="nombreAerolinea" name="nombreAerolinea">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="iata" class="form-label">Código IATA</label>
+                                    <input type="text" class="form-control" id="iata" name="iata">
                                 </div>
                                 <div class="mb-3">
                                     <label for="descripcion" class="form-label">Descripción</label>
-                                    <textarea class="form-control" id="descripcion" rows="3" placeholder="Descripción de la aerolínea"></textarea>
+                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Descripción de la aerolínea"></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="sitioWeb" class="form-label">Sitio Web</label>
-                                    <input type="url" class="form-control" id="sitioWeb" placeholder="https://www.ejemplo.com">
+                                    <input type="url" class="form-control" id="sitioWeb" name="sitioWeb" placeholder="https://www.ejemplo.com">
                                 </div>
                             </div>
                             
@@ -114,13 +121,20 @@
         <!-- Footer dentro de la portada -->
         <footer class="mt-auto py-3 bg-transparent">
             <div class="container text-center">
-                <small class="text-white-50">© 2025 Volando.uy</small>
+                <small class="text-white-50">� 2025 Volando.uy</small>
             </div>
         </footer>
     </main>
 
     <!-- Scripts -->
-    
+    <script>
+        function toggleFields() {
+            var tipo = document.getElementById('userType').value;
+            document.getElementById('clienteFields').style.display = (tipo === 'Cliente') ? 'block' : 'none';
+            document.getElementById('aerolineaFields').style.display = (tipo === 'Aerolinea') ? 'block' : 'none';
+        }
+        window.onload = function() { toggleFields(); };
+    </script>
 
     </body>
 </html>
