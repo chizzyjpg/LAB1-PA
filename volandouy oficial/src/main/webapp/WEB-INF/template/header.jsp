@@ -22,7 +22,7 @@
         %>
         <% System.out.println("DEBUG: usuario_logueado=" + usuario); %>
         <div id="guestArea" class="d-flex align-items-center gap-2">
-            <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">Iniciar sesión</button>
+            <a class="btn btn-outline-light btn-sm" href= "${pageContext.request.contextPath}/iniciar-sesion">Iniciar sesión</a>
             <a class="btn btn-warning btn-sm" href="registro.html" role="button">Registrarse</a>
         </div>
         <% } else { %>
