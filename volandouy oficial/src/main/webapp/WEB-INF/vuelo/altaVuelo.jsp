@@ -23,31 +23,21 @@
         <div class="container">
             <h1>Registro de Vuelo</h1>
             <form method="post" action="altaVuelo">
-            <!-- Primero selecciona la aerolínea -->
+            <!-- Aerolínea solo lectura -->
             <div class="mb-3">
-                <label for="aerolineaId" class="form-label">Aerolínea</label>
-                <select class="form-select" id="aerolineaId" name="aerolineaId" required>
-                    <option value="">Selecciona una aerolínea...</option>
-                    <% String aerolineaSeleccionada = (String)request.getAttribute("aerolineaSeleccionada");
-                       List<DataAerolinea> aerolineas = (List<DataAerolinea>)request.getAttribute("aerolineas");
-                       if (aerolineas != null) {
-                         for (DataAerolinea a : aerolineas) { %>
-                           <option value="<%=a.getNickname()%>" <%=a.getNickname().equals(aerolineaSeleccionada) ? "selected" : ""%>><%=a.getNombre()%></option>
-                    <%   }
-                       } %>
-                </select>
+                <label class="form-label">Aerolínea</label>
+                <input type="text" class="form-control" value="<%= request.getAttribute("aerolineaNombre") %>" readonly>
+                <input type="hidden" name="aerolineaId" value="<%= request.getAttribute("aerolineaSeleccionada") %>">
             </div>
-            <!-- Luego se llenan automáticamente las rutas de esa aerolínea -->
+            <!-- Rutas de la aerolínea -->
             <div class="mb-3">
                 <label for="rutaId" class="form-label">Ruta de Vuelo</label>
                 <select class="form-select" id="rutaId" name="rutaId" required>
                     <option value="">Selecciona una ruta...</option>
                     <% List<DataRuta> rutas = (List<DataRuta>)request.getAttribute("rutas");
                        if (rutas != null) {
-                         for (DataRuta r : rutas) {
-                           String aerolineaNick = r.getNicknameAerolinea();
-                    %>
-                           <option value="<%=r.getIdRuta()%>" data-aerolinea="<%=aerolineaNick%>"><%=r.getNombre()%></option>
+                         for (DataRuta r : rutas) { %>
+                           <option value="<%=r.getIdRuta()%>"><%=r.getNombre()%></option>
                     <%   }
                        } %>
                 </select>
@@ -77,7 +67,7 @@
                 <input type="url" class="form-control" id="imagenVuelo" name="imagenVuelo" placeholder="https://ejemplo.com/imagen.jpg">
             </div>
             <button type="submit" class="btn btn-primary">Registrar Vuelo</button>
-            <a href="../home.html" class="btn btn-secondary">Cancelar</a>
+            <a href="${pageContext.request.contextPath}/home" class="btn btn-secondary">Cancelar</a>
             </form>
             <% if (request.getAttribute("errorMsg") != null) { %>
               <div class="alert alert-danger"><%= request.getAttribute("errorMsg") %></div>
@@ -94,11 +84,7 @@
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/js/roles.js"></script>
     <script>
-    // Recargar la página enviando el parámetro aerolineaId al cambiar la aerolínea
-      document.getElementById('aerolineaId').addEventListener('change', function() {
-        var aerolineaId = this.value;
-        window.location.href = 'altaVuelo?aerolineaId=' + encodeURIComponent(aerolineaId);
-      });
+    // Eliminar el cambio de aerolínea, ya no es editable
     </script>
 </body>
 </html>

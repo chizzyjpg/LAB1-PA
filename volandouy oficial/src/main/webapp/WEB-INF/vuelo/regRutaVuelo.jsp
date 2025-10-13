@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ page import="java.util.List,Logica.Ciudad,Logica.Categoria" %>
+<%@ page import="java.util.List,Logica.DataCiudad,Logica.DataCategoria" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -61,9 +61,9 @@
                     <div class="mb-3">
                         <label for="ciudadOrigen" class="form-label">Ciudad de Origen</label>
                         <select class="form-select" id="ciudadOrigen" name="ciudadOrigen" required>
-                            <% List<Logica.Ciudad> ciudades = (List<Logica.Ciudad>) request.getAttribute("ciudades");
+                            <% List<Logica.DataCiudad> ciudades = (List<Logica.DataCiudad>) request.getAttribute("ciudades");
                                if (ciudades != null) {
-                                   for (Logica.Ciudad ciudad : ciudades) { %>
+                                   for (Logica.DataCiudad ciudad : ciudades) { %>
                                        <option value="<%= ciudad.getNombre() %>"><%= ciudad.getNombre() %></option>
                             <%   }
                                } %>
@@ -73,7 +73,7 @@
                         <label for="ciudadDestino" class="form-label">Ciudad de Destino</label>
                         <select class="form-select" id="ciudadDestino" name="ciudadDestino" required>
                             <% if (ciudades != null) {
-                                   for (Logica.Ciudad ciudad : ciudades) { %>
+                                   for (Logica.DataCiudad ciudad : ciudades) { %>
                                        <option value="<%= ciudad.getNombre() %>"><%= ciudad.getNombre() %></option>
                             <%   }
                                } %>
@@ -82,9 +82,9 @@
                     <div class="mb-3">
                         <label for="categorias" class="form-label">Categorías Disponibles</label>
                         <select class="form-select" id="categorias" name="categorias" required multiple>
-                            <% List<Logica.Categoria> categorias = (List<Logica.Categoria>) request.getAttribute("categorias");
+                            <% List<Logica.DataCategoria> categorias = (List<Logica.DataCategoria>) request.getAttribute("categorias");
                                if (categorias != null) {
-                                   for (Logica.Categoria cat : categorias) { %>
+                                   for (Logica.DataCategoria cat : categorias) { %>
                                        <option value="<%= cat.getNombre() %>"><%= cat.getNombre() %></option>
                             <%   }
                                } %>
@@ -95,7 +95,7 @@
                         <input type="url" class="form-control" id="imagen" name="imagen" placeholder="https://ejemplo.com/mi-imagen.jpg">
                     </div>
                     <button type="submit" class="btn btn-primary" >Registrar Ruta de Vuelo</button>
-                    <a href="../home.html" class="btn btn-secondary">Cancelar</a>
+                    <a href="${pageContext.request.contextPath}/home" class="btn btn-secondary">Cancelar</a>
                 </form>
         </main>
         </div>
