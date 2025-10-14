@@ -100,7 +100,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="descripcion" class="form-label">Descripcion</label>
-                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Descripción de la aerolínea"></textarea>
+                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Descripcion de la aerolinea"></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="sitioWeb" class="form-label">Sitio Web</label>
