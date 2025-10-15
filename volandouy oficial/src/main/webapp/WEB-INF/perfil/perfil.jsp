@@ -34,7 +34,7 @@
             <c:if test="${isCliente}">
               <div class="list-group list-group-flush">
                 <a href="${pageContext.request.contextPath}/" class="list-group-item list-group-item-action">Reservar Vuelo</a>
-                <a href="${pageContext.request.contextPath}/comprarPaquete" class="list-group-item list-group-item-action">Comprar Paquete</a>
+                <a href="${pageContext.request.contextPath}/compraPaquete" class="list-group-item list-group-item-action">Comprar Paquete</a>
               </div>
             </c:if>
             <c:if test="${isAerolinea}">
