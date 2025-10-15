@@ -43,7 +43,7 @@
 
       <h6 class="text-uppercase text-muted mb-3">Consultas</h6>
       <div class="list-group list-group-flush">
-        <a href="${pageContext.request.contextPath}/consultaUsuario.jsp"
+        <a href="${pageContext.request.contextPath}/listado-usuarios"
            class="list-group-item list-group-item-action">Usuario</a>
 
         <a href="${pageContext.request.contextPath}/consultaRutasVuelo.jsp"
