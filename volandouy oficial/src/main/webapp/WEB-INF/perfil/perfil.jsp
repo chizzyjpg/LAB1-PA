@@ -33,7 +33,7 @@
             <h6 class="text-uppercase text-muted mb-3">Mi Perfil</h6>
             <c:if test="${isCliente}">
               <div class="list-group list-group-flush">
-                <a href="${pageContext.request.contextPath}/" class="list-group-item list-group-item-action">Reservar Vuelo</a>
+                <a href="${pageContext.request.contextPath}/reservaVuelo" class="list-group-item list-group-item-action">Reservar Vuelo</a>
                 <a href="${pageContext.request.contextPath}/compraPaquete" class="list-group-item list-group-item-action">Comprar Paquete</a>
               </div>
             </c:if>

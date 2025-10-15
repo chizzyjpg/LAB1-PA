@@ -57,12 +57,12 @@
 
 
         <c:if test="${isCliente}">
-          <a href="${pageContext.request.contextPath}/consultaReservas.jsp"
+          <a href="${pageContext.request.contextPath}/consultaReservaVuelo"
              class="list-group-item list-group-item-action">Mis Reservas de Vuelo</a>
         </c:if>
 
         <c:if test="${isAerolinea}">
-          <a href="${pageContext.request.contextPath}/consultaReservas.jsp"
+          <a href="${pageContext.request.contextPath}/consultaReservaVuelo"
              class="list-group-item list-group-item-action">Reservas de Nuestros Vuelos</a>
         </c:if>
       </div>
