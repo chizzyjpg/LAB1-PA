@@ -317,6 +317,9 @@ public class Sistema implements ISistema {
 		if (ruta == null) {
 			throw new IllegalArgumentException("No se encontró la Ruta con id: " + idRuta);
 		}
+		// Inicializar las colecciones para evitar LazyInitializationException
+		r.getAerolineas().size();
+		r.getVuelosEspecificos().size();
 		
 		ManejadorVueloEspecifico.toEntity(datos, ruta);
 	}
@@ -343,23 +346,32 @@ public class Sistema implements ISistema {
 
 	@Override
 	public DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo) {
-		Usuario u = usuarioService.obtenerAerolineaPorNickname(canonical(nickname));
-		if (!(u instanceof Aerolinea a)) {
-			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
-		}
-		Ruta r = a.getRutas().stream()
-				.filter(rt -> rt.getNombre() != null && rt.getNombre().equalsIgnoreCase(nombre))
-				.findFirst().orElse(null);
-		if (r == null) {
-			throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
-		}
-		VueloEspecifico v = r.getVuelosEspecificos().stream()
-			.filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo))
-			.findFirst().orElse(null);
-		if (v == null) {
-			throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
-		}
-		return ManejadorVueloEspecifico.toData(v);
+	    // Obtener la aerolínea desde la base de datos
+	    Usuario u = usuarioService.obtenerAerolineaPorNickname(canonical(nickname));
+	    if (!(u instanceof Aerolinea a)) {
+	        throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+	    }
+	    // Buscar la ruta por nombre usando el servicio de BD para asegurar la sesión activa
+	    RutaVueloService rutaService = new RutaVueloService();
+	    Integer idRuta = rutaService.buscarRutaPorNombreYObtenerId(nombre);
+	    if (idRuta == null) {
+	        throw new IllegalArgumentException("No existe una ruta con ese nombre en la base de datos");
+	    }
+	    Ruta r = rutaService.buscarRutaPorId(idRuta);
+	    if (r == null) {
+	        throw new IllegalArgumentException("No se encontró la Ruta con id: " + idRuta);
+	    }
+	    // Inicializar las colecciones para evitar LazyInitializationException
+	    r.getAerolineas().size();
+	    r.getVuelosEspecificos().size();
+	    // Buscar el vuelo específico en la ruta
+	    VueloEspecifico v = r.getVuelosEspecificos().stream()
+	        .filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo))
+	        .findFirst().orElse(null);
+	    if (v == null) {
+	        throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
+	    }
+	    return ManejadorVueloEspecifico.toData(v);
 	}
 	
 		// =========================

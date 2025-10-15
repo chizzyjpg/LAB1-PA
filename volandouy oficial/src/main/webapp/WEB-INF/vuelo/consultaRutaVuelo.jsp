@@ -14,7 +14,7 @@
 	<jsp:include page="/WEB-INF/template/header.jsp" />
 	
  <!-- LAYOUT: SIDEBAR + CONTENIDO -->
-  <div class="container-fluid">
+  <div class="container-fluid mt-5">
     <div class="row">
       <!-- SIDEBAR (visible en ≥ lg) -->
  		<jsp:include page="/WEB-INF/template/sidebar.jsp" />

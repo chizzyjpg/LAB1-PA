@@ -81,7 +81,7 @@
       <c:if test="${isCliente}">
         <h6 class="text-uppercase text-muted mb-3">Reserva / Compra</h6>
         <div class="list-group list-group-flush">
-          <a href="${pageContext.request.contextPath}/reservarVuelo.jsp"
+          <a href="${pageContext.request.contextPath}/reservaVuelo"
              class="list-group-item list-group-item-action">Reservar Vuelo</a>
           <a href="${pageContext.request.contextPath}/compraPaquete"
              class="list-group-item list-group-item-action">Comprar Paquete</a>
