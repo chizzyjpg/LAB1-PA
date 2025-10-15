@@ -20,6 +20,9 @@ public class Usuario {
     @Column(name = "Contraseña", nullable = false, length = 64)
     private String contrasenia;
     
+    @Column(name = "avatar", nullable = true)
+	private byte[] avatar;
+    
     // Constructor vacío requerido por JPA
     protected Usuario() {}
 
@@ -28,6 +31,14 @@ public class Usuario {
         this.nickname = nickname;
         this.email = email;
         this.contrasenia = contrasenia;
+    }
+    
+    public Usuario(String nombre, String nickname, String email, String contrasenia, byte[] avatar) {
+    	this.nombre = nombre;
+        this.nickname = nickname;
+        this.email = email;
+        this.contrasenia = contrasenia;
+        this.avatar = avatar;
     }
 
     //Getters
@@ -44,6 +55,10 @@ public class Usuario {
 	
 	public String getContrasenia() {
 		return contrasenia;
+	}
+	
+	public byte[] getAvatar() {
+		return avatar;
 	}
 	
 	//Setters
@@ -63,8 +78,13 @@ public class Usuario {
 		this.contrasenia = contrasenia;
 	}
 	
+	public void setAvatar(byte[] avatar) {
+		this.avatar = avatar;
+	}
+	
 	@Override public String toString() {
 		return "Usuario [nickname=" + nickname + ", nombre=" + nombre + ", email=" + email + "]";
 	}
+
 	
 }
