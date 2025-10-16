@@ -73,7 +73,7 @@ public class Perfil extends HttpServlet {
 		    return;
 		  }
 
-		  // Mover flash de sesión -> request (opcional)
+		  // Mover flash de sesión
 		  HttpSession sess = request.getSession(false);
 		  if (sess != null) {
 		    Object ok = sess.getAttribute("flash_ok");
