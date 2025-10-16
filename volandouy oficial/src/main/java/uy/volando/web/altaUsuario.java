@@ -118,6 +118,9 @@ public class altaUsuario extends HttpServlet {
 	                        break;
 	                    }
 	                    DataCliente cliente = new DataCliente(nombre, nickname, email, password, apellido, fechaNacimiento, nacionalidad, tipoDocumento, numeroDocumento);
+	                    if(avatarBytes == null) {
+	                    	System.out.println("Avatar nulo en altaUsuario");
+	                    }
 	                    sistema.altaCliente(cliente, avatarBytes);
 	                    exito = true;
 	                    break;

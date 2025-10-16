@@ -798,7 +798,9 @@ public class Sistema implements ISistema {
     
     	// Ajusta la construcción de PerfilClienteUpdate según el constructor disponible
     	PerfilClienteUpdate perfil = new PerfilClienteUpdate(nickname, email, nombre, apellido, pais, documento,numeroDocumento, fechaNac, avatar,false);
-    
+    	if(avatar == null ) {
+    		System.out.println("Avatar es null");
+    	}
         registrarUsuario(cliente);
         if (avatar != null && avatar.length > 0) {
         	actualizarPerfilCliente(perfil);
