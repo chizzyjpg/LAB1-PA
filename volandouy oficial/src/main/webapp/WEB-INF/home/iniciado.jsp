@@ -9,13 +9,13 @@
   <jsp:include page="/WEB-INF/template/header.jsp" />
 
   <!-- ===== LAYOUT: SIDEBAR + CONTENIDO (Grid) ===== -->
-  <div class="container-fluid">        <%-- 1) contenedor --%>
-    <div class="row g-0">              <%-- 2) fila --%>
+  <div class="container-fluid">       
+    <div class="row g-0">
 
       <%-- 3) columna izquierda: sidebar --%>
       <jsp:include page="/WEB-INF/template/sidebar.jsp" />
 
-      <main class="col-12 col-lg-9 col-xl-10 py-4">
+     <main class="col-12 col-lg-9 col-xl-10 py-4">
           <h1>Bienvenid@ a Volando.uy</h1>
 
           <section class="mt-4">
@@ -91,48 +91,15 @@
 
             </div>
           </section>
-        </div>
       </main>
 
-    </div>  <%-- /row --%>
-  </div>    <%-- /container-fluid --%>
+    </div>
+  </div>  
 
   <!-- FOOTER -->
   <jsp:include page="/WEB-INF/template/footer.jsp" />
 
-  <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-  <%-- Si ya no usás estos JS para roles/usuario, podés quitarlos --%>
-  <%-- <script src="${pageContext.request.contextPath}/assets/js/consulta-usuario.js"></script> --%>
-  <%-- <script src="${pageContext.request.contextPath}/assets/js/roles.js"></script> --%>
-
-  <!-- Modal Login (mock front) -->
-  <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-      <form class="modal-content" id="loginForm">
-        <div class="modal-header">
-          <h5 class="modal-title">Iniciar sesión</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label class="form-label">Nickname</label>
-            <input name="nickname" class="form-control" placeholder="p. ej., maria23" required>
-          </div>
-          <div class="mb-2">
-            <label class="form-label">Contraseña</label>
-            <input name="pass" type="password" class="form-control" placeholder="1235" required>
-          </div>
-          <div id="loginError" class="text-danger small d-none">Credenciales inválidas.</div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">Cancelar</button>
-          <button class="btn btn-primary" type="submit">Entrar</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <% System.out.println("DEBUG iniciado.jsp usuario_logueado=" + session.getAttribute("usuario_logueado")); %>
 </body>

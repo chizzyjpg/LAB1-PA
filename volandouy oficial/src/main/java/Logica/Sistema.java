@@ -136,6 +136,23 @@ public class Sistema implements ISistema {
 	     
 	 }
 	 
+	 @Override
+	 public byte[] obtenerAvatar(String nickname) {
+	     if (nickname == null || nickname.isBlank()) {
+	         return null;
+	     }
+	     
+	     Usuario u = usuarioService.obtenerClientePorNickname(canonical(nickname));
+	     if (u == null) {
+	    	 u = usuarioService.obtenerAerolineaPorNickname(canonical(nickname));
+	     }
+	     
+	     if (u == null || u.getAvatar() == null) {
+	         return null;
+	     }
+	     return Arrays.copyOf(u.getAvatar(), u.getAvatar().length);
+	 }
+	 
     // ======================
     //  MODIFICAR USUARIOS
     // ======================
@@ -168,6 +185,39 @@ public class Sistema implements ISistema {
         // Persistir cambios en la base de datos usando el manejador
         usuarioService.actualizarUsuario(cliente);
     }
+    
+    @Override
+    public DataCliente actualizarPerfilCliente (PerfilClienteUpdate upd) {
+    	if (upd == null) throw new IllegalArgumentException("Datos de actualización nulos");
+    	String key = canonical(upd.getNickname());
+    	Cliente cliente = usuarioService.obtenerClientePorNickname(key);
+    	
+    	if (cliente == null)
+			throw new IllegalArgumentException("No existe un cliente con ese nickname");
+    	
+    	String emailActual = cliente.getEmail();
+    	String emailNuevo  = upd.getEmail();
+    	
+    	if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
+    		throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
+    	}
+    	
+    	if (upd.getNickname() != null && !canonical(upd.getNickname()).equals(key)) {
+			throw new IllegalArgumentException("No se permite modificar el nickname.");
+		}
+    	
+    	cliente.setNombre(upd.getNombre());
+    	cliente.setApellido(upd.getApellido());
+    	cliente.setNacionalidad(upd.getNacionalidad());
+    	cliente.setTipoDocumento(upd.getTipoDocumento());
+    	cliente.setNumDocumento(upd.getNumDocumento());
+    	cliente.setFechaNac(copia(upd.getFechaNac()));
+    	cliente.setAvatar(upd.getAvatar());
+    	
+    	usuarioService.actualizarUsuario(cliente);
+    	DataUsuario usuario = usuarioService.verInfoUsuario(upd.getNickname());
+    	return usuario instanceof DataCliente ? (DataCliente) usuario : null;
+    }
 
     @Override
     public void modificarAerolinea(String nickname, DataAerolinea nuevos) {
@@ -195,6 +245,67 @@ public class Sistema implements ISistema {
         
         usuarioService.actualizarUsuario(aerolinea);
     }
+    
+    @Override
+    public void cambiarPassword(String nickname, String pwdCurrent, String pwdNew) {
+		if (nickname == null || pwdCurrent == null || pwdNew == null) {
+			throw new IllegalArgumentException("Nickname y contraseñas no pueden ser nulos");
+		}
+		if (pwdNew.length() < 3) {
+			throw new IllegalArgumentException("La nueva contraseña debe tener al menos 3 caracteres");
+		}
+
+		Usuario u = usuarioService.autenticarUsuario(nickname, pwdCurrent);
+		if (u == null) {
+			throw new IllegalArgumentException("No existe un usuario con ese nickname y esa contraseña");
+		}
+
+		// Verificar la contraseña actual (plana para la prueba)
+		/*if (!u.getPassword().equals(pwdCurrent)) {
+			throw new IllegalArgumentException("La contraseña actual es incorrecta");
+		}*/
+
+		// Actualizar la contraseña (plana para la prueba)
+		u.setContrasenia(pwdNew);
+		usuarioService.actualizarUsuario(u);
+	}
+    
+    @Override
+    public DataAerolinea actualizarPerfilAerolinea (PerfilAerolineaUpdate upd) {
+		if (upd == null) throw new IllegalArgumentException("Datos de actualización nulos");
+		String key = canonical(upd.getNickname());
+		Aerolinea aerolinea = usuarioService.obtenerAerolineaPorNickname(key);
+		if (aerolinea == null)
+			throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+
+		// Validar que NO se cambie email ni nickname
+		String emailActual = aerolinea.getEmail();
+		String emailNuevo  = upd.getEmail();
+		if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
+			throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
+		}
+		if (upd.getNickname() != null && !canonical(upd.getNickname()).equals(key)) {
+			throw new IllegalArgumentException("No se permite modificar el nickname.");
+		}
+
+		// Actualizar SOLO campos básicos permitidos
+		aerolinea.setNombre(upd.getNombre());
+		aerolinea.setDescGeneral(upd.getDescGeneral());
+		aerolinea.setLinkWeb(upd.getSitioWeb());
+		
+		// Avatar
+		if (upd.isClearAvatar()) {
+			aerolinea.setAvatar(null);
+		} else if (upd.getAvatar() != null) {
+			aerolinea.setAvatar(Arrays.copyOf(upd.getAvatar(), upd.getAvatar().length));
+		}
+		
+		usuarioService.actualizarUsuario(aerolinea);
+    	
+		DataUsuario usuario = usuarioService.verInfoUsuario(upd.getNickname());
+		return usuario instanceof DataAerolinea ? (DataAerolinea) usuario : null;
+    }
+     
     
     // ======================
     //  CREAR CATEGORIA
