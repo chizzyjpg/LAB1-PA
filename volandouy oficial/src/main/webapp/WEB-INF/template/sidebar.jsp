@@ -52,7 +52,7 @@
         <a href="${pageContext.request.contextPath}/consultaVuelo.jsp"
            class="list-group-item list-group-item-action">Vuelo</a>
 
-        <a href="${pageContext.request.contextPath}/consultaPaqRutasVuelo.jsp"
+        <a href="${pageContext.request.contextPath}/consultaPaqRutasVuelo"
            class="list-group-item list-group-item-action">Paquete de Rutas de Vuelo</a>
 
 
