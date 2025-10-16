@@ -146,7 +146,7 @@
 
 /* Home page con scroll natural */
 .home-page {
-    padding-top: 56px; /* Espacio para navbar fija */
+     /* Espacio para navbar fija */
     overflow: auto; /* Permitir scroll natural */
     min-height: 100vh; /* Altura mínima completa */
 }

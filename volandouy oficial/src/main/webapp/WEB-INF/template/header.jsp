@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!-- NAVBAR -->
-<nav class="navbar navbar-dark bg-dark fixed-top navbar-compact">
+<nav class="navbar navbar-dark bg-dark sticky-top navbar-compact">
   <div class="container">
     <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">Volando.uy</a>
 
