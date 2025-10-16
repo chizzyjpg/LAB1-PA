@@ -28,8 +28,8 @@
                                 <label for="userType" class="form-label">Tipo de Usuario</label>
                                 <select class="form-control" id="userType" name="tipoUsuario" required onchange="toggleFields()">
                                     <option value="">Selecciona el tipo de usuario</option>
-                                    <option value="Cliente">Cliente</option>
-                                    <option value="Aerolinea">Aerolinea</option>
+                                    <option value="Cliente" <%= "Cliente".equals(request.getParameter("tipoUsuario")) ? "selected" : "" %>>Cliente</option>
+                                    <option value="Aerolinea" <%= "Aerolinea".equals(request.getParameter("tipoUsuario")) ? "selected" : "" %>>Aerolinea</option>
                                 </select>
                             </div>
                             
@@ -51,9 +51,9 @@
                                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                             </div>
                             <div class="mb-3">
-                                <label for="image" class="form-label">Imagen de Perfil (URL)</label>
-                                <input type="url" class="form-control" id="image" name="imagenURL" placeholder="https://ejemplo.com/mi-foto.jpg">
-                                <div class="form-text">Puedes usar servicios como Imgur, Google Drive o cualquier URL de imagen publica</div>
+                                <label for="image" class="form-label">Imagen de Perfil</label>
+                                <input type="file" accept="image/*" id="avatarFile" class="form-control form-control-sm" name="avatarFile" />
+                                
                             </div>
                             
                             <!-- Campos específicos para Cliente -->
@@ -94,10 +94,7 @@
                                     <label for="nombreAerolinea" class="form-label">Nombre de la Aerolinea</label>
                                     <input type="text" class="form-control" id="nombreAerolinea" name="nombreAerolinea">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="iata" class="form-label">codigo IATA</label>
-                                    <input type="text" class="form-control" id="iata" name="iata">
-                                </div>
+                                
                                 <div class="mb-3">
                                     <label for="descripcion" class="form-label">Descripcion</label>
                                     <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Descripcion de la aerolinea"></textarea>
@@ -133,7 +130,11 @@
             document.getElementById('clienteFields').style.display = (tipo === 'Cliente') ? 'block' : 'none';
             document.getElementById('aerolineaFields').style.display = (tipo === 'Aerolinea') ? 'block' : 'none';
         }
-        window.onload = function() { toggleFields(); };
+        window.onload = function() {
+            var tipo = document.getElementById('userType').value;
+            document.getElementById('clienteFields').style.display = (tipo === 'Cliente') ? 'block' : 'none';
+            document.getElementById('aerolineaFields').style.display = (tipo === 'Aerolinea') ? 'block' : 'none';
+        };
     </script>
 
     </body>

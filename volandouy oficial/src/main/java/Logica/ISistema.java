@@ -52,8 +52,8 @@ public interface ISistema {
 	
 	boolean existeNickname(String nickname);
     boolean existeEmail(String email);
-    void altaCliente(DataCliente cliente);
+    void altaCliente(DataCliente cliente, byte[] avatar);
     void altaAerolinea(DataAerolinea aerolinea);
-}
-	byte[] obtenerAvatar(String nickname);
+    byte[] obtenerAvatar(String nickname);
+
 }

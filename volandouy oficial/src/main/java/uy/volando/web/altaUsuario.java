@@ -1,7 +1,8 @@
 package uy.volando.web;
 
 import jakarta.servlet.http.HttpServlet;
-
+import jakarta.servlet.http.Part;
+import java.io.InputStream;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -51,11 +52,24 @@ public class altaUsuario extends HttpServlet {
 	    String apellido = request.getParameter("apellido");
 	    String email = request.getParameter("email");
 	    String password = request.getParameter("password");
-	    String imagenURL = request.getParameter("imagenURL");
+	    
 
 	    String errorMsg = null;
 	    boolean exito = false;
-
+	    
+	 // Imagen de perfil (opcional)
+        byte[] avatarBytes = null;
+        try {
+          Part avatarPart = request.getPart("avatarFile");
+          if (avatarPart != null && avatarPart.getSize() > 0) {
+            try (InputStream is = avatarPart.getInputStream()) {
+              avatarBytes = is.readAllBytes();
+            }
+          }
+        } catch (Exception ignore) {
+          // Si falla la lectura del archivo, se mantiene avatarBytes = null (no cambia).
+        }
+        
 	    if (nickname == null || nickname.isEmpty() ||
 	        email == null || email.isEmpty() ||
 	        password == null || password.isEmpty() ||
@@ -104,7 +118,7 @@ public class altaUsuario extends HttpServlet {
 	                        break;
 	                    }
 	                    DataCliente cliente = new DataCliente(nombre, nickname, email, password, apellido, fechaNacimiento, nacionalidad, tipoDocumento, numeroDocumento);
-	                    sistema.altaCliente(cliente);
+	                    sistema.altaCliente(cliente, avatarBytes);
 	                    exito = true;
 	                    break;
 	                }

@@ -67,7 +67,7 @@ public class Sistema implements ISistema {
         
         ManejadorUsuario.toEntity(data);
     }
-
+    
 
     @Override
     public DataCliente verInfoCliente(String nickname) {
@@ -786,8 +786,21 @@ public class Sistema implements ISistema {
     }
 
     @Override
-    public void altaCliente(DataCliente cliente) {
+    public void altaCliente(DataCliente cliente, byte[] avatar) {
+    	String nickname = canonical(cliente.getNickname());
+    	String email = canonical(cliente.getEmail());
+    	TipoDocumento documento = cliente.getTipoDocumento();
+    	String numeroDocumento = canonical(cliente.getNumDocumento());
+    	String nombre = canonical(cliente.getNombre());
+    	String apellido = canonical(cliente.getApellido());
+    	String pais = cliente.getNacionalidad();
+    	Date fechaNac = cliente.getFechaNac();
+    
+    	// Ajusta la construcción de PerfilClienteUpdate según el constructor disponible
+    	PerfilClienteUpdate perfil = new PerfilClienteUpdate(nickname, email, nombre, apellido, pais, documento,numeroDocumento, fechaNac, avatar,false);
+    
         registrarUsuario(cliente);
+        actualizarPerfilCliente(perfil);
     }
 
     @Override
