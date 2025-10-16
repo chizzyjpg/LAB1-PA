@@ -429,8 +429,8 @@ public class Sistema implements ISistema {
 			throw new IllegalArgumentException("No se encontró la Ruta con id: " + idRuta);
 		}
 		// Inicializar las colecciones para evitar LazyInitializationException
-		r.getAerolineas().size();
-		r.getVuelosEspecificos().size();
+		ruta.getAerolineas().size();
+		ruta.getVuelosEspecificos().size();
 		
 		ManejadorVueloEspecifico.toEntity(datos, ruta);
 	}
