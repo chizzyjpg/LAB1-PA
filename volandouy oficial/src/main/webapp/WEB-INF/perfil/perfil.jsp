@@ -39,7 +39,7 @@
             </c:if>
             <c:if test="${isAerolinea}">
               <div class="list-group list-group-flush">
-                <a href="registroVuelo.html" class="list-group-item list-group-item-action">Nuevo Vuelo</a>
+                <a href="${pageContext.request.contextPath}/altaVuelo" class="list-group-item list-group-item-action">Nuevo Vuelo</a>
                 <a href="${pageContext.request.contextPath}/regRutVuelo" class="list-group-item list-group-item-action">Nueva Ruta</a>
               </div>
             </c:if>
