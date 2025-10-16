@@ -800,7 +800,10 @@ public class Sistema implements ISistema {
     	PerfilClienteUpdate perfil = new PerfilClienteUpdate(nickname, email, nombre, apellido, pais, documento,numeroDocumento, fechaNac, avatar,false);
     
         registrarUsuario(cliente);
-        actualizarPerfilCliente(perfil);
+        if (avatar != null && avatar.length > 0) {
+        	actualizarPerfilCliente(perfil);
+		}
+        
     }
 
     @Override
