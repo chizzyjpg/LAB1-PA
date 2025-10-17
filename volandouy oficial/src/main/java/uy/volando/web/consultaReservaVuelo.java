@@ -26,7 +26,7 @@ public class consultaReservaVuelo extends HttpServlet{
 		Object usuario = session.getAttribute("usuario_logueado");
 		request.setAttribute("usuario", usuario);
 		if (usuario == null) {
-			response.sendRedirect("login.jsp");
+			response.sendRedirect("iniciar.jsp");
 			return;
 		}
 		ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
