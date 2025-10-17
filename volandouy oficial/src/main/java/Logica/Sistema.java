@@ -27,6 +27,7 @@ public class Sistema implements ISistema {
     private final PaqueteService paqueteService = new PaqueteService();
     private final ClienteService clienteService = new ClienteService();
     private final ReservaService reservaService = new ReservaService();
+    private final RutaVueloService rutaService = new RutaVueloService();
     
     public Sistema() {}
     
@@ -418,7 +419,6 @@ public class Sistema implements ISistema {
 	public void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos) {
 		if (datos == null) throw new IllegalArgumentException("Los datos del vuelo no pueden ser nulos");
 		// Buscar el id de la ruta persistida por nombre
-		RutaVueloService rutaService = new RutaVueloService();
 		Integer idRuta = rutaService.buscarRutaPorNombreYObtenerId(nombre);
 		if (idRuta == null) {
 			throw new IllegalArgumentException("No existe una ruta con ese nombre en la base de datos");

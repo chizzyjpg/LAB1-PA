@@ -20,13 +20,13 @@
             </div>
             <div class="row mb-4">
               <div class="col-md-8">
-                <div class="alert alert-info" role="alert">
+                <!--  <div class="alert alert-info" role="alert">
                   <i class="fas fa-info-circle me-2"></i>
                   <span id="paquetesCount">
                     <% java.util.List paquetes = (java.util.List)request.getAttribute("paquetes"); %>
                     <%= paquetes != null ? paquetes.size() : 0 %> paquetes encontrados
                   </span>
-                </div>
+                </div>-->
               </div>
             </div>
             <div class="row" id="paquetesList">
@@ -132,9 +132,6 @@
               </div>
             <% } %>
             <div class="mt-4 text-center">
-              <button class="btn btn-success btn-lg me-3" data-roles="Cliente">
-                <i class="fas fa-shopping-cart me-2"></i>Comprar Paquete
-              </button>
               <a href="consultaPaqRutasVuelo" class="btn btn-outline-primary">
                 <i class="fas fa-list me-2"></i>Ver Otros Paquetes
               </a>
