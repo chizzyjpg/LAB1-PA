@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="${pageContext.request.contextPath}.media.styles.styles.css" rel="stylesheet">
+    <!-- FIX: correct path to the app's stylesheet so background image loads -->
+    <link href="${pageContext.request.contextPath}/media/styles/styles.css" rel="stylesheet">
     <title>Registro - Volando.uy</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -23,7 +24,7 @@
                        if (errorMsg != null) { %>
                         <div class="alert alert-danger"><%= errorMsg %></div>
                     <% } %>
-                        <form class="registro-form" action="${pageContext.request.contextPath}/altaUsuario" method="post" id="registroForm">
+                        <form class="registro-form" action="${pageContext.request.contextPath}/altaUsuario" method="post" id="registroForm" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="userType" class="form-label">Tipo de Usuario</label>
                                 <select class="form-control" id="userType" name="tipoUsuario" required onchange="toggleFields()">
@@ -56,7 +57,7 @@
                                 
                             </div>
                             
-                            <!-- Campos específicos para Cliente -->
+                            <!-- Campos especÃ­ficos para Cliente -->
                             <div id="clienteFields" style="display:none;">
                                 <div class="mb-3">
                                     <label for="nombre" class="form-label">Nombre</label>
@@ -88,7 +89,7 @@
                                 </div>
                             </div>
                             
-                            <!-- Campos específicos para Aerolínea -->
+                            <!-- Campos especÃ­ficos para AerolÃ­nea -->
                             <div id="aerolineaFields" style="display:none;">
                                 <div class="mb-3">
                                     <label for="nombreAerolinea" class="form-label">Nombre de la Aerolinea</label>
@@ -118,7 +119,7 @@
         <!-- Footer dentro de la portada -->
         <footer class="mt-auto py-3 bg-transparent">
             <div class="container text-center">
-                <small class="text-white-50">� 2025 Volando.uy</small>
+                <small class="text-white-50">2025 Volando.uy</small>
             </div>
         </footer>
     </main>

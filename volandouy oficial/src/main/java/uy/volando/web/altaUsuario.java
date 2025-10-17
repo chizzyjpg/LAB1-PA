@@ -5,6 +5,7 @@ import jakarta.servlet.http.Part;
 import java.io.InputStream;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @WebServlet ("/altaUsuario")
+@MultipartConfig
 public class altaUsuario extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
