@@ -110,8 +110,15 @@
 	  <artifactId>gson</artifactId>
 	  <version>2.13.2</version>
 	</dependency>
+  <!-- H2 BD en memoria-->
+	 <dependency>
+	  <groupId>com.h2database</groupId>
+	  <artifactId>h2</artifactId>
+	  <version>2.2.224</version>
+	  <scope>test</scope>
+	 </dependency>
 </dependencies>
-  
+
   
 
   <build>

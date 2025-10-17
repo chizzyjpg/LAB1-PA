@@ -21,14 +21,36 @@ public class Sistema implements ISistema {
     private final List<CompraPaquete> compras = new ArrayList<>();
     
     // Servicios (manejadores de BD)
-    private final UsuarioService usuarioService = new UsuarioService();
-    private final CategoriaService categoriaService = new CategoriaService();
-    private final CiudadService ciudadService = new CiudadService();
-    private final PaqueteService paqueteService = new PaqueteService();
-    private final ClienteService clienteService = new ClienteService();
-    private final ReservaService reservaService = new ReservaService();
+    private final UsuarioService usuarioService;
+    private final CategoriaService categoriaService;
+    private final CiudadService ciudadService;
+    private final PaqueteService paqueteService;
+    private final ClienteService clienteService;
+    private final ReservaService reservaService;
     
-    public Sistema() {}
+    public Sistema(UsuarioService usuarioService,
+            CategoriaService categoriaService,
+            CiudadService ciudadService,
+            PaqueteService paqueteService,
+            ClienteService clienteService,
+            ReservaService reservaService) {
+	 this.usuarioService = usuarioService;
+	 this.categoriaService = categoriaService;
+	 this.ciudadService = ciudadService;
+	 this.paqueteService = paqueteService;
+	 this.clienteService = clienteService;
+	 this.reservaService = reservaService;
+    }
+    
+    public Sistema() {
+    
+    this.usuarioService = new UsuarioService();
+    this.categoriaService = new CategoriaService();
+    this.ciudadService = new CiudadService();
+    this.paqueteService = new PaqueteService();
+    this.clienteService = new ClienteService();
+    this.reservaService = new ReservaService();
+}
     
  // Helper en Sistema
     private static int nextReservaId(Set<Reserva> reservas) {
@@ -459,7 +481,7 @@ public class Sistema implements ISistema {
 	public DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo) {
 	    // Obtener la aerolínea desde la base de datos
 	    Usuario u = usuarioService.obtenerAerolineaPorNickname(canonical(nickname));
-	    if (!(u instanceof Aerolinea a)) {
+	    if (!(u instanceof Aerolinea)) {
 	        throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 	    }
 	    // Buscar la ruta por nombre usando el servicio de BD para asegurar la sesión activa
