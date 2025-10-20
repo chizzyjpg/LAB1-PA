@@ -112,33 +112,33 @@ public class Sistema implements ISistema {
     @Override
     public List<DataUsuario> listarUsuarios() {
     	return usuarioService.listarUsuarios().stream()
-		        .sorted(Comparator.comparing(
-		            u -> u.getNickname() == null ? "" : u.getNickname(),
-		            String.CASE_INSENSITIVE_ORDER
-		        ))
-		        .collect(Collectors.toList());
+    		    .sorted(Comparator.comparing(
+    		        DataUsuario::getNickname,
+    		        Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)
+    		    ))
+    		    .collect(Collectors.toList());
     }
     
     
     @Override
     public List<DataAerolinea> listarAerolineas() {
     	return usuarioService.listarUsuarios().stream()
-    	        .filter(DataAerolinea.class::isInstance)
-    	        .map(DataAerolinea.class::cast)
-    	        .sorted(Comparator.comparing(
-    	            a -> a.getNickname() == null ? "" : a.getNickname(),
-    	            String.CASE_INSENSITIVE_ORDER
-    	        ))
-    	        .collect(Collectors.toList());
+        .filter(DataAerolinea.class::isInstance)
+        .map(DataAerolinea.class::cast)
+        .sorted(Comparator.comparing(
+            DataAerolinea::getNickname,
+            Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)
+        ))
+        .collect(Collectors.toList());
 	}
    
 	 public List<DataCliente> listarClientes() {
 		 return clienteService.listarClientes().stream()
-			        .sorted(Comparator.comparing(
-			            c -> c.getNickname() == null ? "" : c.getNickname(),
-			            String.CASE_INSENSITIVE_ORDER
-			        ))
-			        .collect(Collectors.toList());
+				    .sorted(Comparator.comparing(
+				        DataCliente::getNickname,
+				        Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)
+				    ))
+				    .collect(Collectors.toList());
 	 }
 	 
 	 @Override
@@ -224,10 +224,6 @@ public class Sistema implements ISistema {
     		throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
     	}
     	
-    	if (upd.getNickname() != null && !canonical(upd.getNickname()).equals(key)) {
-			throw new IllegalArgumentException("No se permite modificar el nickname.");
-		}
-    	
     	cliente.setNombre(upd.getNombre());
     	cliente.setApellido(upd.getApellido());
     	cliente.setNacionalidad(upd.getNacionalidad());
@@ -269,30 +265,6 @@ public class Sistema implements ISistema {
     }
     
     @Override
-    public void cambiarPassword(String nickname, String pwdCurrent, String pwdNew) {
-		if (nickname == null || pwdCurrent == null || pwdNew == null) {
-			throw new IllegalArgumentException("Nickname y contraseñas no pueden ser nulos");
-		}
-		if (pwdNew.length() < 3) {
-			throw new IllegalArgumentException("La nueva contraseña debe tener al menos 3 caracteres");
-		}
-
-		Usuario u = usuarioService.autenticarUsuario(nickname, pwdCurrent);
-		if (u == null) {
-			throw new IllegalArgumentException("No existe un usuario con ese nickname y esa contraseña");
-		}
-
-		// Verificar la contraseña actual (plana para la prueba)
-		/*if (!u.getPassword().equals(pwdCurrent)) {
-			throw new IllegalArgumentException("La contraseña actual es incorrecta");
-		}*/
-
-		// Actualizar la contraseña (plana para la prueba)
-		u.setContrasenia(pwdNew);
-		usuarioService.actualizarUsuario(u);
-	}
-    
-    @Override
     public DataAerolinea actualizarPerfilAerolinea (PerfilAerolineaUpdate upd) {
 		if (upd == null) throw new IllegalArgumentException("Datos de actualización nulos");
 		String key = canonical(upd.getNickname());
@@ -305,9 +277,6 @@ public class Sistema implements ISistema {
 		String emailNuevo  = upd.getEmail();
 		if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
 			throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
-		}
-		if (upd.getNickname() != null && !canonical(upd.getNickname()).equals(key)) {
-			throw new IllegalArgumentException("No se permite modificar el nickname.");
 		}
 
 		// Actualizar SOLO campos básicos permitidos
@@ -328,6 +297,25 @@ public class Sistema implements ISistema {
 		return usuario instanceof DataAerolinea ? (DataAerolinea) usuario : null;
     }
      
+    @Override
+    public void cambiarPassword(String nickname, String pwdCurrent, String pwdNew) {
+		if (nickname == null || pwdCurrent == null || pwdNew == null) {
+			throw new IllegalArgumentException("Nickname y contraseñas no pueden ser nulos");
+		}
+		if (pwdNew.length() < 3) {
+			throw new IllegalArgumentException("La nueva contraseña debe tener al menos 3 caracteres");
+		}
+
+		Usuario u = usuarioService.autenticarUsuario(nickname, pwdCurrent);
+		if (u == null) {
+			throw new IllegalArgumentException("No existe un usuario con ese nickname y esa contraseña");
+		}
+
+		// Actualizar la contraseña (plana)
+		u.setContrasenia(pwdNew);
+		usuarioService.actualizarUsuario(u);
+	}
+    
     
     // ======================
     //  CREAR CATEGORIA
@@ -526,7 +514,6 @@ public class Sistema implements ISistema {
 
 	@Override
 	public List<DataCliente> listarClientesParaCompra() {
-		ClienteService clienteService = new ClienteService();
 		return clienteService.listarClientes();
 	}
 	

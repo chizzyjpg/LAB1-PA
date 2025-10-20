@@ -13,7 +13,7 @@ public class sistemaTest_LoginYPassword {
   void setup() {
     usuarioService = new UsuarioServiceFake();
 
-    // 👉 Usar un CLIENTE real (no Usuario) porque DataCliente necesita esos campos
+    // Usar un CLIENTE real (no Usuario) porque DataCliente necesita esos campos
     Cliente cli = new Cliente(
         "Lucas",           // nombre
         "luko",                 // nickname

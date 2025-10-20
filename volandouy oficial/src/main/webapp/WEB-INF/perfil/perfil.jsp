@@ -12,12 +12,12 @@
   <!-- NAVBAR -->
   <jsp:include page="/WEB-INF/template/header.jsp" />
 
-  <!-- Derivar banderas de tipo (sin objetos) -->
+  <!-- Derivar banderas de tipo -->
   <c:set var="isCliente"   value="${tipo == 'DataCliente'}"/>
   <c:set var="isAerolinea" value="${tipo == 'DataAerolinea'}"/>
 
-  <!-- Mensajes flash (opcionales) -->
-  <c:if test="${not empty flash_ok}">
+  <!-- Mensajes flash -->
+  <c:if test="${not empty flash_ok}"> <!-- Existe la variable flash_ok y tiene contenido?-->
     <div class="alert alert-success m-3" role="alert">${flash_ok}</div>
   </c:if>
   <c:if test="${not empty flash_error}">

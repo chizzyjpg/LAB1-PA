@@ -1,10 +1,8 @@
 package Logica;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.*;
 import java.util.stream.Collectors;
-
 import org.junit.jupiter.api.*;
 
 public class sistemaTest_Categorias {
@@ -91,9 +89,9 @@ public class sistemaTest_Categorias {
 	 void seedNombreNull() { nombres.add(new Categoria()); }
 	 void seedNombre(String n) { var c = new Categoria(); c.setNombre(n); nombres.add(c); }
 
-    private static String canon(String s) {
+   /* private static String canon(String s) {
       return s == null ? null : s.trim().toLowerCase(Locale.ROOT);
-    }
+    }*/
 
     @Override public java.util.List<Categoria> listarCategorias() { return new java.util.ArrayList<>(nombres); }
     @Override public boolean existeCategoria(String nombre) { return nombres.stream().anyMatch(c -> java.util.Objects.equals(c.getNombre(), nombre)); }
