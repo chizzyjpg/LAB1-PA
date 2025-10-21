@@ -1,7 +1,6 @@
 package Logica;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -150,6 +149,7 @@ public class sistemaTest_RegistroUsuariosYModificaciones {
 		Cliente ana = new Cliente("Ana", "ana", "ana@mail.com", "pass", "Lopez", new Date(), "UY", TipoDocumento.CEDULA, "7.777.777-7");
 		usuarios.agregarCliente(ana);
 		Aerolinea latam = new Aerolinea("Latam", "latam", "lat@mail.com", "pass", "Desc Latam", "www.latam.com");
+		usuarios.agregarAerolinea(latam);
 
 	    List<DataUsuario> out = sistema.listarUsuarios();
 	    assertEquals(3, out.size());
@@ -498,8 +498,91 @@ public class sistemaTest_RegistroUsuariosYModificaciones {
 	      assertArrayEquals(new byte[]{5,5}, usuarios.obtenerAerolineaPorNickname("jet").getAvatar());
 	  }
 
+	  // ====================== Sobre Login y Avatar, Sistema al final ======================
 
+	  @Test
+	  void existeNickname_retornaTrueYFalse() {
+	      // sembramos un cliente y una aerolínea
+	      Cliente c = new Cliente("Ana","ana","ana@mail.com","1234","Ap", new Date(),"UY",TipoDocumento.CEDULA,"1");
+	      usuarios.agregarCliente(c);
+	      Aerolinea a = new Aerolinea("Jet","jet","jet@mail.com","abcd","Desc","web");
+	      usuarios.agregarAerolinea(a);
 
+	      assertTrue(sistema.existeNickname("ana"));
+	      assertTrue(sistema.existeNickname("jet"));
+
+	      assertFalse(sistema.existeNickname("nadie"));
+	  }
+
+	  @Test
+	  void existeEmail_retornaTrueYFalse() {
+	      Cliente c = new Cliente("Beto","beto","beto@mail.com","1234","Ap", new Date(),"UY",TipoDocumento.CEDULA,"2");
+	      usuarios.agregarCliente(c);
+
+	      assertTrue(sistema.existeEmail("beto@mail.com"));
+	      assertFalse(sistema.existeEmail("otro@mail.com"));
+	  }
+
+	  @Test
+	  void altaCliente_conAvatar_registraYActualizaPerfil_avatarSeteado() {
+	      // Datos del nuevo cliente
+	      DataCliente data = new DataCliente(
+	          "Nova", "nova", "nova@mail.com", "pass",
+	          "Apellido", new Date(), "UY", TipoDocumento.CEDULA, "3.333.333-3"
+	      );
+	      byte[] avatar = new byte[]{1,2,3,4};
+
+	      // Act
+	      assertDoesNotThrow(() -> sistema.altaCliente(data, avatar));
+
+	      // Assert: se registró
+	      Cliente creado = usuarios.obtenerClientePorNickname("nova");
+	      assertNotNull(creado, "Debe quedar registrado el cliente");
+	      // y se actualizó perfil (avatar)
+	      assertArrayEquals(avatar, creado.getAvatar(), "Debe quedar seteado el avatar");
+	  }
+
+	  @Test
+	  void altaCliente_avatarNull_registraSinActualizarPerfil_avatarQuedaNull() {
+	      DataCliente data = new DataCliente(
+	          "Solo", "solo", "solo@mail.com", "p",
+	          "Ap", new Date(), "UY", TipoDocumento.CEDULA, "4.444.444-4"
+	      );
+	      byte[] avatar = null;
+
+	      assertDoesNotThrow(() -> sistema.altaCliente(data, avatar));
+
+	      Cliente creado = usuarios.obtenerClientePorNickname("solo");
+	      assertNotNull(creado);
+	      assertNull(creado.getAvatar(), "Sin avatar no debe llamar a actualizarPerfil (avatar null)");
+	  }
+
+	  @Test
+	  void altaCliente_avatarVacio_registraSinActualizarPerfil_avatarQuedaNull() {
+	      DataCliente data = new DataCliente(
+	          "Vac", "vac", "vac@mail.com", "p",
+	          "Ap", new Date(), "UY", TipoDocumento.CEDULA, "5.555.555-5"
+	      );
+	      byte[] avatar = new byte[0];
+
+	      assertDoesNotThrow(() -> sistema.altaCliente(data, avatar));
+
+	      Cliente creado = usuarios.obtenerClientePorNickname("vac");
+	      assertNotNull(creado);
+	      assertNull(creado.getAvatar(), "Con avatar.length==0 no debe actualizar perfil");
+	  }
+
+	  @Test
+	  void altaAerolinea_registraOk() {
+	      DataAerolinea d = new DataAerolinea(
+	          "Sky High", "sky", "sky@mail.com", "abcd",
+	          "Desc sky", "www.sky.com"
+	      );
+	      assertDoesNotThrow(() -> sistema.altaAerolinea(d));
+
+	      Aerolinea aero = usuarios.obtenerAerolineaPorNickname("sky");
+	      assertNotNull(aero, "Debe quedar registrada la aerolínea");
+	  }
 	  
 	
 	  			// ====== FAKES ======

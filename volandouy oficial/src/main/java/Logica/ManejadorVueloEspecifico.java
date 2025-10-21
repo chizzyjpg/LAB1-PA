@@ -8,11 +8,14 @@ import BD.VueloService;
 
 public class ManejadorVueloEspecifico {
 	
+	private static RutaVueloService rutaService = new RutaVueloService();
+	private static VueloService vueloService = new VueloService();
+	
 	public static VueloEspecifico toEntity(DataVueloEspecifico v) {
         Objects.requireNonNull(v, "Los datos no pueden ser nulos");
         Ruta ruta;
         if (v.getDRuta() != null && v.getDRuta().getIdRuta() > 0) {
-            ruta = new RutaVueloService().buscarRutaPorId(v.getDRuta().getIdRuta());
+            ruta = rutaService.buscarRutaPorId(v.getDRuta().getIdRuta());
             if (ruta == null) {
                 throw new IllegalStateException("No se encontró la Ruta con id: " + v.getDRuta().getIdRuta());
             }
@@ -29,11 +32,11 @@ public class ManejadorVueloEspecifico {
             ruta
         );
         // Persistir el vuelo aquí
-        new VueloService().registrarVuelo(vuelo);
+        vueloService.registrarVuelo(vuelo);
         return vuelo;
     }
 	
-	public static DataVueloEspecifico toData(VueloEspecifico v) {
+	public static DataVueloEspecifico toDTO(VueloEspecifico v) {
 		Objects.requireNonNull(v, "El vuelo no puede ser nulo");
 		DataRuta dr = ManejadorRuta.toData(v.getRuta());
 		return new DataVueloEspecifico(
@@ -61,7 +64,7 @@ public class ManejadorVueloEspecifico {
 		if (entities == null) return List.of();
 		return entities.stream()
 					   .filter(Objects::nonNull)
-					   .map(ManejadorVueloEspecifico::toData)
+					   .map(ManejadorVueloEspecifico::toDTO)
 					   .toList();
 	}
 	
@@ -78,9 +81,12 @@ public class ManejadorVueloEspecifico {
             v.getFechaAlta(),
             ruta
         );
-        // Persistir el vuelo aquí
-        new VueloService().registrarVuelo(vuelo);
+        vueloService.registrarVuelo(vuelo);
         return vuelo;
     }
-
+    
+    static void setServicesForTests(RutaVueloService rSvc, VueloService vSvc) {
+    	if (rSvc != null) rutaService = rSvc;
+        if (vSvc != null) vueloService = vSvc;
+    }
 }

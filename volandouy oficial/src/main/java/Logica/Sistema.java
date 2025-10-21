@@ -238,7 +238,7 @@ public class Sistema implements ISistema {
     	
     	usuarioService.actualizarUsuario(cliente);
     	DataUsuario usuario = usuarioService.verInfoUsuario(upd.getNickname());
-    	return usuario instanceof DataCliente ? (DataCliente) usuario : null;
+    	return usuario instanceof DataCliente ? (DataCliente) usuario : null; //Imposible de llegar con JUnit, super defensivo
     }
 
     @Override
@@ -298,7 +298,7 @@ public class Sistema implements ISistema {
 		usuarioService.actualizarUsuario(aerolinea);
     	
 		DataUsuario usuario = usuarioService.verInfoUsuario(upd.getNickname());
-		return usuario instanceof DataAerolinea ? (DataAerolinea) usuario : null;
+		return usuario instanceof DataAerolinea ? (DataAerolinea) usuario : null; //Imposible de llegar con JUnit, super defensivo
     }
      
     @Override
@@ -375,7 +375,7 @@ public class Sistema implements ISistema {
 		}
 		
 		Ruta ruta = ManejadorRuta.toEntity(datos); // convierte DataRuta a Ruta (ENTIDAD)
-        new RutaVueloService().crearRutaVuelo(ruta, nickAerolinea);
+        rutaService.crearRutaVuelo(ruta, nickAerolinea);
 	}
     
     public List<DataRuta> listarPorAerolinea(String nicknameAerolinea) {
@@ -476,7 +476,6 @@ public class Sistema implements ISistema {
 	        throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 	    }
 	    // Buscar la ruta por nombre usando el servicio de BD para asegurar la sesión activa
-	    RutaVueloService rutaService = new RutaVueloService();
 	    Integer idRuta = rutaService.buscarRutaPorNombreYObtenerId(nombre);
 	    if (idRuta == null) {
 	        throw new IllegalArgumentException("No existe una ruta con ese nombre en la base de datos");
@@ -495,7 +494,7 @@ public class Sistema implements ISistema {
 	    if (v == null) {
 	        throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
 	    }
-	    return ManejadorVueloEspecifico.toData(v);
+	    return ManejadorVueloEspecifico.toDTO(v);
 	}
 	
 		// =========================
@@ -648,7 +647,7 @@ public class Sistema implements ISistema {
 	     // 3) Ruta de esa aerolínea por NOMBRE
 	     Ruta r = paqueteService.buscarRutaEnAerolinea(nicknameAerolinea, nombreRuta);
 	     
-	     // fijar/validar tipo de asiento único del paquete
+	     //validar tipo de asiento único del paquete
 	     if (p.getTipoAsiento() == null) {
 	         p.setTipoAsiento(tipo);
 	     } else if (p.getTipoAsiento() != tipo) {
@@ -668,9 +667,10 @@ public class Sistema implements ISistema {
 	     if(tipo == TipoAsiento.TURISTA) {
 	         p.setCosto(p.getCosto().add(r.getCostoTurista().multiply(cantidadBD).multiply(descuentoFactor)));
 	     }
-	     else if(tipo == TipoAsiento.EJECUTIVO) {
-	         p.setCosto(p.getCosto().add(r.getCostoEjecutivo().multiply(cantidadBD).multiply(descuentoFactor)));
-	     }
+	     else { // EJECUTIVO
+	    	    p.setCosto(p.getCosto()
+	    	        .add(r.getCostoEjecutivo().multiply(cantidadBD).multiply(descuentoFactor)));
+	    	}
 	     // agregar ruta por NOMBRE (único)
 		 p.setCuposDisponibles(cantidad);
          p.setCuposMaximos(cantidad);
@@ -780,7 +780,6 @@ public class Sistema implements ISistema {
 	@Override
 	public void cambiarEstadoRuta(int idRuta, EstadoRuta nuevoEstado) {
 		if (nuevoEstado == null) throw new IllegalArgumentException("El nuevo estado no puede ser nulo");
-		RutaVueloService rutaService = new RutaVueloService();
 		Ruta ruta = rutaService.buscarRutaPorId(idRuta);
 		if (ruta == null) {
 			throw new IllegalArgumentException("No existe una ruta con ese ID");
@@ -790,9 +789,6 @@ public class Sistema implements ISistema {
 		}
 		if (ruta.getEstado() != EstadoRuta.INGRESADA) {
 			throw new IllegalStateException("Solo se pueden cambiar rutas en estado \"Ingresada\"");
-		}
-		if (nuevoEstado == EstadoRuta.INGRESADA) {
-			throw new IllegalArgumentException("No se puede cambiar a estado \"Ingresada\"");
 		}
 		ruta.setEstado(nuevoEstado);
 		rutaService.actualizarRuta(ruta);
@@ -827,7 +823,6 @@ public class Sistema implements ISistema {
     	// Ajusta la construcción de PerfilClienteUpdate según el constructor disponible
     	PerfilClienteUpdate perfil = new PerfilClienteUpdate(nickname, email, nombre, apellido, pais, documento,numeroDocumento, fechaNac, avatar,false);
     	if(avatar == null ) {
-    		System.out.println("Avatar es null");
     	}
         registrarUsuario(cliente);
         if (avatar != null && avatar.length > 0) {
