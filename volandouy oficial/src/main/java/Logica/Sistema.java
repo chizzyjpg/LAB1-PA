@@ -152,13 +152,13 @@ public class Sistema implements ISistema {
 	     }
 
 	     // 1) Autenticar SOLO por nickname (plano) para la prueba
-	     Usuario u = usuarioService.autenticarPorNicknamePlano(nickname, password);
+	     Usuario u = usuarioService.autenticarUsuario(nickname, password);
 	     if (u == null) {
 	         return null; // falla autenticación
 	     }
 
 	     // 2) Traer el DTO como ya lo haces (no toco tu verInfoUsuario)
-	     return usuarioService.verInfoUsuario(nickname);
+	     return usuarioService.verInfoUsuario(u.getNickname());
 	     
 	 }
 	 
