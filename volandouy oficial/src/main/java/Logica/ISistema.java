@@ -9,6 +9,8 @@ public interface ISistema {
     boolean existeCategoria(String nombre);
     boolean clienteYaComproPaquete(String nicknameCliente, String nombrePaquete);
     boolean existePaquete(String nombre); 
+    boolean existeNickname(String nickname);
+    boolean existeEmail(String email);
       
     DataCliente verInfoCliente(String nickname);      // null si no existe o no es cliente
     DataAerolinea verInfoAerolinea(String nickname); // null si no existe o no es aerolínea
@@ -16,7 +18,8 @@ public interface ISistema {
     DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo);
     DataReserva buscarReserva(String nickname, String nombre, String codigoVuelo, int idReserva);
     DataUsuario loguearUsuario(String nickname, String password); // null si no existe o password incorrecta
-   
+	DataCliente actualizarPerfilCliente(PerfilClienteUpdate datos);
+    DataAerolinea actualizarPerfilAerolinea(PerfilAerolineaUpdate datos);
 
     List<DataUsuario> listarUsuarios();
     List<DataAerolinea> listarAerolineas();
@@ -43,17 +46,11 @@ public interface ISistema {
 	void agregarRutaAPaquete(String nombrePaquete,String nicknameAerolinea,String nombreRuta, TipoAsiento tipo, int cantidad);
 	void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos);
 	void cambiarEstadoRuta(int idRuta, EstadoRuta nuevoEstado);
-	DataCliente actualizarPerfilCliente(PerfilClienteUpdate datos);
-    DataAerolinea actualizarPerfilAerolinea(PerfilAerolineaUpdate datos);
-    void cambiarPassword(String nickname, String pwdCurrent, String pwdNew);
-    
-    
-	Ciudad buscarCiudad(String nombre, String pais);	
-	
-	boolean existeNickname(String nickname);
-    boolean existeEmail(String email);
-    void altaCliente(DataCliente cliente, byte[] avatar);
+	void cambiarPassword(String nickname, String pwdCurrent, String pwdNew);
+	void altaCliente(DataCliente cliente, byte[] avatar);
     void altaAerolinea(DataAerolinea aerolinea);
+	
     byte[] obtenerAvatar(String nickname);
+	Ciudad buscarCiudad(String nombre, String pais);    
 
 }
