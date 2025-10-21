@@ -20,16 +20,41 @@ public class Sistema implements ISistema {
     private final Map<Long, Ciudad> CiudadPorHash = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por hashcode
     private final List<CompraPaquete> compras = new ArrayList<>();
     
-    // Servicios (manejadores de BD)
-    private final UsuarioService usuarioService = new UsuarioService();
-    private final CategoriaService categoriaService = new CategoriaService();
-    private final CiudadService ciudadService = new CiudadService();
-    private final PaqueteService paqueteService = new PaqueteService();
-    private final ClienteService clienteService = new ClienteService();
-    private final ReservaService reservaService = new ReservaService();
-    private final RutaVueloService rutaService = new RutaVueloService();
+
+    private final UsuarioService usuarioService;
+    private final CategoriaService categoriaService;
+    private final CiudadService ciudadService;
+    private final PaqueteService paqueteService;
+    private final ClienteService clienteService;
+    private final ReservaService reservaService;
+    private final RutaVueloService rutaService;
     
-    public Sistema() {}
+    public Sistema(UsuarioService usuarioService,
+            CategoriaService categoriaService,
+            CiudadService ciudadService,
+            PaqueteService paqueteService,
+            ClienteService clienteService,
+            ReservaService reservaService,
+            RutaVueloService rutaService) {
+	 this.usuarioService = usuarioService;
+	 this.categoriaService = categoriaService;
+	 this.ciudadService = ciudadService;
+	 this.paqueteService = paqueteService;
+	 this.clienteService = clienteService;
+	 this.reservaService = reservaService;
+	 this.rutaService = rutaService;
+    }
+    
+    public Sistema() {
+    
+    this.usuarioService = new UsuarioService();
+    this.categoriaService = new CategoriaService();
+    this.ciudadService = new CiudadService();
+    this.paqueteService = new PaqueteService();
+    this.clienteService = new ClienteService();
+    this.reservaService = new ReservaService();
+    this.rutaService = new RutaVueloService();
+}
     
  // Helper en Sistema
     private static int nextReservaId(Set<Reserva> reservas) {
@@ -68,7 +93,7 @@ public class Sistema implements ISistema {
         
         ManejadorUsuario.toEntity(data);
     }
-
+    
 
     @Override
     public DataCliente verInfoCliente(String nickname) {
@@ -91,33 +116,33 @@ public class Sistema implements ISistema {
     @Override
     public List<DataUsuario> listarUsuarios() {
     	return usuarioService.listarUsuarios().stream()
-		        .sorted(Comparator.comparing(
-		            u -> u.getNickname() == null ? "" : u.getNickname(),
-		            String.CASE_INSENSITIVE_ORDER
-		        ))
-		        .collect(Collectors.toList());
+    		    .sorted(Comparator.comparing(
+    		        DataUsuario::getNickname,
+    		        Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)
+    		    ))
+    		    .collect(Collectors.toList());
     }
     
     
     @Override
     public List<DataAerolinea> listarAerolineas() {
     	return usuarioService.listarUsuarios().stream()
-    	        .filter(DataAerolinea.class::isInstance)
-    	        .map(DataAerolinea.class::cast)
-    	        .sorted(Comparator.comparing(
-    	            a -> a.getNickname() == null ? "" : a.getNickname(),
-    	            String.CASE_INSENSITIVE_ORDER
-    	        ))
-    	        .collect(Collectors.toList());
+        .filter(DataAerolinea.class::isInstance)
+        .map(DataAerolinea.class::cast)
+        .sorted(Comparator.comparing(
+            DataAerolinea::getNickname,
+            Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)
+        ))
+        .collect(Collectors.toList());
 	}
    
 	 public List<DataCliente> listarClientes() {
 		 return clienteService.listarClientes().stream()
-			        .sorted(Comparator.comparing(
-			            c -> c.getNickname() == null ? "" : c.getNickname(),
-			            String.CASE_INSENSITIVE_ORDER
-			        ))
-			        .collect(Collectors.toList());
+				    .sorted(Comparator.comparing(
+				        DataCliente::getNickname,
+				        Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)
+				    ))
+				    .collect(Collectors.toList());
 	 }
 	 
 	 @Override
@@ -127,13 +152,13 @@ public class Sistema implements ISistema {
 	     }
 
 	     // 1) Autenticar SOLO por nickname (plano) para la prueba
-	     Usuario u = usuarioService.autenticarPorNicknamePlano(nickname, password);
+	     Usuario u = usuarioService.autenticarUsuario(nickname, password);
 	     if (u == null) {
 	         return null; // falla autenticación
 	     }
 
 	     // 2) Traer el DTO como ya lo haces (no toco tu verInfoUsuario)
-	     return usuarioService.verInfoUsuario(nickname);
+	     return usuarioService.verInfoUsuario(u.getNickname());
 	     
 	 }
 	 
@@ -203,10 +228,6 @@ public class Sistema implements ISistema {
     		throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
     	}
     	
-    	if (upd.getNickname() != null && !canonical(upd.getNickname()).equals(key)) {
-			throw new IllegalArgumentException("No se permite modificar el nickname.");
-		}
-    	
     	cliente.setNombre(upd.getNombre());
     	cliente.setApellido(upd.getApellido());
     	cliente.setNacionalidad(upd.getNacionalidad());
@@ -248,30 +269,6 @@ public class Sistema implements ISistema {
     }
     
     @Override
-    public void cambiarPassword(String nickname, String pwdCurrent, String pwdNew) {
-		if (nickname == null || pwdCurrent == null || pwdNew == null) {
-			throw new IllegalArgumentException("Nickname y contraseñas no pueden ser nulos");
-		}
-		if (pwdNew.length() < 3) {
-			throw new IllegalArgumentException("La nueva contraseña debe tener al menos 3 caracteres");
-		}
-
-		Usuario u = usuarioService.autenticarUsuario(nickname, pwdCurrent);
-		if (u == null) {
-			throw new IllegalArgumentException("No existe un usuario con ese nickname y esa contraseña");
-		}
-
-		// Verificar la contraseña actual (plana para la prueba)
-		/*if (!u.getPassword().equals(pwdCurrent)) {
-			throw new IllegalArgumentException("La contraseña actual es incorrecta");
-		}*/
-
-		// Actualizar la contraseña (plana para la prueba)
-		u.setContrasenia(pwdNew);
-		usuarioService.actualizarUsuario(u);
-	}
-    
-    @Override
     public DataAerolinea actualizarPerfilAerolinea (PerfilAerolineaUpdate upd) {
 		if (upd == null) throw new IllegalArgumentException("Datos de actualización nulos");
 		String key = canonical(upd.getNickname());
@@ -284,9 +281,6 @@ public class Sistema implements ISistema {
 		String emailNuevo  = upd.getEmail();
 		if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
 			throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
-		}
-		if (upd.getNickname() != null && !canonical(upd.getNickname()).equals(key)) {
-			throw new IllegalArgumentException("No se permite modificar el nickname.");
 		}
 
 		// Actualizar SOLO campos básicos permitidos
@@ -307,6 +301,25 @@ public class Sistema implements ISistema {
 		return usuario instanceof DataAerolinea ? (DataAerolinea) usuario : null;
     }
      
+    @Override
+    public void cambiarPassword(String nickname, String pwdCurrent, String pwdNew) {
+		if (nickname == null || pwdCurrent == null || pwdNew == null) {
+			throw new IllegalArgumentException("Nickname y contraseñas no pueden ser nulos");
+		}
+		if (pwdNew.length() < 3) {
+			throw new IllegalArgumentException("La nueva contraseña debe tener al menos 3 caracteres");
+		}
+
+		Usuario u = usuarioService.autenticarUsuario(nickname, pwdCurrent);
+		if (u == null) {
+			throw new IllegalArgumentException("No existe un usuario con ese nickname y esa contraseña");
+		}
+
+		// Actualizar la contraseña (plana)
+		u.setContrasenia(pwdNew);
+		usuarioService.actualizarUsuario(u);
+	}
+    
     
     // ======================
     //  CREAR CATEGORIA
@@ -459,7 +472,7 @@ public class Sistema implements ISistema {
 	public DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo) {
 	    // Obtener la aerolínea desde la base de datos
 	    Usuario u = usuarioService.obtenerAerolineaPorNickname(canonical(nickname));
-	    if (!(u instanceof Aerolinea a)) {
+	    if (!(u instanceof Aerolinea)) {
 	        throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
 	    }
 	    // Buscar la ruta por nombre usando el servicio de BD para asegurar la sesión activa
@@ -504,7 +517,6 @@ public class Sistema implements ISistema {
 
 	@Override
 	public List<DataCliente> listarClientesParaCompra() {
-		ClienteService clienteService = new ClienteService();
 		return clienteService.listarClientes();
 	}
 	
@@ -786,4 +798,46 @@ public class Sistema implements ISistema {
 		rutaService.actualizarRuta(ruta);
 
 	}
+	
+	// ======================
+	//  CAMBIOS ALTAS PARA AVATAR
+	// ======================
+
+	@Override
+    public boolean existeNickname(String nickname) {
+        return usuarioService.existeNickname(nickname);
+    }
+
+    @Override
+    public boolean existeEmail(String email) {
+        return usuarioService.existeEmail(email);
+    }
+
+    @Override
+    public void altaCliente(DataCliente cliente, byte[] avatar) {
+    	String nickname = canonical(cliente.getNickname());
+    	String email = canonical(cliente.getEmail());
+    	TipoDocumento documento = cliente.getTipoDocumento();
+    	String numeroDocumento = canonical(cliente.getNumDocumento());
+    	String nombre = canonical(cliente.getNombre());
+    	String apellido = canonical(cliente.getApellido());
+    	String pais = cliente.getNacionalidad();
+    	Date fechaNac = cliente.getFechaNac();
+    
+    	// Ajusta la construcción de PerfilClienteUpdate según el constructor disponible
+    	PerfilClienteUpdate perfil = new PerfilClienteUpdate(nickname, email, nombre, apellido, pais, documento,numeroDocumento, fechaNac, avatar,false);
+    	if(avatar == null ) {
+    		System.out.println("Avatar es null");
+    	}
+        registrarUsuario(cliente);
+        if (avatar != null && avatar.length > 0) {
+        	actualizarPerfilCliente(perfil);
+		}
+        
+    }
+
+    @Override
+    public void altaAerolinea(DataAerolinea aerolinea) {
+        registrarUsuario(aerolinea);
+    }
 }

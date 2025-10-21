@@ -17,6 +17,10 @@ public final class ManejadorUsuario {
     // =========================
     // DTO -> ENTIDAD (dominio)
     // =========================
+    
+    private static ClienteService clienteService = new ClienteService();
+    private static AerolineaService aerolineaService = new AerolineaService();
+    
     public static Usuario toEntity(DataUsuario dto) { // Convierte un DTO (capa de transporte) a Entidad de dominio.
         Objects.requireNonNull(dto, "DataUsuario no puede ser null"); // Valida que dto no sea null; si lo es, lanza NullPointerException con mensaje.
 
@@ -34,7 +38,7 @@ public final class ManejadorUsuario {
             );
             
             try {
-    			new ClienteService().crearCliente(c);
+    			clienteService.crearCliente(c);
     		} catch (Exception ex) {
     			throw new IllegalStateException("Error al crear el cliente: " + ex.getMessage(), ex);
     		}
@@ -51,7 +55,7 @@ public final class ManejadorUsuario {
             );
             
             try {
-    			new AerolineaService().crearAerolinea(a);
+    			aerolineaService.crearAerolinea(a);
     		} catch (Exception ex) {
     			throw new IllegalStateException("Error al crear Aerolinea: " + ex.getMessage(), ex);
     		}
@@ -115,4 +119,11 @@ public final class ManejadorUsuario {
     private static Date copy(Date d) { // Helper para evitar exponer mutabilidad de Date.
         return (d == null) ? null : new Date(d.getTime()); // Si d es null, retorna null; si no, crea un Date nuevo con el mismo epoch.
     }
+    
+    static void setClienteServiceForTests(ClienteService cs) {
+        clienteService = cs;
+      }
+      static void setAerolineaServiceForTests(AerolineaService as) {
+        aerolineaService = as;
+      }
 }

@@ -7,6 +7,8 @@ import java.util.Date;
 import BD.PaqueteService;
 
 public final class ManejadorCompraPaquete {
+	
+	private static PaqueteService paqueteService = new PaqueteService();
 
     private ManejadorCompraPaquete() {}
 
@@ -21,7 +23,6 @@ public final class ManejadorCompraPaquete {
         // vencimiento: si dto trae null, calcular = fecha + validez (días)
         Date venc = (dto.getVencimiento() != null)? copy(dto.getVencimiento()) : addDays(fecha, paquete.getValidez());
 
-        // IMPORTANTE: no hacemos 'new' en Sistema: lo hacemos acá.
         CompraPaquete cp = new CompraPaquete(
                 cliente,
                 paquete,
@@ -30,7 +31,7 @@ public final class ManejadorCompraPaquete {
                 costo
         );
         try {
-        	new PaqueteService().comprarPaquete(cp, cliente, paquete);
+        	 paqueteService.comprarPaquete(cp, cliente, paquete);
 			} catch (Exception ex) {
 				throw new IllegalStateException("Error al crear la compra: " + ex.getMessage(), ex);
 			}
@@ -56,4 +57,8 @@ public final class ManejadorCompraPaquete {
         cal.add(java.util.Calendar.DAY_OF_YEAR, days);
         return cal.getTime();
     }
+    
+    static void setServiceForTests(PaqueteService s) {
+        paqueteService = (s == null) ? new PaqueteService() : s;
+      }
 }

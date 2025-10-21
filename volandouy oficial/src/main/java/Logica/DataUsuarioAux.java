@@ -5,6 +5,7 @@ public class DataUsuarioAux extends DataUsuario {
 
     public DataUsuarioAux(String nombre, String nickname, String email, String contra) {
         super(nombre, nickname, email, contra);
+        this.tipoUsuario = "Usuario";
     }
 
     public DataUsuarioAux(DataUsuario du) {
