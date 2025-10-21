@@ -353,9 +353,6 @@ h1.display-6 {
 */
 
 /* Ajustes generales de página */
-.consultaPaqRutasVuelo-page {
-  padding-top: 56px; /* alto aprox navbar fixed-top */
-}
 
 .consultaPaqRutasVuelo-page .sidebar {
   top: 56px; /* que no quede debajo de la navbar */
@@ -432,6 +429,7 @@ h1.display-6 {
     text-align: center !important;
     margin-top: 1rem;
   }
+  
 }
 
 /*
@@ -532,9 +530,6 @@ h1.display-6 {
 //////////////////////////////////
 */
 
-.compraPaquete-page {
-  padding-top: 56px; /* alto aprox navbar fixed-top */
-}
 
 .compraPaquete-page .sidebar {
   top: 56px; /* que no quede debajo de la navbar */
