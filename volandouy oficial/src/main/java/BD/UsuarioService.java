@@ -72,7 +72,7 @@ import Logica.DataVueloEspecifico;
 		            Usuario.class
 		        ).getResultList();
 		        em.getTransaction().commit();
-	
+
 		        return usuarios.stream()
 		            .map(u -> {
 		                if (u instanceof Aerolinea a) {
@@ -85,8 +85,21 @@ import Logica.DataVueloEspecifico;
 		                        a.getDescGeneral(),
 		                        a.getLinkWeb()
 		                    );
+		                } else if (u instanceof Cliente c) {
+		                    // Preserve Cliente-specific type by returning DataCliente
+		                    return new DataCliente(
+		                        c.getNombre(),
+		                        c.getNickname(),
+		                        c.getEmail(),
+		                        c.getContrasenia(),
+		                        c.getApellido(),
+		                        c.getFechaNac(),
+		                        c.getNacionalidad(),
+		                        c.getTipoDocumento(),
+		                        c.getNumDocumento()
+		                    );
 		                } else {
-		                    // “Usuario” genérico (Cliente u otros): usamos la concreta Aux
+		                    // “Usuario” genérico (otros): usamos la concreta Aux
 		                    return new DataUsuarioAux(
 		                        u.getNombre(),
 		                        u.getNickname(),
