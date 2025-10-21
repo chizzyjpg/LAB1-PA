@@ -27,19 +27,22 @@ public class Sistema implements ISistema {
     private final PaqueteService paqueteService;
     private final ClienteService clienteService;
     private final ReservaService reservaService;
+    private final RutaVueloService rutaService;
     
     public Sistema(UsuarioService usuarioService,
             CategoriaService categoriaService,
             CiudadService ciudadService,
             PaqueteService paqueteService,
             ClienteService clienteService,
-            ReservaService reservaService) {
+            ReservaService reservaService,
+            RutaVueloService rutaService) {
 	 this.usuarioService = usuarioService;
 	 this.categoriaService = categoriaService;
 	 this.ciudadService = ciudadService;
 	 this.paqueteService = paqueteService;
 	 this.clienteService = clienteService;
 	 this.reservaService = reservaService;
+	 this.rutaService = rutaService;
     }
     
     public Sistema() {
@@ -50,6 +53,7 @@ public class Sistema implements ISistema {
     this.paqueteService = new PaqueteService();
     this.clienteService = new ClienteService();
     this.reservaService = new ReservaService();
+    this.rutaService = new RutaVueloService();
 }
     
  // Helper en Sistema

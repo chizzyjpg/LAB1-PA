@@ -30,7 +30,7 @@ public class sistemaTest_Paquetes {
 
     sistema = new Sistema(
         usuarios, new CategoriaServiceFake(), new CiudadServiceFake(),
-        paquetes, new ClienteServiceFake(usuarios), new ReservaServiceFake()
+        paquetes, new ClienteServiceFake(usuarios), new ReservaServiceFake(), new RutaVueloServiceFake()
     );
     
     paquetes.ultimaCompra = null;
@@ -256,6 +256,7 @@ public class sistemaTest_Paquetes {
   static class CategoriaServiceFake extends BD.CategoriaService {}
   static class CiudadServiceFake   extends BD.CiudadService   {}
   static class ReservaServiceFake  extends BD.ReservaService  {}
+  static class RutaVueloServiceFake extends BD.RutaVueloService {}
 
   static class ClienteServiceFake extends BD.ClienteService {
     private final UsuarioServiceFake usuarios;

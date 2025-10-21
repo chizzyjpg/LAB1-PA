@@ -25,7 +25,8 @@ public class sistemaTest_Ciudades {
 		ciudadServiceFake,
 		new PaqueteServiceFake(),
 		new ClienteServiceFake(),
-		new ReservaServiceFake()
+		new ReservaServiceFake(),
+		new RutaVueloServiceFake()
         );
   }
 
@@ -137,7 +138,7 @@ public class sistemaTest_Ciudades {
 	 static class PaqueteServiceFake  extends BD.PaqueteService  {}
 	 static class ClienteServiceFake  extends BD.ClienteService  {}
 	 static class ReservaServiceFake  extends BD.ReservaService  {}
-	 static class CategoriaServiceFake extends BD.CategoriaService {
-	}	
+	 static class CategoriaServiceFake extends BD.CategoriaService {}
+	 static class RutaVueloServiceFake extends BD.RutaVueloService {}
 
 }

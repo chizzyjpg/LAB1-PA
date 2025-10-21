@@ -33,7 +33,8 @@ public class sistemaTest_LoginYPassword {
         new CiudadServiceFake(),
         new PaqueteServiceFake(),
         new ClienteServiceFake(usuarioService),
-        new ReservaServiceFake()
+        new ReservaServiceFake(),
+        new RutaVueloServiceFake()
     );
   }
 
@@ -214,6 +215,7 @@ public class sistemaTest_LoginYPassword {
   static class CiudadServiceFake extends BD.CiudadService {}
   static class PaqueteServiceFake extends BD.PaqueteService {}
   static class ReservaServiceFake extends BD.ReservaService {}
+  static class RutaVueloServiceFake extends BD.RutaVueloService {}
 
   /** Fake mínimo de ClienteService que devuelve un DataCliente válido. */
   static class ClienteServiceFake extends BD.ClienteService {

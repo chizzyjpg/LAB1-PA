@@ -57,7 +57,8 @@ public class sistemaTest_RegistroUsuariosYModificaciones {
 	        new CiudadServiceFake(),
 	        new PaqueteServiceFake(),
 	        clienteServiceFake,
-	        new ReservaServiceFake()
+	        new ReservaServiceFake(),
+	        new RutaVueloServiceFake()
 	    );
 
 	}
@@ -624,6 +625,7 @@ public class sistemaTest_RegistroUsuariosYModificaciones {
 	  static class CiudadServiceFake extends BD.CiudadService {}
 	  static class PaqueteServiceFake extends BD.PaqueteService {}
 	  static class ReservaServiceFake extends BD.ReservaService {}
+	  static class RutaVueloServiceFake extends BD.RutaVueloService {}
 
 	  /** Fake mínimo de ClienteService que devuelve un DataCliente válido. */
 	  static class ClienteServiceFake extends BD.ClienteService {

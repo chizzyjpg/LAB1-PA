@@ -24,7 +24,8 @@ public class sistemaTest_Categorias {
         new CiudadServiceFake(),
         new PaqueteServiceFake(),
         new ClienteServiceFake(),
-        new ReservaServiceFake()
+        new ReservaServiceFake(),
+        new RutaVueloServiceFake()
     );
   }
 
@@ -105,4 +106,5 @@ public class sistemaTest_Categorias {
   static class PaqueteServiceFake  extends BD.PaqueteService  {}
   static class ClienteServiceFake  extends BD.ClienteService  {}
   static class ReservaServiceFake  extends BD.ReservaService  {}
+  static class RutaVueloServiceFake extends BD.RutaVueloService {}
 }
