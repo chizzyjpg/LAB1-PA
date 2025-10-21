@@ -55,112 +55,153 @@
   const flightBodyEl  = flightModalEl.querySelector('.modal-body');
   const flightModal   = new bootstrap.Modal(flightModalEl);
 
-  // --- 4) Poblar aerolíneas ---
-  function loadAirlines() {
-    AIRLINES.forEach(a => {
-      const opt = document.createElement('option');
-      opt.value = a.id; opt.textContent = a.nombre;
-      selAer.appendChild(opt);
-    });
+  // --- 4) Cargar aerolíneas desde backend ---
+  function cargarAerolineas() {
+    fetch('consultaVuelo?accion=listarAerolineas')
+      .then(r => r.json())
+      .then(aerolineas => {
+        selAer.innerHTML = '<option value="" selected>Elegir…</option>';
+        aerolineas.forEach(a => {
+          const opt = document.createElement('option');
+          opt.value = a.nickname;
+          opt.textContent = a.nombre;
+          selAer.appendChild(opt);
+        });
+        selAer.disabled = false;
+      });
   }
 
-  // --- 5) Cuando cambia aerolínea → cargar rutas confirmadas ---
-  function loadRoutesForAirline() {
-    const aId = selAer.value;
-    selRuta.innerHTML = '<option value="" selected>Elegir…</option>';
-    selRuta.disabled = !aId;
+  // --- 5) Cargar rutas confirmadas según aerolínea ---
+  function cargarRutasConfirmadas(nicknameAerolinea) {
+    selRuta.innerHTML = '<option value="" selected>Cargando…</option>';
+    selRuta.disabled = true;
+    fetch(`consultaVuelo?accion=listarRutasConfirmadas&nicknameAerolinea=${encodeURIComponent(nicknameAerolinea)}`)
+      .then(r => r.json())
+      .then(rutas => {
+        selRuta.innerHTML = '<option value="" selected>Elegir…</option>';
+        rutas.forEach(r => {
+          const opt = document.createElement('option');
+          opt.value = r.nombre;
+          opt.textContent = r.nombre;
+          selRuta.appendChild(opt);
+        });
+        selRuta.disabled = false;
+      });
+  }
 
-    if (!aId) {
-      renderFlights([]); // limpiar lista
+  // --- 6) Cargar vuelos de la ruta seleccionada ---
+  function cargarVuelos(nicknameAerolinea, nombreRuta) {
+    listEl.innerHTML = '<div class="list-group-item">Cargando vuelos…</div>';
+    // Usar el nombre visible de la ruta, no el id
+    const nombreRutaVisible = selRuta.options[selRuta.selectedIndex].text;
+    fetch(`consultaVuelo?accion=listarVuelos&nicknameAerolinea=${encodeURIComponent(nicknameAerolinea)}&nombreRuta=${encodeURIComponent(nombreRutaVisible)}`)
+      .then(r => r.json())
+      .then(vuelos => {
+        listEl.innerHTML = '';
+        if (!vuelos.length) {
+          listEl.innerHTML = '<div class="list-group-item">No hay vuelos para esta ruta.</div>';
+          return;
+        }
+        vuelos.forEach(v => {
+          v.nicknameAerolinea = selAer.value;
+          v.nombreRuta = nombreRutaVisible;
+          v.codigoVuelo = v.codigoVuelo || v.nombre || v.codigo;
+          const item = document.createElement('button');
+          item.className = 'list-group-item list-group-item-action';
+          item.textContent = `${v.codigoVuelo} - ${v.origen} → ${v.destino} (${v.fechaSalida})`;
+          item.onclick = () => mostrarDetalleVuelo(v);
+          listEl.appendChild(item);
+        });
+      });
+  }
+
+  // --- 7) Mostrar detalle de vuelo y reservas ---
+  function mostrarDetalleVuelo(vuelo) {
+    vuelo.nicknameAerolinea = selAer.value;
+    fetch(`consultaVuelo?accion=detalleVuelo&nicknameAerolinea=${encodeURIComponent(vuelo.nicknameAerolinea)}&nombreRuta=${encodeURIComponent(vuelo.nombreRuta)}&codigoVuelo=${encodeURIComponent(vuelo.codigoVuelo)}`)
+      .then(r => r.json())
+      .then(data => {
+        const modalBody = document.querySelector('#flightModal .modal-body');
+        const origen = data.DRuta && data.DRuta.ciudadOrigen ? data.DRuta.ciudadOrigen.nombre : "No disponible";
+        const destino = data.DRuta && data.DRuta.ciudadDestino ? data.DRuta.ciudadDestino.nombre : "No disponible";
+        const estado = data.DRuta && data.DRuta.estado ? data.DRuta.estado : "No disponible";
+        modalBody.innerHTML = `
+          <h5>${data.nombre || data.codigoVuelo}</h5>
+          <p><strong>Origen:</strong> ${origen} <br>
+          <strong>Destino:</strong> ${destino} <br>
+          <strong>Fecha salida:</strong> ${data.fecha || data.fechaSalida} <br>
+          <strong>Estado:</strong> ${estado}</p>
+          <div id="reservasVuelo"></div>
+        `;
+        cargarReservasVuelo(data);
+        const modal = new bootstrap.Modal(document.getElementById('flightModal'));
+        modal.show();
+      });
+  }
+
+  function cargarReservasVuelo(vuelo) {
+    vuelo.nicknameAerolinea = selAer.value;
+    // Usar el nombre visible de la ruta
+    vuelo.nombreRuta = selRuta.options[selRuta.selectedIndex].text;
+    vuelo.codigoVuelo = vuelo.codigoVuelo || vuelo.nombre || vuelo.codigo;
+    fetch(`consultaVuelo?accion=listarReservas&nicknameAerolinea=${encodeURIComponent(vuelo.nicknameAerolinea)}&nombreRuta=${encodeURIComponent(vuelo.nombreRuta)}&codigoVuelo=${encodeURIComponent(vuelo.codigoVuelo)}`)
+      .then(r => r.json())
+      .then(reservas => {
+        const reservasDiv = document.getElementById('reservasVuelo');
+        if (!reservas.length) {
+          reservasDiv.innerHTML = '<p>No hay reservas para este vuelo.</p>';
+          return;
+        }
+        reservasDiv.innerHTML = '<h6>Reservas:</h6>';
+        reservas.forEach(res => {
+          const btn = document.createElement('button');
+          btn.className = 'btn btn-link';
+          btn.textContent = `Reserva #${res.idReserva} - ${res.nickCliente?.nombre || ''}`;
+          btn.onclick = () => mostrarDetalleReserva(vuelo, res.idReserva);
+          reservasDiv.appendChild(btn);
+        });
+      });
+  }
+
+  function mostrarDetalleReserva(vuelo, idReserva) {
+    fetch(`consultaVuelo?accion=detalleReserva&nicknameAerolinea=${encodeURIComponent(vuelo.nicknameAerolinea)}&nombreRuta=${encodeURIComponent(vuelo.nombreRuta)}&codigoVuelo=${encodeURIComponent(vuelo.codigoVuelo)}&idReserva=${idReserva}`)
+      .then(r => r.json())
+      .then(res => {
+        const reservasDiv = document.getElementById('reservasVuelo');
+        reservasDiv.innerHTML = `
+          <h6>Detalle de Reserva</h6>
+          <p><strong>ID:</strong> ${res.idReserva}<br>
+          <strong>Cliente:</strong> ${res.nickCliente?.nombre || ''} (${res.nickCliente?.nickname || ''})<br>
+          <strong>Estado:</strong> ${res.estado}<br>
+          <strong>Fecha:</strong> ${res.fechaReserva}</p>
+          <button class="btn btn-secondary" onclick="window.location.reload()">Volver</button>
+        `;
+      });
+  }
+
+  // --- 8) Eventos ---
+  selAer.addEventListener('change', e => {
+    const nicknameAerolinea = selAer.value;
+    if (!nicknameAerolinea) {
+      selRuta.innerHTML = '<option value="" selected>Elegir aerolínea primero…</option>';
+      selRuta.disabled = true;
+      listEl.innerHTML = '';
       return;
     }
-
-    const rutas = ROUTES.filter(r => r.aerolineaId === aId && r.estado === 'Confirmada');
-    rutas.forEach(r => {
-      const opt = document.createElement('option');
-      opt.value = String(r.id);
-      opt.textContent = `${r.nombre} (${r.origen} → ${r.destino})`;
-      selRuta.appendChild(opt);
-    });
-
-    // Si querés, seleccioná la primera automáticamente:
-    if (rutas.length) {
-      selRuta.value = String(rutas[0].id);
-      loadFlightsForRoute();
-    } else {
-      renderFlights([]);
-    }
-  }
-
-  // --- 6) Cuando cambia ruta → mostrar vuelos ---
-  function loadFlightsForRoute() {
-    const routeId = Number(selRuta.value);
-    const route = ROUTES.find(r => r.id === routeId);
-    if (!route) { renderFlights([]); return; }
-
-    // aplicamos búsqueda de texto
-    const q = (inpTxt.value || '').trim().toLowerCase();
-    const flights = (route.vuelos || []).filter(v => {
-      if (!q) return true;
-      return [v.codigo, v.origen, v.destino, v.fecha]
-        .filter(Boolean).some(s => String(s).toLowerCase().includes(q));
-    });
-
-    renderFlights(flights, route);
-  }
-
-  // --- 7) Renderizar lista de vuelos ---
-  function renderFlights(flights, route = null) {
+    cargarRutasConfirmadas(nicknameAerolinea);
     listEl.innerHTML = '';
-    flights.forEach(v => {
-      const a = document.createElement('a');
-      a.href = '#';
-      a.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
-      a.innerHTML = `
-        <div>
-          <strong>${v.codigo}</strong>
-          <span class="text-muted small ms-2">${v.origen} → ${v.destino}</span>
-          <div class="text-muted small">${v.fecha} · ${v.salida} — ${v.llegada}</div>
-        </div>
-        <span class="badge ${v.estado === 'Programado' ? 'text-bg-primary' : 'text-bg-secondary'}">${v.estado}</span>
-      `;
-      a.addEventListener('click', (e) => {
-        e.preventDefault();
-        openFlightModal(v, route);
-      });
-      listEl.appendChild(a);
-    });
-    countEl.textContent = `${flights.length} vuelo${flights.length !== 1 ? 's' : ''} encontrado${flights.length !== 1 ? 's' : ''}`;
-  }
-
-  // --- 8) Modal detalle de vuelo ---
-  function openFlightModal(v, route) {
-    const title = `${v.codigo} — ${v.origen} → ${v.destino}`;
-    flightTitleEl.textContent = title;
-
-    const img = v.imagen ? `<img src="${v.imagen}" alt="" class="img-fluid rounded mb-3">` : '';
-
-    flightBodyEl.innerHTML = `
-      ${img}
-      <div class="mb-2 small text-muted">
-        Aerolínea: <strong>${airlineName(route?.aerolineaId)}</strong> ·
-        Ruta: <strong>${route?.nombre || ''}</strong>
-      </div>
-      <ul class="list-unstyled mb-0">
-        <li><strong>Fecha:</strong> ${v.fecha}</li>
-        <li><strong>Horario:</strong> ${v.salida} — ${v.llegada}</li>
-        <li><strong>Estado:</strong> ${v.estado}</li>
-      </ul>
-    `;
-    flightModal.show();
-  }
-
-  // --- 9) Init ---
-  document.addEventListener('DOMContentLoaded', () => {
-    loadAirlines();         // llena select de aerolínea
-    // listeners
-    selAer.addEventListener('change', loadRoutesForAirline);
-    selRuta.addEventListener('change', loadFlightsForRoute);
-    inpTxt.addEventListener('input', loadFlightsForRoute);
   });
+
+  selRuta.addEventListener('change', e => {
+    const nicknameAerolinea = selAer.value;
+    const nombreRuta = selRuta.value;
+    if (!nicknameAerolinea || !nombreRuta) {
+      listEl.innerHTML = '';
+      return;
+    }
+    cargarVuelos(nicknameAerolinea, nombreRuta);
+  });
+
+  // --- 9) Inicialización ---
+  cargarAerolineas();
 })();

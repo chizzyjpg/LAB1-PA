@@ -20,7 +20,7 @@ public class Sistema implements ISistema {
     private final Map<Long, Ciudad> CiudadPorHash = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por hashcode
     private final List<CompraPaquete> compras = new ArrayList<>();
     
-    // Servicios (manejadores de BD)
+
     private final UsuarioService usuarioService;
     private final CategoriaService categoriaService;
     private final CiudadService ciudadService;
@@ -428,7 +428,6 @@ public class Sistema implements ISistema {
 	public void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos) {
 		if (datos == null) throw new IllegalArgumentException("Los datos del vuelo no pueden ser nulos");
 		// Buscar el id de la ruta persistida por nombre
-		RutaVueloService rutaService = new RutaVueloService();
 		Integer idRuta = rutaService.buscarRutaPorNombreYObtenerId(nombre);
 		if (idRuta == null) {
 			throw new IllegalArgumentException("No existe una ruta con ese nombre en la base de datos");

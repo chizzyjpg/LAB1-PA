@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpSession;
 
 import BD.UsuarioService;
 import Logica.DataUsuario;
-import Logica.Sistema;
+import Logica.ISistema;
 import Logica.Usuario;
 
 import uy.volando.exceptions.UsuarioNoEncontrado;
@@ -52,7 +52,7 @@ public class Login extends HttpServlet {
 	    System.out.println("[DEBUG] password param: " + password);
 
 	    EstadoSesion nuevoEstado;
-	    Sistema sistema = new Sistema();
+	    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
 
 	    System.out.println("[LOGIN] params -> nick=" + login + " , pass.len=" + (password != null ? password.length() : null));
 

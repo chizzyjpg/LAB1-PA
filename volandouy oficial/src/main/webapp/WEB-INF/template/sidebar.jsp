@@ -49,10 +49,10 @@
         <a href="${pageContext.request.contextPath}/consultaRutaVuelo"
            class="list-group-item list-group-item-action">Ruta de Vuelo</a>
 
-        <a href="${pageContext.request.contextPath}/consultaVuelo.jsp"
+        <a href="${pageContext.request.contextPath}/consultaVuelo"
            class="list-group-item list-group-item-action">Vuelo</a>
 
-        <a href="${pageContext.request.contextPath}/consultaPaqRutasVuelo.jsp"
+        <a href="${pageContext.request.contextPath}/consultaPaqRutasVuelo"
            class="list-group-item list-group-item-action">Paquete de Rutas de Vuelo</a>
 
 
