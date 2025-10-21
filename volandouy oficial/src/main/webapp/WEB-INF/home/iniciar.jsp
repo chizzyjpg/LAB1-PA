@@ -13,7 +13,7 @@
         <div class="col-11 col-sm-10 col-md-8 col-lg-6">
           <div class="d-grid gap-3 btn-panel">
             <a href="iniciar-sesion" class="btn btn-primary">Iniciar sesión</a>
-            <a href="registro.html" class="btn btn-primary">Registrarse</a>
+            <a href="altaUsuario" class="btn btn-primary">Registrarse</a>
             <a href="visitante" class="btn btn-secondary">Entrar como visitante</a>
           </div>
         </div>

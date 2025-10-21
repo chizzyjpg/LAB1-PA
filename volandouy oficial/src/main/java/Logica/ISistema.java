@@ -1,4 +1,3 @@
-
 package Logica;
 
 //import java.math.BigDecimal;
@@ -50,5 +49,11 @@ public interface ISistema {
     
     
 	Ciudad buscarCiudad(String nombre, String pais);	
-	byte[] obtenerAvatar(String nickname);
+	
+	boolean existeNickname(String nickname);
+    boolean existeEmail(String email);
+    void altaCliente(DataCliente cliente, byte[] avatar);
+    void altaAerolinea(DataAerolinea aerolinea);
+    byte[] obtenerAvatar(String nickname);
+
 }

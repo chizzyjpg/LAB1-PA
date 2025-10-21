@@ -93,7 +93,7 @@ public class Sistema implements ISistema {
         
         ManejadorUsuario.toEntity(data);
     }
-
+    
 
     @Override
     public DataCliente verInfoCliente(String nickname) {
@@ -798,4 +798,46 @@ public class Sistema implements ISistema {
 		rutaService.actualizarRuta(ruta);
 
 	}
+	
+	// ======================
+	//  CAMBIOS ALTAS PARA AVATAR
+	// ======================
+
+	@Override
+    public boolean existeNickname(String nickname) {
+        return usuarioService.existeNickname(nickname);
+    }
+
+    @Override
+    public boolean existeEmail(String email) {
+        return usuarioService.existeEmail(email);
+    }
+
+    @Override
+    public void altaCliente(DataCliente cliente, byte[] avatar) {
+    	String nickname = canonical(cliente.getNickname());
+    	String email = canonical(cliente.getEmail());
+    	TipoDocumento documento = cliente.getTipoDocumento();
+    	String numeroDocumento = canonical(cliente.getNumDocumento());
+    	String nombre = canonical(cliente.getNombre());
+    	String apellido = canonical(cliente.getApellido());
+    	String pais = cliente.getNacionalidad();
+    	Date fechaNac = cliente.getFechaNac();
+    
+    	// Ajusta la construcción de PerfilClienteUpdate según el constructor disponible
+    	PerfilClienteUpdate perfil = new PerfilClienteUpdate(nickname, email, nombre, apellido, pais, documento,numeroDocumento, fechaNac, avatar,false);
+    	if(avatar == null ) {
+    		System.out.println("Avatar es null");
+    	}
+        registrarUsuario(cliente);
+        if (avatar != null && avatar.length > 0) {
+        	actualizarPerfilCliente(perfil);
+		}
+        
+    }
+
+    @Override
+    public void altaAerolinea(DataAerolinea aerolinea) {
+        registrarUsuario(aerolinea);
+    }
 }
