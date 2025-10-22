@@ -12,41 +12,55 @@
     <div class="row">
       <jsp:include page="/WEB-INF/template/sidebar.jsp" />
       <main class="col-12 col-lg-9 col-xl-10 py-4">
+        <% String flashErr = (String) session.getAttribute("flash_error");
+		   if (flashErr != null) { %>
+		  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+		    <%= flashErr %>
+		    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		  </div>
+		<% session.removeAttribute("flash_error"); } %>
         <div class="container">
         <h1 class="text-center mb-4">Consulta de Vuelo</h1>
         <!-- Filtros -->
-        <form id="flightFilters" class="row g-2 align-items-end mb-3" method="get" action="consultaVuelo">
-        <div class="col-md-4">
-            <label for="fltAerolinea" class="form-label">Aerolínea</label>
-            <select id="fltAerolinea" name="fltAerolinea" class="form-select" required onchange="this.form.submit()">
-            <option value="" selected>Elegir…</option>
-            <% List<DataAerolinea> aerolineas = (List<DataAerolinea>) request.getAttribute("aerolineas");
-               String selAer = request.getParameter("fltAerolinea");
-               if (aerolineas != null) {
-                 for (DataAerolinea a : aerolineas) { %>
-                   <option value="<%= a.getNickname() %>" <%= a.getNickname().equals(selAer) ? "selected" : "" %>><%= a.getNombre() %></option>
-            <%   }
-               } %>
-            </select>
-        </div>
-        <div class="col-md-5">
-            <label for="fltRuta" class="form-label">Ruta (Confirmada)</label>
-            <select id="fltRuta" name="fltRuta" class="form-select" <%= selAer == null || selAer.isBlank() ? "disabled" : "" %> required onchange="this.form.submit()">
-            <option value="" selected>Elegir aerolínea primero…</option>
-            <% List<DataRuta> rutas = (List<DataRuta>) request.getAttribute("rutas");
-               String selRuta = request.getParameter("fltRuta");
-               if (rutas != null) {
-                 for (DataRuta r : rutas) { %>
-                   <option value="<%= r.getNombre() %>" <%= r.getNombre().equals(selRuta) ? "selected" : "" %>><%= r.getNombre() %></option>
-            <%   }
-               } %>
-            </select>
-        </div>
-        <div class="col-md-3">
-            <label for="fltTexto" class="form-label">Buscar</label>
-            <input id="fltTexto" name="fltTexto" type="search" class="form-control" placeholder="Código, origen, destino…" value="<%= request.getParameter("fltTexto") != null ? request.getParameter("fltTexto") : "" %>">
-        </div>
-        </form>
+		<form id="flightFilters" class="row g-2 align-items-end mb-3" method="get" action="consultaVuelo">
+		  <div class="col-md-4">
+		    <label for="fltAerolinea" class="form-label">Aerolínea</label>
+		    <select id="fltAerolinea" name="fltAerolinea" class="form-select" required
+		            onchange="document.getElementById('fltRuta').selectedIndex=0; this.form.submit()">
+		      <option value="" selected>Elegir…</option>
+		      <% List<DataAerolinea> aerolineas = (List<DataAerolinea>) request.getAttribute("aerolineas");
+		         String selAer = request.getParameter("fltAerolinea");
+		         if (aerolineas != null) {
+		           for (DataAerolinea a : aerolineas) { %>
+		             <option value="<%= a.getNickname() %>" <%= a.getNickname().equals(selAer) ? "selected" : "" %>><%= a.getNombre() %></option>
+		      <%   }
+		         } %>
+		    </select>
+		  </div>
+		
+		  <div class="col-md-5">
+		    <label for="fltRuta" class="form-label">Ruta (Confirmada)</label>
+		
+		    <% List<DataRuta> rutas = (List<DataRuta>) request.getAttribute("rutas");
+		       String selRuta = request.getParameter("fltRuta"); %>
+		
+		    <select id="fltRuta" name="fltRuta" class="form-select"
+		            <%= (selAer == null || selAer.isBlank()) ? "disabled" : "" %>
+		            required onchange="this.form.submit()">
+		
+		      <% if (selAer == null || selAer.isBlank()) { %>
+		        <option value="" selected>Elegir aerolínea primero…</option>
+		      <% } else { %>
+		        <option value="" <%= (selRuta == null || selRuta.isBlank()) ? "selected" : "" %> >-- Seleccione ruta --</option>
+		      <% } %>
+		
+		      <% if (rutas != null) {
+		           for (DataRuta r : rutas) { %>
+		        <option value="<%= r.getNombre() %>" <%= (r.getNombre().equals(selRuta) ? "selected" : "") %>><%= r.getNombre() %></option>
+		      <% } } %>
+		    </select>
+		  </div>		
+		</form>
         <!-- Lista de vuelos -->
         <div id="flightList" class="list-group">
         <% List<DataVueloEspecifico> vuelos = (List<DataVueloEspecifico>) request.getAttribute("vuelos");
