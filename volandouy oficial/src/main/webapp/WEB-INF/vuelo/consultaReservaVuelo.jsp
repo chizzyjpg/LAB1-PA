@@ -185,7 +185,6 @@ String vueloSeleccionado = (String) request.getAttribute("vueloSeleccionado");
     </div>
   </div>
   <jsp:include page="/WEB-INF/template/footer.jsp" />
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // Al cambiar la ruta, limpia el select de vuelo (si existe), lo deshabilita y envía el formulario
     document.addEventListener('DOMContentLoaded', function() {

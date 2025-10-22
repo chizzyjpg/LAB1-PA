@@ -7,7 +7,7 @@ public enum EstadoRuta {
 	
 	private final String descripcion;
 	
-	EstadoRuta(String descripcion) {
+	private EstadoRuta(String descripcion) {
 		this.descripcion = descripcion;
 	}
 	
