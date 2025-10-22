@@ -11,7 +11,7 @@
     <body class="registro-page">
     <nav class="navbar navbar-dark bg-dark fixed-top navbar-compact">
         <div class="container">
-        <a class="navbar-brand fw-bold" href="home.html">Volando.uy</a>
+        <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">Volando.uy</a>
         </div>
     </nav>
     <main class="portada d-flex align-items-start py-5">
