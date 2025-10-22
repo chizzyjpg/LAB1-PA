@@ -19,6 +19,13 @@
       <jsp:include page="/WEB-INF/template/sidebar.jsp" />
       <main class="col-12 col-lg-9 col-xl-10 py-4">
         <div class="container-fluid text-center">
+       		<% String flashErr = (String) session.getAttribute("flash_error");
+  			if (flashErr != null) { %>
+ 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+   			<%= flashErr %>
+   			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+ 			</div>
+ 			<% session.removeAttribute("flash_error"); } %>
           <h1 class="mb-2">Reservar vuelo</h1>
           <p class="text-muted">Elegí aerolínea y ruta; luego seleccioná tu vuelo.</p>
 
@@ -26,7 +33,9 @@
           <form method="get" action="reservaVuelo" class="row g-3 align-items-end mb-3">
             <div class="col-12 col-md-4">
               <label for="selAerolinea" class="form-label">Aerolínea</label>
-              <select id="selAerolinea" name="aerolinea" class="form-select" required onchange="this.form.submit()">
+              <select id="selAerolinea" name="aerolinea" class="form-select" required onchange="document.getElementById('selRuta').selectedIndex=0;
+                  document.getElementById('selVuelo').selectedIndex=0;
+                  this.form.submit()">
                 <option value="" selected disabled>Seleccionar…</option>
                 <% List<DataAerolinea> aerolineas = (List<DataAerolinea>) request.getAttribute("aerolineas");
                    String aerolineaSel = request.getParameter("aerolinea");
@@ -41,7 +50,7 @@
             </div>
             <div class="col-12 col-md-5">
               <label for="selRuta" class="form-label">Ruta</label>
-              <select id="selRuta" name="ruta" class="form-select" <%= aerolineaSel == null || aerolineaSel.isEmpty() ? "disabled" : "" %> onchange="this.form.submit()">
+              <select id="selRuta" name="ruta" class="form-select" <%= (aerolineaSel == null || aerolineaSel.isEmpty()) ? "disabled" : "" %> onchange="document.getElementById('selVuelo').selectedIndex=0; this.form.submit()">
                 <option value="" selected disabled>Seleccionar…</option>
                 <% List<DataRuta> rutas = (List<DataRuta>) request.getAttribute("rutas");
                    String rutaSel = request.getParameter("ruta");
