@@ -75,12 +75,15 @@ public class Sistema implements ISistema {
 
   @Override
   public void registrarUsuario(DataUsuario data) {
-    if (data == null)
-      throw new IllegalArgumentException("Los datos no pueden ser nulos");
-    if (usuarioService.existeNickname(data.getNickname())) {
+    if (data == null) throw new IllegalArgumentException("Los datos no pueden ser nulos");
+
+    String nickCanon = canonical(data.getNickname());
+    String emailCanon = canonical(data.getEmail());
+
+    if (usuarioService.existeNickname(nickCanon)) {
       throw new IllegalArgumentException("El nickname ya está en uso");
     }
-    if (usuarioService.existeEmail(data.getEmail())) {
+    if (usuarioService.existeEmail(emailCanon)) {
       throw new IllegalArgumentException("El email ya está en uso");
     }
 
@@ -132,13 +135,14 @@ public class Sistema implements ISistema {
       throw new IllegalArgumentException("Nickname y contraseña no pueden ser nulos");
     }
 
-    // 1) Autenticar SOLO por nickname (plano) para la prueba
-    Usuario u = usuarioService.autenticarUsuario(nickname, password);
+    // Autenticar SOLO por nickname (plano) para la prueba
+    String nickCanon = canonical(nickname);
+    Usuario u = usuarioService.autenticarUsuario(nickCanon, password);
     if (u == null) {
       return null; // falla autenticación
     }
 
-    // 2) Traer el DTO como ya lo haces (no toco tu verInfoUsuario)
+    // Traer el DTO como ya lo haces 
     return usuarioService.verInfoUsuario(u.getNickname());
 
   }

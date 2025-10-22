@@ -33,18 +33,11 @@ public class Perfil extends HttpServlet {
     }
   }
 
-  /**
-   * Constructor of the object.
-   * 
-   */
   public Perfil() {
     super();
   }
 
-  /**
-   * Inicializa el estado de sesión si no está definido.
-   * 
-   */
+
   public static void initSession(HttpServletRequest request) {
     HttpSession session = request.getSession();
     if (session.getAttribute("estado_sesion") == null) {
@@ -52,17 +45,12 @@ public class Perfil extends HttpServlet {
     }
   }
 
-  /**
-   * Obtiene el estado de sesión actual.
-   * 
-   */
+
   public static EstadoSesion getEstado(HttpServletRequest request) {
     return (EstadoSesion) request.getSession().getAttribute("estado_sesion");
   }
 
-  /**
-   * Handles the HTTP GET method.
-   */
+
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
@@ -142,6 +130,15 @@ public class Perfil extends HttpServlet {
    */
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+	  
+	  Object u = req.getSession().getAttribute("usuario_logueado");
+	  String nickSesion = (u instanceof Logica.DataCliente dc) ? dc.getNickname()
+	                     : (u instanceof Logica.DataAerolinea da) ? da.getNickname()
+	                     : null;
+
+	  String emailSesion = (u instanceof Logica.DataCliente dc2) ? dc2.getEmail()
+	                      : (u instanceof Logica.DataAerolinea da2) ? da2.getEmail()
+	                      : null;
     // Requiere sesión válida
     initSession(req);
     if (getEstado(req) != EstadoSesion.LOGIN_CORRECTO) {
@@ -206,8 +203,8 @@ public class Perfil extends HttpServlet {
           }
         }
 
-        final String tdocParam = req.getParameter("tipoDocumento"); // "CEDULA" | "PASAPORTE" |
-                                                                    // "OTRO"
+        final String tdocParam = req.getParameter("tipoDocumento");
+                                                                 
         Logica.TipoDocumento tipoDoc = null;
         if (tdocParam != null && !tdocParam.isBlank()) {
           try {
@@ -217,16 +214,17 @@ public class Perfil extends HttpServlet {
           }
         }
 
-        var upd = new Logica.PerfilClienteUpdate(nickname, email, nombre, apellido, nac, tipoDoc,
+        var upd = new Logica.PerfilClienteUpdate(nickSesion, emailSesion, nombre, apellido, nac, tipoDoc,
             ndoc, fnac, avatarBytes, clearPhoto);
-        sistema.actualizarPerfilCliente(upd);
+        usuarioActualizado = sistema.actualizarPerfilCliente(upd);
+        req.getSession().setAttribute("usuario_logueado", usuarioActualizado);
 
       } else if ("DataAerolinea".equals(tipo)) {
         final String nombre = req.getParameter("nombre");
         final String sitio = req.getParameter("sitioWeb");
         final String desc = req.getParameter("descripcion");
 
-        var upd = new Logica.PerfilAerolineaUpdate(nickname, email, nombre, desc, sitio,
+        var upd = new Logica.PerfilAerolineaUpdate(nickSesion, emailSesion, nombre, desc, sitio,
             avatarBytes, clearPhoto);
 
         usuarioActualizado = sistema.actualizarPerfilAerolinea(upd);

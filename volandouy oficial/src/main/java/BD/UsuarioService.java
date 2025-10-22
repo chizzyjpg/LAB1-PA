@@ -15,6 +15,7 @@ import Logica.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -194,18 +195,17 @@ public class UsuarioService {
    * Obtiene un cliente por su nickname.
    */
   public Cliente obtenerClientePorNickname(String nickname) {
-    EntityManager em = JPAUtil.getEntityManager();
-    try {
-      em.getTransaction().begin();
-      List<Cliente> clientes = em
-          .createQuery("from Cliente c where c.nickname = :nickname", Cliente.class)
-          .setParameter("nickname", nickname).getResultList();
-      em.getTransaction().commit();
-      return clientes.isEmpty() ? null : clientes.get(0);
-    } finally {
-      em.close();
-    }
-  }
+	  EntityManager em = JPAUtil.getEntityManager();
+	  String key = canonical(nickname); 
+	  try {
+	    return em.createQuery(
+	        "select c from Cliente c where lower(c.nickname) = :nick", Cliente.class)
+	        .setParameter("nick", key)
+	        .getResultStream().findFirst().orElse(null);
+	  } finally {
+	    em.close();
+	  }
+	}
 
   /**
    * Obtiene una aerolínea por su nickname.
@@ -280,45 +280,35 @@ public class UsuarioService {
    * Verifica si existe un usuario con el nickname dado.
    */
   public boolean existeNickname(String nickname) {
-    EntityManager em = JPAUtil.getEntityManager();
-    try {
-      em.getTransaction().begin();
-      Long count = em
-          .createQuery("SELECT COUNT(u) FROM Usuario u WHERE u.nickname = :nickname", Long.class)
-          .setParameter("nickname", nickname).getSingleResult();
-      em.getTransaction().commit();
-      return count != null && count > 0;
-    } catch (RuntimeException ex) {
-      if (em.getTransaction().isActive()) {
-        em.getTransaction().rollback();
-      }
-      throw ex;
-    } finally {
-      em.close();
-    }
-  }
+	  EntityManager em = JPAUtil.getEntityManager();
+	  String key = canonical(nickname);
+	  try {
+	    // sin transacción alcanza para reads
+	    Long count = em.createQuery(
+	        "select count(u) from Usuario u where lower(u.nickname) = :nick",
+	        Long.class)
+	      .setParameter("nick", key)
+	      .getSingleResult();
+	    return count != null && count > 0;
+	  } finally {
+	    em.close();
+	  }
+	}
 
-  /**
-   * Verifica si existe un usuario con el email dado.
-   */
-  public boolean existeEmail(String email) {
-    EntityManager em = JPAUtil.getEntityManager();
-    try {
-      em.getTransaction().begin();
-      Long count = em
-          .createQuery("SELECT COUNT(u) FROM Usuario u WHERE u.email = :email", Long.class)
-          .setParameter("email", email).getSingleResult();
-      em.getTransaction().commit();
-      return count != null && count > 0;
-    } catch (RuntimeException ex) {
-      if (em.getTransaction().isActive()) {
-        em.getTransaction().rollback();
-      }
-      throw ex;
-    } finally {
-      em.close();
-    }
-  }
+	public boolean existeEmail(String email) {
+	  EntityManager em = JPAUtil.getEntityManager();
+	  String key = canonical(email);
+	  try {
+	    Long count = em.createQuery(
+	        "select count(u) from Usuario u where lower(u.email) = :mail",
+	        Long.class)
+	      .setParameter("mail", key)
+	      .getSingleResult();
+	    return count != null && count > 0;
+	  } finally {
+	    em.close();
+	  }
+	}
 
   /**
    * Verifica si existe una cédula (número de documento) en clientes.
@@ -350,32 +340,34 @@ public class UsuarioService {
    * Autentica un usuario por login (nickname o email) y contraseña.
    */
   public Usuario autenticarUsuario(String login, String password) {
-    EntityManager em = JPAUtil.getEntityManager();
-    try {
-      em.getTransaction().begin();
-      List<Usuario> usuarios = em
-          .createQuery("from Usuario u where u.nickname = :login or u.email = :login",
-              Usuario.class)
-          .setParameter("login", login).getResultList();
-      em.getTransaction().commit();
-      if (usuarios.isEmpty()) {
-        return null;
-      }
-      Usuario u = usuarios.get(0);
-      if (u.getContrasenia().equals(password)) {
-        return u;
-      } else {
-        return null;
-      }
-    } catch (RuntimeException ex) {
-      if (em.getTransaction().isActive()) {
-        em.getTransaction().rollback();
-      }
-      throw ex; // propagar para que la UI decida qué mostrar
-    } finally {
-      em.close();
-    }
-  }
+	  EntityManager em = JPAUtil.getEntityManager();
+
+	  // === agregar string canónico (trim + lower) ===
+	  final String key = (login == null) ? null : login.trim().toLowerCase();
+
+	  try {
+	    em.getTransaction().begin();
+	    List<Usuario> usuarios = em.createQuery(
+	        "from Usuario u " +
+	        "where lower(u.nickname) = :login or lower(u.email) = :login",
+	        Usuario.class)
+	      .setParameter("login", key)   // <-- pasamos key
+	      .getResultList();
+	    em.getTransaction().commit();
+
+	    if (usuarios.isEmpty()) return null;
+
+	    Usuario u = usuarios.get(0);
+	    // TODO: reemplazar por comparación de hash si usás encriptación
+	    return (u.getContrasenia() != null && u.getContrasenia().equals(password)) ? u : null;
+
+	  } catch (RuntimeException ex) {
+	    if (em.getTransaction().isActive()) em.getTransaction().rollback();
+	    throw ex;
+	  } finally {
+	    em.close();
+	  }
+	}
 
   /**
    * Busca un usuario por su nickname.
@@ -411,4 +403,8 @@ public class UsuarioService {
     return passwordPlain.equals(u.getContrasenia()) ? u : null;
   }
 
+  
+  private static String canonical(String s) {
+	    return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
+  }
 }
