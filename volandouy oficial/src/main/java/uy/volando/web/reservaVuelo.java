@@ -26,58 +26,106 @@ public class reservaVuelo extends HttpServlet {
 		super();
 	}
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	        throws ServletException, IOException {
+
 	    HttpSession session = request.getSession();
 	    Object usuario = session.getAttribute("usuario_logueado");
 	    request.setAttribute("usuario", usuario);
-	    Logica.ISistema sistema = (Logica.ISistema) getServletContext().getAttribute("sistema");
-	    List<DataAerolinea> aerolineas = sistema.listarAerolineas();
+
+	    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
+
+	    // ===== 1) Aerolíneas (siempre) =====
+	    List<Logica.DataAerolinea> aerolineas = sistema.listarAerolineas();
 	    request.setAttribute("aerolineas", aerolineas);
-	    String aerolineaSel = request.getParameter("aerolinea");
-	    List<DataRuta> rutas = null;
-	    if (aerolineaSel != null && !aerolineaSel.isEmpty()) {
-	        rutas = sistema.listarPorAerolinea(aerolineaSel).stream()
-	            .filter(r -> r.getEstado() != null && r.getEstado().name().equalsIgnoreCase("CONFIRMADA"))
-	            .toList();
+
+	    // ===== 2) Parámetros saneados =====
+	    String aerolineaSel = trimOrNull(request.getParameter("aerolinea"));
+	    String rutaSel      = trimOrNull(request.getParameter("ruta"));
+	    String vueloSel     = trimOrNull(request.getParameter("vuelo"));
+
+	    // ===== 3) Rutas confirmadas de la aerolínea (si hay aerolínea) =====
+	    List<Logica.DataRuta> rutas = null;
+	    if (aerolineaSel != null) {
+	        List<Logica.DataRuta> todas = sistema.listarPorAerolinea(aerolineaSel);
+	        rutas = (todas == null ? List.of() :
+	                 todas.stream()
+	                      .filter(r -> r != null && r.getEstado() == Logica.EstadoRuta.CONFIRMADA)
+	                      .toList());
 	    }
 	    request.setAttribute("rutas", rutas);
-	    String rutaSel = request.getParameter("ruta");
+
+	    // ===== 4) Validación Aerolínea–Ruta (si hay ambas) =====
+	    if (aerolineaSel != null && rutaSel != null) {
+	        boolean pertenece = rutas != null && rutas.stream()
+	                .anyMatch(r -> r.getNombre() != null && r.getNombre().equals(rutaSel));
+	        if (!pertenece) {
+	            session.setAttribute("flash_error", "La aerolínea seleccionada no posee esa ruta. Vuelva a elegir la ruta.");
+	            response.sendRedirect(request.getContextPath() + "/reservaVuelo?aerolinea=" + url(aerolineaSel));
+	            return;
+	        }
+	    }
+
+	    // ===== 5) Vuelos (solo si aerolínea y ruta son válidas) =====
 	    List<Logica.DataVueloEspecifico> vuelos = null;
-	    if (aerolineaSel != null && !aerolineaSel.isEmpty() && rutaSel != null && !rutaSel.isEmpty()) {
+	    if (aerolineaSel != null && rutaSel != null) {
 	        vuelos = sistema.listarVuelos(aerolineaSel, rutaSel);
 	    }
 	    request.setAttribute("vuelos", vuelos);
-	    String vueloSel = request.getParameter("vuelo");
+
+	    // ===== 6) Detalle de vuelo (y validación Ruta–Vuelo) =====
 	    Logica.DataVueloEspecifico vueloDetalle = null;
-	    if (aerolineaSel != null && !aerolineaSel.isEmpty() && rutaSel != null && !rutaSel.isEmpty() && vueloSel != null && !vueloSel.isEmpty()) {
+	    if (aerolineaSel != null && rutaSel != null && vueloSel != null) {
 	        vueloDetalle = sistema.buscarVuelo(aerolineaSel, rutaSel, vueloSel);
-	        // Obtener paquetes vigentes del cliente si está logueado y hay vuelo seleccionado
-	        if (usuario != null) {
-	            String nicknameCliente = usuario instanceof Logica.DataCliente ? ((Logica.DataCliente) usuario).getNickname() : null;
-	            if (nicknameCliente != null) {
-	                List<Logica.DataPaquete> paquetesDisponibles = sistema.listarPaquetesDisponiblesParaCompra();
-	                // Filtrar paquetes que tengan disponibilidad para la ruta y cantidad de pasajes
-	                String nombreRuta = rutaSel;
-	                int cantidadPasajes = 1;
-	                try {
-	                    cantidadPasajes = Integer.parseInt(request.getParameter("cantidadPasajes"));
-	                } catch (Exception e) {}
-	                // DEBUG: Mostrar rutas incluidas en cada paquete y la ruta seleccionada
-	                for (Logica.DataPaquete p : paquetesDisponibles) {
-	                    System.out.println("[DEBUG] Paquete: " + p.getNombre() + ", rutasIncluidas: " + p.getRutasIncluidas() + ", nombreRuta: " + nombreRuta);
-	                }
-	                List<Logica.DataPaquete> paquetesFiltrados = paquetesDisponibles.stream()
-    .filter(p -> p.getCantRutas() > 0)
-    .filter(p -> p.getRutasIncluidas().stream()
-        .anyMatch(ruta -> ruta.trim().equalsIgnoreCase(nombreRuta.trim())))
-    .toList();
-	                request.setAttribute("paquetesDisponibles", paquetesFiltrados);
-	            }
+	        if (vueloDetalle == null) {
+	            session.setAttribute("flash_error", "El vuelo no corresponde a la aerolínea y ruta seleccionadas.");
+	            response.sendRedirect(request.getContextPath() + "/reservaVuelo?aerolinea=" + url(aerolineaSel) + "&ruta=" + url(rutaSel));
+	            return;
+	        }
+
+	        // ===== 7) Si hay cliente y vuelo, cargar paquetes disponibles filtrados por ruta =====
+	        if (usuario instanceof Logica.DataCliente dc) {
+	            List<Logica.DataPaquete> paquetesDisponibles = sistema.listarPaquetesDisponiblesParaCompra();
+	            int cantidadPasajes = 1;
+	            try {
+	                String cantStr = request.getParameter("cantidadPasajes");
+	                if (cantStr != null) cantidadPasajes = Integer.parseInt(cantStr);
+	            } catch (NumberFormatException ignored) {}
+
+	            // Filtramos por que el paquete incluya la ruta seleccionada (por nombre)
+	            List<Logica.DataPaquete> paquetesFiltrados =
+	                    (paquetesDisponibles == null ? List.<Logica.DataPaquete>of() :
+	                     paquetesDisponibles.stream()
+	                         .filter(p -> p != null && p.getCantRutas() > 0 && p.getRutasIncluidas() != null)
+	                         .filter(p -> p.getRutasIncluidas().stream()
+	                                 .filter(ri -> ri != null)
+	                                 .anyMatch(ri -> ri.trim().equalsIgnoreCase(rutaSel)))
+	                         .toList());
+
+	            request.setAttribute("paquetesDisponibles", paquetesFiltrados);
 	        }
 	    }
 	    request.setAttribute("vueloDetalle", vueloDetalle);
+
+	    // ===== 8) Forward final =====
 	    request.getRequestDispatcher("/WEB-INF/vuelo/reservaVuelo.jsp").forward(request, response);
 	}
+
+	/* === Helpers usados por doGet === */
+	private static String trimOrNull(String s) {
+	    if (s == null) return null;
+	    String t = s.trim();
+	    return t.isEmpty() ? null : t;
+	}
+	private static String url(String s) {
+	    try {
+	        return java.net.URLEncoder.encode(s, java.nio.charset.StandardCharsets.UTF_8);
+	    } catch (Exception e) {
+	        return s;
+	    }
+	}
+
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

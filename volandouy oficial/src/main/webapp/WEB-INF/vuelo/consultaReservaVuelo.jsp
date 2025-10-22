@@ -17,12 +17,12 @@
           <h2>Consulta de Reserva de Vuelo</h2>
           <hr>
 
-<%
-String rol = (String) request.getAttribute("rol");
-String aerolineaSeleccionada = (String) request.getAttribute("aerolineaSeleccionada");
-String rutaSeleccionada = (String) request.getAttribute("rutaSeleccionada");
-String vueloSeleccionado = (String) request.getAttribute("vueloSeleccionado");
-%>
+		<%
+		String rol = (String) request.getAttribute("rol");
+		String aerolineaSeleccionada = (String) request.getAttribute("aerolineaSeleccionada");
+		String rutaSeleccionada = (String) request.getAttribute("rutaSeleccionada");
+		String vueloSeleccionado = (String) request.getAttribute("vueloSeleccionado");
+		%>
 
 <%-- Paso 1: Selección de Aerolínea (solo cliente) --%>
 <% if ("cliente".equals(rol) && request.getAttribute("aerolineas") != null) { %>
@@ -202,5 +202,6 @@ String vueloSeleccionado = (String) request.getAttribute("vueloSeleccionado");
       }
     });
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
