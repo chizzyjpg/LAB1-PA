@@ -1,6 +1,7 @@
 // src/main/java/presentacion/AceptarRechazarRuta.java
 package Presentacion;
 
+import Logica.DataRuta;
 import Logica.DataAerolinea;
 import Logica.EstadoRuta;
 import Logica.ISistema;
@@ -122,7 +123,6 @@ public class AceptarRechazarRuta extends JInternalFrame {
     // =========================
     //     Acciones (Swing)
     // =========================
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void onListar(ActionEvent e) {
         String aero = (String) cboAerolinea.getSelectedItem();
         if (aero == null || aero.isBlank()) {
@@ -131,15 +131,15 @@ public class AceptarRechazarRuta extends JInternalFrame {
         }
         try {
         	// Trae TODAS las rutas de esa aerolínea
-            List<DataRuta> rutas = sistema.listarPorAerolinea(aero);
+            java.util.List<Logica.DataRuta> rutas = sistema.listarPorAerolinea(aero);
 
             model.setRowCount(0);
             int count = 0;
             if (rutas != null) {
-                for (DataRuta r : rutas) {
+                for (Logica.DataRuta r : rutas) {
                     // Mostrar solo las INGRESADAS (si viene null por datos viejos, las tratamos como INGRESADAS)
-                    EstadoRuta est = r.getEstado();
-                    if (est == null || est == EstadoRuta.INGRESADA) {
+                    Logica.EstadoRuta est = r.getEstado();
+                    if (est == null || est == Logica.EstadoRuta.INGRESADA) {
                         String origen = (r.getCiudadOrigen() != null)
                                 ? r.getCiudadOrigen().getNombre() + " - " + r.getCiudadOrigen().getPais() : "—";
                         String destino = (r.getCiudadDestino() != null)
@@ -228,7 +228,7 @@ public class AceptarRechazarRuta extends JInternalFrame {
     }
 
     private void actualizarLblEstado() {
-        boolean vacia = model.getRowCount() == 0;
+        boolean vacia = (model.getRowCount() == 0);
         lblEstado.setText(vacia
                 ? "No hay rutas en estado “Ingresada” para la aerolínea seleccionada."
                 : "Seleccione una ruta y confirme o rechace.");

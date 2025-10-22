@@ -34,45 +34,37 @@
           <form method="post" class="row g-2 align-items-end">
             <div class="col-md-4">
               <label for="aerolinea" class="form-label">Aerolínea</label>
-              <% // Prefer attributes set by servlet, fallback to request parameters
-                 String aerolineaSel = (String) request.getAttribute("aerolineaSel");
-                 if (aerolineaSel == null) aerolineaSel = request.getParameter("aerolinea"); %>
+              <% String aerolineaSel = request.getParameter("aerolinea"); %>
               <select id="aerolinea" name="aerolinea" class="form-select">
                 <option value="" <%= (aerolineaSel == null || aerolineaSel.isEmpty()) ? "selected" : "" %>>Todas</option>
                 <% List<DataAerolinea> aerolineas = (List<DataAerolinea>) request.getAttribute("aerolineas");
                    if (aerolineas != null) {
                      for (DataAerolinea aer : aerolineas) { %>
-                       <option value="<%= aer.getNickname() %>" <%= (aer.getNickname() != null && aer.getNickname().equals(aerolineaSel)) ? "selected" : "" %>><%= aer.getNombre() %></option>
+                       <option value="<%= aer.getNickname() %>" <%= (aer.getNickname().equals(aerolineaSel)) ? "selected" : "" %>><%= aer.getNombre() %></option>
                 <%   }
                    } %>
               </select>
             </div>
             <div class="col-md-4">
               <label for="categoria" class="form-label">Categoría</label>
-              <% // Prefer attribute from servlet
-                 String categoriaSel = (String) request.getAttribute("categoriaSel");
-                 if (categoriaSel == null) categoriaSel = request.getParameter("categoria"); %>
               <select id="categoria" name="categoria" class="form-select">
-                <option value="" <%= (categoriaSel == null || categoriaSel.isEmpty()) ? "selected" : "" %>>Todas</option>
+                <option value="" selected>Todas</option>
                 <% List<DataCategoria> categorias = (List<DataCategoria>) request.getAttribute("categorias");
                    if (categorias != null) {
                      for (DataCategoria cat : categorias) { %>
-                       <option value="<%= cat.getNombre() %>" <%= (cat.getNombre() != null && categoriaSel != null && cat.getNombre().equalsIgnoreCase(categoriaSel)) ? "selected" : "" %>><%= cat.getNombre() %></option>
+                       <option value="<%= cat.getNombre() %>"><%= cat.getNombre() %></option>
                 <%   }
                    } %>
               </select>
             </div>
             <div class="col-md-4">
               <label for="ruta" class="form-label">Ruta</label>
-              <% // Preserve previously selected route if present
-                 String rutaSel = (String) request.getAttribute("rutaSel");
-                 if (rutaSel == null) rutaSel = request.getParameter("ruta"); %>
               <select id="ruta" name="ruta" class="form-select">
-                <option value="" <%= (rutaSel == null || rutaSel.isEmpty()) ? "selected" : "" %>>Seleccione una ruta</option>
+                <option value="" selected>Seleccione una ruta</option>
                 <% List<DataRuta> rutas = (List<DataRuta>) request.getAttribute("rutas");
                    if (rutas != null) {
                      for (DataRuta ruta : rutas) { %>
-                       <option value="<%= ruta.getNombre() %>" <%= (ruta.getNombre() != null && ruta.getNombre().equals(rutaSel)) ? "selected" : "" %>><%= ruta.getNombre() %> - <%= ruta.getCiudadOrigen().getNombre() %> a <%= ruta.getCiudadDestino().getNombre() %></option>
+                       <option value="<%= ruta.getNombre() %>"><%= ruta.getNombre() %> - <%= ruta.getCiudadOrigen().getNombre() %> a <%= ruta.getCiudadDestino().getNombre() %></option>
                 <%   }
                    } %>
               </select>
@@ -126,19 +118,9 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // Enviar el formulario automáticamente al cambiar la aerolínea
-    var aerSelect = document.getElementById('aerolinea');
-    if (aerSelect) {
-      aerSelect.addEventListener('change', function() {
-        this.form.submit();
-      });
-    }
-    // Enviar el formulario automáticamente al cambiar la categoría
-    var catSelect = document.getElementById('categoria');
-    if (catSelect) {
-      catSelect.addEventListener('change', function() {
-        this.form.submit();
-      });
-    }
+    document.getElementById('aerolinea').addEventListener('change', function() {
+      this.form.submit();
+    });
   </script>
 </body>
 </html>

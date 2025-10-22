@@ -6,7 +6,7 @@ public enum TipoAsiento {
 	
 	private final String descripcion;
 	
-	TipoAsiento(String descripcion) {
+	private TipoAsiento(String descripcion) {
 		this.descripcion = descripcion;
 	}
 	
