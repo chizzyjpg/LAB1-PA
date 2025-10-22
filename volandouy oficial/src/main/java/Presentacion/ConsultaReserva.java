@@ -8,7 +8,7 @@ import java.awt.*;
 public class ConsultaReserva extends JInternalFrame {
 
     private static final long serialVersionUID = 1L;
-
+    
     public ConsultaReserva(DataReserva r) {
     	super(titulo(r), true, true, true, true);
         setSize(520, 420);
@@ -40,6 +40,8 @@ public class ConsultaReserva extends JInternalFrame {
                 sb.append("\n\nCosto total: $").append(String.format("%.2f", costo));
             }
         } catch (Throwable t) {
+        	JOptionPane.showMessageDialog(null, "Error al obtener el costo de la reserva: " + t.getMessage(),
+					"Error", JOptionPane.ERROR_MESSAGE);
             // Ignorar si no se puede obtener el costo
         }
     	// Pasajes (como texto)
@@ -78,8 +80,8 @@ public class ConsultaReserva extends JInternalFrame {
             java.lang.reflect.Method ga = p.getClass().getMethod("getApellido");
             Object nom = gn.invoke(p);
             Object ape = ga.invoke(p);
-            String n = (nom == null ? "" : nom.toString().trim());
-            String a = (ape == null ? "" : ape.toString().trim());
+            String n = nom == null ? "" : nom.toString().trim();
+            String a = ape == null ? "" : ape.toString().trim();
             String full = (n + " " + a).trim();
             return full.isEmpty() ? String.valueOf(p) : full;
         } catch (Exception e) {

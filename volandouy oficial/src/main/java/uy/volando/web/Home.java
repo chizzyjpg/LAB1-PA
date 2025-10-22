@@ -19,7 +19,7 @@ import Logica.Sistema;
 public class Home extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private ISistema sistema;	   
+	//private ISistema sistema;	   
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */

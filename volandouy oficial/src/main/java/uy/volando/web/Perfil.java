@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
-import java.io.InputStream;
 import uy.volando.model.EstadoSesion;
 
 @WebServlet ("/perfil")
@@ -49,14 +48,14 @@ public class Perfil extends HttpServlet {
 	public static EstadoSesion getEstado(HttpServletRequest request) {
 		return (EstadoSesion) request.getSession().getAttribute("estado_sesion");
 	}
-	
+	/*
     private void showView(HttpServletRequest req, HttpServletResponse resp)
 	         throws ServletException, IOException {
 	      Object usuario = req.getSession().getAttribute("usuario_logueado");
 	      if (usuario != null) req.setAttribute("usuario", usuario);
 	       req.getRequestDispatcher("/WEB-INF/perfil/perfil.jsp").forward(req, resp);
 	    }
-	
+	*/
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
@@ -92,7 +91,7 @@ public class Perfil extends HttpServlet {
 		    request.setAttribute("apellido", dc.getApellido());
 
 		    // fechas (ISO para input date + bonita para vista)
-		    java.util.Date fn = dc.getFechaNac();
+		    Date fn = dc.getFechaNac();
 		    request.setAttribute("fechaNacimientoISO",
 		        fn != null ? new java.text.SimpleDateFormat("yyyy-MM-dd").format(fn) : "");
 		    request.setAttribute("fechaNacimientoView",
@@ -156,9 +155,9 @@ public class Perfil extends HttpServlet {
 		        avatarBytes = is.readAllBytes();
 		      }
 		    }
-		  } catch (Exception ignore) {
-		    // Si falla la lectura del archivo, se mantiene avatarBytes = null (no cambia).
-		  }
+		  } catch (Exception ex) {
+			  throw new ServletException("Error al procesar la imagen de perfil.", ex);
+		}
 
 		  // Contraseña 
 		  final String pwdCurrent = req.getParameter("pwdCurrent") != null ? req.getParameter("pwdCurrent").trim() : "";
@@ -176,7 +175,7 @@ public class Perfil extends HttpServlet {
 		    	final String nac      = req.getParameter("nacionalidad");
 		    	final String ndoc     = req.getParameter("numeroDocumento");
 
-		    	java.util.Date fnac = null;
+		    	Date fnac = null;
 		    	final String fnacStr  = req.getParameter("fechaNacimiento"); // "2025-10-13" p.ej.
 
 		    	if (fnacStr != null && !fnacStr.isBlank()) {

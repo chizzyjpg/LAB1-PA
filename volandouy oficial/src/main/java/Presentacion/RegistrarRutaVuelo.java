@@ -166,8 +166,8 @@ public class RegistrarRutaVuelo extends JInternalFrame {
         }
         comboBoxCiudadOrigen.setRenderer(new DefaultListCellRenderer() {
             @Override
-            public java.awt.Component getListCellRendererComponent(
-                    javax.swing.JList<?> list, Object value, int index,
+            public Component getListCellRendererComponent(
+                    JList<?> list, Object value, int index,
                     boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof DataCiudad c) {
@@ -191,8 +191,8 @@ public class RegistrarRutaVuelo extends JInternalFrame {
         }
         comboBoxCiudadDestino.setRenderer(new DefaultListCellRenderer() {
             @Override
-            public java.awt.Component getListCellRendererComponent(
-                    javax.swing.JList<?> list, Object value, int index,
+            public Component getListCellRendererComponent(
+                    JList<?> list, Object value, int index,
                     boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 if (value instanceof DataCiudad c) {

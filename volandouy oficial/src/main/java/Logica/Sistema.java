@@ -1,5 +1,9 @@
 package Logica;
 
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import BD.CategoriaService;
 import BD.CiudadService;
 import BD.ClienteService;
@@ -7,24 +11,12 @@ import BD.PaqueteService;
 import BD.ReservaService;
 import BD.RutaVueloService;
 import BD.UsuarioService;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Implementación del sistema de gestión de vuelos y paquetes turísticos.
  */
 public class Sistema implements ISistema {
+    
 
   // Helpers
   private final Map<Long, Ciudad> CiudadPorHash = new HashMap<>(); // guardamos ENTIDADES (dominio),
@@ -60,6 +52,32 @@ public class Sistema implements ISistema {
    */
   public Sistema() {
 
+    private final UsuarioService usuarioService;
+    private final CategoriaService categoriaService;
+    private final CiudadService ciudadService;
+    private final PaqueteService paqueteService;
+    private final ClienteService clienteService;
+    private final ReservaService reservaService;
+    private final RutaVueloService rutaService;
+    
+    public Sistema(UsuarioService usuarioService,
+            CategoriaService categoriaService,
+            CiudadService ciudadService,
+            PaqueteService paqueteService,
+            ClienteService clienteService,
+            ReservaService reservaService,
+            RutaVueloService rutaService) {
+	 this.usuarioService = usuarioService;
+	 this.categoriaService = categoriaService;
+	 this.ciudadService = ciudadService;
+	 this.paqueteService = paqueteService;
+	 this.clienteService = clienteService;
+	 this.reservaService = reservaService;
+	 this.rutaService = rutaService;
+    }
+    
+    public Sistema() {
+    
     this.usuarioService = new UsuarioService();
     this.categoriaService = new CategoriaService();
     this.ciudadService = new CiudadService();

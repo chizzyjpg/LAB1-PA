@@ -1,6 +1,5 @@
 package Presentacion;
 
-import java.awt.EventQueue;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -9,8 +8,6 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.JTextField;
 
-import BD.CategoriaService;
-import Logica.Categoria;
 import Logica.DataCategoria;
 import Logica.ISistema;
 

@@ -2,7 +2,6 @@ package uy.volando.web;
 
 import java.io.IOException;
 import java.util.List;
-import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,7 +14,7 @@ import Logica.*;
 @WebServlet ("/consultaVuelo")
 public class consultaVuelo extends HttpServlet {
 	public static final long serialVersionUID = 1L;
-	private final Gson gson = new Gson();
+	//private final Gson gson = new Gson();
 
 	public consultaVuelo() {
 		super();
@@ -71,7 +70,7 @@ public class consultaVuelo extends HttpServlet {
 					if (usuario instanceof DataAerolinea) {
 						usuarioNickname = ((DataAerolinea) usuario).getNickname();
 						esAerolinea = true;
-					} else if (usuario instanceof Logica.DataCliente) {
+					} else if (usuario instanceof DataCliente) {
 						usuarioNickname = ((DataCliente) usuario).getNickname();
 						esCliente = true;
 					}

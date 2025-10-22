@@ -107,7 +107,7 @@ public class ModificarUsuario extends JInternalFrame {
 
         // cliente
         txtApellido     = new JTextField();
-        dcFechaNac      = new com.toedter.calendar.JDateChooser();
+        dcFechaNac      = new JDateChooser();
         txtNacionalidad = new JTextField();
         cmbTipoDoc      = new JComboBox<>(TipoDocumento.values());
         txtNumDoc       = new JTextField();

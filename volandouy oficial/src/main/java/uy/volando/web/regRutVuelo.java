@@ -3,13 +3,10 @@ package uy.volando.web;
 import java.io.IOException;
 import java.util.List;
 
-import Logica.Ciudad;
-import Logica.Categoria;
 import Logica.DataRuta;
 import Logica.DataCiudad;
 import Logica.DataCategoria;
 import Logica.ISistema;
-import Logica.Sistema;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

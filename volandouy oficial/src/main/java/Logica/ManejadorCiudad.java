@@ -60,7 +60,7 @@ public class ManejadorCiudad {
 					   .collect(Collectors.toList());
 	}
     
-    public static void setCiudadServiceForTests(BD.CiudadService cs) {
+    public static void setCiudadServiceForTests(CiudadService cs) {
         ciudadService = cs;
       }
 }

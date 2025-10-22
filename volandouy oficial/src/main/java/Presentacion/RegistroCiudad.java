@@ -24,7 +24,7 @@ public class RegistroCiudad extends JInternalFrame {
 	private JTextField textFieldPais;
 	private JTextField textFieldAeropuerto;
 	private JTextField textFieldWeb;
-	private static ISistema sistema; // referencia al sistema
+	//private static ISistema sistema; // referencia al sistema
 
 	/**
 	 * Launch the application.
@@ -127,7 +127,7 @@ public class RegistroCiudad extends JInternalFrame {
 		        String nomAeropuerto = textFieldAeropuerto.getText().trim();
 		        String descripcion   = textAreaDesc.getText().trim();
 		        String web           = textFieldWeb.getText().trim();  // hoy no se persiste en Ciudad
-		        java.util.Date fecha = fechaAlta.getDate();
+		        Date fecha = fechaAlta.getDate();
 
 		        // Validaciones mínimas (dejé las tuyas)
 		        if (nomCiudad.isEmpty()) {

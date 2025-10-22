@@ -63,6 +63,7 @@ public class altaUsuario extends HttpServlet {
             }
           }
         } catch (Exception ignore) {
+        	throw new ServletException("Error al procesar el archivo de avatar.", ignore);
           // Si falla la lectura del archivo, se mantiene avatarBytes = null (no cambia).
         }
         

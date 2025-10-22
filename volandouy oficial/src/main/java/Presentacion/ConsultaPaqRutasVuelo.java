@@ -6,7 +6,6 @@ import Logica.DataPaquete;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.List;
 import java.util.Set;
 
@@ -230,7 +229,7 @@ public class ConsultaPaqRutasVuelo extends JInternalFrame {
                     "Validación", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        String nombreRuta = (String) rutasModel.getValueAt(row, 0);
+        //String nombreRuta = (String) rutasModel.getValueAt(row, 0);
 
         JDesktopPane dp = getDesktopPane();
         if (dp == null) {

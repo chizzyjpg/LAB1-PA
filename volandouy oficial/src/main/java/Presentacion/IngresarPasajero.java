@@ -41,6 +41,7 @@ public class IngresarPasajero extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings("PMD.UnusedFormalParameter")
 	public IngresarPasajero(ISistema sistema) {
 		setIconifiable(true);
 		setClosable(true);
