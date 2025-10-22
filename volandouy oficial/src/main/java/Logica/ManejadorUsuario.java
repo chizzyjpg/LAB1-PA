@@ -4,6 +4,7 @@ import BD.AerolineaService;
 import BD.ClienteService;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -37,9 +38,11 @@ public final class ManejadorUsuario {
                                                                   // mensaje.
 
     if (dto instanceof DataCliente dc) {
+    	String nickCanon = canonical(dc.getNickname());
+        String emailCanon = canonical(dc.getEmail());
       Cliente c = new Cliente( // si dto es DataCliente, lo "captura" en la variable dc ya casteada.
                                // // Crea una entidad Cliente desde el DTO DataCliente.
-          /* nombre */ dc.getNombre(), /* nickname */ dc.getNickname(), /* email */ dc.getEmail(),
+          /* nombre */ dc.getNombre(), /* nickname */ nickCanon, /* email */ emailCanon,
           /* contra */ dc.getContrasenia(), /* apellido */ dc.getApellido(),
           /* fechaNac */ copy(dc.getFechaNac()), // Copia defensiva del Date (Date es mutable).
           /* nacional */ dc.getNacionalidad(), /* tipoDoc */ dc.getTipoDocumento(),
@@ -53,8 +56,10 @@ public final class ManejadorUsuario {
       return c;
 
     } else if (dto instanceof DataAerolinea da) { // Si el dto es de aerolínea, lo captura como da.
+    	String nickCanon = canonical(da.getNickname());
+        String emailCanon = canonical(da.getEmail());
       Aerolinea a = new Aerolinea( // Crea la entidad Aerolinea a partir del DataAerolinea.
-          /* nombre */ da.getNombre(), /* nickname */ da.getNickname(), /* email */ da.getEmail(),
+          /* nombre */ da.getNombre(), /* nickname */ nickCanon, /* email */ emailCanon,
           /* contra */ da.getContrasenia(), /* descripcion */ da.getDescripcion(),
           /* sitioWeb */ da.getSitioWeb());
 
@@ -163,4 +168,8 @@ public final class ManejadorUsuario {
   static void setAerolineaServiceForTests(AerolineaService as) {
     aerolineaService = as;
   }
+  
+  private static String canonical(String s) {
+	    return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
+	  }
 }
