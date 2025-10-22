@@ -98,6 +98,11 @@
   background-position: center center !important; /* Centrar la imagen */
 }
 
+.registro-page .register-stack{
+  transform: translateY(6vh);        /* baja visualmente el bloque */
+  margin-bottom: 1.25rem !important; /* poca distancia al footer */
+}
+
 html, body { height: 100%; }
 body.index-page { 
   margin: 0;
