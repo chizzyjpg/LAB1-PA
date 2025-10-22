@@ -22,8 +22,30 @@
         <div class="container-fluid px-4 py-4">
           <div class="row">
             <div class="col-12">
+            	<% String flashErr = (String) session.getAttribute("flash_error");
+				   String flashOk  = (String) session.getAttribute("flash_success");
+				   String flashInfo= (String) session.getAttribute("flash_info");
+				   if (flashErr != null) { %>
+				  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+				    <%= flashErr %>
+				    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				  </div>
+				  <% session.removeAttribute("flash_error"); }
+				   if (flashOk != null) { %>
+				  <div class="alert alert-success alert-dismissible fade show" role="alert">
+				    <%= flashOk %>
+				    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				  </div>
+				  <% session.removeAttribute("flash_success"); }
+				   if (flashInfo != null) { %>
+				  <div class="alert alert-info alert-dismissible fade show" role="alert">
+				    <%= flashInfo %>
+				    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				  </div>
+				  <% session.removeAttribute("flash_info"); } %>
+				  
               <h2>Paquetes disponibles para comprar</h2>
-              <form action="compraPaquete" method="post">
+              <form action="<%= request.getContextPath() %>/compraPaquete" method="post">
                 <table class="table table-bordered">
                   <thead>
                     <tr>
@@ -70,17 +92,17 @@
             </div>
           </div>
         </div>
+		<jsp:include page="/WEB-INF/template/footer.jsp" />
       </main>
     </div>
   </div>
 
   <!-- FOOTER -->
-	<jsp:include page="/WEB-INF/template/footer.jsp" />
 
-  <!-- Bootstrap JS 
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-
+	<!--
   <script src="../assets/js/consulta-usuario.js"></script>
   <script src="../assets/js/auth.js"></script>
   <script src="../assets/js/roles.js"></script>

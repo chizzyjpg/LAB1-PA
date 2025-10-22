@@ -11,12 +11,12 @@
     <body class="registro-page">
     <nav class="navbar navbar-dark bg-dark fixed-top navbar-compact">
         <div class="container">
-        <a class="navbar-brand fw-bold" href="home.html">Volando.uy</a>
+        <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">Volando.uy</a>
         </div>
     </nav>
     <main class="portada d-flex align-items-start py-5">
         <div class="container">
-            <div class="row justify-content-center mt-4 mt-md-5">
+            <div class="row justify-content-center mt-4 mt-md-5 register-stack">
                 <div class="col-11 col-sm-10 col-md-8 col-lg-6">
                     <div class="card p-4">
                         <h2 class="mb-4 text-center">Registro</h2>
@@ -24,6 +24,7 @@
                        if (errorMsg != null) { %>
                         <div class="alert alert-danger"><%= errorMsg %></div>
                     <% } %>
+                    	 <div id="clientError" class="alert alert-danger" style="display:none;"></div>
                         <form class="registro-form" action="${pageContext.request.contextPath}/altaUsuario" method="post" id="registroForm" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="userType" class="form-label">Tipo de Usuario</label>
@@ -57,7 +58,6 @@
                                 
                             </div>
                             
-                            <!-- Campos especÃ­ficos para Cliente -->
                             <div id="clienteFields" style="display:none;">
                                 <div class="mb-3">
                                     <label for="nombre" class="form-label">Nombre</label>
@@ -89,7 +89,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Campos especÃ­ficos para AerolÃ­nea -->
                             <div id="aerolineaFields" style="display:none;">
                                 <div class="mb-3">
                                     <label for="nombreAerolinea" class="form-label">Nombre de la Aerolinea</label>
@@ -136,6 +135,35 @@
             document.getElementById('clienteFields').style.display = (tipo === 'Cliente') ? 'block' : 'none';
             document.getElementById('aerolineaFields').style.display = (tipo === 'Aerolinea') ? 'block' : 'none';
         };
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.getElementById('registroForm');
+            var pwd = document.getElementById('password');
+            var pwd2 = document.getElementById('confirmPassword');
+            var clientError = document.getElementById('clientError');
+
+            function checkPasswords() {
+                if (!pwd || !pwd2) return true;
+                if (pwd.value !== pwd2.value) {
+                    clientError.textContent = 'Las contrase�as no coinciden. Por favor ingresa la misma contrase�a en ambos campos.';
+                    clientError.style.display = 'block';
+                    return false;
+                }
+                clientError.style.display = 'none';
+                return true;
+            }
+
+            // Comprobar al enviar
+            form.addEventListener('submit', function(e) {
+                if (!checkPasswords()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+
+            // Comprobacion en tiempo real para mejor experiencia
+            pwd.addEventListener('input', checkPasswords);
+            pwd2.addEventListener('input', checkPasswords);
+        });
     </script>
 
     </body>
