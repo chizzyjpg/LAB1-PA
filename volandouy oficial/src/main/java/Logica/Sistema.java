@@ -480,7 +480,7 @@ public class Sistema implements ISistema {
     List<DataVueloEspecifico> vuelos = usuarioService.listarVuelosPorRuta(nickname, nombre);
     return vuelos == null ? Collections.emptyList() : vuelos;
   }
-
+  
   @Override
   public DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo) {
     // Obtener la aerolínea desde la base de datos
@@ -490,7 +490,6 @@ public class Sistema implements ISistema {
     }
     // Buscar la ruta por nombre usando el servicio de BD para asegurar la sesión
     // activa
-    RutaVueloService rutaService = new RutaVueloService();
     Integer idRuta = rutaService.buscarRutaPorNombreYObtenerId(nombre);
     if (idRuta == null) {
       throw new IllegalArgumentException("No existe una ruta con ese nombre en la base de datos");

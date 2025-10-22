@@ -27,7 +27,7 @@ public class altaVuelo extends HttpServlet {
   public altaVuelo() {
     super();
   }
-
+  
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
@@ -92,7 +92,7 @@ public class altaVuelo extends HttpServlet {
       doGet(request, response);
       return;
     }
-
+    
     // Validar nombre único en la ruta de la aerolínea
     List<DataVueloEspecifico> vuelos = sistema.listarVuelos(aerolineaId, nombreRuta);
     boolean existeVuelo = vuelos.stream()
@@ -133,7 +133,7 @@ public class altaVuelo extends HttpServlet {
         cantMaxTuristas, cantMaxEjecutivos, fechaAlta);
 
     try {
-      sistema.registrarVuelo(aerolineaId, rutaId, dataVuelo);
+      sistema.registrarVuelo(aerolineaId, nombreRuta, dataVuelo);
       request.setAttribute("successMsg", "Vuelo registrado exitosamente.");
     } catch (Exception e) {
       request.setAttribute("errorMsg", e.getMessage());
