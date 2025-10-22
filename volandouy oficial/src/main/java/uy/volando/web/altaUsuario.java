@@ -41,7 +41,7 @@ public class altaUsuario extends HttpServlet {
     request.setAttribute("usuario", usuario);
     request.getRequestDispatcher("/WEB-INF/registro/altaUsuario.jsp").forward(request, response);
   }
-
+  
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
@@ -51,23 +51,32 @@ public class altaUsuario extends HttpServlet {
     request.setAttribute("usuario", usuario);
 
     ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
-    if (sistema == null) {
-      request.setAttribute("errorMsg", "El sistema no está inicializado en el contexto.");
-      request.getRequestDispatcher("/WEB-INF/registro/altaUsuario.jsp").forward(request, response);
-      return;
-    }
 
-    String tipoUsuario = request.getParameter("tipoUsuario"); // "Aerolinea" o "Cliente"
-    String nickname = request.getParameter("nickname");
-    String nombre = request.getParameter("nombre");
-    String apellido = request.getParameter("apellido");
-    String email = request.getParameter("email");
-    String password = request.getParameter("password");
+    String tipoUsuario = request.getParameter("tipoUsuario");
+    String nickname    = request.getParameter("nickname");
+    String nombre      = request.getParameter("nombre");
+    String apellido    = request.getParameter("apellido");
+    String email       = request.getParameter("email");
+    String password    = request.getParameter("password");
 
     String errorMsg = null;
     boolean exito = false;
 
-    // === Validaciones básicas comunes ===
+    // === Avatar OPCIONAL (no condiciona el flujo) ===
+    byte[] avatarBytes = null;
+    Part avatarPart = null;
+    try {
+      avatarPart = request.getPart("avatarFile");
+      if (avatarPart != null && avatarPart.getSize() > 0) {
+        try (InputStream is = avatarPart.getInputStream()) {
+          avatarBytes = is.readAllBytes();
+        }
+      }
+    } catch (Exception ignore) {
+      // si falla leer el avatar, seguimos sin avatar
+    }
+
+    // === Validaciones comunes ===
     if (nickname == null || nickname.isBlank()
         || email == null || email.isBlank()
         || password == null || password.isBlank()
@@ -79,107 +88,81 @@ public class altaUsuario extends HttpServlet {
       errorMsg = "El email ya está en uso.";
     }
 
-    if (errorMsg != null) {
-      request.setAttribute("errorMsg", errorMsg);
-      request.getRequestDispatcher("/WEB-INF/registro/altaUsuario.jsp").forward(request, response);
-      return;
-    }
+    if (errorMsg == null) {
+      try {
+        switch (tipoUsuario) {
+          case "Aerolinea": {
+            String nombreAerolinea = request.getParameter("nombreAerolinea");
+            String descripcion     = request.getParameter("descripcion");
+            String sitioWeb        = request.getParameter("sitioWeb");
 
-    try {
-      switch (tipoUsuario) {
-        case "Aerolinea": {
-          String nombreAerolinea = request.getParameter("nombreAerolinea");
-          String descripcion = request.getParameter("descripcion");
-          String sitioWeb = request.getParameter("sitioWeb");
+            if (nombreAerolinea == null || nombreAerolinea.isBlank()
+                || descripcion == null || descripcion.isBlank()) {
+              errorMsg = "Nombre de aerolínea y descripción son obligatorios para Aerolínea.";
+              break;
+            }
 
-          if (nombreAerolinea == null || nombreAerolinea.isBlank()
-              || descripcion == null || descripcion.isBlank()) {
-            errorMsg = "Nombre de aerolínea y descripción son obligatorios para Aerolínea.";
+            DataAerolinea a = new DataAerolinea(
+                nombreAerolinea, nickname, email, password, descripcion, sitioWeb);
+            sistema.altaAerolinea(a);
+
+            // Si subieron avatar, lo actualizo
+            if (avatarBytes != null && avatarBytes.length > 0) {
+              PerfilAerolineaUpdate perfil = new PerfilAerolineaUpdate(
+                  nickname, email, nombreAerolinea, descripcion, sitioWeb, avatarBytes, false);
+              sistema.actualizarPerfilAerolinea(perfil);
+            }
+
+            exito = true;
             break;
           }
 
-          // Crear aerolínea
-          DataAerolinea aerolinea = new DataAerolinea(
-              nombreAerolinea, nickname, email, password, descripcion, sitioWeb);
-          sistema.altaAerolinea(aerolinea);
+          case "Cliente": {
+            String tipoDocumentoStr   = request.getParameter("tipoDocumento");
+            String numeroDocumento    = request.getParameter("numeroDocumento");
+            String fechaNacimientoStr = request.getParameter("fechaNacimiento");
+            String nacionalidad       = request.getParameter("nacionalidad");
 
-          // Avatar opcional
-          byte[] avatarBytes = null;
-          Part avatarPart = request.getPart("avatarFile");
-          if (avatarPart != null && avatarPart.getSize() > 0) {
-            try (InputStream is = avatarPart.getInputStream()) {
-              avatarBytes = is.readAllBytes();
+            if (nombre == null || nombre.isBlank()
+                || apellido == null || apellido.isBlank()
+                || tipoDocumentoStr == null || tipoDocumentoStr.isBlank()
+                || numeroDocumento == null || numeroDocumento.isBlank()
+                || fechaNacimientoStr == null || fechaNacimientoStr.isBlank()
+                || nacionalidad == null || nacionalidad.isBlank()) {
+              errorMsg = "Todos los campos de cliente son obligatorios.";
+              break;
             }
-          }
-          if (avatarBytes != null && avatarBytes.length > 0) {
-            PerfilAerolineaUpdate perfil = new PerfilAerolineaUpdate(
-                nickname, email, nombreAerolinea, descripcion, sitioWeb, avatarBytes, false);
-            sistema.actualizarPerfilAerolinea(perfil);
-          }
 
-          exito = true;
-          break;
-        }
+            TipoDocumento tipoDocumento = null;
+            if ("cedula".equalsIgnoreCase(tipoDocumentoStr)) {
+              tipoDocumento = TipoDocumento.CEDULA;
+            } else if ("pasaporte".equalsIgnoreCase(tipoDocumentoStr)) {
+              tipoDocumento = TipoDocumento.PASAPORTE;
+            }
 
-        case "Cliente": {
-          String tipoDocumentoStr = request.getParameter("tipoDocumento");
-          String numeroDocumento = request.getParameter("numeroDocumento");
-          String fechaNacimientoStr = request.getParameter("fechaNacimiento");
-          String nacionalidad = request.getParameter("nacionalidad");
+            Date fechaNacimiento;
+            try {
+              fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
+            } catch (Exception e) {
+              errorMsg = "Fecha de nacimiento inválida.";
+              break;
+            }
 
-          if (nombre == null || nombre.isBlank()
-              || apellido == null || apellido.isBlank()
-              || tipoDocumentoStr == null || tipoDocumentoStr.isBlank()
-              || numeroDocumento == null || numeroDocumento.isBlank()
-              || fechaNacimientoStr == null || fechaNacimientoStr.isBlank()
-              || nacionalidad == null || nacionalidad.isBlank()) {
-            errorMsg = "Todos los campos de cliente son obligatorios.";
+            DataCliente c = new DataCliente(
+                nombre, nickname, email, password, apellido,
+                fechaNacimiento, nacionalidad, tipoDocumento, numeroDocumento);
+
+            sistema.altaCliente(c, avatarBytes);
+            exito = true;
             break;
           }
 
-          TipoDocumento tipoDocumento;
-          if ("cedula".equalsIgnoreCase(tipoDocumentoStr)) {
-            tipoDocumento = TipoDocumento.CEDULA;
-          } else if ("pasaporte".equalsIgnoreCase(tipoDocumentoStr)) {
-            tipoDocumento = TipoDocumento.PASAPORTE;
-          } else {
-            // contemplá "otro" si existe en tu enum
-            tipoDocumento = TipoDocumento.OTRO; // si tu enum no tiene OTRO, manejalo como null + error
-          }
-
-          Date fechaNacimiento;
-          try {
-            fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
-          } catch (Exception e) {
-            request.setAttribute("errorMsg", "Fecha de nacimiento inválida.");
-            request.getRequestDispatcher("/WEB-INF/registro/altaUsuario.jsp").forward(request, response);
-            return;
-          }
-
-          // Avatar opcional
-          byte[] avatarBytes = null;
-          Part avatarPart = request.getPart("avatarFile");
-          if (avatarPart != null && avatarPart.getSize() > 0) {
-            try (InputStream is = avatarPart.getInputStream()) {
-              avatarBytes = is.readAllBytes();
-            }
-          }
-
-          DataCliente cliente = new DataCliente(
-              nombre, nickname, email, password, apellido,
-              fechaNacimiento, nacionalidad, tipoDocumento, numeroDocumento);
-
-          sistema.altaCliente(cliente, avatarBytes); // puede ir null si no hay avatar
-          exito = true;
-          break;
+          default:
+            errorMsg = "Tipo de usuario inválido.";
         }
-
-        default:
-          errorMsg = "Tipo de usuario inválido.";
-          break;
+      } catch (Exception e) {
+        errorMsg = "Error al dar de alta el usuario: " + e.getMessage();
       }
-    } catch (Exception e) {
-      errorMsg = "Error al dar de alta el usuario: " + e.getMessage();
     }
 
     if (exito) {
@@ -189,5 +172,6 @@ public class altaUsuario extends HttpServlet {
       request.getRequestDispatcher("/WEB-INF/registro/altaUsuario.jsp").forward(request, response);
     }
   }
+
  }
   
