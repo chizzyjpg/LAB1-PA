@@ -38,7 +38,7 @@ public class Ciudad {
     @Transient
     @ManyToOne(optional = true)
     @JoinColumn(name = "idRuta", nullable = true, referencedColumnName = "idRuta")
-    private Ruta ruta;
+    private Ruta ruta; // NOPMD - used by JPA
     
     // ===== Constructores =====
     public Ciudad() {}

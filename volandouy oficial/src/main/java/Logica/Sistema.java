@@ -1,9 +1,5 @@
 package Logica;
 
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import BD.CategoriaService;
 import BD.CiudadService;
 import BD.ClienteService;
@@ -11,42 +7,59 @@ import BD.PaqueteService;
 import BD.ReservaService;
 import BD.RutaVueloService;
 import BD.UsuarioService;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-
+/**
+ * Implementación del sistema de gestión de usuarios, categorías, ciudades, rutas,
+ * vuelos y paquetes.
+ */
 public class Sistema implements ISistema {
-    
 
-    //Helpers
-    private final Map<Long, Ciudad> CiudadPorHash = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por hashcode
-    private final List<CompraPaquete> compras = new ArrayList<>();
-    
+  // Helpers
+  private final Map<Long, Ciudad> CiudadPorHash = new HashMap<>(); // guardamos ENTIDADES (dominio),
+                                                                   // indexadas por hashcode
+  private final List<CompraPaquete> compras = new ArrayList<>();
 
-    private final UsuarioService usuarioService;
-    private final CategoriaService categoriaService;
-    private final CiudadService ciudadService;
-    private final PaqueteService paqueteService;
-    private final ClienteService clienteService;
-    private final ReservaService reservaService;
-    private final RutaVueloService rutaService;
-    
-    public Sistema(UsuarioService usuarioService,
-            CategoriaService categoriaService,
-            CiudadService ciudadService,
-            PaqueteService paqueteService,
-            ClienteService clienteService,
-            ReservaService reservaService,
-            RutaVueloService rutaService) {
-	 this.usuarioService = usuarioService;
-	 this.categoriaService = categoriaService;
-	 this.ciudadService = ciudadService;
-	 this.paqueteService = paqueteService;
-	 this.clienteService = clienteService;
-	 this.reservaService = reservaService;
-	 this.rutaService = rutaService;
-    }
-    
-    public Sistema() {
-    
+  private final UsuarioService usuarioService;
+  private final CategoriaService categoriaService;
+  private final CiudadService ciudadService;
+  private final PaqueteService paqueteService;
+  private final ClienteService clienteService;
+  private final ReservaService reservaService;
+  private final RutaVueloService rutaService;
+
+  /** Constructor con inyección de dependencias para servicios.
+   * Útil para pruebas unitarias con mocks.
+   */
+  public Sistema(UsuarioService usuarioService, CategoriaService categoriaService,
+      CiudadService ciudadService, PaqueteService paqueteService, ClienteService clienteService,
+      ReservaService reservaService, RutaVueloService rutaService) {
+    this.usuarioService = usuarioService;
+    this.categoriaService = categoriaService;
+    this.ciudadService = ciudadService;
+    this.paqueteService = paqueteService;
+    this.clienteService = clienteService;
+    this.reservaService = reservaService;
+    this.rutaService = rutaService;
+  }
+
+  /** Constructor por defecto que inicializa los servicios.
+   * Usado en producción.
+   */
+  public Sistema() {
+
     this.usuarioService = new UsuarioService();
     this.categoriaService = new CategoriaService();
     this.ciudadService = new CiudadService();
@@ -54,85 +67,362 @@ public class Sistema implements ISistema {
     this.clienteService = new ClienteService();
     this.reservaService = new ReservaService();
     this.rutaService = new RutaVueloService();
-}
-    
- // Helper en Sistema
-    private static int nextReservaId(Set<Reserva> reservas) {
-        int max = 0;
-        for (Reserva r : reservas) {
-            if (r.getIdReserva() > max) {
-                max = r.getIdReserva();
-            }
-        }
-        return max + 1;
+  }
+
+  // Helper en Sistema
+  private static int nextReservaId(Set<Reserva> reservas) {
+    int max = 0;
+    for (Reserva r : reservas) {
+      if (r.getIdReserva() > max) {
+        max = r.getIdReserva();
+      }
     }
-    
-    
-    private static String canonical(String s) {
-        return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
+    return max + 1;
+  }
+
+  private static String canonical(String s) {
+    return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
+  }
+
+  private static Date copia(Date d) {
+    return (d == null) ? null : new Date(d.getTime());
+  }
+
+  // ======================
+  // REGISTRAR USUARIOS
+  // ======================
+
+  @Override
+  public void registrarUsuario(DataUsuario data) {
+    if (data == null) {
+      throw new IllegalArgumentException("Los datos no pueden ser nulos");      
     }
-    
-    private static Date copia(java.util.Date d) {
-        return (d == null) ? null : new java.util.Date(d.getTime());
+    if (usuarioService.existeNickname(data.getNickname())) {
+      throw new IllegalArgumentException("El nickname ya está en uso");
+    }
+    if (usuarioService.existeEmail(data.getEmail())) {
+      throw new IllegalArgumentException("El email ya está en uso");
     }
 
-    
-    // ======================
-    //  REGISTRAR USUARIOS
-    // ======================
-    
-    @Override
-    public void registrarUsuario(DataUsuario data) {
-        if (data == null) throw new IllegalArgumentException("Los datos no pueden ser nulos");
-        if(usuarioService.existeNickname(data.getNickname())) {
-			throw new IllegalArgumentException("El nickname ya está en uso");
-		}
-        if(usuarioService.existeEmail(data.getEmail())) {
-        	throw new IllegalArgumentException("El email ya está en uso");
-        }
-        
-        ManejadorUsuario.toEntity(data);
-    }
-    
+    ManejadorUsuario.toEntity(data);
+  }
 
-    @Override
-    public DataCliente verInfoCliente(String nickname) {
-       DataUsuario usuario = usuarioService.verInfoUsuario(nickname);
-       if (usuario instanceof DataCliente) {
-		   return (DataCliente) usuario;
-	   }
-       return null;
+  @Override
+  public DataCliente verInfoCliente(String nickname) {
+    DataUsuario usuario = usuarioService.verInfoUsuario(nickname);
+    if (usuario instanceof DataCliente) {
+      return (DataCliente) usuario;
+    }
+    return null;
+  }
+
+  @Override
+  public DataAerolinea verInfoAerolinea(String nickname) {
+    DataUsuario usuario = usuarioService.verInfoUsuario(nickname);
+    if (usuario instanceof DataAerolinea) {
+      return (DataAerolinea) usuario;
+    }
+    return null;
+  }
+
+  @Override
+  public List<DataUsuario> listarUsuarios() {
+    return usuarioService.listarUsuarios().stream().sorted(Comparator
+        .comparing(DataUsuario::getNickname, Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)))
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<DataAerolinea> listarAerolineas() {
+    return usuarioService.listarUsuarios().stream().filter(DataAerolinea.class::isInstance)
+        .map(DataAerolinea.class::cast).sorted(Comparator.comparing(DataAerolinea::getNickname,
+            Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)))
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<DataCliente> listarClientes() {
+    return clienteService.listarClientes().stream().sorted(Comparator
+        .comparing(DataCliente::getNickname, Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)))
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public DataUsuario loguearUsuario(String nickname, String password) {
+    if (nickname == null || password == null) {
+      throw new IllegalArgumentException("Nickname y contraseña no pueden ser nulos");
     }
 
-    @Override
-    public DataAerolinea verInfoAerolinea(String nickname) {
-        DataUsuario usuario = usuarioService.verInfoUsuario(nickname);
-        if (usuario instanceof DataAerolinea) {
-            return (DataAerolinea) usuario;
-        }
-        return null;
+    // 1) Autenticar SOLO por nickname (plano) para la prueba
+    Usuario u = usuarioService.autenticarUsuario(nickname, password);
+    if (u == null) {
+      return null; // falla autenticación
     }
-    
-    @Override
-    public List<DataUsuario> listarUsuarios() {
-    	return usuarioService.listarUsuarios().stream()
-    		    .sorted(Comparator.comparing(
-    		        DataUsuario::getNickname,
-    		        Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)
-    		    ))
-    		    .collect(Collectors.toList());
+
+    // 2) Traer el DTO como ya lo haces (no toco tu verInfoUsuario)
+    return usuarioService.verInfoUsuario(u.getNickname());
+
+  }
+
+  @Override
+  public byte[] obtenerAvatar(String nickname) {
+    if (nickname == null || nickname.isBlank()) {
+      return null;
     }
-    
-    
-    @Override
-    public List<DataAerolinea> listarAerolineas() {
-    	return usuarioService.listarUsuarios().stream()
-        .filter(DataAerolinea.class::isInstance)
-        .map(DataAerolinea.class::cast)
-        .sorted(Comparator.comparing(
-            DataAerolinea::getNickname,
-            Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)
-        ))
+
+    Usuario u = usuarioService.obtenerClientePorNickname(canonical(nickname));
+    if (u == null) {
+      u = usuarioService.obtenerAerolineaPorNickname(canonical(nickname));
+    }
+
+    if (u == null || u.getAvatar() == null) {
+      return null;
+    }
+    return Arrays.copyOf(u.getAvatar(), u.getAvatar().length);
+  }
+
+  // ======================
+  // MODIFICAR USUARIOS
+  // ======================
+
+  @Override
+  public void modificarCliente(String nickname, DataCliente nuevos) {
+    if (nuevos == null) {
+      throw new IllegalArgumentException("Datos de cliente no pueden ser nulos");
+    }
+    String key = canonical(nickname);
+    Cliente cliente = usuarioService.obtenerClientePorNickname(key);
+    if (cliente == null) {
+      throw new IllegalArgumentException("No existe un cliente con ese nickname");
+    }
+
+    // Validar que NO se cambie email ni nickname
+    String emailActual = cliente.getEmail();
+    String emailNuevo = nuevos.getEmail();
+    if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
+      throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
+    }
+    if (nuevos.getNickname() != null && !canonical(nuevos.getNickname()).equals(key)) {
+      throw new IllegalArgumentException("No se permite modificar el nickname.");
+    }
+    // Actualizar SOLO campos permitidos usando setters de Cliente
+    cliente.setNombre(nuevos.getNombre());
+    cliente.setApellido(nuevos.getApellido());
+    cliente.setFechaNac(copia(nuevos.getFechaNac()));
+    cliente.setNacionalidad(nuevos.getNacionalidad());
+    cliente.setTipoDocumento(nuevos.getTipoDocumento());
+    cliente.setNumDocumento(nuevos.getNumDocumento());
+
+    // Persistir cambios en la base de datos usando el manejador
+    usuarioService.actualizarUsuario(cliente);
+  }
+
+  @Override
+  public DataCliente actualizarPerfilCliente(PerfilClienteUpdate upd) {
+    if (upd == null) {
+      throw new IllegalArgumentException("Datos de actualización nulos");
+    }
+    String key = canonical(upd.getNickname());
+    Cliente cliente = usuarioService.obtenerClientePorNickname(key);
+
+    if (cliente == null) {
+      throw new IllegalArgumentException("No existe un cliente con ese nickname");
+    }
+
+    String emailActual = cliente.getEmail();
+    String emailNuevo = upd.getEmail();
+
+    if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
+      throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
+    }
+
+    cliente.setNombre(upd.getNombre());
+    cliente.setApellido(upd.getApellido());
+    cliente.setNacionalidad(upd.getNacionalidad());
+    cliente.setTipoDocumento(upd.getTipoDocumento());
+    cliente.setNumDocumento(upd.getNumDocumento());
+    cliente.setFechaNac(copia(upd.getFechaNac()));
+    cliente.setAvatar(upd.getAvatar());
+
+    usuarioService.actualizarUsuario(cliente);
+    DataUsuario usuario = usuarioService.verInfoUsuario(upd.getNickname());
+    return usuario instanceof DataCliente ? (DataCliente) usuario : null;
+  }
+
+  @Override
+  public void modificarAerolinea(String nickname, DataAerolinea nuevos) {
+    if (nuevos == null) {
+      throw new IllegalArgumentException("Datos de aerolínea no pueden ser nulos");
+    }
+
+    String key = canonical(nickname);
+    Aerolinea aerolinea = usuarioService.obtenerAerolineaPorNickname(key);
+    if (aerolinea == null) {
+      throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+    }
+
+    // Validar que NO se cambie email ni nickname
+    String emailActual = aerolinea.getEmail();
+    String emailNuevo = nuevos.getEmail();
+    if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
+      throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
+    }
+    if (nuevos.getNickname() != null && !canonical(nuevos.getNickname()).equals(key)) {
+      throw new IllegalArgumentException("No se permite modificar el nickname.");
+    }
+
+    // Actualizar SOLO campos básicos permitidos
+    aerolinea.setNombre(nuevos.getNombre());
+    aerolinea.setDescGeneral(nuevos.getDescripcion());
+    aerolinea.setLinkWeb(nuevos.getSitioWeb());
+
+    usuarioService.actualizarUsuario(aerolinea);
+  }
+
+  @Override
+  public DataAerolinea actualizarPerfilAerolinea(PerfilAerolineaUpdate upd) {
+    if (upd == null) {
+      throw new IllegalArgumentException("Datos de actualización nulos");
+    }
+    String key = canonical(upd.getNickname());
+    Aerolinea aerolinea = usuarioService.obtenerAerolineaPorNickname(key);
+    if (aerolinea == null) {
+      throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+    }
+
+    // Validar que NO se cambie email ni nickname
+    String emailActual = aerolinea.getEmail();
+    String emailNuevo = upd.getEmail();
+    if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
+      throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
+    }
+
+    // Actualizar SOLO campos básicos permitidos
+    aerolinea.setNombre(upd.getNombre());
+    aerolinea.setDescGeneral(upd.getDescGeneral());
+    aerolinea.setLinkWeb(upd.getSitioWeb());
+
+    // Avatar
+    if (upd.isClearAvatar()) {
+      aerolinea.setAvatar(null);
+    } else if (upd.getAvatar() != null) {
+      aerolinea.setAvatar(Arrays.copyOf(upd.getAvatar(), upd.getAvatar().length));
+    }
+
+    usuarioService.actualizarUsuario(aerolinea);
+
+    DataUsuario usuario = usuarioService.verInfoUsuario(upd.getNickname());
+    return usuario instanceof DataAerolinea ? (DataAerolinea) usuario : null;
+  }
+
+  @Override
+  public void cambiarPassword(String nickname, String pwdCurrent, String pwdNew) {
+    if (nickname == null || pwdCurrent == null || pwdNew == null) {
+      throw new IllegalArgumentException("Nickname y contraseñas no pueden ser nulos");
+    }
+    if (pwdNew.length() < 3) {
+      throw new IllegalArgumentException("La nueva contraseña debe tener al menos 3 caracteres");
+    }
+
+    Usuario u = usuarioService.autenticarUsuario(nickname, pwdCurrent);
+    if (u == null) {
+      throw new IllegalArgumentException("No existe un usuario con ese nickname y esa contraseña");
+    }
+
+    // Actualizar la contraseña (plana)
+    u.setContrasenia(pwdNew);
+    usuarioService.actualizarUsuario(u);
+  }
+
+  // ======================
+  // CREAR CATEGORIA
+  // ======================
+
+  @Override
+  public void registrarCategoria(DataCategoria data) {
+    if (existeCategoria(data.getNombre())) {
+      throw new IllegalArgumentException("El nombre de la categoría ya está en uso");
+    }
+
+    ManejadorCategoria.toEntity(data);
+  }
+
+  @Override
+  public boolean existeCategoria(String nombre) {
+    return categoriaService.existeCategoria(nombre);
+  }
+
+  @Override
+  public List<DataCategoria> listarCategorias() {
+    return categoriaService.listarCategorias().stream().map(ManejadorCategoria::toData)
+        .sorted(Comparator.comparing(c -> c.getNombre() == null ? "" : c.getNombre(),
+            String.CASE_INSENSITIVE_ORDER))
+        .collect(Collectors.toList());
+  }
+
+  // =========================
+  // REGISTRAR RUTAS DE VUELO
+  // =========================
+
+  @Override
+  public void registrarRuta(DataRuta datos) {
+    if (datos == null) {
+      throw new IllegalArgumentException("Los datos de la ruta no pueden ser nulos");
+    }
+
+    String nombre = (datos.getNombre() == null) ? "" : datos.getNombre().trim();
+    if (nombre.isEmpty()) {
+      throw new IllegalArgumentException("El nombre de la ruta no puede estar vacío");
+    }
+    String nickAerolinea = datos.getNicknameAerolinea();
+    // Busca en TODAS las rutas de TODAS las aerolíneas (igualdad exacta)
+    Aerolinea aerolinea = usuarioService.obtenerAerolineaPorNickname(nickAerolinea);
+    if (aerolinea == null) {
+      throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+    }
+    boolean existe = aerolinea.getRutas().stream().anyMatch(r -> nombre.equals(r.getNombre()));
+    if (existe) {
+      throw new IllegalArgumentException("Ya existe una ruta llamada exactamente: " + nombre);
+    }
+
+    Ruta ruta = ManejadorRuta.toEntity(datos); // convierte DataRuta a Ruta (ENTIDAD)
+    new RutaVueloService().crearRutaVuelo(ruta, nickAerolinea);
+  }
+  
+  @Override
+  public List<DataRuta> listarPorAerolinea(String nicknameAerolinea) {
+    DataUsuario usuario = usuarioService.verInfoUsuario(nicknameAerolinea);
+    if (!(usuario instanceof DataAerolinea)) {
+      throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+    }
+    List<DataRuta> rutas = usuarioService.listarRutasPorAerolinea(nicknameAerolinea);
+    return rutas.stream().sorted(Comparator
+        .comparing(r -> r.getNombre() == null ? "" : r.getNombre(), String.CASE_INSENSITIVE_ORDER))
+        .collect(Collectors.toList());
+  }
+
+  // =========================
+  // CIUDADES
+  // =========================
+
+  @Override
+  public void registrarCiudad(DataCiudad data) {
+    if (data == null) {
+      throw new IllegalArgumentException("Los datos no pueden ser nulos");
+    }
+
+    // Validaciones de unicidad
+    if (ciudadService.existeCiudad(data.getNombre(), data.getPais())) {
+      throw new IllegalArgumentException("La ciudad ya está registrada");
+    }
+
+    ManejadorCiudad.toEntity(data);
+  }
+
+  @Override
+  public List<DataCiudad> listarCiudades() {
+    return ciudadService.listarCiudades().stream().map(ManejadorCiudad::toData).sorted(Comparator
+        .comparing(c -> c.getNombre() == null ? "" : c.getNombre(), String.CASE_INSENSITIVE_ORDER))
         .collect(Collectors.toList());
 	}
    

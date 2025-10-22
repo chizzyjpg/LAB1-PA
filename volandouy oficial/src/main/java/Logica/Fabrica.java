@@ -1,8 +1,8 @@
-
 package Logica;
 
-//import jakarta.persistence.*;
-
+/**
+ * Clase singleton que provee acceso a la instancia del sistema.
+ */
 public final class Fabrica {
 
 private static Fabrica instancia = null;
@@ -20,12 +20,10 @@ public static synchronized Fabrica getInstance(){ //synchronized es una palabra 
         instancia = new Fabrica();
     }
     return instancia;
-}
-    
-public ISistema getSistema() {
+  }
+
+  public ISistema getSistema() {
     return sistema;
-}
-    
-}
+  }
 
-
+}
