@@ -493,6 +493,7 @@ public class Sistema implements ISistema {
     }
     // Buscar la ruta por nombre usando el servicio de BD para asegurar la sesión
     // activa
+    RutaVueloService rutaService = new RutaVueloService();
     Integer idRuta = rutaService.buscarRutaPorNombreYObtenerId(nombre);
     if (idRuta == null) {
       throw new IllegalArgumentException("No existe una ruta con ese nombre en la base de datos");
