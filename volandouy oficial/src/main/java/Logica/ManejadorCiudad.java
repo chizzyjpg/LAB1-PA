@@ -1,66 +1,72 @@
 package Logica;
 
-import java.util.*;
+import BD.CiudadService;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
-
 import javax.swing.JOptionPane;
 
-import BD.CiudadService;
-
+/**
+ * Clase encargada de manejar la conversión entre DataCiudad y Ciudad.
+ */
 public class ManejadorCiudad {
-	
-	private static CiudadService ciudadService = new CiudadService();
-    
-	public static Ciudad toEntity(DataCiudad ciudad) {
-		Objects.requireNonNull(ciudad, "Los datos no pueden ser nulos");
-		Ciudad c = new Ciudad(
-				ciudad.getNombre(),
-				ciudad.getPais(),
-				ciudad.getNombreAeropuerto(),
-				ciudad.getDescripcionAeropuerto(),
-				ciudad.getFechaAlta(),
-				ciudad.getSitioWeb()
-		);
-		try {
-        	ciudadService.crearCiudad(c);
-        	JOptionPane.showMessageDialog(null, "Se insertó correctamente");
-        }catch (Exception ex) {
-        	JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
-        }
-		return c;
-	}
 
-    public static DataCiudad toData(Ciudad c) {
-    	Objects.requireNonNull(c, "La ciudad no puede ser nula");
-        return new DataCiudad(
-                c.getNombre(),
-                c.getPais(),
-                c.getNombreAeropuerto(),
-                c.getDescripcionAeropuerto(),
-                c.getFechaAlta(),
-                c.getSitioWeb()
-        );
+  private static CiudadService ciudadService = new CiudadService();
+
+  /**
+   * Convierte un DataCiudad en una entidad Ciudad y la persiste usando CiudadService.
+   */
+  public static Ciudad toEntity(DataCiudad ciudad) {
+    Objects.requireNonNull(ciudad, "Los datos no pueden ser nulos");
+    Ciudad c = new Ciudad(ciudad.getNombre(), ciudad.getPais(), ciudad.getNombreAeropuerto(),
+        ciudad.getDescripcionAeropuerto(), ciudad.getFechaAlta(), ciudad.getSitioWeb());
+    try {
+      ciudadService.crearCiudad(c);
+      JOptionPane.showMessageDialog(null, "Se insertó correctamente");
+    } catch (Exception ex) {
+      JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
     }
-    
-    // HELLPERS
-    
-    public static List<Ciudad> toEntities(List<? extends DataCiudad> dtos) {
-		if (dtos == null) return Collections.emptyList();
-		return dtos.stream()
-				   .filter(Objects::nonNull)
-				   .map(ManejadorCiudad::toEntity)
-				   .collect(Collectors.toList());
-	}
-    
-    public static List<DataCiudad> toDatas(List<? extends Ciudad> entities) {
-		if (entities == null) return Collections.emptyList();
-		return entities.stream()
-					   .filter(Objects::nonNull)
-					   .map(ManejadorCiudad::toData)
-					   .collect(Collectors.toList());
-	}
-    
-    public static void setCiudadServiceForTests(CiudadService cs) {
-        ciudadService = cs;
-      }
+    return c;
+  }
+
+  /**
+   * Convierte una entidad Ciudad en un DataCiudad.
+   */
+  public static DataCiudad toData(Ciudad c) {
+    Objects.requireNonNull(c, "La ciudad no puede ser nula");
+    return new DataCiudad(c.getNombre(), c.getPais(), c.getNombreAeropuerto(),
+        c.getDescripcionAeropuerto(), c.getFechaAlta(), c.getSitioWeb());
+  }
+
+  // HELLPERS
+
+  /**
+   * Convierte una lista de DataCiudad en una lista de entidades Ciudad.
+   */
+  public static List<Ciudad> toEntities(List<? extends DataCiudad> dtos) {
+    if (dtos == null) {
+      return Collections.emptyList();
+    }
+    return dtos.stream().filter(Objects::nonNull).map(ManejadorCiudad::toEntity)
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * Convierte una lista de entidades Ciudad en una lista de DataCiudad.
+   */
+  public static List<DataCiudad> toDatas(List<? extends Ciudad> entities) {
+    if (entities == null) {
+      return Collections.emptyList();
+    }
+    return entities.stream().filter(Objects::nonNull).map(ManejadorCiudad::toData)
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * Permite establecer un CiudadService alternativo para pruebas.
+   */
+  public static void setCiudadServiceForTests(CiudadService cs) {
+    ciudadService = cs;
+  }
 }

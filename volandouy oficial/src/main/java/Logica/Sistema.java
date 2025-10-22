@@ -1,9 +1,5 @@
 package Logica;
 
-import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import BD.CategoriaService;
 import BD.CiudadService;
 import BD.ClienteService;
@@ -11,16 +7,27 @@ import BD.PaqueteService;
 import BD.ReservaService;
 import BD.RutaVueloService;
 import BD.UsuarioService;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Implementación del sistema de gestión de vuelos y paquetes turísticos.
  */
 public class Sistema implements ISistema {
-    
 
   // Helpers
-  private final Map<Long, Ciudad> CiudadPorHash = new HashMap<>(); // guardamos ENTIDADES (dominio),
-                                                                   // indexadas por hashcode
+  private final Map<Long, Ciudad> CiudadPorHash = new HashMap<>(); // guardamos ENTIDADES (dominio), indexadas por hashcode
   private final List<CompraPaquete> compras = new ArrayList<>();
 
   private final UsuarioService usuarioService;
@@ -32,8 +39,7 @@ public class Sistema implements ISistema {
   private final RutaVueloService rutaService;
 
   /**
-   * Constructor del sistema con servicios inyectados.
-   * 
+   * Constructor del sistema sin parámetros (crea sus propios servicios).
    */
   public Sistema(UsuarioService usuarioService, CategoriaService categoriaService,
       CiudadService ciudadService, PaqueteService paqueteService, ClienteService clienteService,
@@ -51,33 +57,6 @@ public class Sistema implements ISistema {
    * Constructor del sistema sin parámetros (crea sus propios servicios).
    */
   public Sistema() {
-
-    private final UsuarioService usuarioService;
-    private final CategoriaService categoriaService;
-    private final CiudadService ciudadService;
-    private final PaqueteService paqueteService;
-    private final ClienteService clienteService;
-    private final ReservaService reservaService;
-    private final RutaVueloService rutaService;
-    
-    public Sistema(UsuarioService usuarioService,
-            CategoriaService categoriaService,
-            CiudadService ciudadService,
-            PaqueteService paqueteService,
-            ClienteService clienteService,
-            ReservaService reservaService,
-            RutaVueloService rutaService) {
-	 this.usuarioService = usuarioService;
-	 this.categoriaService = categoriaService;
-	 this.ciudadService = ciudadService;
-	 this.paqueteService = paqueteService;
-	 this.clienteService = clienteService;
-	 this.reservaService = reservaService;
-	 this.rutaService = rutaService;
-    }
-    
-    public Sistema() {
-    
     this.usuarioService = new UsuarioService();
     this.categoriaService = new CategoriaService();
     this.ciudadService = new CiudadService();
@@ -113,7 +92,7 @@ public class Sistema implements ISistema {
   @Override
   public void registrarUsuario(DataUsuario data) {
     if (data == null) {
-      throw new IllegalArgumentException("Los datos no pueden ser nulos");      
+      throw new IllegalArgumentException("Los datos no pueden ser nulos");
     }
     if (usuarioService.existeNickname(data.getNickname())) {
       throw new IllegalArgumentException("El nickname ya está en uso");
@@ -157,7 +136,7 @@ public class Sistema implements ISistema {
             Comparator.nullsFirst(String.CASE_INSENSITIVE_ORDER)))
         .collect(Collectors.toList());
   }
-  
+
   @Override
   public List<DataCliente> listarClientes() {
     return clienteService.listarClientes().stream().sorted(Comparator
@@ -205,13 +184,13 @@ public class Sistema implements ISistema {
 
   @Override
   public void modificarCliente(String nickname, DataCliente nuevos) {
-    if (nuevos == null) {     
+    if (nuevos == null) {
       throw new IllegalArgumentException("Datos de cliente no pueden ser nulos");
     }
     String key = canonical(nickname);
     Cliente cliente = usuarioService.obtenerClientePorNickname(key);
     if (cliente == null) {
-      throw new IllegalArgumentException("No existe un cliente con ese nickname");      
+      throw new IllegalArgumentException("No existe un cliente con ese nickname");
     }
 
     // Validar que NO se cambie email ni nickname
@@ -238,13 +217,13 @@ public class Sistema implements ISistema {
   @Override
   public DataCliente actualizarPerfilCliente(PerfilClienteUpdate upd) {
     if (upd == null) {
-      throw new IllegalArgumentException("Datos de actualización nulos");      
+      throw new IllegalArgumentException("Datos de actualización nulos");
     }
     String key = canonical(upd.getNickname());
     Cliente cliente = usuarioService.obtenerClientePorNickname(key);
 
     if (cliente == null) {
-      throw new IllegalArgumentException("No existe un cliente con ese nickname");      
+      throw new IllegalArgumentException("No existe un cliente con ese nickname");
     }
 
     String emailActual = cliente.getEmail();
@@ -271,13 +250,13 @@ public class Sistema implements ISistema {
   @Override
   public void modificarAerolinea(String nickname, DataAerolinea nuevos) {
     if (nuevos == null) {
-      throw new IllegalArgumentException("Datos de aerolínea no pueden ser nulos");      
+      throw new IllegalArgumentException("Datos de aerolínea no pueden ser nulos");
     }
 
     String key = canonical(nickname);
     Aerolinea aerolinea = usuarioService.obtenerAerolineaPorNickname(key);
     if (aerolinea == null) {
-      throw new IllegalArgumentException("No existe una aerolínea con ese nickname");      
+      throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
     }
 
     // Validar que NO se cambie email ni nickname
@@ -301,12 +280,12 @@ public class Sistema implements ISistema {
   @Override
   public DataAerolinea actualizarPerfilAerolinea(PerfilAerolineaUpdate upd) {
     if (upd == null) {
-      throw new IllegalArgumentException("Datos de actualización nulos");      
+      throw new IllegalArgumentException("Datos de actualización nulos");
     }
     String key = canonical(upd.getNickname());
     Aerolinea aerolinea = usuarioService.obtenerAerolineaPorNickname(key);
     if (aerolinea == null) {
-      throw new IllegalArgumentException("No existe una aerolínea con ese nickname");      
+      throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
     }
 
     // Validar que NO se cambie email ni nickname
@@ -388,7 +367,7 @@ public class Sistema implements ISistema {
   @Override
   public void registrarRuta(DataRuta datos) {
     if (datos == null) {
-      throw new IllegalArgumentException("Los datos de la ruta no pueden ser nulos");      
+      throw new IllegalArgumentException("Los datos de la ruta no pueden ser nulos");
     }
 
     String nombre = (datos.getNombre() == null) ? "" : datos.getNombre().trim();
@@ -429,7 +408,7 @@ public class Sistema implements ISistema {
   @Override
   public void registrarCiudad(DataCiudad data) {
     if (data == null) {
-      throw new IllegalArgumentException("Los datos no pueden ser nulos");      
+      throw new IllegalArgumentException("Los datos no pueden ser nulos");
     }
 
     // Validaciones de unicidad
@@ -559,16 +538,16 @@ public class Sistema implements ISistema {
   @Override
   public void comprarPaquete(DataCompraPaquete compra) {
     if (compra == null) {
-      throw new IllegalArgumentException("Datos de compra nulos");      
+      throw new IllegalArgumentException("Datos de compra nulos");
     }
 
     // Resuelvo ENTIDADES a partir de los identificadores del DTO
     Paquete paquete = paqueteService.existePaquete(compra.getNombrePaquete());
     if (paquete == null) {
-      throw new IllegalArgumentException("Paquete inexistente: " + compra.getNombrePaquete());      
+      throw new IllegalArgumentException("Paquete inexistente: " + compra.getNombrePaquete());
     }
     if (paquete.getCantRutas() <= 0) {
-      throw new IllegalStateException("El paquete no tiene rutas");      
+      throw new IllegalStateException("El paquete no tiene rutas");
     }
 
     Usuario u = usuarioService.obtenerClientePorNickname(compra.getNicknameCliente());
@@ -672,7 +651,8 @@ public class Sistema implements ISistema {
   public void agregarRutaAPaquete(String nombrePaquete, String nicknameAerolinea, String nombreRuta,
       TipoAsiento tipo, int cantidad) {
 
-    if (nombrePaquete == null || nicknameAerolinea == null || nombreRuta == null || tipo == null || cantidad <= 0) {
+    if (nombrePaquete == null || nicknameAerolinea == null || nombreRuta == null || tipo == null
+        || cantidad <= 0) {
       throw new IllegalArgumentException("Datos incompletos");
     }
 
@@ -749,6 +729,7 @@ public class Sistema implements ISistema {
         .sorted(Comparator.comparingInt(Reserva::getIdReserva)).collect(Collectors.toList());
     return ManejadorReserva.toDatas(new ArrayList<>(reservas));
   }
+
   @Override
   public DataReserva buscarReserva(String nickname, String nombre, String codigoVuelo,
       int idReserva) {
@@ -780,7 +761,7 @@ public class Sistema implements ISistema {
   public void registrarReserva(String nickname, String nombre, String codigoVuelo,
       DataReserva datos) {
     if (datos == null) {
-      throw new IllegalArgumentException("Los datos de la reserva no pueden ser nulos");      
+      throw new IllegalArgumentException("Los datos de la reserva no pueden ser nulos");
     }
     Usuario u = usuarioService.obtenerAerolineaPorNickname(canonical(nickname));
     if (!(u instanceof Aerolinea a)) {
