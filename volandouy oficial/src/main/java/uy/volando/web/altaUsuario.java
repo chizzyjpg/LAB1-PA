@@ -14,6 +14,7 @@ import Logica.ISistema;
 import Logica.DataAerolinea;
 import Logica.DataCliente;
 import Logica.TipoDocumento;
+import Logica.PerfilAerolineaUpdate;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -88,6 +89,11 @@ public class altaUsuario extends HttpServlet {
 	                    }
 	                    DataAerolinea aerolinea = new DataAerolinea(nombreAerolinea, nickname, email, password, descripcion, sitioWeb);
 	                    sistema.altaAerolinea(aerolinea);
+	                    // If an avatar was uploaded, update the airline profile to store it (Sistema.actualizarPerfilAerolinea handles avatars)
+	                    if (avatarBytes != null && avatarBytes.length > 0) {
+	                        PerfilAerolineaUpdate perfil = new PerfilAerolineaUpdate(nickname, email, nombreAerolinea, descripcion, sitioWeb, avatarBytes, false);
+	                        sistema.actualizarPerfilAerolinea(perfil);
+	                    }
 	                    exito = true;
 	                    break;
 	                }
