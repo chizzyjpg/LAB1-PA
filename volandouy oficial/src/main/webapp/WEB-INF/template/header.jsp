@@ -25,7 +25,7 @@
       <% System.out.println("DEBUG: usuario_logueado=" + usuario); %>
       <div id="guestArea" class="d-flex align-items-center gap-2">
         <a class="btn btn-outline-light btn-sm" href="${pageContext.request.contextPath}/iniciar-sesion">Iniciar sesión</a> <!-- CAMBIO: quité el espacio extra después de href= -->
-        <a class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/altaUsuario" role="button">Registrarse</a>
+        <a class="btn btn-warning btn-sm" href="registro.html" role="button">Registrarse</a>
       </div>
       <% } else { %>
       <!-- Estado: logueado -->
