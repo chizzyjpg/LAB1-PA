@@ -19,7 +19,11 @@
         </div>
       </div>
     </div>
-	<jsp:include page="/WEB-INF/template/footer.jsp" />
+    <footer class="mt-auto py-3 bg-transparent">
+            <div class="container text-center">
+                <small class="text-white-50">2025 Volando.uy</small>
+            </div>
+        </footer>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

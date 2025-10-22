@@ -16,8 +16,8 @@
       <jsp:include page="/WEB-INF/template/sidebar.jsp" />
 
      <main class="col-12 col-lg-9 col-xl-10 py-4">
-          <h1>Bienvenid@ a Volando.uy</h1>
-
+          <h1>Bienvenid@ a Volando.uy</h1> <br>
+          <h3 class="text-center">Algunos de nuestros vuelos más famosos</h3>
           <section class="mt-4">
             <div class="row justify-content-center g-3">
               <!-- Card 1 -->
@@ -36,7 +36,6 @@
                           <strong>Duración:</strong> ~12 h<br>
                           Comidas, bebidas y entretenimiento.
                         </p>
-                        <a href="#" class="btn btn-sm btn-primary">Ver detalles</a>
                       </div>
                     </div>
                   </div>
@@ -59,7 +58,6 @@
                           <strong>Duración:</strong> 5 h 30 m<br>
                           Servicio a bordo completo.
                         </p>
-                        <a href="#" class="btn btn-sm btn-primary">Ver detalles</a>
                       </div>
                     </div>
                   </div>
@@ -82,7 +80,6 @@
                           <strong>Duración:</strong> 2 h 30 m (directo)<br>
                           Servicio de cortesía incluido.
                         </p>
-                        <a href="#" class="btn btn-sm btn-primary">Ver detalles</a>
                       </div>
                     </div>
                   </div>
