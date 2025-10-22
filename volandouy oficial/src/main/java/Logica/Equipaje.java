@@ -6,7 +6,7 @@ public enum Equipaje {
 	
 	private final String descripcion;
 	
-	private Equipaje(String descripcion) {
+	Equipaje(String descripcion) {
 		this.descripcion = descripcion;
 	}
 	

@@ -17,7 +17,7 @@ public class CompraPaqueteIF extends JInternalFrame {
 
     private JComboBox<ClienteItem> cboClientes;
     private JDateChooser dcFechaCompra;
-    private JTextField txtCosto;
+    //private JTextField txtCosto;
 
     private JTable tblPaquetes;
     private DefaultTableModel paquetesModel;
@@ -129,7 +129,7 @@ public class CompraPaqueteIF extends JInternalFrame {
                 paquetesModel.addRow(new Object[]{
                         p.getNombre(),
                         p.getDescripcion(),
-                        (p.getTipoAsiento() == null ? "-" : p.getTipoAsiento().name()),
+                        p.getTipoAsiento() == null ? "-" : p.getTipoAsiento().name(),
                         p.getCantRutas(),
                         p.getValidez(),
                         formatoMoneda(p.getCosto())
@@ -185,11 +185,11 @@ public class CompraPaqueteIF extends JInternalFrame {
 
     private String safe(String s) { return (s == null) ? "" : s; }
 
-    private String formatoMoneda(java.math.BigDecimal bd) {
+    private String formatoMoneda(BigDecimal bd) {
         if (bd == null) return "-";
         return NumberFormat.getNumberInstance().format(bd);
     }
-
+    @SuppressWarnings("PMD.UnusedPrivateMethod")
     private BigDecimal parseBigDecimalNullable(String raw) {
         if (raw == null || raw.isBlank()) return null; // vacío = sin override
 

@@ -399,7 +399,7 @@ public class ConsultaUsuario extends JInternalFrame {
     }
 
     // ------------------- ABRIR FRAMES DE DETALLE -------------------
-
+    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void abrirConsultaRuta(Object dtoRuta) {
         try {
             JInternalFrame jf = new ConsultaRutaVuelo(sistema);
@@ -409,7 +409,7 @@ public class ConsultaUsuario extends JInternalFrame {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void abrirConsultaVuelo(Object dtoVuelo) {
         try {
             JInternalFrame jf = new ConsultaVuelo(sistema);
@@ -419,7 +419,7 @@ public class ConsultaUsuario extends JInternalFrame {
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void abrirConsultaPaquete(Object dtoCompra) {
         try {
             JInternalFrame jf = new ConsultaPaqRutasVuelo(sistema);

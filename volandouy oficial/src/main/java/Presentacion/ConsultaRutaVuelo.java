@@ -22,7 +22,7 @@ public class ConsultaRutaVuelo extends JInternalFrame {
     private final ISistema sistema; // referencia al sistema
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    private final SimpleDateFormat sdfHora = new SimpleDateFormat("HH:mm");
+    //private final SimpleDateFormat sdfHora = new SimpleDateFormat("HH:mm");
 
     public ConsultaRutaVuelo(ISistema sistema) {
         super("Consulta de Ruta de Vuelo", true, true, true, true);

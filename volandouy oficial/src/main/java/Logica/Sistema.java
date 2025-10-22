@@ -72,8 +72,8 @@ public class Sistema implements ISistema {
         return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
     }
     
-    private static Date copia(java.util.Date d) {
-        return (d == null) ? null : new java.util.Date(d.getTime());
+    private static Date copia(Date d) {
+        return (d == null) ? null : new Date(d.getTime());
     }
 
     

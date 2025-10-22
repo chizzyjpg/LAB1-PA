@@ -2,7 +2,6 @@ package Presentacion;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 import Logica.DataAerolinea;
 import Logica.DataPaquete;
@@ -118,7 +117,8 @@ public class RegistroRutaVueloaPaquete extends JInternalFrame {
             }
         } catch (Exception ex) {
             // No alertamos en constructor; si querés, logueá
-            // JOptionPane.showMessageDialog(this, "No se pudieron cargar paquetes: " + ex.getMessage(), ...);
+        	//o se puede usar LOGGER
+            JOptionPane.showMessageDialog(this, "No se pudieron cargar paquetes: " + ex.getMessage());
         }
     }
 
@@ -129,6 +129,7 @@ public class RegistroRutaVueloaPaquete extends JInternalFrame {
                 comboBoxAerolineas.addItem(new Item<>(a.getNickname(), a.getNombre() + " (" + a.getNickname() + ")"));
             }
         } catch (Exception ex) {
+        	throw new RuntimeException("No se pudieron cargar aerolíneas: " + ex.getMessage());
             // idem, no molestamos al crear
         }
     }

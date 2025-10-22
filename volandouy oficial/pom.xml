@@ -141,7 +141,7 @@
 	        <failOnMissingWebXml>false</failOnMissingWebXml>
 	      </configuration>
 	    </plugin>
-	
+
 	    <plugin>
 	      <artifactId>maven-compiler-plugin</artifactId>
 	      <version>3.13.0</version>
@@ -150,7 +150,7 @@
 	      </configuration>
 	    </plugin>
 	    <plugin>
-	  		<groupId>org.apache.maven.plugins</groupId>
+			<groupId>org.apache.maven.plugins</groupId>
 	      	<artifactId>maven-surefire-plugin</artifactId>
 	      	<version>${maven.surefire.version}</version>
 	      	<configuration>
@@ -158,6 +158,31 @@
 	        <useModulePath>false</useModulePath>
 	      </configuration>
 	    </plugin>
+
+	    <!-- Agregado: maven-pmd-plugin usando el ruleset en src/main/resources/pmd/ruleset.xml -->
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-pmd-plugin</artifactId>
+	      <version>3.18.0</version>
+	      <configuration>
+	        <ruleSetFiles>
+	          <ruleSetFile>src/main/resources/pmd/ruleset.xml</ruleSetFile>
+	        </ruleSetFiles>
+	        <linkXref>false</linkXref>
+	        <failOnViolation>false</failOnViolation>
+	      </configuration>
+	      <executions>
+	        <execution>
+	          <id>pmd-check</id>
+	          <phase>verify</phase>
+	          <goals>
+	            <goal>pmd</goal>
+	            <goal>check</goal>
+	          </goals>
+	        </execution>
+	      </executions>
+	    </plugin>
+
 	  </plugins>
   </build>
 </project>

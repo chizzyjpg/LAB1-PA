@@ -1,8 +1,8 @@
 package uy.volando.web;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Date;
+
+
 import java.util.List;
 
 import jakarta.servlet.ServletException;
@@ -30,7 +30,7 @@ public class reservaVuelo extends HttpServlet {
 	    HttpSession session = request.getSession();
 	    Object usuario = session.getAttribute("usuario_logueado");
 	    request.setAttribute("usuario", usuario);
-	    Logica.ISistema sistema = (Logica.ISistema) getServletContext().getAttribute("sistema");
+	    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
 	    List<DataAerolinea> aerolineas = sistema.listarAerolineas();
 	    request.setAttribute("aerolineas", aerolineas);
 	    String aerolineaSel = request.getParameter("aerolinea");
@@ -61,7 +61,9 @@ public class reservaVuelo extends HttpServlet {
 	                int cantidadPasajes = 1;
 	                try {
 	                    cantidadPasajes = Integer.parseInt(request.getParameter("cantidadPasajes"));
-	                } catch (Exception e) {}
+	                } catch (Exception e) {
+	                	throw new ServletException("Parámetro cantidadPasajes inválido.");
+	                }
 	                // DEBUG: Mostrar rutas incluidas en cada paquete y la ruta seleccionada
 	                for (Logica.DataPaquete p : paquetesDisponibles) {
 	                    System.out.println("[DEBUG] Paquete: " + p.getNombre() + ", rutasIncluidas: " + p.getRutasIncluidas() + ", nombreRuta: " + nombreRuta);
@@ -83,7 +85,7 @@ public class reservaVuelo extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    HttpSession session = request.getSession();
 	    Object usuario = session.getAttribute("usuario_logueado");
-	    Logica.ISistema sistema = (Logica.ISistema) getServletContext().getAttribute("sistema");
+	    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
 	    String aerolinea = request.getParameter("aerolinea");
 	    String ruta = request.getParameter("ruta");
 	    String vuelo = request.getParameter("vuelo");
@@ -92,10 +94,14 @@ public class reservaVuelo extends HttpServlet {
 	    int equipajeExtra = 0;
 	    try {
 	        cantidadPasajes = Integer.parseInt(request.getParameter("cantidadPasajes"));
-	    } catch (Exception e) {}
+	    } catch (Exception e) {
+	    	throw new ServletException("Parámetro cantidadPasajes inválido.");
+	    }
 	    try {
 	        equipajeExtra = Integer.parseInt(request.getParameter("equipajeExtra"));
-	    } catch (Exception e) {}
+	    } catch (Exception e) {
+	    	throw new ServletException("Parámetro equipajeExtra inválido.");
+	    }
 	    String formaPago = request.getParameter("formaPago");
 	    String paquete = request.getParameter("paquete");
 	    // Nombres y apellidos de pasajeros
@@ -121,7 +127,7 @@ public class reservaVuelo extends HttpServlet {
 	        return;
 	    }
 	    // Construir lista de pasajes
-	    java.util.List<Logica.DataPasaje> pasajes = new java.util.ArrayList<>();
+	    List<Logica.DataPasaje> pasajes = new java.util.ArrayList<>();
 	    for (int i = 0; i < cantidadPasajes; i++) {
 	        pasajes.add(new Logica.DataPasaje(nombres[i], apellidos[i]));
 	    }

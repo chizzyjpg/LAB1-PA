@@ -302,8 +302,8 @@ public class RegistrarReservaVuelo extends JInternalFrame {
                 dc
             );
             
-            String nomCliente = (dc != null) ? /* dc.getNombre() */ "" : "";
-            String apeCliente = (dc != null) ? /* dc.getApellido() */ "" : "";
+            //String nomCliente = (dc != null) ? /* dc.getNombre() */ "" : "";
+            //String apeCliente = (dc != null) ? /* dc.getApellido() */ "" : "";
  
          // 2) pedir pasajeros
             PasajerosDialog dlg = new PasajerosDialog(
@@ -348,7 +348,7 @@ public class RegistrarReservaVuelo extends JInternalFrame {
         private final JTable table;
         private boolean accepted = false;
 
-        PasajerosDialog(Window owner, int cantidad, Logica.DataCliente cliente) {
+        PasajerosDialog(Window owner, int cantidad, DataCliente cliente) {
             super(owner, "Pasajeros (" + cantidad + ")", ModalityType.APPLICATION_MODAL);
             setSize(520, 300);
             setLocationRelativeTo(owner);
@@ -407,13 +407,13 @@ public class RegistrarReservaVuelo extends JInternalFrame {
 
         boolean isAccepted() { return accepted; }
 
-        java.util.List<Logica.DataPasaje> getPasajeros() {
-            java.util.List<Logica.DataPasaje> out = new java.util.ArrayList<>();
+        java.util.List<DataPasaje> getPasajeros() {
+            java.util.List<DataPasaje> out = new java.util.ArrayList<>();
             javax.swing.table.TableModel m = table.getModel();
             for (int i = 0; i < m.getRowCount(); i++) {
                 String nom = str(m.getValueAt(i, 0));
                 String ape = str(m.getValueAt(i, 1));
-                out.add(new Logica.DataPasaje(nom, ape));
+                out.add(new DataPasaje(nom, ape));
             }
             return out;
         }
@@ -538,7 +538,7 @@ public class RegistrarReservaVuelo extends JInternalFrame {
     }
 
     private static String formatFecha(Object o) {
-        if (!(o instanceof java.util.Date d)) return "";
+        if (!(o instanceof Date d)) return "";
         java.text.SimpleDateFormat f = new java.text.SimpleDateFormat("yyyy-MM-dd");
         return f.format(d);
     }
@@ -552,7 +552,7 @@ public class RegistrarReservaVuelo extends JInternalFrame {
                 int hh = n.intValue();
                 if (hh >= 0 && hh <= 23) return String.format("%02d:00", hh);
             }
-            if (h instanceof java.util.Date d) {
+            if (h instanceof Date d) {
                 java.util.Calendar c = java.util.Calendar.getInstance();
                 c.setTime(d);
                 return String.format("%02d:%02d", c.get(java.util.Calendar.HOUR_OF_DAY), c.get(java.util.Calendar.MINUTE));
