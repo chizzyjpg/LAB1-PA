@@ -183,6 +183,30 @@
 	      </executions>
 	    </plugin>
 
+	    <!-- Agregado: maven-checkstyle-plugin usando config/checkstyle/checkstyle.xml -->
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-checkstyle-plugin</artifactId>
+	      <version>3.2.2</version>
+	      <configuration>
+	        <configLocation>src/main/resources/checkstyle/checkstyle.xml</configLocation>
+	        <encoding>UTF-8</encoding>
+	        <consoleOutput>true</consoleOutput>
+	        <failOnViolation>false</failOnViolation>
+	        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+	      </configuration>
+	      <executions>
+	        <execution>
+	          <id>checkstyle-verify</id>
+	          <phase>verify</phase>
+	          <goals>
+	            <goal>check</goal>
+	            <goal>checkstyle</goal>
+	          </goals>
+	        </execution>
+	      </executions>
+	    </plugin>
+
 	  </plugins>
   </build>
 </project>
