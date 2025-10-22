@@ -86,7 +86,7 @@ import Logica.DataVueloEspecifico;
 		                        a.getLinkWeb()
 		                    );
 		                } else if (u instanceof Cliente c) {
-		                    // Preserve Cliente-specific type by returning DataCliente
+		                   
 		                    return new DataCliente(
 		                        c.getNombre(),
 		                        c.getNickname(),
