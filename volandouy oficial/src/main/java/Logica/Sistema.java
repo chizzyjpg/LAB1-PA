@@ -501,6 +501,7 @@ public class Sistema implements ISistema {
         // Persistir cambios en la base de datos usando el manejador
         usuarioService.actualizarUsuario(cliente);
     }
+<<<<<<< HEAD
     
     @Override
     public DataCliente actualizarPerfilCliente (PerfilClienteUpdate upd) {
@@ -529,6 +530,103 @@ public class Sistema implements ISistema {
     	usuarioService.actualizarUsuario(cliente);
     	DataUsuario usuario = usuarioService.verInfoUsuario(upd.getNickname());
     	return usuario instanceof DataCliente ? (DataCliente) usuario : null; //Imposible de llegar con JUnit, super defensivo
+=======
+    // Buscar el id de la ruta persistida por nombre
+    Integer idRuta = rutaService.buscarRutaPorNombreYObtenerId(nombre);
+    if (idRuta == null) {
+      throw new IllegalArgumentException("No existe una ruta con ese nombre en la base de datos");
+    }
+    // Buscar la entidad Ruta persistida usando el id
+    Ruta ruta = rutaService.buscarRutaPorId(idRuta);
+    if (ruta == null) {
+      throw new IllegalArgumentException("No se encontró la Ruta con id: " + idRuta);
+    }
+    // Inicializar las colecciones para evitar LazyInitializationException
+    ruta.getAerolineas().size();
+    ruta.getVuelosEspecificos().size();
+
+    ManejadorVueloEspecifico.toEntity(datos, ruta);
+  }
+
+  @Override
+  public List<DataVueloEspecifico> listarVuelos(String nickname, String nombre) {
+    // Obtener la aerolínea desde la base de datos
+    DataAerolinea aerolinea = verInfoAerolinea(nickname);
+    if (aerolinea == null) {
+      throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+    }
+    // Obtener la ruta desde la base de datos
+    List<DataRuta> rutas = usuarioService.listarRutasPorAerolinea(nickname);
+    DataRuta ruta = rutas.stream()
+        .filter(r -> r.getNombre() != null && r.getNombre().equalsIgnoreCase(nombre)).findFirst()
+        .orElse(null);
+    if (ruta == null) {
+      throw new IllegalArgumentException("La aerolínea no tiene una ruta con ese nombre");
+    }
+    // Obtener los vuelos específicos de la ruta desde la base de datos
+    List<DataVueloEspecifico> vuelos = usuarioService.listarVuelosPorRuta(nickname, nombre);
+    return vuelos == null ? Collections.emptyList() : vuelos;
+  }
+
+  @Override
+  public DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo) {
+    // Obtener la aerolínea desde la base de datos
+    Usuario u = usuarioService.obtenerAerolineaPorNickname(canonical(nickname));
+    if (!(u instanceof Aerolinea)) {
+      throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+    }
+    // Buscar la ruta por nombre usando el servicio de BD para asegurar la sesión
+    // activa
+    RutaVueloService rutaService = new RutaVueloService();
+    Integer idRuta = rutaService.buscarRutaPorNombreYObtenerId(nombre);
+    if (idRuta == null) {
+      throw new IllegalArgumentException("No existe una ruta con ese nombre en la base de datos");
+    }
+    Ruta r = rutaService.buscarRutaPorId(idRuta);
+    if (r == null) {
+      throw new IllegalArgumentException("No se encontró la Ruta con id: " + idRuta);
+    }
+    // Inicializar las colecciones para evitar LazyInitializationException
+    r.getAerolineas().size();
+    r.getVuelosEspecificos().size();
+    // Buscar el vuelo específico en la ruta
+    VueloEspecifico v = r.getVuelosEspecificos().stream()
+        .filter(ve -> ve.getNombre() != null && ve.getNombre().equalsIgnoreCase(codigoVuelo))
+        .findFirst().orElse(null);
+    if (v == null) {
+      throw new IllegalArgumentException("No existe un vuelo con ese código en la ruta indicada");
+    }
+    return ManejadorVueloEspecifico.toData(v);
+  }
+
+  // =========================
+  // COMPRA DE PAQUETE
+  // =========================
+
+  @Override
+  public List<DataPaquete> listarPaquetesDisponiblesParaCompra() {
+    return paqueteService.listarPaquetes().stream().filter(p -> p.getCantRutas() > 0)
+        .map(ManejadorPaquete::toDTO)
+        .sorted(Comparator.comparing(p -> p.getNombre() == null ? "" : p.getNombre(),
+            String.CASE_INSENSITIVE_ORDER))
+        .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<DataCliente> listarClientesParaCompra() {
+    return clienteService.listarClientes();
+  }
+
+  @Override
+  public boolean clienteYaComproPaquete(String nicknameCliente, String nombrePaquete) {
+    return usuarioService.clienteYaComproPaquete(nicknameCliente, nombrePaquete);
+  }
+
+  @Override
+  public void comprarPaquete(DataCompraPaquete compra) {
+    if (compra == null) {
+      throw new IllegalArgumentException("Datos de compra nulos");
+>>>>>>> parent of da93940 (checkstyle y un arreglo de alta vuelo)
     }
 
     @Override
