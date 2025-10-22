@@ -121,7 +121,7 @@ public class altaVuelo extends HttpServlet {
 	    }
 
     try {
-      sistema.registrarVuelo(aerolineaId, nombreRuta, dataVuelo);
+      sistema.registrarVuelo(aerolineaId, rutaId, dataVuelo);
       request.setAttribute("successMsg", "Vuelo registrado exitosamente.");
     } catch (Exception e) {
       request.setAttribute("errorMsg", e.getMessage());
