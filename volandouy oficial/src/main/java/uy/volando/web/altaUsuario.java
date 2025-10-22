@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.IOException;
+import java.io.InputStream;
+
 import Logica.ISistema;
 import Logica.DataAerolinea;
 import Logica.DataCliente;
@@ -215,5 +217,5 @@ public class altaUsuario extends HttpServlet {
       request.setAttribute("errorMsg", errorMsg);
       request.getRequestDispatcher("/WEB-INF/registro/altaUsuario.jsp").forward(request, response);
     }
-  }
-}
+   }
+  
