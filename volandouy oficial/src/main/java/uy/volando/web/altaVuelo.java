@@ -120,12 +120,37 @@ public class altaVuelo extends HttpServlet {
 	        return;
 	    }
 
-    try {
-      sistema.registrarVuelo(aerolineaId, rutaId, dataVuelo);
-      request.setAttribute("successMsg", "Vuelo registrado exitosamente.");
-    } catch (Exception e) {
-      request.setAttribute("errorMsg", e.getMessage());
-    }
-    doGet(request, response);
-  }
+	    // Convertir tipos
+	    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+	    java.util.Date fecha = null;
+	    try {
+	        fecha = sdf.parse(fechaStr);
+	    } catch (Exception e) {
+	        request.setAttribute("errorMsg", "Fecha inválida.");
+	        doGet(request, response);
+	        return;
+	    }
+	    int duracion, cantMaxTuristas, cantMaxEjecutivos;
+	    try {
+	        duracion = Integer.parseInt(duracionStr);
+	        cantMaxTuristas = Integer.parseInt(cantMaxTuristasStr);
+	        cantMaxEjecutivos = Integer.parseInt(cantMaxEjecutivosStr);
+	    } catch (Exception e) {
+	        request.setAttribute("errorMsg", "Duración o cantidad inválida.");
+	        doGet(request, response);
+	        return;
+	    }
+	    
+	    java.util.Date fechaAlta = new java.util.Date();
+	    // Crear DTO de vuelo
+	    DataVueloEspecifico dataVuelo = new DataVueloEspecifico(nombreVuelo, fecha, duracion, cantMaxTuristas, cantMaxEjecutivos, fechaAlta);
+
+	    try {
+	        sistema.registrarVuelo(aerolineaId, nombreRuta, dataVuelo);
+	        request.setAttribute("successMsg", "Vuelo registrado exitosamente.");
+	    } catch (Exception e) {
+	        request.setAttribute("errorMsg", e.getMessage());
+	    }
+	    doGet(request, response);
+	}
 }
