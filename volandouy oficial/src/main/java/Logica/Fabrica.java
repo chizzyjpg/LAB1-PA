@@ -5,34 +5,19 @@ package Logica;
  */
 public final class Fabrica {
 
-  private static Fabrica instancia = null;
-  private final ISistema sistema;
+private static Fabrica instancia = null;
+private final ISistema sistema;
 
-  private Fabrica() {
 
-    // 1) En memoria:
-    this.sistema = new Sistema();
-
-    // 2) Con JPA:
-
-    /*
-     * EntityManagerFactory emf =
-     * Persistence.createEntityManagerFactory("volandoUy"); EntityManager em =
-     * emf.createEntityManager(); this.sistema = new SistemaJpa(em);
-     */
-  }
-  
-  /**
-   * Método estático para obtener la instancia única de la fábrica.
-   * 
-   */
-  public static synchronized Fabrica getInstance() { // synchronized es una palabra clave que
-                                                     // controla el acceso a recursos compartidos
-                                                     // entre múltiples hilos, garantizando que solo
-                                                     // un hilo pueda ejecutar un método o bloque de
-                                                     // código a la vez.
-    if (instancia == null) {
-      instancia = new Fabrica();
+private Fabrica(){
+	
+	// 1) En memoria:
+     this.sistema = new Sistema();
+	
+} 
+public static synchronized Fabrica getInstance(){ //synchronized es una palabra clave que controla el acceso a recursos compartidos entre múltiples hilos, garantizando que solo un hilo pueda ejecutar un método o bloque de código a la vez.
+    if (instancia == null){
+        instancia = new Fabrica();
     }
     return instancia;
   }

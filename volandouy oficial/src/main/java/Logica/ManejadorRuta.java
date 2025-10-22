@@ -10,15 +10,17 @@ import BD.CiudadService;
 public class ManejadorRuta {
 
     private ManejadorRuta() {}
-
+    
+    private static CiudadService ciudadService = new CiudadService();
+    private static CategoriaService categoriaService = new CategoriaService();
 
     // ===== Obtener / Listar =====
     public static Ruta toEntity(DataRuta data) {
         Objects.requireNonNull(data, "Los datos no pueden ser nulos");
         // Buscar Ciudad y Categoria reales a partir de los DTOs
-        Ciudad origen = new CiudadService().buscarPorNombre(data.getCiudadOrigen().getNombre());
-        Ciudad destino = new CiudadService().buscarPorNombre(data.getCiudadDestino().getNombre());
-        Categoria categoria = new CategoriaService().buscarPorNombre(data.getCategoria().getNombre());
+        Ciudad origen = ciudadService.buscarPorNombre(data.getCiudadOrigen().getNombre());
+        Ciudad destino = ciudadService.buscarPorNombre(data.getCiudadDestino().getNombre());
+        Categoria categoria = categoriaService.buscarPorNombre(data.getCategoria().getNombre());
         Ruta r = new Ruta(
             data.getNombre(), data.getDescripcion(),
             origen, destino,
@@ -82,4 +84,11 @@ public class ManejadorRuta {
 					   .map(ManejadorRuta::toData)
 					   .collect(Collectors.toList());
 	}
+    
+ // SOLO PARA TESTS
+    static void setCiudadServiceForTests(BD.CiudadService cs)
+    { ciudadService = cs; }
+    static void setCategoriaServiceForTests(BD.CategoriaService cs)
+    { categoriaService = cs; }
+
 }

@@ -9,8 +9,11 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/template/header.jsp" />
-	<main>
-    	<div class="container mt-5">
+	<div class="container-fluid">
+    	<div class="row">
+      		<jsp:include page="/WEB-INF/template/sidebar.jsp" />
+	<main class="col-12 col-lg-9 col-xl-10 py-4">
+        <div class="container-fluid">
         	<h2>Listado de Usuarios</h2>
         	<table class="table table-striped">
             	<thead>
