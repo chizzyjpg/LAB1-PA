@@ -19,19 +19,9 @@ import Logica.ISistema;
 public class altaVuelo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-  /**
-   * Constructor del servlet.
-   */
-  public altaVuelo() {
-    super();
-  }
-
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    HttpSession session = request.getSession();
-    Object usuario = session.getAttribute("usuario_logueado");
-    request.setAttribute("usuario", usuario);
+	public altaVuelo() {
+		super();
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -77,26 +67,12 @@ public class altaVuelo extends HttpServlet {
 	    String cantMaxEjecutivosStr = request.getParameter("cantMaxEjecutivos");
 	    //String imagenVuelo = request.getParameter("imagenVuelo");
 
-    // Obtener el nombre de la ruta a partir del id
-    List<DataRuta> rutas = sistema.listarPorAerolinea(aerolineaId);
-    String nombreRuta = rutas.stream().filter(r -> Integer.toString(r.getIdRuta()).equals(rutaId))
-        .map(DataRuta::getNombre).findFirst().orElse(null);
-    if (nombreRuta == null) {
-      request.setAttribute("errorMsg", "Ruta seleccionada no válida.");
-      doGet(request, response);
-      return;
-    }
-
-    // Validar nombre único en la ruta de la aerolínea
-    List<DataVueloEspecifico> vuelos = sistema.listarVuelos(aerolineaId, nombreRuta);
-    boolean existeVuelo = vuelos.stream()
-        .anyMatch(v -> v.getNombre().equalsIgnoreCase(nombreVuelo));
-    if (existeVuelo) {
-      request.setAttribute("errorMsg",
-          "Ya existe un vuelo con ese nombre en la ruta seleccionada.");
-      doGet(request, response);
-      return;
-    }
+	    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
+	    if (sistema == null) {
+	        request.setAttribute("errorMsg", "Error interno: sistema no disponible.");
+	        doGet(request, response);
+	        return;
+	    }
 
 	    // Obtener el nombre de la ruta a partir del id
 	    List<DataRuta> rutas = sistema.listarPorAerolinea(aerolineaId);
