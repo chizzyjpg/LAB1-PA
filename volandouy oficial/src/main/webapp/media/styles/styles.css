@@ -206,7 +206,7 @@
 }
 
 h1.display-6 {
-  color: #007bff; /* Cambia el color */
+  color: #007bff; 
   font-weight: bold; /* Negrita */
   text-shadow: 1px 1px 4px #00000033; /* Sombra sutil */
   /* Otros estilos que desees */
@@ -214,6 +214,7 @@ h1.display-6 {
 .home-page h1{
   text-align: center;
 }
+
 
 .home-page .img1{
   max-height: 50%;
