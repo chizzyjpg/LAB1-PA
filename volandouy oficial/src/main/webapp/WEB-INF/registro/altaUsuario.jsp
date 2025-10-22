@@ -16,7 +16,7 @@
     </nav>
     <main class="portada d-flex align-items-start py-5">
         <div class="container">
-            <div class="row justify-content-center mt-4 mt-md-5">
+            <div class="row justify-content-center mt-4 mt-md-5 register-stack">
                 <div class="col-11 col-sm-10 col-md-8 col-lg-6">
                     <div class="card p-4">
                         <h2 class="mb-4 text-center">Registro</h2>

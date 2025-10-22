@@ -98,20 +98,36 @@
   background-position: center center !important; /* Centrar la imagen */
 }
 
+.registro-page .register-stack{
+  transform: translateY(6vh);        /* baja visualmente el bloque */
+  margin-bottom: 1.25rem !important; /* poca distancia al footer */
+}
+
+html, body { height: 100%; }
+body.index-page { 
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
 .index-page .portada,
 .login-page .portada {
-  position: relative; /* Para que el footer absoluto se posicione correctamente */
-  display: flex !important; /* Usamos flex en lugar de grid */
-  flex-direction: column !important; /* Columna para permitir footer abajo */
-  align-items: center !important; /* Centramos horizontalmente */
-  justify-content: center !important; /* Centramos verticalmente el contenido principal */
-  min-height: 100vh; /* Altura completa de la pantalla */
-  height: 100vh !important; /* Altura fija para evitar scroll del body */
-  overflow: hidden; /* Sin scroll en la portada */
-  background-attachment: fixed; /* La imagen se mantiene fija */
-  background-size: cover !important; /* Mantener el tamaño de imagen consistente */
-  background-position: center center !important; /* Centrar la imagen */
+  position: relative;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  height: 100dvh;                 /* alto del viewport “real” en móviles */
+  min-height: 100dvh;
+  box-sizing: border-box;
+  padding-top: var(--nav-h);      /* deja espacio para la navbar fija */
+
+  background-attachment: fixed;
+  background-size: cover !important;
+  background-position: center center !important;
 }
+
 
 /* Campos que se muestran/ocultan dinámicamente */
 #clienteFields, #aerolineaFields {
@@ -139,7 +155,7 @@
 .registro-page,
 .index-page,
 .login-page {
-    padding-top: 40px;
+    padding-top: 0;
     overflow: hidden; /* Sin scroll en el body */
     height: 100vh; /* Altura fija del body */
 }
@@ -162,15 +178,14 @@
 
 .registro-page footer small {
     color: rgba(255, 255, 255, 0.8) !important;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, .45);
 }
 
 .index-page footer {
-    position: fixed; /* Fijo en la parte inferior */
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000; /* Por encima de todo */
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;
+  background: transparent !important;   /* sin barra blanca */
+  border: 0 !important; box-shadow: none !important;
+  color: rgba(255,255,255,.85);
 }
 
 .label-login{
@@ -206,14 +221,17 @@
 }
 
 h1.display-6 {
-  color: #007bff; /* Cambia el color */
+  color: #007bff; 
   font-weight: bold; /* Negrita */
   text-shadow: 1px 1px 4px #00000033; /* Sombra sutil */
   /* Otros estilos que desees */
 }
 .home-page h1{
   text-align: center;
+  font-weight: bold;
+  font-family: "Arial", Georgia, serif;
 }
+
 
 .home-page .img1{
   max-height: 50%;
@@ -651,3 +669,8 @@ h1.display-6 {
   .clickable-rows tbody tr { cursor: pointer; }
 
 }
+
+.footer_centro{
+	color: rgb(0, 0, 0) !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, .45);
+	}
