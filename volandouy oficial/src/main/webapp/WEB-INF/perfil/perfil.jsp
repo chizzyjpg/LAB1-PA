@@ -12,12 +12,12 @@
   <!-- NAVBAR -->
   <jsp:include page="/WEB-INF/template/header.jsp" />
 
-  <!-- Derivar banderas de tipo (sin objetos) -->
+  <!-- Derivar banderas de tipo -->
   <c:set var="isCliente"   value="${tipo == 'DataCliente'}"/>
   <c:set var="isAerolinea" value="${tipo == 'DataAerolinea'}"/>
 
-  <!-- Mensajes flash (opcionales) -->
-  <c:if test="${not empty flash_ok}">
+  <!-- Mensajes flash -->
+  <c:if test="${not empty flash_ok}"> <!-- Existe la variable flash_ok y tiene contenido?-->
     <div class="alert alert-success m-3" role="alert">${flash_ok}</div>
   </c:if>
   <c:if test="${not empty flash_error}">
@@ -33,13 +33,13 @@
             <h6 class="text-uppercase text-muted mb-3">Mi Perfil</h6>
             <c:if test="${isCliente}">
               <div class="list-group list-group-flush">
-                <a href="${pageContext.request.contextPath}/" class="list-group-item list-group-item-action">Reservar Vuelo</a>
+                <a href="${pageContext.request.contextPath}/reservaVuelo" class="list-group-item list-group-item-action">Reservar Vuelo</a>
                 <a href="${pageContext.request.contextPath}/compraPaquete" class="list-group-item list-group-item-action">Comprar Paquete</a>
               </div>
             </c:if>
             <c:if test="${isAerolinea}">
               <div class="list-group list-group-flush">
-                <a href="registroVuelo.html" class="list-group-item list-group-item-action">Nuevo Vuelo</a>
+                <a href="${pageContext.request.contextPath}/altaVuelo" class="list-group-item list-group-item-action">Nuevo Vuelo</a>
                 <a href="${pageContext.request.contextPath}/regRutVuelo" class="list-group-item list-group-item-action">Nueva Ruta</a>
               </div>
             </c:if>

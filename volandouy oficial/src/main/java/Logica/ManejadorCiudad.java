@@ -8,6 +8,8 @@ import javax.swing.JOptionPane;
 import BD.CiudadService;
 
 public class ManejadorCiudad {
+	
+	private static CiudadService ciudadService = new CiudadService();
     
 	public static Ciudad toEntity(DataCiudad ciudad) {
 		Objects.requireNonNull(ciudad, "Los datos no pueden ser nulos");
@@ -20,7 +22,7 @@ public class ManejadorCiudad {
 				ciudad.getSitioWeb()
 		);
 		try {
-        	new CiudadService().crearCiudad(c);
+        	ciudadService.crearCiudad(c);
         	JOptionPane.showMessageDialog(null, "Se insertó correctamente");
         }catch (Exception ex) {
         	JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
@@ -57,4 +59,8 @@ public class ManejadorCiudad {
 					   .map(ManejadorCiudad::toData)
 					   .collect(Collectors.toList());
 	}
+    
+    public static void setCiudadServiceForTests(BD.CiudadService cs) {
+        ciudadService = cs;
+      }
 }

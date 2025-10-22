@@ -53,10 +53,12 @@ public class DataCliente extends DataUsuario {
         return numDocumento;
     }
     
+    public String getTipoUsuario() {
+        return "Cliente";
+    }
+    
     @Override
     public String toString() {
     			return this.getNickname() + " - " + this.getNombre();
     }
 }
-
-

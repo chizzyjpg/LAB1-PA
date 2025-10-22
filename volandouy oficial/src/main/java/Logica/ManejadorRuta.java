@@ -10,15 +10,17 @@ import BD.CiudadService;
 public class ManejadorRuta {
 
     private ManejadorRuta() {}
-
+    
+    private static CiudadService ciudadService = new CiudadService();
+    private static CategoriaService categoriaService = new CategoriaService();
 
     // ===== Obtener / Listar =====
     public static Ruta toEntity(DataRuta data) {
         Objects.requireNonNull(data, "Los datos no pueden ser nulos");
         // Buscar Ciudad y Categoria reales a partir de los DTOs
-        Ciudad origen = new CiudadService().buscarPorNombre(data.getCiudadOrigen().getNombre());
-        Ciudad destino = new CiudadService().buscarPorNombre(data.getCiudadDestino().getNombre());
-        Categoria categoria = new CategoriaService().buscarPorNombre(data.getCategoria().getNombre());
+        Ciudad origen = ciudadService.buscarPorNombre(data.getCiudadOrigen().getNombre());
+        Ciudad destino = ciudadService.buscarPorNombre(data.getCiudadDestino().getNombre());
+        Categoria categoria = categoriaService.buscarPorNombre(data.getCategoria().getNombre());
         Ruta r = new Ruta(
             data.getNombre(), data.getDescripcion(),
             origen, destino,
@@ -48,13 +50,18 @@ public class ManejadorRuta {
             r.getDestino().getSitioWeb()
         );
         DataCategoria categoria = new DataCategoria(r.getCategoriaR().getNombre());
+        // Extraer el nickname de la aerolínea desde la relación (Set<Aerolinea>)
+        String nicknameAerolinea = "";
+        if (r.getAerolineas() != null && !r.getAerolineas().isEmpty()) {
+            Aerolinea aerolinea = r.getAerolineas().iterator().next();
+            nicknameAerolinea = aerolinea.getNickname();
+        }
         DataRuta dto = new DataRuta(
             r.getNombre(), r.getDescripcion(),
             origen, destino,
             r.getHora(), r.getFechaAlta(),
             r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo(), categoria,
-            "" // No se conoce el nicknameAerolinea aquí
-            , r.getEstado(), r.getDescripcionCorta()
+            nicknameAerolinea, r.getEstado(), r.getDescripcionCorta()
         );
         dto.setIdRuta(r.getIdRuta());
         return dto;
@@ -77,4 +84,11 @@ public class ManejadorRuta {
 					   .map(ManejadorRuta::toData)
 					   .collect(Collectors.toList());
 	}
+    
+ // SOLO PARA TESTS
+    static void setCiudadServiceForTests(BD.CiudadService cs)
+    { ciudadService = cs; }
+    static void setCategoriaServiceForTests(BD.CategoriaService cs)
+    { categoriaService = cs; }
+
 }

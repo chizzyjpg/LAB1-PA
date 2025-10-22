@@ -85,24 +85,37 @@ import Logica.DataVueloEspecifico;
 		                        a.getDescGeneral(),
 		                        a.getLinkWeb()
 		                    );
-		                } else {
-		                    // “Usuario” genérico (Cliente u otros): usamos la concreta Aux
-		                    return new DataUsuarioAux(
-		                        u.getNombre(),
-		                        u.getNickname(),
-		                        u.getEmail(),
-		                        u.getContrasenia()
-		                    );
-		                }
-		            })
-		            .collect(Collectors.toList());
-		    } catch (RuntimeException ex) {
-		        if (em.getTransaction().isActive()) em.getTransaction().rollback();
-		        throw ex;
-		    } finally {
-		        em.close();
-		    }
-		}
+		                }else if (u instanceof Cliente c) {
+
+                            return new DataCliente(
+                                c.getNombre(),
+                                c.getNickname(),
+                                c.getEmail(),
+                                c.getContrasenia(),
+                                c.getApellido(),
+                                c.getFechaNac(),
+                                c.getNacionalidad(),
+                                c.getTipoDocumento(),
+                                c.getNumDocumento()
+                            );
+                        } else {
+                            // “Usuario” genérico (otros): usamos la concreta Aux
+                            return new DataUsuarioAux(
+                                u.getNombre(),
+                                u.getNickname(),
+                                u.getEmail(),
+                                u.getContrasenia()
+                            );
+                        }
+                    })
+                    .collect(Collectors.toList());
+            } catch (RuntimeException ex) {
+                if (em.getTransaction().isActive()) em.getTransaction().rollback();
+                throw ex;
+            } finally {
+                em.close();
+            }
+        }
 
 		public List<DataRuta> listarRutasPorAerolinea(String nicknameAerolinea) {
             EntityManager em = JPAUtil.getEntityManager();

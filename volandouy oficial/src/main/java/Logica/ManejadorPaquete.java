@@ -9,6 +9,8 @@ import BD.PaqueteService;
 
 public final class ManejadorPaquete {
     private ManejadorPaquete() {}
+    
+    private static PaqueteService service = new PaqueteService();
 
     public static Paquete toEntity(DataPaquete dto) {
         if (dto == null) return null;
@@ -68,7 +70,7 @@ public final class ManejadorPaquete {
         );
         p.setFechaAlta(dto.getFechaAlta());
         try {
-        	new PaqueteService().crearPaquete(p);
+        	service.crearPaquete(p);
         } catch (Exception ex) {
         	throw new IllegalStateException("Error al crear el paquete: " + ex.getMessage(), ex);
         }
@@ -88,4 +90,8 @@ public final class ManejadorPaquete {
     private static java.util.Date copia(java.util.Date d) {
         return (d == null) ? null : new java.util.Date(d.getTime());
     }
+    
+    static void setServiceForTests(PaqueteService s) {
+        service = (s == null) ? new PaqueteService() : s;
+      }
 }

@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import uy.volando.model.EstadoSesion;
 
 @WebServlet ("/regRutVuelo")
 public class regRutVuelo extends HttpServlet {
@@ -25,10 +26,17 @@ public class regRutVuelo extends HttpServlet {
     public regRutVuelo() {
         super();
     }
+    
+    
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+        
+        if (getEstado(request) != EstadoSesion.LOGIN_CORRECTO) {
+		    request.getRequestDispatcher("/WEB-INF/home/iniciar.jsp").forward(request, response);
+		    return;
+		  }
         Object usuario = session.getAttribute("usuario_logueado");
         request.setAttribute("usuario", usuario);
 
@@ -138,4 +146,15 @@ public class regRutVuelo extends HttpServlet {
         request.setAttribute("exito", exitoMsg);
         request.getRequestDispatcher("/WEB-INF/vuelo/regRutaVuelo.jsp").forward(request, response);
     }
+    
+    public static EstadoSesion getEstado(HttpServletRequest request) {
+		return (EstadoSesion) request.getSession().getAttribute("estado_sesion");
+	}
+    
+    public static void initSession(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		if(session.getAttribute("estado_sesion") == null) {
+			session.setAttribute("estado_sesion", EstadoSesion.NO_LOGIN);
+		}
+	}
 }

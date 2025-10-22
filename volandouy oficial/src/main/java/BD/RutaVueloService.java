@@ -40,6 +40,10 @@ public class RutaVueloService {
 	    try {
 	        em.getTransaction().begin();
 	        List<Ruta> rutas = em.createQuery("from Ruta", Ruta.class).getResultList();
+	        // Inicializar la colección aerolineas de cada ruta
+	        for (Ruta r : rutas) {
+	            r.getAerolineas().size(); // fuerza la carga de la colección
+	        }
 	        em.getTransaction().commit();
 
 	        return rutas.stream()
@@ -108,6 +112,10 @@ public class RutaVueloService {
 		try {
 			em.getTransaction().begin();
 			Ruta ruta = em.find(Ruta.class, idRuta);
+			// Inicializar la colección aerolineas antes de cerrar el EntityManager
+			if (ruta != null) {
+				ruta.getAerolineas().size();
+			}
 			em.getTransaction().commit();
 			return ruta;
 		} catch (RuntimeException ex) {

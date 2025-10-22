@@ -99,9 +99,7 @@ public class Home extends HttpServlet {
 	@Override
 	public void init() throws ServletException {
 		super.init();
-		this.sistema = (ISistema) getServletContext().getAttribute("sistema");
-	     if (this.sistema == null) {
-	        throw new ServletException("El sistema no fue inicializado por InicioServlet.");
-	    }
+		ISistema sistema = new Sistema();
+		getServletContext().setAttribute("sistema", sistema);
 	}
 }
