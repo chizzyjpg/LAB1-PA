@@ -24,6 +24,8 @@
                        if (errorMsg != null) { %>
                         <div class="alert alert-danger"><%= errorMsg %></div>
                     <% } %>
+                       <!-- Mensaje de error cliente-side (contrase�as no coinciden) -->
+                       <div id="clientError" class="alert alert-danger" style="display:none;"></div>
                         <form class="registro-form" action="${pageContext.request.contextPath}/altaUsuario" method="post" id="registroForm" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="userType" class="form-label">Tipo de Usuario</label>
@@ -56,8 +58,8 @@
                                 <input type="file" accept="image/*" id="avatarFile" class="form-control form-control-sm" name="avatarFile" />
                                 
                             </div>
+                            <!-- Campos especificos para Cliente -->
                             
-                            <!-- Campos especÃ­ficos para Cliente -->
                             <div id="clienteFields" style="display:none;">
                                 <div class="mb-3">
                                     <label for="nombre" class="form-label">Nombre</label>
@@ -89,7 +91,7 @@
                                 </div>
                             </div>
                             
-                            <!-- Campos especÃ­ficos para AerolÃ­nea -->
+                            <!-- Campos especificos para Aerolinea -->
                             <div id="aerolineaFields" style="display:none;">
                                 <div class="mb-3">
                                     <label for="nombreAerolinea" class="form-label">Nombre de la Aerolinea</label>
@@ -136,6 +138,37 @@
             document.getElementById('clienteFields').style.display = (tipo === 'Cliente') ? 'block' : 'none';
             document.getElementById('aerolineaFields').style.display = (tipo === 'Aerolinea') ? 'block' : 'none';
         };
+
+        // Validación cliente-side: confirmar que contraseña y confirmación coincidan
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.getElementById('registroForm');
+            var pwd = document.getElementById('password');
+            var pwd2 = document.getElementById('confirmPassword');
+            var clientError = document.getElementById('clientError');
+
+            function checkPasswords() {
+                if (!pwd || !pwd2) return true;
+                if (pwd.value !== pwd2.value) {
+                    clientError.textContent = 'Las contraseñas no coinciden. Por favor ingresa la misma contraseña en ambos campos.';
+                    clientError.style.display = 'block';
+                    return false;
+                }
+                clientError.style.display = 'none';
+                return true;
+            }
+
+            // Comprobar al enviar
+            form.addEventListener('submit', function(e) {
+                if (!checkPasswords()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+
+            // Comprobación en tiempo real para mejor experiencia
+            pwd.addEventListener('input', checkPasswords);
+            pwd2.addEventListener('input', checkPasswords);
+        });
     </script>
 
     </body>
