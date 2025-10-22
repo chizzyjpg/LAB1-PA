@@ -1,6 +1,5 @@
 package uy.volando.web;
 
-
 import Logica.DataAerolinea;
 import Logica.DataPaquete;
 import Logica.DataRuta;

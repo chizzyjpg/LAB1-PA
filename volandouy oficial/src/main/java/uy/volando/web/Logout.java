@@ -1,6 +1,5 @@
 package uy.volando.web;
 
-
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,6 +23,7 @@ public class Logout extends HttpServlet {
   public Logout() {
     super();
   }
+
   /**
    * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
    * methods.

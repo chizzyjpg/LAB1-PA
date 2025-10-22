@@ -137,7 +137,6 @@ public class Perfil extends HttpServlet {
     request.getRequestDispatcher("/WEB-INF/perfil/perfil.jsp").forward(request, response);
   }
 
-  
   /**
    * Handles the HTTP POST method.
    */
@@ -241,14 +240,14 @@ public class Perfil extends HttpServlet {
       // hace ISistema)
       if (wantsPwdChange) {
         if (pwdCurrent.isBlank()) {
-          throw new IllegalArgumentException("Ingresá tu contraseña actual.");          
+          throw new IllegalArgumentException("Ingresá tu contraseña actual.");
         }
         if (pwdNew.length() < 3) {
           throw new IllegalArgumentException(
-              "La nueva contraseña debe tener al menos 3 caracteres.");          
+              "La nueva contraseña debe tener al menos 3 caracteres.");
         }
         if (!pwdNew.equals(pwdNew2)) {
-          throw new IllegalArgumentException("Las contraseñas no coinciden.");          
+          throw new IllegalArgumentException("Las contraseñas no coinciden.");
         }
         if (pwdNew.equals(pwdCurrent)) {
           throw new IllegalArgumentException("La nueva contraseña debe ser diferente a la actual.");

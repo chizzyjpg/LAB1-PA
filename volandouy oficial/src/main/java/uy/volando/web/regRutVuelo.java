@@ -1,6 +1,5 @@
 package uy.volando.web;
 
-
 import Logica.DataCategoria;
 import Logica.DataCiudad;
 import Logica.DataRuta;
@@ -119,7 +118,7 @@ public class regRutVuelo extends HttpServlet {
       recargarListasYError(request, response, ex.getMessage());
     }
   }
-  
+
   /**
    * Recarga las listas de ciudades y categorías, y muestra un mensaje de error.
    * 

@@ -40,7 +40,6 @@ public class Home extends HttpServlet {
     }
   }
 
-  
   /**
    * Devuelve el estado de la sesión.
    * 
@@ -56,25 +55,25 @@ public class Home extends HttpServlet {
     EstadoSesion estado = getEstado(req);
     System.out.println("[HOME] Estado de sesión: " + estado);
     switch (estado) {
-      case NO_LOGIN:
-        System.out.println("[HOME] Estado NO_LOGIN, mostrando iniciar.jsp");
-        // hace que se ejecute el jsp sin cambiar la url
-        req.getRequestDispatcher("/WEB-INF/home/iniciar.jsp").forward(req, resp);
-        break;
-      case LOGIN_INCORRECTO:
-        System.out.println("[HOME] Estado LOGIN_INCORRECTO, mostrando iniciar.jsp con error");
-        req.setAttribute("error", "Login o contraseña incorrectos");
-        req.getRequestDispatcher("/WEB-INF/home/iniciar.jsp").forward(req, resp);
-        break;
-      case LOGIN_CORRECTO:
-        System.out.println("[HOME] Estado LOGIN_CORRECTO, mostrando iniciado.jsp");
-        // hace que se ejecute el jsp sin cambiar la url
-        req.getRequestDispatcher("/WEB-INF/home/iniciado.jsp").forward(req, resp);
-        break;
-      default:
-        System.out.println("[HOME] Estado inválido, enviando error 500");
-        // debería ser imposible llegar acá
-        resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Estado de sesión inválido");
+    case NO_LOGIN:
+      System.out.println("[HOME] Estado NO_LOGIN, mostrando iniciar.jsp");
+      // hace que se ejecute el jsp sin cambiar la url
+      req.getRequestDispatcher("/WEB-INF/home/iniciar.jsp").forward(req, resp);
+      break;
+    case LOGIN_INCORRECTO:
+      System.out.println("[HOME] Estado LOGIN_INCORRECTO, mostrando iniciar.jsp con error");
+      req.setAttribute("error", "Login o contraseña incorrectos");
+      req.getRequestDispatcher("/WEB-INF/home/iniciar.jsp").forward(req, resp);
+      break;
+    case LOGIN_CORRECTO:
+      System.out.println("[HOME] Estado LOGIN_CORRECTO, mostrando iniciado.jsp");
+      // hace que se ejecute el jsp sin cambiar la url
+      req.getRequestDispatcher("/WEB-INF/home/iniciado.jsp").forward(req, resp);
+      break;
+    default:
+      System.out.println("[HOME] Estado inválido, enviando error 500");
+      // debería ser imposible llegar acá
+      resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Estado de sesión inválido");
     }
   }
 
