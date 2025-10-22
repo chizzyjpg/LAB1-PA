@@ -69,7 +69,7 @@
                    <input type="hidden" name="fltRuta" value="<%= selRuta %>">
                    <input type="hidden" name="codigoVuelo" value="<%= v.getNombre() %>">
                    <button type="submit" class="list-group-item list-group-item-action <%= v.getNombre().equals(selVuelo) ? "active" : "" %>">
-                     <%= v.getNombre() %> - (<%= v.getFecha() %>)
+                     <%= v.getNombre() %> - <%= v.getDRuta() != null ? v.getDRuta().getCiudadOrigen().getNombre() : "?" %> → <%= v.getDRuta() != null ? v.getDRuta().getCiudadDestino().getNombre() : "?" %> (<%= v.getFecha() %>)
                    </button>
                  </form>
         <%     }

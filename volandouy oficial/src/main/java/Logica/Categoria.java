@@ -13,7 +13,7 @@ public class Categoria{
 	private String nombre;
 
 	@OneToMany(mappedBy = "categoria")
-	private List<Ruta> rutas; // NOPMD - used by JPA
+	private List<Ruta> rutas;
 	
 	public Categoria(){}
 	
