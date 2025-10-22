@@ -2,14 +2,20 @@ package uy.volando.web;
 
 import java.io.IOException;
 import java.util.List;
+
+import Logica.DataAerolinea;
+import Logica.DataCliente;
+import Logica.DataReserva;
+import Logica.DataRuta;
+import Logica.DataVueloEspecifico;
+import Logica.EstadoRuta;
+import Logica.ISistema;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Servlet implementation class consultaVuelo.
