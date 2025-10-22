@@ -11,7 +11,7 @@
     <body class="registro-page">
     <nav class="navbar navbar-dark bg-dark fixed-top navbar-compact">
         <div class="container">
-        <a class="navbar-brand fw-bold" href="home.html">Volando.uy</a>
+        <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">Volando.uy</a>
         </div>
     </nav>
     <main class="portada d-flex align-items-start py-5">
@@ -24,8 +24,7 @@
                        if (errorMsg != null) { %>
                         <div class="alert alert-danger"><%= errorMsg %></div>
                     <% } %>
-                       <!-- Mensaje de error cliente-side (contraseñas no coinciden) -->
-                       <div id="clientError" class="alert alert-danger" style="display:none;"></div>
+                    	 <div id="clientError" class="alert alert-danger" style="display:none;"></div>
                         <form class="registro-form" action="${pageContext.request.contextPath}/altaUsuario" method="post" id="registroForm" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="userType" class="form-label">Tipo de Usuario</label>
@@ -46,11 +45,11 @@
                                 <input type="email" class="form-control" id="email" name="email" required>
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="form-label">Contraseña</label>
+                                <label for="password" class="form-label">Contraseï¿½a</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
                             <div class="mb-3">
-                                <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                                <label for="confirmPassword" class="form-label">Confirmar Contraseï¿½a</label>
                                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                             </div>
                             <div class="mb-3">
@@ -91,7 +90,6 @@
                                 </div>
                             </div>
                             
-                            <!-- Campos especificos para Aerolinea -->
                             <div id="aerolineaFields" style="display:none;">
                                 <div class="mb-3">
                                     <label for="nombreAerolinea" class="form-label">Nombre de la Aerolinea</label>
@@ -138,8 +136,6 @@
             document.getElementById('clienteFields').style.display = (tipo === 'Cliente') ? 'block' : 'none';
             document.getElementById('aerolineaFields').style.display = (tipo === 'Aerolinea') ? 'block' : 'none';
         };
-
-        // ValidaciÃ³n cliente-side: confirmar que contraseÃ±a y confirmaciÃ³n coincidan
         document.addEventListener('DOMContentLoaded', function() {
             var form = document.getElementById('registroForm');
             var pwd = document.getElementById('password');
@@ -165,7 +161,7 @@
                 }
             });
 
-            // ComprobaciÃ³n en tiempo real para mejor experiencia
+            // Comprobacion en tiempo real para mejor experiencia
             pwd.addEventListener('input', checkPasswords);
             pwd2.addEventListener('input', checkPasswords);
         });

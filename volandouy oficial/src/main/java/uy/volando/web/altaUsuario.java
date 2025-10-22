@@ -89,11 +89,10 @@ public class altaUsuario extends HttpServlet {
 	                    }
 	                    DataAerolinea aerolinea = new DataAerolinea(nombreAerolinea, nickname, email, password, descripcion, sitioWeb);
 	                    sistema.altaAerolinea(aerolinea);
-	                    
-	                    if (avatarBytes != null && avatarBytes.length > 0) {
-	                        PerfilAerolineaUpdate perfil = new PerfilAerolineaUpdate(nickname, email, nombreAerolinea, descripcion, sitioWeb, avatarBytes, false);
-	                        sistema.actualizarPerfilAerolinea(perfil);
-	                    }
+                        if (avatarBytes != null && avatarBytes.length > 0) {
+                            PerfilAerolineaUpdate perfil = new PerfilAerolineaUpdate(nickname, email, nombreAerolinea, descripcion, sitioWeb, avatarBytes, false);
+                            sistema.actualizarPerfilAerolinea(perfil);
+                        }
 	                    exito = true;
 	                    break;
 	                }
