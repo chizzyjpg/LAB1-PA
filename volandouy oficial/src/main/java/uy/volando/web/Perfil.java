@@ -33,10 +33,19 @@ public class Perfil extends HttpServlet {
     }
   }
 
+  /**
+   * Constructor of the object.
+   * 
+   */
+  
   public Perfil() {
     super();
   }
 
+  /**
+   * Inicializa el estado de sesión si no está definido.
+   * 
+   */ 
 
   public static void initSession(HttpServletRequest request) {
     HttpSession session = request.getSession();
@@ -45,16 +54,23 @@ public class Perfil extends HttpServlet {
     }
   }
 
+  /**
+   * Inicializa el estado de sesión si no está definido.
+   * 
+   */
+  
 
   public static EstadoSesion getEstado(HttpServletRequest request) {
     return (EstadoSesion) request.getSession().getAttribute("estado_sesion");
   }
 
+  /**
+   * Handles the HTTP GET method.
+   */  
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-    initSession(request);
     if (getEstado(request) != EstadoSesion.LOGIN_CORRECTO) {
       request.getRequestDispatcher("/WEB-INF/home/iniciar.jsp").forward(request, response);
       return;
