@@ -13,6 +13,7 @@ public final class ManejadorCategoria{
 	
 	private ManejadorCategoria() {}
 	
+	private static CategoriaService service = new CategoriaService();
 	
 	//////// DTO -> ENTIDAD
 	
@@ -20,13 +21,21 @@ public final class ManejadorCategoria{
 		Objects.requireNonNull(dto, "DataCategoria no puede ser null"); // Valida que dto no sea null; si lo es, lanza NullPointerException con mensaje.
 		Categoria c = new Categoria (dto.getNombre());
 		try {
-		    new CategoriaService().crearCategoria(c);
+		    service.crearCategoria(c);
 		    JOptionPane.showMessageDialog(null, "Se insertó correctamente");
 		} catch (Exception ex) {
 		    JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
 		}
 		return c;
 		}
+	
+	///////////// Sobre carga con servicio inyectado (para tests)
+	public static Categoria toEntity(DataCategoria dto, CategoriaService svc) {
+        Objects.requireNonNull(dto, "DataCategoria no puede ser null");
+        Categoria c = new Categoria(dto.getNombre());
+        (svc == null ? service : svc).crearCategoria(c);
+        return c;
+    }
 	///// ENITIDAD -> DTO
 	
 	public static DataCategoria toData (Categoria c) {
@@ -37,14 +46,22 @@ public final class ManejadorCategoria{
 	// HELPERS
 		
 	public static List<Categoria> toEntities(List<? extends DataCategoria> dtos) {  // Convierte una lista de DTOs a entidades.
-		return dtos.stream().map(ManejadorCategoria::toEntity).collect(Collectors.toList()); 
+		return dtos.stream()
+                .peek(Objects::requireNonNull)
+                .map(d -> new Categoria(d.getNombre()))
+                .collect(Collectors.toList());
 	        //return dtos.stream() Convierte la lista a stream… // .map(ManejadorUsuario::toEntity aplica toEntity a cada elemento (method reference)… // .collect(Collectors.toList()); // y vuelve a materializar una List.
 		}
 
-	public static List<DataCategoria> toDTOs(List<? extends Categoria> users) {// Convierte una lista de entidades a DTOs.
-		return users.stream().map(ManejadorCategoria::toData).collect(Collectors.toList());
-	        //return user.stream() Stream sobre la lista de usuarios… // .map(ManejadorUsuario::toDTO mapea cada entidad a su DTO… // .collect(Collectors.toList y colecta en una List.
-		}
+	 public static List<DataCategoria> toDTOs(List<? extends Categoria> cats) {
+	        return cats.stream()
+	                   .peek(Objects::requireNonNull)
+	                   .map(ManejadorCategoria::toData)
+	                   .collect(Collectors.toList());
+	    }
 	
+	static void setServiceForTests(CategoriaService s) {
+	    service = (s == null) ? new CategoriaService() : s;
+	  }
 
 }

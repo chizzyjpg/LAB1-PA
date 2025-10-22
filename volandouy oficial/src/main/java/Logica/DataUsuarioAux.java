@@ -5,7 +5,6 @@ public class DataUsuarioAux extends DataUsuario {
 
     public DataUsuarioAux(String nombre, String nickname, String email, String contra) {
         super(nombre, nickname, email, contra);
-        // default type when created from raw fields
         this.tipoUsuario = "Usuario";
     }
 

@@ -46,23 +46,23 @@
         <a href="${pageContext.request.contextPath}/listado-usuarios"
            class="list-group-item list-group-item-action">Usuario</a>
 
-        <a href="${pageContext.request.contextPath}/consultaRutasVuelo.jsp"
+        <a href="${pageContext.request.contextPath}/consultaRutaVuelo"
            class="list-group-item list-group-item-action">Ruta de Vuelo</a>
 
-        <a href="${pageContext.request.contextPath}/consultaVuelo.jsp"
+        <a href="${pageContext.request.contextPath}/consultaVuelo"
            class="list-group-item list-group-item-action">Vuelo</a>
 
-        <a href="${pageContext.request.contextPath}/consultaPaqRutasVuelo.jsp"
+        <a href="${pageContext.request.contextPath}/consultaPaqRutasVuelo"
            class="list-group-item list-group-item-action">Paquete de Rutas de Vuelo</a>
 
 
         <c:if test="${isCliente}">
-          <a href="${pageContext.request.contextPath}/consultaReservas.jsp"
+          <a href="${pageContext.request.contextPath}/consultaReservaVuelo"
              class="list-group-item list-group-item-action">Mis Reservas de Vuelo</a>
         </c:if>
 
         <c:if test="${isAerolinea}">
-          <a href="${pageContext.request.contextPath}/consultaReservas.jsp"
+          <a href="${pageContext.request.contextPath}/consultaReservaVuelo"
              class="list-group-item list-group-item-action">Reservas de Nuestros Vuelos</a>
         </c:if>
       </div>
@@ -81,7 +81,7 @@
       <c:if test="${isCliente}">
         <h6 class="text-uppercase text-muted mb-3">Reserva / Compra</h6>
         <div class="list-group list-group-flush">
-          <a href="${pageContext.request.contextPath}/reservarVuelo.jsp"
+          <a href="${pageContext.request.contextPath}/reservaVuelo"
              class="list-group-item list-group-item-action">Reservar Vuelo</a>
           <a href="${pageContext.request.contextPath}/compraPaquete"
              class="list-group-item list-group-item-action">Comprar Paquete</a>
