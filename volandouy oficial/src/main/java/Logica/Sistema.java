@@ -269,42 +269,44 @@ public class Sistema implements ISistema {
 
     usuarioService.actualizarUsuario(aerolinea);
   }
-
+  
   @Override
   public DataAerolinea actualizarPerfilAerolinea(PerfilAerolineaUpdate upd) {
-    if (upd == null)
-      throw new IllegalArgumentException("Datos de actualización nulos");
+    if (upd == null) {
+    	throw new IllegalArgumentException("Datos de actualización nulos");
+    }
+
     String key = canonical(upd.getNickname());
-    Aerolinea aerolinea = usuarioService.obtenerAerolineaPorNickname(key);
-    if (aerolinea == null)
-      throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+    Aerolinea existente = usuarioService.obtenerAerolineaPorNickname(key);
+    if (existente == null) {
+    	throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+    }
 
-    // Validar que NO se cambie email ni nickname
-    String emailActual = aerolinea.getEmail();
+    // email inmutable
     String emailNuevo = upd.getEmail();
-    if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
-      throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
+    if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(existente.getEmail()))) {
+    	throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
     }
 
-    // Actualizar SOLO campos básicos permitidos
-    aerolinea.setNombre(upd.getNombre());
-    aerolinea.setDescGeneral(upd.getDescGeneral());
-    aerolinea.setLinkWeb(upd.getSitioWeb());
+    // "delta" con solo lo que quiero cambiar
+    Aerolinea delta = new Aerolinea();
+    delta.setNickname(key);
+    delta.setNombre(upd.getNombre());
+    delta.setLinkWeb(upd.getSitioWeb());
+    delta.setDescGeneral(upd.getDescGeneral());
+    delta.setEmail(existente.getEmail());
 
-    // Avatar
-    if (upd.isClearAvatar()) {
-      aerolinea.setAvatar(null);
-    } else if (upd.getAvatar() != null) {
-      aerolinea.setAvatar(Arrays.copyOf(upd.getAvatar(), upd.getAvatar().length));
+    // avatar: SOLO si hay archivo nuevo; si no, dejar null para "mantener" en el service
+    if (upd.getAvatar() != null) {
+    	delta.setAvatar(upd.getAvatar());
     }
 
-    usuarioService.actualizarUsuario(aerolinea);
+    usuarioService.actualizarUsuarioAvatar(delta, upd.isClearAvatar());
 
-    DataUsuario usuario = usuarioService.verInfoUsuario(upd.getNickname());
-    return usuario instanceof DataAerolinea ? (DataAerolinea) usuario : null; // Imposible de llegar
-                                                                              // con JUnit, super
-                                                                              // defensivo
+    DataUsuario dto = usuarioService.verInfoUsuario(upd.getNickname());
+    return (dto instanceof DataAerolinea) ? (DataAerolinea) dto : null;
   }
+
 
   @Override
   public void cambiarPassword(String nickname, String pwdCurrent, String pwdNew) {
