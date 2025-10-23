@@ -90,6 +90,14 @@ public class consultaRutaVuelo extends HttpServlet {
             ruta.getNombre());
         request.setAttribute("rutaSeleccionada", ruta);
         request.setAttribute("vuelos", vuelos);
+        // Si se seleccionó un vuelo específico, buscarlo y mostrar detalles
+        String vueloSel = request.getParameter("vuelo");
+        if (vueloSel != null && !vueloSel.isEmpty()) {
+          DataVueloEspecifico vueloSeleccionado = vuelos.stream()
+            .filter(v -> v.getNombre().equals(vueloSel))
+            .findFirst().orElse(null);
+          request.setAttribute("vueloSeleccionado", vueloSeleccionado);
+        }
       }
     }
     request.getRequestDispatcher("/WEB-INF/vuelo/consultaRutaVuelo.jsp").forward(request, response);
