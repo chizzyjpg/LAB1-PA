@@ -202,32 +202,45 @@ public class Sistema implements ISistema {
   public DataCliente actualizarPerfilCliente(PerfilClienteUpdate upd) {
     if (upd == null)
       throw new IllegalArgumentException("Datos de actualización nulos");
-    String key = canonical(upd.getNickname());
-    Cliente cliente = usuarioService.obtenerClientePorNickname(key);
 
-    if (cliente == null)
+    // Verifico existencia y email inmutable contra el actual
+    String key = canonical(upd.getNickname());
+    Cliente existente = usuarioService.obtenerClientePorNickname(key);
+    if (existente == null)
       throw new IllegalArgumentException("No existe un cliente con ese nickname");
 
-    String emailActual = cliente.getEmail();
-    String emailNuevo = upd.getEmail();
-
+    String emailActual = existente.getEmail();
+    String emailNuevo  = upd.getEmail();
     if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
       throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
     }
 
-    cliente.setNombre(upd.getNombre());
-    cliente.setApellido(upd.getApellido());
-    cliente.setNacionalidad(upd.getNacionalidad());
-    cliente.setTipoDocumento(upd.getTipoDocumento());
-    cliente.setNumDocumento(upd.getNumDocumento());
-    cliente.setFechaNac(copia(upd.getFechaNac()));
-    cliente.setAvatar(upd.getAvatar());
+    // Construyo un "delta" con los campos a actualizar
+    Cliente delta = new Cliente();
+    delta.setNickname(key);                      // PK para localizar managed en el service
+    delta.setNombre(upd.getNombre());
+    delta.setApellido(upd.getApellido());
+    delta.setNacionalidad(upd.getNacionalidad());
+    delta.setTipoDocumento(upd.getTipoDocumento());
+    delta.setNumDocumento(upd.getNumDocumento());
+    delta.setFechaNac(copia(upd.getFechaNac()));
+    delta.setEmail(emailActual);                 // se conserva el email
 
-    usuarioService.actualizarUsuario(cliente);
-    DataUsuario usuario = usuarioService.verInfoUsuario(upd.getNickname());
-    return usuario instanceof DataCliente ? (DataCliente) usuario : null; // Imposible de llegar con
-                                                                          // JUnit, super defensivo
+    // Avatar: SOLO si hay archivo nuevo; si no, lo dejamos NULL para "mantener"
+    if (upd.getAvatar() != null) {
+      delta.setAvatar(upd.getAvatar());
+    }
+
+    // El service debe cargar la entidad managed y aplicar:
+    // clear -> null, nuevoAvatar -> reemplazar, else -> mantener
+    usuarioService.actualizarUsuarioAvatar(delta,upd.isClearAvatar());
+
+    // Devolver DTO fresco
+    DataUsuario dto = usuarioService.verInfoUsuario(upd.getNickname());
+    return (dto instanceof DataCliente) ? (DataCliente) dto : null;// Imposible de llegar con
+    															   // JUnit, super defensivo
   }
+
 
   @Override
   public void modificarAerolinea(String nickname, DataAerolinea nuevos) {
@@ -256,42 +269,44 @@ public class Sistema implements ISistema {
 
     usuarioService.actualizarUsuario(aerolinea);
   }
-
+  
   @Override
   public DataAerolinea actualizarPerfilAerolinea(PerfilAerolineaUpdate upd) {
-    if (upd == null)
-      throw new IllegalArgumentException("Datos de actualización nulos");
+    if (upd == null) {
+    	throw new IllegalArgumentException("Datos de actualización nulos");
+    }
+
     String key = canonical(upd.getNickname());
-    Aerolinea aerolinea = usuarioService.obtenerAerolineaPorNickname(key);
-    if (aerolinea == null)
-      throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+    Aerolinea existente = usuarioService.obtenerAerolineaPorNickname(key);
+    if (existente == null) {
+    	throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+    }
 
-    // Validar que NO se cambie email ni nickname
-    String emailActual = aerolinea.getEmail();
+    // email inmutable
     String emailNuevo = upd.getEmail();
-    if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(emailActual))) {
-      throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
+    if (emailNuevo != null && !canonical(emailNuevo).equals(canonical(existente.getEmail()))) {
+    	throw new IllegalArgumentException("No se permite modificar el correo electrónico.");
     }
 
-    // Actualizar SOLO campos básicos permitidos
-    aerolinea.setNombre(upd.getNombre());
-    aerolinea.setDescGeneral(upd.getDescGeneral());
-    aerolinea.setLinkWeb(upd.getSitioWeb());
+    // "delta" con solo lo que quiero cambiar
+    Aerolinea delta = new Aerolinea();
+    delta.setNickname(key);
+    delta.setNombre(upd.getNombre());
+    delta.setLinkWeb(upd.getSitioWeb());
+    delta.setDescGeneral(upd.getDescGeneral());
+    delta.setEmail(existente.getEmail());
 
-    // Avatar
-    if (upd.isClearAvatar()) {
-      aerolinea.setAvatar(null);
-    } else if (upd.getAvatar() != null) {
-      aerolinea.setAvatar(Arrays.copyOf(upd.getAvatar(), upd.getAvatar().length));
+    // avatar: SOLO si hay archivo nuevo; si no, dejar null para "mantener" en el service
+    if (upd.getAvatar() != null) {
+    	delta.setAvatar(upd.getAvatar());
     }
 
-    usuarioService.actualizarUsuario(aerolinea);
+    usuarioService.actualizarUsuarioAvatar(delta, upd.isClearAvatar());
 
-    DataUsuario usuario = usuarioService.verInfoUsuario(upd.getNickname());
-    return usuario instanceof DataAerolinea ? (DataAerolinea) usuario : null; // Imposible de llegar
-                                                                              // con JUnit, super
-                                                                              // defensivo
+    DataUsuario dto = usuarioService.verInfoUsuario(upd.getNickname());
+    return (dto instanceof DataAerolinea) ? (DataAerolinea) dto : null;
   }
+
 
   @Override
   public void cambiarPassword(String nickname, String pwdCurrent, String pwdNew) {

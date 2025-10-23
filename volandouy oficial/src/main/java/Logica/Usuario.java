@@ -1,5 +1,6 @@
 package Logica;
 
+import org.hibernate.annotations.DynamicUpdate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -10,6 +11,7 @@ import jakarta.persistence.Table;
 /**
  * Clase que representa a un usuario en el sistema.
  */
+@DynamicUpdate
 @Entity
 @Table(name = "Usuario")
 @Inheritance(strategy = InheritanceType.JOINED)

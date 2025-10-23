@@ -173,12 +173,26 @@ public class Perfil extends HttpServlet {
     final String nickname = req.getParameter("nickname"); 
     final String email = req.getParameter("email");
 
-    // Imagen de perfil 
+ // Imagen de perfil (3 estados: borrar | reemplazar | mantener)
     byte[] avatarBytes = null;
-    boolean clearPhoto = "1".equals(req.getParameter("clearPhoto"));
+    boolean clearPhoto = false;
     try {
-      Part avatarPart = req.getPart("avatarFile");
-      if (!clearPhoto && avatarPart != null && avatarPart.getSize() > 0) {
+      // Acepta "1", "true" o "on" como marcar borrado (checkbox/hidden)
+      String p = req.getParameter("clearPhoto");
+      clearPhoto = "1".equals(p) || "true".equalsIgnoreCase(p) || "on".equalsIgnoreCase(p);
+
+      Part avatarPart = null;
+      try {
+        avatarPart = req.getPart("avatarFile");
+      } catch (IllegalStateException ise) {
+        // request no es multipart o excedió límites; se re-lanza abajo como ServletException
+        throw ise;
+      }
+
+      boolean hayArchivoNuevo = (avatarPart != null && avatarPart.getSize() > 0);
+
+      // Solo leemos bytes si NO se pidió borrar y efectivamente vino un archivo nuevo
+      if (!clearPhoto && hayArchivoNuevo) {
         try (InputStream is = avatarPart.getInputStream()) {
           avatarBytes = is.readAllBytes();
         }
