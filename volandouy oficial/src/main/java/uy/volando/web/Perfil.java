@@ -106,7 +106,7 @@ public class Perfil extends HttpServlet {
       request.setAttribute("nombre", dc.getNombre());
       request.setAttribute("apellido", dc.getApellido());
 
-      // fechas (ISO para input date + bonita para vista)
+      // fechas
       Date fn = dc.getFechaNac();
       request.setAttribute("fechaNacimientoISO",
           fn != null ? new java.text.SimpleDateFormat("yyyy-MM-dd").format(fn) : "");
