@@ -172,21 +172,59 @@ public class UsuarioService {
   /**
    * Actualiza la información de un usuario en la base de datos.
    */
+  @Deprecated
   public void actualizarUsuario(Usuario usuario) {
-    EntityManager em = JPAUtil.getEntityManager();
-    try {
-      em.getTransaction().begin();
-      em.merge(usuario);
-      em.getTransaction().commit();
-    } catch (RuntimeException ex) {
-      if (em.getTransaction().isActive()) {
-        em.getTransaction().rollback();
-      }
-      throw ex;
-    } finally {
-      em.close();
-    }
+    // Delego al seguro, indicando que NO se debe borrar la foto
+    actualizarUsuarioAvatar(usuario, false);
   }
+  
+  public void actualizarUsuarioAvatar(Usuario usuario, boolean clearPhoto) {
+	  EntityManager em = JPAUtil.getEntityManager();
+	  try {
+	    em.getTransaction().begin();
+
+	    // Cargar la entidad MANAGED por clave primaria (nickname)
+	    Usuario managed = em.find(Usuario.class, usuario.getNickname());
+	    if (managed == null) {
+	      throw new IllegalArgumentException("No existe el usuario: " + usuario.getNickname());
+	    }
+
+	    // ------- Campos comunes de Usuario -------
+	    if (usuario.getNombre() != null) managed.setNombre(usuario.getNombre());
+	    if (usuario.getContrasenia() != null && !usuario.getContrasenia().isBlank())
+	      managed.setContrasenia(usuario.getContrasenia());
+
+	    // ------- Subtipo Cliente -------
+	    if (managed instanceof Cliente mCli && usuario instanceof Cliente uCli) {
+	      mCli.setApellido(uCli.getApellido());
+	      mCli.setFechaNac(uCli.getFechaNac());
+	      mCli.setNacionalidad(uCli.getNacionalidad());
+	      mCli.setNumDocumento(uCli.getNumDocumento());
+	      mCli.setTipoDocumento(uCli.getTipoDocumento());
+	    }
+	    
+	    if (managed instanceof Aerolinea mAe && usuario instanceof Aerolinea uAe) {
+		      mAe.setLinkWeb(uAe.getLinkWeb());
+		      mAe.setDescGeneral(uAe.getDescGeneral());
+		    }
+		    
+
+	    // ------- AVATAR: regla de 3 estados -------
+	    if (clearPhoto) {
+	      managed.setAvatar(null);                    // 1) BORRAR
+	    } else if (usuario.getAvatar() != null) {
+	      managed.setAvatar(usuario.getAvatar());     // 2) REEMPLAZAR
+	    } // 3) MANTENER: no tocar avatar
+
+	    // Nada de merge: la entidad es managed, JPA detecta cambios
+	    em.getTransaction().commit();
+	  } catch (RuntimeException ex) {
+	    if (em.getTransaction().isActive()) em.getTransaction().rollback();
+	    throw ex;
+	  } finally {
+	    em.close();
+	  }
+	}
 
   // ===============================
   // OBTENER POR NICK
@@ -399,7 +437,7 @@ public class UsuarioService {
     if (u == null) {
       return null;
     }
-    // ⚠ Solo para desarrollo: contraseña en texto plano
+    // Solo para desarrollo: contraseña en texto plano
     return passwordPlain.equals(u.getContrasenia()) ? u : null;
   }
 
@@ -407,4 +445,17 @@ public class UsuarioService {
   private static String canonical(String s) {
 	    return (s == null) ? null : s.trim().toLowerCase(Locale.ROOT);
   }
+  
+  //AVATAR ARREGLOS
+  	public Cliente findManagedClienteByNickname(String nick) {
+  		EntityManager em = JPAUtil.getEntityManager();
+  	  	return em.find(Cliente.class, nick);
+	}
+
+	public void flush() {
+		EntityManager em = JPAUtil.getEntityManager();
+		em.flush(); 
+		}
+
+  
 }
