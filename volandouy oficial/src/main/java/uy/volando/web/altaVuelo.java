@@ -109,6 +109,17 @@ public class altaVuelo extends HttpServlet {
       doGet(request, response);
       return;
     }
+    java.util.Calendar cal = java.util.Calendar.getInstance();
+    cal.set(java.util.Calendar.HOUR_OF_DAY, 0);
+    cal.set(java.util.Calendar.MINUTE, 0);
+    cal.set(java.util.Calendar.SECOND, 0);
+    cal.set(java.util.Calendar.MILLISECOND, 0);
+    java.util.Date startOfToday = cal.getTime();
+    if (fecha.before(startOfToday)) {
+        request.setAttribute("errorMsg", "La fecha no puede ser anterior a hoy.");
+        doGet(request, response);
+        return;
+    }
     int duracion, cantMaxTuristas, cantMaxEjecutivos;
     try {
       duracion = Integer.parseInt(duracionStr);

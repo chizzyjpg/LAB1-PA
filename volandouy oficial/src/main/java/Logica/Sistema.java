@@ -427,6 +427,18 @@ public class Sistema implements ISistema {
     if (ruta == null) {
       throw new IllegalArgumentException("No se encontró la Ruta con id: " + idRuta);
     }
+    if (datos.getFecha() == null) {
+      throw new IllegalArgumentException("La fecha del vuelo es obligatoria");
+    }
+    java.util.Calendar cal = java.util.Calendar.getInstance();
+    cal.set(java.util.Calendar.HOUR_OF_DAY, 0);
+    cal.set(java.util.Calendar.MINUTE, 0);
+    cal.set(java.util.Calendar.SECOND, 0);
+    cal.set(java.util.Calendar.MILLISECOND, 0);
+    java.util.Date startOfToday = cal.getTime();
+    if (datos.getFecha().before(startOfToday)) {
+        throw new IllegalArgumentException("La fecha del vuelo no puede ser anterior a hoy");
+    }
     // Inicializar las colecciones para evitar LazyInitializationException
     ruta.getAerolineas().size();
     ruta.getVuelosEspecificos().size();
