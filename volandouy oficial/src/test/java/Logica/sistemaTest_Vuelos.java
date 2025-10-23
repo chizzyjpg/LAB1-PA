@@ -85,7 +85,7 @@ public class sistemaTest_Vuelos {
       void registrarVuelo_ok_agregaVueloEnRuta() {
         int antes = ruta.getVuelosEspecificos().size();
 
-        DataVueloEspecifico datos = dataVuelo("UY999");
+        DataVueloEspecifico datos = new DataVueloEspecifico("UY999", hoyAlMediodia(), 0, 0, 0, null);
         sistema.registrarVuelo("jetair", "Montevideo - Buenos Aires", datos);
 
         int despues = ruta.getVuelosEspecificos().size();
@@ -95,6 +95,7 @@ public class sistemaTest_Vuelos {
             .anyMatch(v -> "UY999".equalsIgnoreCase(v.getNombre()));
         assertTrue(existe, "Debe existir el vuelo UY999 en la ruta");
       }
+
 
       // -------------
       // listarVuelos
@@ -251,6 +252,65 @@ public class sistemaTest_Vuelos {
 	  assertTrue(vuelos.isEmpty(), "Si el service devuelve null, debe retornar lista vacía");
 	}
 
+	@Test
+	void registrarVuelo_error_fechaNull() {
+	  DataVueloEspecifico datos = new DataVueloEspecifico("UY100", null, 0, 0, 0, null);
+	  var ex = assertThrows(IllegalArgumentException.class, () ->
+	      sistema.registrarVuelo("jetair", "Montevideo - Buenos Aires", datos));
+	  assertTrue(ex.getMessage().toLowerCase().contains("obligatoria"));
+	}
+
+	@Test
+	void registrarVuelo_error_fechaAnteriorAHoy() {
+	  // Fecha ayer al mediodía (está ANTES de startOfToday)
+	  Date ayer = diasDesdeHoy(-1);
+	  DataVueloEspecifico datos = new DataVueloEspecifico("UY101", ayer, 0, 0, 0, null);
+
+	  var ex = assertThrows(IllegalArgumentException.class, () ->
+	      sistema.registrarVuelo("jetair", "Montevideo - Buenos Aires", datos));
+	  assertTrue(ex.getMessage().toLowerCase().contains("anterior a hoy"));
+	}
+
+	@Test
+	void registrarVuelo_ok_fechaHoyOPosterior_agregaVuelo() {
+	  int antes = ruta.getVuelosEspecificos().size();
+
+	  // Fecha hoy (después del startOfToday)
+	  Date hoy = hoyAlMediodia();
+	  DataVueloEspecifico datos = new DataVueloEspecifico("UY102", hoy, 0, 0, 0, null);
+
+	  // Aseguramos colecciones no nulas para ejecutar los size() del método
+	  if (ruta.getAerolineas() == null) ruta.setAerolineas(new HashSet<>());
+	  if (ruta.getVuelosEspecificos() == null) ruta.setVuelosEspecificos(new HashSet<>());
+
+	  sistema.registrarVuelo("jetair", "Montevideo - Buenos Aires", datos);
+
+	  int despues = ruta.getVuelosEspecificos().size();
+	  assertEquals(antes + 1, despues, "Debe agregarse un vuelo a la ruta");
+	  assertTrue(ruta.getVuelosEspecificos().stream()
+	      .anyMatch(v -> "UY102".equalsIgnoreCase(v.getNombre())));
+	}
+
+	@Test
+	void registrarVuelo_ok_inicializaColecciones_y_toEntityEfecto() {
+	  // Dejamos explícitamente colecciones vacías para cubrir las llamadas a size()
+	  ruta.setAerolineas(new HashSet<>());
+	  ruta.setVuelosEspecificos(new HashSet<>());
+
+	  Date futura = diasDesdeHoy(3);
+	  DataVueloEspecifico datos = new DataVueloEspecifico("UY103", futura, 90, 10, 5, new Date());
+
+	  sistema.registrarVuelo("jetair", "Montevideo - Buenos Aires", datos);
+
+	  // Si toEntity + registrarVuelo funcionaron, el vuelo queda agregado
+	  assertTrue(ruta.getVuelosEspecificos().stream()
+	      .anyMatch(v -> "UY103".equalsIgnoreCase(v.getNombre())),
+	      "El vuelo UY103 debe existir en la ruta");
+	  // Y las colecciones no explotaron al hacer size()
+	  assertNotNull(ruta.getAerolineas());
+	  assertNotNull(ruta.getVuelosEspecificos());
+	}
+
 	
 
 
@@ -261,6 +321,27 @@ public class sistemaTest_Vuelos {
         DataVueloEspecifico d = new DataVueloEspecifico(codigo, null, 0, 0, 0, null);
         return d;
       }
+      
+   // === Helpers de fecha ===
+      private static Date hoyAlMediodia() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 12);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+      }
+
+      private static Date diasDesdeHoy(int dias) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 12); // después del startOfToday
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        cal.add(Calendar.DAY_OF_MONTH, dias);
+        return cal.getTime();
+      }
+
 
  	 // Fakes 
       
