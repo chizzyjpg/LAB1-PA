@@ -106,7 +106,7 @@ public class Perfil extends HttpServlet {
       request.setAttribute("nombre", dc.getNombre());
       request.setAttribute("apellido", dc.getApellido());
 
-      // fechas
+      // fechas (ISO para input date + bonita para vista)
       Date fn = dc.getFechaNac();
       request.setAttribute("fechaNacimientoISO",
           fn != null ? new java.text.SimpleDateFormat("yyyy-MM-dd").format(fn) : "");
@@ -170,10 +170,10 @@ public class Perfil extends HttpServlet {
 
     // Parámetros comunes
     final String tipo = req.getParameter("tipo"); // "DataCliente" | "DataAerolinea"
-    final String nickname = req.getParameter("nickname"); // PK lógica
+    final String nickname = req.getParameter("nickname"); 
     final String email = req.getParameter("email");
 
-    // Imagen de perfil (opcional)
+    // Imagen de perfil 
     byte[] avatarBytes = null;
     boolean clearPhoto = "1".equals(req.getParameter("clearPhoto"));
     try {
@@ -251,7 +251,7 @@ public class Perfil extends HttpServlet {
       }
 
       // Cambio de contraseña (validaciones mínimas de forma; la verificación real la
-      // hace ISistema)
+      // hace Sistema)
       if (wantsPwdChange) {
         if (pwdCurrent.isBlank()) {
           throw new IllegalArgumentException("Ingresá tu contraseña actual.");
@@ -272,7 +272,7 @@ public class Perfil extends HttpServlet {
       // Refrescar sesión y feedback
       req.getSession().setAttribute("flash_ok", "Perfil actualizado correctamente.");
 
-      // PRG para evitar reenvío de formularios
+      // para evitar reenvío de formularios
       resp.sendRedirect(req.getContextPath() + "/perfil");
 
     } catch (Exception ex) {
@@ -281,7 +281,7 @@ public class Perfil extends HttpServlet {
           : "Error al actualizar el perfil.";
       req.getSession().setAttribute("flash_error", msg);
 
-      // Redirige al GET del perfil (mostrará el flash)
+
       resp.sendRedirect(req.getContextPath() + "/perfil");
     }
   }
