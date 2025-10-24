@@ -264,7 +264,7 @@ public class sistemaTest_RutasVuelo {
       return l == null ? Collections.emptyList() : new ArrayList<>(l);
     }
 
-    @Override public void actualizarUsuario(Usuario u) {
+    @Override public void actualizarUsuario(Usuario u, boolean photo) {
       String k = u.getNickname().toLowerCase(Locale.ROOT);
       if (u instanceof Aerolinea a) aerolineas.put(k, a);
       if (u instanceof Cliente c)    clientes.put(k, c);

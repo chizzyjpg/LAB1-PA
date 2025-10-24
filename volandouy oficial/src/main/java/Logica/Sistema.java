@@ -195,7 +195,7 @@ public class Sistema implements ISistema {
     cliente.setNumDocumento(nuevos.getNumDocumento());
 
     // Persistir cambios en la base de datos usando el manejador
-    usuarioService.actualizarUsuario(cliente);
+    usuarioService.actualizarUsuario(cliente, false);
   }
 
   @Override
@@ -233,7 +233,7 @@ public class Sistema implements ISistema {
 
     // El service debe cargar la entidad managed y aplicar:
     // clear -> null, nuevoAvatar -> reemplazar, else -> mantener
-    usuarioService.actualizarUsuarioAvatar(delta,upd.isClearAvatar());
+    usuarioService.actualizarUsuario(delta,upd.isClearAvatar());
 
     // Devolver DTO fresco
     DataUsuario dto = usuarioService.verInfoUsuario(upd.getNickname());
@@ -267,7 +267,7 @@ public class Sistema implements ISistema {
     aerolinea.setDescGeneral(nuevos.getDescripcion());
     aerolinea.setLinkWeb(nuevos.getSitioWeb());
 
-    usuarioService.actualizarUsuario(aerolinea);
+    usuarioService.actualizarUsuario(aerolinea, false);
   }
   
   @Override
@@ -301,7 +301,7 @@ public class Sistema implements ISistema {
     	delta.setAvatar(upd.getAvatar());
     }
 
-    usuarioService.actualizarUsuarioAvatar(delta, upd.isClearAvatar());
+    usuarioService.actualizarUsuario(delta, upd.isClearAvatar());
 
     DataUsuario dto = usuarioService.verInfoUsuario(upd.getNickname());
     return (dto instanceof DataAerolinea) ? (DataAerolinea) dto : null;
@@ -324,7 +324,7 @@ public class Sistema implements ISistema {
 
     // Actualizar la contraseña (plana)
     u.setContrasenia(pwdNew);
-    usuarioService.actualizarUsuario(u);
+    usuarioService.actualizarUsuario(u, false);
   }
 
   // ======================

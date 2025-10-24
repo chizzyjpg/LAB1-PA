@@ -442,7 +442,7 @@ public class sistemaTest_Paquetes {
 	    }
 	    @Override public Usuario autenticarUsuario(String nick, String pass) { return autenticarPorNicknamePlano(nick, pass); }
 
-	    @Override public void actualizarUsuario(Usuario u) {
+	    @Override public void actualizarUsuario(Usuario u, boolean photo) {
 	      if (u instanceof Cliente c) clientes.put(c.getNickname().toLowerCase(), c);
 	      if (u instanceof Aerolinea a) aerolineas.put(a.getNickname().toLowerCase(), a);
 	    }

@@ -172,13 +172,14 @@ public class UsuarioService {
   /**
    * Actualiza la información de un usuario en la base de datos.
    */
-  @Deprecated
+  
+ /* @Deprecated
   public void actualizarUsuario(Usuario usuario) {
     // Delego al seguro, indicando que NO se debe borrar la foto
-    actualizarUsuarioAvatar(usuario, false);
-  }
+    actualizarUsuario(usuario, false);
+  }*/
   
-  public void actualizarUsuarioAvatar(Usuario usuario, boolean clearPhoto) {
+  public void actualizarUsuario(Usuario usuario, boolean clearPhoto) {
 	  EntityManager em = JPAUtil.getEntityManager();
 	  try {
 	    em.getTransaction().begin();
