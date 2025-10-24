@@ -102,7 +102,7 @@ public class sistemaTest_LoginYPassword {
 	  Cliente c = usuarioService.obtenerClientePorNickname("luko");
 	  byte[] avatar = new byte[] {1,2,3};
 	  c.setAvatar(avatar);
-	  usuarioService.actualizarUsuario(c);
+	  usuarioService.actualizarUsuario(c, false);
 	  assertArrayEquals(avatar, sistema.obtenerAvatar("luko"));
   }
   
@@ -164,7 +164,7 @@ public class sistemaTest_LoginYPassword {
     }
 
     @Override
-    public void actualizarUsuario(Usuario u) {
+    public void actualizarUsuario(Usuario u, boolean photo) {
       String k = u.getNickname().toLowerCase(Locale.ROOT);
       if (u instanceof Cliente c) clientes.put(k, c);
       else if (u instanceof Aerolinea a) aerolineas.put(k, a);
