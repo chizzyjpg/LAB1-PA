@@ -24,71 +24,136 @@
 
 <c:set var="isCliente"   value="${rol == 'Cliente'}" />
 <c:set var="isAerolinea" value="${rol == 'Aerolínea'}" />
-
-<aside class="col-lg-3 col-xl-2 d-none d-lg-block border-end bg-body-tertiary">
-  <nav class="sidebar position-sticky sticky-top">
-    <div class="p-3">
-
-      <c:if test="${isAerolinea}">
-        <h6 class="text-uppercase text-muted mb-3">Registros</h6>
-        <div class="list-group list-group-flush">
-          <a href="${pageContext.request.contextPath}/altaVuelo"
-             class="list-group-item list-group-item-action">Nuevo Vuelo</a>
-          <a href="${pageContext.request.contextPath}/regRutVuelo"
-             class="list-group-item list-group-item-action">Nueva Ruta de Vuelo</a>
-        </div>
-        <br/>
-      </c:if>
+<c:set var="isOffcanvas" value="${param.context == 'offcanvas' or requestScope.offcanvas == true}" />
 
 
-      <h6 class="text-uppercase text-muted mb-3">Consultas</h6>
-      <div class="list-group list-group-flush">
-        <a href="${pageContext.request.contextPath}/listado-usuarios"
-           class="list-group-item list-group-item-action">Usuario</a>
+<c:choose>
+  <c:when test="${!isOffcanvas}">
+	<aside class="col-lg-3 col-xl-2 d-none d-lg-block border-end bg-body-tertiary">
+	  <nav class="sidebar position-sticky sticky-top">
+	    <div class="p-3">
+	
+	      <c:if test="${isAerolinea}">
+	        <h6 class="text-uppercase text-muted mb-3">Registros</h6>
+	        <div class="list-group list-group-flush">
+	          <a href="${pageContext.request.contextPath}/altaVuelo"
+	             class="list-group-item list-group-item-action">Nuevo Vuelo</a>
+	          <a href="${pageContext.request.contextPath}/regRutVuelo"
+	             class="list-group-item list-group-item-action">Nueva Ruta de Vuelo</a>
+	        </div>
+	        <br/>
+	      </c:if>
+	
+	
+	      <h6 class="text-uppercase text-muted mb-3">Consultas</h6>
+	      <div class="list-group list-group-flush">
+	        <a href="${pageContext.request.contextPath}/listado-usuarios"
+	           class="list-group-item list-group-item-action">Usuario</a>
+	
+	        <a href="${pageContext.request.contextPath}/consultaRutaVuelo"
+	           class="list-group-item list-group-item-action">Ruta de Vuelo</a>
+	
+	        <a href="${pageContext.request.contextPath}/consultaVuelo"
+	           class="list-group-item list-group-item-action">Vuelo</a>
+	
+	        <a href="${pageContext.request.contextPath}/consultaPaqRutasVuelo"
+	           class="list-group-item list-group-item-action">Paquete de Rutas de Vuelo</a>
+	
+	
+	        <c:if test="${isCliente}">
+	          <a href="${pageContext.request.contextPath}/consultaReservaVuelo"
+	             class="list-group-item list-group-item-action">Mis Reservas de Vuelo</a>
+	        </c:if>
+	
+	        <c:if test="${isAerolinea}">
+	          <a href="${pageContext.request.contextPath}/consultaReservaVuelo"
+	             class="list-group-item list-group-item-action">Reservas de Nuestros Vuelos</a>
+	        </c:if>
+	      </div>
+	      <br/>
+	
+	
+	      <c:if test="${isCliente || isAerolinea}">
+	        <h6 class="text-uppercase text-muted mb-3">Modificaciones</h6>
+	        <div class="list-group list-group-flush mb-4">
+	          <a href="${pageContext.request.contextPath}/perfil"
+	             class="list-group-item list-group-item-action">Modificar mis datos</a>
+	        </div>
+	      </c:if>
+	
+	
+	      <c:if test="${isCliente}">
+	        <h6 class="text-uppercase text-muted mb-3">Reserva / Compra</h6>
+	        <div class="list-group list-group-flush">
+	          <a href="${pageContext.request.contextPath}/reservaVuelo"
+	             class="list-group-item list-group-item-action">Reservar Vuelo</a>
+	          <a href="${pageContext.request.contextPath}/compraPaquete"
+	             class="list-group-item list-group-item-action">Comprar Paquete</a>
+	        </div>
+	      </c:if>
+	
+	    </div>
+	  </nav>
+	</aside>
+</c:when>
 
-        <a href="${pageContext.request.contextPath}/consultaRutaVuelo"
-           class="list-group-item list-group-item-action">Ruta de Vuelo</a>
 
-        <a href="${pageContext.request.contextPath}/consultaVuelo"
-           class="list-group-item list-group-item-action">Vuelo</a>
-
-        <a href="${pageContext.request.contextPath}/consultaPaqRutasVuelo"
-           class="list-group-item list-group-item-action">Paquete de Rutas de Vuelo</a>
-
-
-        <c:if test="${isCliente}">
-          <a href="${pageContext.request.contextPath}/consultaReservaVuelo"
-             class="list-group-item list-group-item-action">Mis Reservas de Vuelo</a>
-        </c:if>
+  <c:otherwise>
+    <nav class="sidebar">
+      <div class="p-3">
 
         <c:if test="${isAerolinea}">
-          <a href="${pageContext.request.contextPath}/consultaReservaVuelo"
-             class="list-group-item list-group-item-action">Reservas de Nuestros Vuelos</a>
+          <h6 class="text-uppercase text-muted mb-3">Registros</h6>
+          <div class="list-group list-group-flush">
+            <a href="${pageContext.request.contextPath}/altaVuelo"
+               class="list-group-item list-group-item-action">Nuevo Vuelo</a>
+            <a href="${pageContext.request.contextPath}/regRutVuelo"
+               class="list-group-item list-group-item-action">Nueva Ruta de Vuelo</a>
+          </div>
+          <br/>
         </c:if>
-      </div>
-      <br/>
 
-
-      <c:if test="${isCliente || isAerolinea}">
-        <h6 class="text-uppercase text-muted mb-3">Modificaciones</h6>
-        <div class="list-group list-group-flush mb-4">
-          <a href="${pageContext.request.contextPath}/perfil"
-             class="list-group-item list-group-item-action">Modificar mis datos</a>
-        </div>
-      </c:if>
-
-
-      <c:if test="${isCliente}">
-        <h6 class="text-uppercase text-muted mb-3">Reserva / Compra</h6>
+        <h6 class="text-uppercase text-muted mb-3">Consultas</h6>
         <div class="list-group list-group-flush">
-          <a href="${pageContext.request.contextPath}/reservaVuelo"
-             class="list-group-item list-group-item-action">Reservar Vuelo</a>
-          <a href="${pageContext.request.contextPath}/compraPaquete"
-             class="list-group-item list-group-item-action">Comprar Paquete</a>
+          <a href="${pageContext.request.contextPath}/listado-usuarios"
+             class="list-group-item list-group-item-action">Usuario</a>
+          <a href="${pageContext.request.contextPath}/consultaRutaVuelo"
+             class="list-group-item list-group-item-action">Ruta de Vuelo</a>
+          <a href="${pageContext.request.contextPath}/consultaVuelo"
+             class="list-group-item list-group-item-action">Vuelo</a>
+          <a href="${pageContext.request.contextPath}/consultaPaqRutasVuelo"
+             class="list-group-item list-group-item-action">Paquete de Rutas de Vuelo</a>
+
+          <c:if test="${isCliente}">
+            <a href="${pageContext.request.contextPath}/consultaReservaVuelo"
+               class="list-group-item list-group-item-action">Mis Reservas de Vuelo</a>
+          </c:if>
+          <c:if test="${isAerolinea}">
+            <a href="${pageContext.request.contextPath}/consultaReservaVuelo"
+               class="list-group-item list-group-item-action">Reservas de Nuestros Vuelos</a>
+          </c:if>
         </div>
-      </c:if>
+        <br/>
 
+        <c:if test="${isCliente || isAerolinea}">
+          <h6 class="text-uppercase text-muted mb-3">Modificaciones</h6>
+          <div class="list-group list-group-flush mb-4">
+            <a href="${pageContext.request.contextPath}/perfil"
+               class="list-group-item list-group-item-action">Modificar mis datos</a>
+          </div>
+        </c:if>
 
-    </div>
-  </nav>
-</aside>
+        <c:if test="${isCliente}">
+          <h6 class="text-uppercase text-muted mb-3">Reserva / Compra</h6>
+          <div class="list-group list-group-flush">
+            <a href="${pageContext.request.contextPath}/reservaVuelo"
+               class="list-group-item list-group-item-action">Reservar Vuelo</a>
+            <a href="${pageContext.request.contextPath}/compraPaquete"
+               class="list-group-item list-group-item-action">Comprar Paquete</a>
+          </div>
+        </c:if>
+
+      </div>
+    </nav>
+  </c:otherwise>
+</c:choose>
