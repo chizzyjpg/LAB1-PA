@@ -3,6 +3,12 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-dark bg-dark sticky-top navbar-compact">
   <div class="container">
+  	<!-- Botón hamburguesa -->
+  	<button class="navbar-toggler me-2 d-lg-none" type="button"
+        data-bs-toggle="offcanvas" data-bs-target="#appSidebar"
+        aria-controls="appSidebar" aria-label="Abrir menú">
+  		<span class="navbar-toggler-icon"></span>
+	</button>
     <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">Volando.uy</a>
 
     <!-- Buscador centrado -->
@@ -76,3 +82,18 @@
     </div>
   </div>
 </nav>
+<!-- OFFCANVAS SIDEBAR (móvil) -->
+<div class="offcanvas offcanvas-start text-bg-white" tabindex="-1" id="appSidebar" aria-labelledby="appSidebarLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="appSidebarLabel">Menú</h5>
+    <button type="button" class="btn-close btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+  </div>
+  <div class="offcanvas-body p-0">
+  	<c:set var="offcanvas" value="true" scope="request"/>
+    <jsp:include page="/WEB-INF/template/sidebar.jsp">
+    	<jsp:param name="context" value="offcanvas"/>
+    </jsp:include>
+    <c:remove var="offcanvas" scope="request"/>
+  </div>
+</div>
+
