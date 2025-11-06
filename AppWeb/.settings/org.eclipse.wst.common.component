@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
             
     
-    <wb-module deploy-name="web-0.0.1-SNAPSHOT">
+    <wb-module deploy-name="volandouy-oficial">
                 
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
                 
@@ -9,16 +9,13 @@
                 
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
         <dependent-module archiveName="volandouy-oficial-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/volandouy oficial/volandouy oficial">
             <dependency-type>uses</dependency-type>
         </dependent-module>
                         
         
-        <property name="context-root" value="web"/>
-                        
-        
         <property name="java-output-path" value="/web/build/classes"/>
+        <property name="context-root" value="volandouy-oficial"/>
                     
     
     </wb-module>
