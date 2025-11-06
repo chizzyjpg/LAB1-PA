@@ -111,9 +111,7 @@
 <dependency>
   <groupId>volandouy.oficial</groupId>
   <artifactId>volandouy-oficial</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <scope>system</scope>
-  <systemPath>C:\Users\lucas\Documents\GitHub\LAB1-PA\AppWeb/src/main/webapp/WEB-INF/lib/volandouy-oficial.jar</systemPath>
+  <version>0.0.1-SNAPSHOT</version>
 </dependency>
 
  </dependencies>
