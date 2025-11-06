@@ -6,7 +6,7 @@
   <groupId>volandouy.oficial</groupId>
   <artifactId>volandouy-oficial</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging> <!-- 💡 clave -->
+  <packaging>jar</packaging> <!-- 💡 clave -->
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
@@ -50,31 +50,7 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!-- Servlet API (Tomcat la provee) -->
-    <dependency>
-      <groupId>jakarta.servlet</groupId>
-      <artifactId>jakarta.servlet-api</artifactId>
-      <version>6.0.0</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- (Opcional) JSTL para JSP -->
-    <dependency>
-      <groupId>jakarta.servlet.jsp.jstl</groupId>
-      <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-      <version>3.0.0</version>
-    </dependency>
-    <dependency>
-	    <groupId>jakarta.servlet.jsp</groupId>
-	    <artifactId>jakarta.servlet.jsp-api</artifactId>
-	    <version>3.1.1</version>
-	    <scope>provided</scope>
-  </dependency>    
-    <dependency>
-      <groupId>org.glassfish.web</groupId>
-      <artifactId>jakarta.servlet.jsp.jstl</artifactId>
-      <version>3.0.1</version>
-    </dependency>
+    
     
     <!-- Calendario Swing (JDateChooser) -->
 	<dependency>
