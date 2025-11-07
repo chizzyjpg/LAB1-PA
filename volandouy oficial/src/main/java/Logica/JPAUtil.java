@@ -11,7 +11,14 @@ public class JPAUtil {
   static {
     System.err.println(">>> JPAUtil <clinit> (clase cargada) — ¿quién me trajo?");
     new RuntimeException("TRACE JPAUtil <clinit>").printStackTrace();
+    
+    System.out.println("Probe=" + Thread.currentThread()
+    .getContextClassLoader()
+    .getResource("META-INF/persistence.xml"));
+
   }
+  
+  
 
   private static final EntityManagerFactory emf = Persistence
       .createEntityManagerFactory("persistencia");
