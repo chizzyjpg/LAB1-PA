@@ -125,28 +125,29 @@
       </configuration>
     </plugin>
 
-    <plugin>
-  <groupId>org.apache.maven.plugins</groupId>
-  <artifactId>maven-pmd-plugin</artifactId>
-  <version>3.18.0</version>
-  <configuration>
-    <!-- usa 'rulesets' / 'ruleset' -->
-    <rulesets>
-      <ruleset>src/main/resources/pmd/ruleset.xml</ruleset>
-    </rulesets>
-    <failOnViolation>false</failOnViolation>
-  </configuration>
-  <executions>
-    <execution>
-      <id>pmd-check</id>
-      <phase>verify</phase>
-      <goals>
-        <goal>pmd</goal>
-        <goal>check</goal>
-      </goals>
-    </execution>
-  </executions>
-</plugin>
+  
+  <!--<plugin>
+	  <groupId>org.apache.maven.plugins</groupId>
+	  <artifactId>maven-pmd-plugin</artifactId>
+	  <version>3.18.0</version>
+	  <configuration>
+	    <rulesets>
+	      <ruleset>src/main/resources/pmd/ruleset.xml</ruleset>
+	    </rulesets>
+	    <failOnViolation>false</failOnViolation>
+	  </configuration>
+	  <executions>
+	    <execution>
+	      <id>pmd-check</id>
+	      <phase>verify</phase>
+	      <goals>
+	        <goal>pmd</goal>
+	        <goal>check</goal>
+	      </goals>
+	    </execution>
+	  </executions>
+	</plugin>-->
+	
   </plugins>
 </build>
 </project>
