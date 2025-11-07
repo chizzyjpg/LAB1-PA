@@ -6,6 +6,7 @@
   <packaging>war</packaging>
   <build>
   <finalName>volandouy-oficial</finalName>
+  
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -22,6 +23,13 @@
   </build>
   
   <dependencies>
+  
+  	
+	<dependency>
+	  <groupId>volandouy.oficial</groupId>
+	  <artifactId>volandouy-oficial</artifactId>
+	  <version>0.0.1-SNAPSHOT</version>
+	</dependency>
     <!-- API de JPA (DEJAR SIN scope; debe ir dentro del WAR) -->
 
 
@@ -108,12 +116,7 @@
 	  <version>2.2.224</version>
 	  <scope>test</scope>
 	</dependency>
-	
-<dependency>
-  <groupId>volandouy.oficial</groupId>
-  <artifactId>volandouy-oficial</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-</dependency>
+
 
  </dependencies>
 
