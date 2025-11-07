@@ -685,7 +685,7 @@ public class sistemaTest_RegistroUsuariosYModificaciones {
 	    }
 
 	    @Override
-	    public void actualizarUsuario(Usuario u) {
+	    public void actualizarUsuario(Usuario u, boolean photo) {
 	      String k = u.getNickname().toLowerCase(Locale.ROOT);
 	      if (u instanceof Cliente c) clientes.put(k, c);
 	      else if (u instanceof Aerolinea a) aerolineas.put(k, a);

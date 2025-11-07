@@ -1,79 +1,103 @@
 package Logica;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import jakarta.persistence.*;
-
+/**
+ * Representa la compra de un paquete por un cliente.
+ */
 @Entity
 @Table(name = "CompraPaquete")
 public class CompraPaquete {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
-    @ManyToOne(optional = false) private Cliente cliente;
-    @ManyToOne(optional = false) private Paquete paquete;
+  @ManyToOne(optional = false)
+  private Cliente cliente;
+  @ManyToOne(optional = false)
+  private Paquete paquete;
 
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date fechaCompra;
+  @Temporal(TemporalType.DATE)
+  @Column(nullable = false)
+  private Date fechaCompra;
 
-	@Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date vencimiento;
+  @Temporal(TemporalType.DATE)
+  @Column(nullable = false)
+  private Date vencimiento;
 
-    @Column(nullable = false, precision = 12, scale = 2)
-    private BigDecimal costo; // normalmente = paquete.costo
+  @Column(nullable = false, precision = 12, scale = 2)
+  private BigDecimal costo; // normalmente = paquete.costo
 
-    protected CompraPaquete() { }
+  /**
+   * Constructor por defecto.
+   */
+  protected CompraPaquete() {
+  }
 
-    public CompraPaquete(Cliente cliente, Paquete paquete, Date fechaCompra, Date vencimiento, BigDecimal costo) {
-        this.cliente = cliente;
-        this.paquete = paquete;
-        this.fechaCompra = (fechaCompra == null) ? new Date() : new Date(fechaCompra.getTime());
-        this.vencimiento = (vencimiento == null) ? null : new Date(vencimiento.getTime());
-        this.costo = costo;
-    } 
-    
-    void setId(int id) { this.id = id; }
-    
-    public Cliente getCliente() {
-		return cliente;
-	}
+  /**
+   * Constructor con parametros.
+   * 
+   */
+  public CompraPaquete(Cliente cliente, Paquete paquete, Date fechaCompra, Date vencimiento,
+      BigDecimal costo) {
+    this.cliente = cliente;
+    this.paquete = paquete;
+    this.fechaCompra = (fechaCompra == null) ? new Date() : new Date(fechaCompra.getTime());
+    this.vencimiento = (vencimiento == null) ? null : new Date(vencimiento.getTime());
+    this.costo = costo;
+  }
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
+  void setId(int id) {
+    this.id = id;
+  }
 
-	public Paquete getPaquete() {
-		return paquete;
-	}
+  public Cliente getCliente() {
+    return cliente;
+  }
 
-	public void setPaquete(Paquete paquete) {
-		this.paquete = paquete;
-	}
+  public void setCliente(Cliente cliente) {
+    this.cliente = cliente;
+  }
 
-	public Date getFechaCompra() {
-		return fechaCompra;
-	}
+  public Paquete getPaquete() {
+    return paquete;
+  }
 
-	public void setFechaCompra(Date fechaCompra) {
-		this.fechaCompra = fechaCompra;
-	}
+  public void setPaquete(Paquete paquete) {
+    this.paquete = paquete;
+  }
 
-	public Date getVencimiento() {
-		return vencimiento;
-	}
+  public Date getFechaCompra() {
+    return fechaCompra;
+  }
 
-	public void setVencimiento(Date vencimiento) {
-		this.vencimiento = vencimiento;
-	}
+  public void setFechaCompra(Date fechaCompra) {
+    this.fechaCompra = fechaCompra;
+  }
 
-	public BigDecimal getCosto() {
-		return costo;
-	}
+  public Date getVencimiento() {
+    return vencimiento;
+  }
 
-	public void setCosto(BigDecimal costo) {
-		this.costo = costo;
-	}
+  public void setVencimiento(Date vencimiento) {
+    this.vencimiento = vencimiento;
+  }
+
+  public BigDecimal getCosto() {
+    return costo;
+  }
+
+  public void setCosto(BigDecimal costo) {
+    this.costo = costo;
+  }
 }

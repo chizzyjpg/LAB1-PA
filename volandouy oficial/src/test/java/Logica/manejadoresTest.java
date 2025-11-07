@@ -51,7 +51,6 @@ public class manejadoresTest {
   // ====== toDTO: Aerolinea ======
   @Test
   void toDTO_aerolinea_ok() {
-    // Ajustá si tu constructor difiere
     Aerolinea a = new Aerolinea(
         "JetAir", "jetair", "info@jetair.com", "secret",
         "Somos JetAir", "https://jetair.test"
@@ -207,7 +206,7 @@ public class manejadoresTest {
     assertThrows(NullPointerException.class, () -> ManejadorCategoria.toEntities(dtosConNull));
   }
 
-  // Nota: Si llamás con la lista en sí = null, el NPE ocurre antes del stream.
+  // Nota: Si llamás con la lista en sí = null
   @Test
   void toEntities_listaNull_lanzaNPE() {
     assertThrows(NullPointerException.class, () -> ManejadorCategoria.toEntities(null));
@@ -266,7 +265,7 @@ public class manejadoresTest {
   }
 
   @Test
-  void toEntity_null_lanzaNPE() {
+  void toEntity_null_Pasaje() {
     NullPointerException ex = assertThrows(
         NullPointerException.class,
         () -> ManejadorPasaje.toEntity(null)

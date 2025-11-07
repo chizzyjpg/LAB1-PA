@@ -98,8 +98,15 @@
               <ul class="list-group mt-3">
                 <% for (Logica.DataVueloEspecifico vuelo : vuelos) { %>
                   <li class="list-group-item">
-                    <strong>Código:</strong> <%= vuelo.getNombre() %> |
-                    <strong>Fecha:</strong> <%= new java.text.SimpleDateFormat("dd/MM/yyyy").format(vuelo.getFecha()) %>
+                    <form method="post" style="display:inline;">
+                      <input type="hidden" name="aerolinea" value="<%= rutaSeleccionada.getNicknameAerolinea() %>" />
+                      <input type="hidden" name="ruta" value="<%= rutaSeleccionada.getNombre() %>" />
+                      <input type="hidden" name="vuelo" value="<%= vuelo.getNombre() %>" />
+                      <button type="submit" class="btn btn-link p-0" style="text-decoration:underline;">
+                        <strong>Código:</strong> <%= vuelo.getNombre() %> |
+                        <strong>Fecha:</strong> <%= new java.text.SimpleDateFormat("dd/MM/yyyy").format(vuelo.getFecha()) %>
+                      </button>
+                    </form>
                   </li>
                 <% } %>
               </ul>
@@ -108,6 +115,21 @@
             <% } %>
           <% } %>
         </section>
+        <% Logica.DataVueloEspecifico vueloSeleccionado = (Logica.DataVueloEspecifico) request.getAttribute("vueloSeleccionado");
+           if (vueloSeleccionado != null) { %>
+        <section class="mt-4">
+          <h3>Detalle del Vuelo Seleccionado</h3>
+          <ul class="list-group">
+            <li class="list-group-item"><strong>Código:</strong> <%= vueloSeleccionado.getNombre() %></li>
+            <li class="list-group-item"><strong>Fecha:</strong> <%= new java.text.SimpleDateFormat("dd/MM/yyyy").format(vueloSeleccionado.getFecha()) %></li>
+            <li class="list-group-item"><strong>Duración:</strong> <%= vueloSeleccionado.getDuracion() %> minutos</li>
+            <li class="list-group-item"><strong>Max. Asientos Turista:</strong> <%= vueloSeleccionado.getMaxAsientosTur() %></li>
+            <li class="list-group-item"><strong>Max. Asientos Ejecutivo:</strong> <%= vueloSeleccionado.getMaxAsientosEjec() %></li>
+            <li class="list-group-item"><strong>Fecha de Alta:</strong> <%= vueloSeleccionado.getFechaAlta() != null ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(vueloSeleccionado.getFechaAlta()) : "" %></li>
+            <!-- Agrega aquí más campos si es necesario -->
+          </ul>
+        </section>
+        <% } %>
       </div>
       </main>
     </div>

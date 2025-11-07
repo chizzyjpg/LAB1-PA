@@ -194,7 +194,7 @@
                       <img id="avatarPreview" class="rounded-circle object-fit-cover" width="72" height="72" alt="Avatar" src="${pageContext.request.contextPath}/avatar?nickname=${nickname}">
                       <div class="d-flex flex-column gap-2">
                         <input type="file" accept="image/*" id="avatarFile" class="form-control form-control-sm" name="avatarFile" />
-                        <div class="form-text">Opcional. Si no subís nada, se mantiene la actual.</div>
+                        <div class="form-text">Si no se sube nada, se mantiene la actual.</div>
                       </div>
                       <button type="button" id="btnClearPhoto" class="btn btn-outline-danger btn-sm">Quitar foto</button>
                       <input type="hidden" name="clearPhoto" id="clearPhoto" value="0">
