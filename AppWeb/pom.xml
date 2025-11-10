@@ -21,7 +21,16 @@
       </plugin>
     </plugins>
   </build>
-  
+
+<properties>
+    <!-- Encoding coherente para las fuentes -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <!-- Versión de Java -->
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+</properties>
+
   <dependencies>
   
   	
