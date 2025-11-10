@@ -21,6 +21,13 @@
   </properties>
 
   <dependencies>
+
+  <dependency>
+      <groupId>com.sun.xml.ws</groupId>
+      <artifactId>jaxws-rt</artifactId>
+      <version>4.0.0</version> <!-- o similar, la que usen en el curso -->
+  </dependency>
+
     <!-- API de JPA (DEJAR SIN scope; debe ir dentro del WAR) -->
     <dependency>
       <groupId>jakarta.persistence</groupId>
