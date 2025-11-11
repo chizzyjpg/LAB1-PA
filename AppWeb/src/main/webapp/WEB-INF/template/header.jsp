@@ -1,12 +1,12 @@
+<%@ page import="uy.volando.publicar.DataUsuario" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-dark bg-dark sticky-top navbar-compact">
   <div class="container">
-  	<!-- Botón hamburguesa -->
   	<button class="navbar-toggler me-2 d-lg-none" type="button"
         data-bs-toggle="offcanvas" data-bs-target="#appSidebar"
-        aria-controls="appSidebar" aria-label="Abrir menú">
+        aria-controls="appSidebar" aria-label="Abrir menÃº">
   		<span class="navbar-toggler-icon"></span>
 	</button>
     <a class="navbar-brand fw-bold" href="${pageContext.request.contextPath}/home">Volando.uy</a>
@@ -25,12 +25,12 @@
     <div id="authArea" class="d-flex align-items-center gap-2">
       <!-- Estado: invitado -->
       <% 
-        Logica.DataUsuario usuario = (Logica.DataUsuario) session.getAttribute("usuario_logueado");
+        DataUsuario usuario = (DataUsuario) session.getAttribute("usuario_logueado");
         if (usuario == null) {
       %>
       <% System.out.println("DEBUG: usuario_logueado=" + usuario); %>
       <div id="guestArea" class="d-flex align-items-center gap-2">
-        <a class="btn btn-outline-light btn-sm" href="${pageContext.request.contextPath}/iniciar-sesion">Iniciar sesión</a> <!-- CAMBIO: quité el espacio extra después de href= -->
+        <a class="btn btn-outline-light btn-sm" href="${pageContext.request.contextPath}/iniciar-sesion">Iniciar sesiÃ³n</a>
         <a class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/altaUsuario" role="button">Registrarse</a>
       </div>
       <% } else { %>
@@ -41,7 +41,7 @@
       <!-- URL del avatar con cache-busting -->
       <c:url var="avatarUrl" value="/avatar">
         <c:param name="nickname" value="<%= usuario.getNickname() %>"/>
-        <c:param name="_" value="<%= Long.toString(System.currentTimeMillis()) %>"/> <!-- CAMBIO: reemplaza el viejo pageContext.request.time que rompía -->
+        <c:param name="_" value="<%= Long.toString(System.currentTimeMillis()) %>"/>
       </c:url>
 
       <div id="userArea" class="d-flex align-items-center gap-2">
@@ -53,9 +53,8 @@
                alt="Avatar"
                class="rounded-circle"
                width="28" height="28"
-               onerror="this.classList.add('d-none');document.getElementById('avatarFallback').classList.remove('d-none');" /> <!-- CAMBIO: usa clases en lugar de style.display -->
+               onerror="this.classList.add('d-none');document.getElementById('avatarFallback').classList.remove('d-none');" />
 
-          <!-- Fallback con inicial (oculto por defecto) -->
           <span id="avatarFallback"
                 class="avatar-fallback d-none justify-content-center align-items-center rounded-circle"
                 style="width:28px;height:28px;background:#6c757d;color:#fff;font-weight:600;">
@@ -72,7 +71,7 @@
             <li><hr class="dropdown-divider" /></li>
             <li>
               <form action="cerrar-sesion" method="post" style="margin:0;">
-                <button type="submit" class="dropdown-item text-danger" id="btnLogout">Cerrar sesión</button>
+                <button type="submit" class="dropdown-item text-danger" id="btnLogout">Cerrar sesiÃ³n</button>
               </form>
             </li>
           </ul>
@@ -82,10 +81,10 @@
     </div>
   </div>
 </nav>
-<!-- OFFCANVAS SIDEBAR (móvil) -->
+<!-- OFFCANVAS SIDEBAR -->
 <div class="offcanvas offcanvas-start text-bg-white" tabindex="-1" id="appSidebar" aria-labelledby="appSidebarLabel">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="appSidebarLabel">Menú</h5>
+    <h5 class="offcanvas-title" id="appSidebarLabel">MenÃº</h5>
     <button type="button" class="btn-close btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
   </div>
   <div class="offcanvas-body p-0">
