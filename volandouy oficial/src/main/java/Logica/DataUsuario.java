@@ -1,8 +1,20 @@
 package Logica;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
+import jakarta.xml.bind.annotation.XmlType;
+
 /**
  * Clase abstracta que representa los datos comunes de un usuario.
  */
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(
+        name = "dataUsuario",
+        propOrder = { "nombre", "nickname", "email", "contrasenia" }
+)
+@XmlSeeAlso({ DataCliente.class, DataAerolinea.class })
 public abstract class DataUsuario {
 
   private String nombre;
