@@ -13,7 +13,6 @@ import jakarta.xml.bind.annotation.XmlType;
         name = "dataAerolinea",
         propOrder = { "descGeneral", "sitioWeb" }
 )
-@XmlSeeAlso(PerfilAerolineaUpdate.class)
 public class DataAerolinea extends DataUsuario {
 
   private String descGeneral;

@@ -7,6 +7,15 @@ import java.util.Date;
  * DataRuta class represents a route with various attributes such as origin and
  * destination cities, costs, category, and status.
  */
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "dataRuta")
+@XmlType(propOrder = { "idRuta", "nombre", "descripcion", "descripcionCorta", "ciudadOrigen", "ciudadDestino", "hora", "fechaAlta", "costoTurista", "costoEjecutivo", "costoEquipajeExtra", "categoria", "nicknameAerolinea", "estado" })
 public class DataRuta {
   private int idRuta;
   private String nombre;
@@ -22,6 +31,10 @@ public class DataRuta {
   private DataCategoria categoria;
   private String nicknameAerolinea;
   private EstadoRuta estado;
+
+    public DataRuta() {
+        // Constructor vacío requerido por JAXB
+    }
 
   /**
    * Constructor for DataRuta.
