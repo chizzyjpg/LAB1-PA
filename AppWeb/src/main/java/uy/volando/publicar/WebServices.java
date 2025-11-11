@@ -27,19 +27,6 @@ public interface WebServices {
     /**
      * 
      * @param arg0
-     * @return
-     *     returns uy.volando.publicar.DataAerolinea
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://ws.volando.uy/WebServices/verInfoAerolineaRequest", output = "http://ws.volando.uy/WebServices/verInfoAerolineaResponse")
-    public DataAerolinea verInfoAerolinea(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
-
-    /**
-     * 
-     * @param arg0
      * @param arg1
      * @return
      *     returns uy.volando.publicar.DataUsuario
@@ -55,19 +42,6 @@ public interface WebServices {
 
     /**
      * 
-     * @param nombre
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://ws.volando.uy/WebServices/pingRequest", output = "http://ws.volando.uy/WebServices/pingResponse")
-    public String ping(
-        @WebParam(name = "nombre", partName = "nombre")
-        String nombre);
-
-    /**
-     * 
      * @param arg0
      * @return
      *     returns uy.volando.publicar.DataCliente
@@ -78,5 +52,31 @@ public interface WebServices {
     public DataCliente verInfoCliente(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns uy.volando.publicar.DataAerolinea
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://ws.volando.uy/WebServices/verInfoAerolineaRequest", output = "http://ws.volando.uy/WebServices/verInfoAerolineaResponse")
+    public DataAerolinea verInfoAerolinea(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
+     * @param nombre
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://ws.volando.uy/WebServices/pingRequest", output = "http://ws.volando.uy/WebServices/pingResponse")
+    public String ping(
+        @WebParam(name = "nombre", partName = "nombre")
+        String nombre);
 
 }
