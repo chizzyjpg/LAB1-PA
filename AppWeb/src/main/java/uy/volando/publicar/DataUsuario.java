@@ -37,8 +37,8 @@ import jakarta.xml.bind.annotation.XmlType;
     "contrasenia"
 })
 @XmlSeeAlso({
-    DataAerolinea.class,
-    DataCliente.class
+    DataCliente.class,
+    DataAerolinea.class
 })
 public abstract class DataUsuario {
 

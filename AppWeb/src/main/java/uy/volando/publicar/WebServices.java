@@ -1,6 +1,7 @@
 
 package uy.volando.publicar;
 
+import javax.xml.datatype.XMLGregorianCalendar;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
@@ -23,6 +24,90 @@ import jakarta.xml.ws.Action;
 })
 public interface WebServices {
 
+
+    /**
+     * 
+     * @param apellido
+     * @param avatarBytes
+     * @param clearPhoto
+     * @param emailSesion
+     * @param fechaNac
+     * @param nacionalidad
+     * @param nickSesion
+     * @param nombre
+     * @param numDocumento
+     * @param tipoDocumento
+     * @return
+     *     returns uy.volando.publicar.DataCliente
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://ws.volando.uy/WebServices/actualizarPerfilClienteRequest", output = "http://ws.volando.uy/WebServices/actualizarPerfilClienteResponse")
+    public DataCliente actualizarPerfilCliente(
+        @WebParam(name = "nickSesion", partName = "nickSesion")
+        String nickSesion,
+        @WebParam(name = "emailSesion", partName = "emailSesion")
+        String emailSesion,
+        @WebParam(name = "nombre", partName = "nombre")
+        String nombre,
+        @WebParam(name = "apellido", partName = "apellido")
+        String apellido,
+        @WebParam(name = "nacionalidad", partName = "nacionalidad")
+        String nacionalidad,
+        @WebParam(name = "tipoDocumento", partName = "tipoDocumento")
+        TipoDocumento tipoDocumento,
+        @WebParam(name = "numDocumento", partName = "numDocumento")
+        String numDocumento,
+        @WebParam(name = "fechaNac", partName = "fechaNac")
+        XMLGregorianCalendar fechaNac,
+        @WebParam(name = "avatarBytes", partName = "avatarBytes")
+        byte[] avatarBytes,
+        @WebParam(name = "clearPhoto", partName = "clearPhoto")
+        boolean clearPhoto);
+
+    /**
+     * 
+     * @param avatarBytes
+     * @param clearPhoto
+     * @param descripcion
+     * @param emailSesion
+     * @param nickSesion
+     * @param nombre
+     * @param sitioWeb
+     * @return
+     *     returns uy.volando.publicar.DataAerolinea
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://ws.volando.uy/WebServices/actualizarPerfilAerolineaRequest", output = "http://ws.volando.uy/WebServices/actualizarPerfilAerolineaResponse")
+    public DataAerolinea actualizarPerfilAerolinea(
+        @WebParam(name = "nickSesion", partName = "nickSesion")
+        String nickSesion,
+        @WebParam(name = "emailSesion", partName = "emailSesion")
+        String emailSesion,
+        @WebParam(name = "nombre", partName = "nombre")
+        String nombre,
+        @WebParam(name = "descripcion", partName = "descripcion")
+        String descripcion,
+        @WebParam(name = "sitioWeb", partName = "sitioWeb")
+        String sitioWeb,
+        @WebParam(name = "avatarBytes", partName = "avatarBytes")
+        byte[] avatarBytes,
+        @WebParam(name = "clearPhoto", partName = "clearPhoto")
+        boolean clearPhoto);
+
+    /**
+     * 
+     * @param nombre
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://ws.volando.uy/WebServices/pingRequest", output = "http://ws.volando.uy/WebServices/pingResponse")
+    public String ping(
+        @WebParam(name = "nombre", partName = "nombre")
+        String nombre);
 
     /**
      * 
@@ -65,18 +150,5 @@ public interface WebServices {
     public DataAerolinea verInfoAerolinea(
         @WebParam(name = "arg0", partName = "arg0")
         String arg0);
-
-    /**
-     * 
-     * @param nombre
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://ws.volando.uy/WebServices/pingRequest", output = "http://ws.volando.uy/WebServices/pingResponse")
-    public String ping(
-        @WebParam(name = "nombre", partName = "nombre")
-        String nombre);
 
 }
