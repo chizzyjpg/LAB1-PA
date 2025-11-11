@@ -5,8 +5,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 
-import Logica.Fabrica;
-import Logica.ISistema;
+import uy.volando.publicar.VolandoWS;
+import uy.volando.publicar.WebServices;
 
 @WebServlet(loadOnStartup = 1, urlPatterns = "/inicio")
 public class InicioServlet extends HttpServlet {
@@ -16,22 +16,18 @@ public class InicioServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
 
-        // 1) Obtenemos el Sistema desde la Fabrica
-        ISistema sistema = Fabrica.getInstance().getSistema();
+        try {
+            // Crear el Service y el Port generados por wsimport
+            VolandoWS service = new VolandoWS();
+            WebServices port = service.getWebServicesPort();
 
-        // 2) Lo guardamos en el contexto de la aplicación
-        ServletContext ctx = getServletContext();
-        ctx.setAttribute("sistema", sistema);
+            // Guardar el port en el contexto de la aplicación
+            ServletContext ctx = getServletContext();
+            ctx.setAttribute("volandoPort", port);
 
-        System.out.println("[InicioServlet] Sistema cargado en el contexto de la aplicación.");
+            System.out.println("[InicioServlet] Cliente SOAP (WebServices) cargado en el contexto.");
+        } catch (Exception e) {
+            throw new ServletException("No se pudo inicializar el cliente SOAP VolandoWS", e);
+        }
     }
 }
-//TODOS LOS SERVLETS PUEDEN ACCEDER AL SISTEMA ASI:
-//@Override
-/*public void init() throws ServletException {
-	super.init();
-	this.sistema = (ISistema) getServletContext().getAttribute("sistema");
-     if (this.sistema == null) {
-        throw new ServletException("El sistema no fue inicializado por InicioServlet.");
-    }
-}*/
