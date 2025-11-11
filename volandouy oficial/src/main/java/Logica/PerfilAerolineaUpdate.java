@@ -12,7 +12,8 @@ public class PerfilAerolineaUpdate {
 		this.sitioWeb = linkWeb;
 		this.avatar = avatar; this.clearAvatar = clearAvatar;
 	}
-	public String getNickname() { return nickname; }
+
+    public String getNickname() { return nickname; }
 	public String getEmail() { return email; }
 	public String getNombre() { return nombre; }
 	public String getDescGeneral() { return descGeneral; }

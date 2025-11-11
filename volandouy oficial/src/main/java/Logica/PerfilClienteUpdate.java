@@ -20,7 +20,8 @@ public class PerfilClienteUpdate {
     this.numDocumento = numDocumento; 
     this.fechaNac = fechaNac;
   }
-  public String getNickname() { return nickname; }
+
+    public String getNickname() { return nickname; }
   public String getEmail() { return email; }
   public String getNombre() { return nombre; }
   public String getApellido() { return apellido; }

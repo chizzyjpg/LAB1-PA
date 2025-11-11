@@ -2,6 +2,7 @@ package Logica;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
 import jakarta.xml.bind.annotation.XmlType;
 
 /**
@@ -12,6 +13,7 @@ import jakarta.xml.bind.annotation.XmlType;
         name = "dataAerolinea",
         propOrder = { "descGeneral", "sitioWeb" }
 )
+@XmlSeeAlso(PerfilAerolineaUpdate.class)
 public class DataAerolinea extends DataUsuario {
 
   private String descGeneral;

@@ -1,17 +1,13 @@
 package uy.volando.ws;
 
-import Logica.DataUsuario;
-import Logica.DataCliente;
-import Logica.DataAerolinea;
+import Logica.*;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
 import jakarta.jws.soap.SOAPBinding.Style;
 import jakarta.xml.ws.Endpoint;
-
-import Logica.ISistema;
-import Logica.Fabrica;
+import java.util.Date;
 
 @WebService(serviceName = "VolandoWS")
 @SOAPBinding(style = Style.RPC)
@@ -79,5 +75,43 @@ public class WebServices {
     @WebMethod
     public DataAerolinea verInfoAerolinea(String nickname){
         return sistema.verInfoAerolinea(nickname);
+    }
+
+    @WebMethod
+    public DataCliente actualizarPerfilCliente(
+            @WebParam(name = "nickSesion") String nickSesion,
+            @WebParam(name = "emailSesion") String emailSesion,
+            @WebParam(name = "nombre") String nombre,
+            @WebParam(name = "apellido") String apellido,
+            @WebParam(name = "nacionalidad") String nacionalidad,
+            @WebParam(name = "tipoDocumento") TipoDocumento tipoDocumento,
+            @WebParam(name = "numDocumento") String numDocumento,
+            @WebParam(name = "fechaNac") Date fechaNac,
+            @WebParam(name = "avatarBytes") byte[] avatarBytes,
+            @WebParam(name = "clearPhoto") boolean clearPhoto
+    ) {
+        PerfilClienteUpdate upd = new PerfilClienteUpdate(
+                nickSesion, emailSesion, nombre, apellido,
+                nacionalidad, tipoDocumento, numDocumento,
+                fechaNac, avatarBytes, clearPhoto
+        );
+        return sistema.actualizarPerfilCliente(upd);
+    }
+
+    @WebMethod
+    public DataAerolinea actualizarPerfilAerolinea(
+            @WebParam(name = "nickSesion") String nickSesion,
+            @WebParam(name = "emailSesion") String emailSesion,
+            @WebParam(name = "nombre") String nombre,
+            @WebParam(name = "descripcion") String descripcion,
+            @WebParam(name = "sitioWeb") String sitioWeb,
+            @WebParam(name = "avatarBytes") byte[] avatarBytes,
+            @WebParam(name = "clearPhoto") boolean clearPhoto
+    ) {
+        PerfilAerolineaUpdate upd = new PerfilAerolineaUpdate(
+                nickSesion, emailSesion, nombre,
+                descripcion, sitioWeb, avatarBytes, clearPhoto
+        );
+        return sistema.actualizarPerfilAerolinea(upd);
     }
 }

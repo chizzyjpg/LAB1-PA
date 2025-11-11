@@ -30,6 +30,16 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DataCliente }
+     * 
+     * @return
+     *     the new instance of {@link DataCliente }
+     */
+    public DataCliente createDataCliente() {
+        return new DataCliente();
+    }
+
+    /**
      * Create an instance of {@link DataAerolinea }
      * 
      * @return
@@ -40,13 +50,23 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link DataCliente }
+     * Create an instance of {@link PerfilAerolineaUpdate }
      * 
      * @return
-     *     the new instance of {@link DataCliente }
+     *     the new instance of {@link PerfilAerolineaUpdate }
      */
-    public DataCliente createDataCliente() {
-        return new DataCliente();
+    public PerfilAerolineaUpdate createPerfilAerolineaUpdate() {
+        return new PerfilAerolineaUpdate();
+    }
+
+    /**
+     * Create an instance of {@link PerfilClienteUpdate }
+     * 
+     * @return
+     *     the new instance of {@link PerfilClienteUpdate }
+     */
+    public PerfilClienteUpdate createPerfilClienteUpdate() {
+        return new PerfilClienteUpdate();
     }
 
 }

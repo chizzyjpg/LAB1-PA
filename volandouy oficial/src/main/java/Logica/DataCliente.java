@@ -2,6 +2,7 @@ package Logica;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
 import jakarta.xml.bind.annotation.XmlType;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Date;
         name = "dataCliente",
         propOrder = { "apellido", "fechaNac", "nacionalidad", "tipoDocumento", "numDocumento" }
 )
+@XmlSeeAlso(PerfilClienteUpdate.class)
 public class DataCliente extends DataUsuario {
 
   private String apellido;
