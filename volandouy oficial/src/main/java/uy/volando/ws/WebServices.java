@@ -8,6 +8,7 @@ import jakarta.jws.soap.SOAPBinding;
 import jakarta.jws.soap.SOAPBinding.Style;
 import jakarta.xml.ws.Endpoint;
 import java.util.Date;
+import java.util.List;
 
 @WebService(serviceName = "VolandoWS")
 @SOAPBinding(style = Style.RPC)
@@ -113,5 +114,28 @@ public class WebServices {
                 descripcion, sitioWeb, avatarBytes, clearPhoto
         );
         return sistema.actualizarPerfilAerolinea(upd);
+    }
+
+    @WebMethod
+    public DataPaquete[] listarPaquetes() {
+        List<DataPaquete> lista = sistema.listarPaquetes();
+        return lista.toArray(new DataPaquete[0]);
+    }
+
+    @WebMethod
+    public DataPaquete verPaquete(@WebParam(name = "nombrePaquete") String nombrePaquete) {
+        return sistema.verPaquete(nombrePaquete);
+    }
+
+    @WebMethod
+    public DataAerolinea[] listarAerolineas() {
+        List<DataAerolinea> lista = sistema.listarAerolineas();
+        return lista.toArray(new DataAerolinea[0]);
+    }
+
+    @WebMethod
+    public DataRuta[] listarPorAerolinea(@WebParam(name = "nicknameAerolinea") String nicknameAerolinea) {
+        List<DataRuta> lista = sistema.listarPorAerolinea(nicknameAerolinea);
+        return lista.toArray(new DataRuta[0]);
     }
 }

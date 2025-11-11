@@ -1,3 +1,4 @@
+<%@ page import="uy.volando.publicar.DataPaquete" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -32,14 +33,15 @@
             <div class="row" id="paquetesList">
               <% if (paquetes != null && !paquetes.isEmpty()) {
                    for (Object obj : paquetes) {
-                     Logica.DataPaquete paq = (Logica.DataPaquete)obj; %>
+                     uy.volando.publicar.DataPaquete paq = (DataPaquete)obj; %>
                 <div class="col-md-6 col-lg-4 mb-4">
                   <div class="card h-100">
                     <div class="card-body">
                       <h5 class="card-title"><%= paq.getNombre() %></h5>
                       <p class="card-text"><%= paq.getDescripcion() %></p>
                       <p class="card-text"><strong>Costo:</strong> $<%= paq.getCosto() %></p>
-                      <a href="consultaPaqRutasVuelo?paquete=<%= paq.getNombre() %>" class="btn btn-primary">Ver detalles</a>
+                        <a href="<%= request.getContextPath() %>/consultaPaqRutasVuelo?paquete=<%= java.net.URLEncoder.encode(paq.getNombre(), "UTF-8") %>" class="btn btn-primary">Ver detalles</a>
+
                     </div>
                   </div>
                 </div>
@@ -62,7 +64,7 @@
                 <i class="fas fa-arrow-left me-2"></i>Volver a la lista
               </a>
             </div>
-            <% Logica.DataPaquete paquete = (Logica.DataPaquete)request.getAttribute("paquete"); %>
+            <% uy.volando.publicar.DataPaquete paquete = (DataPaquete)request.getAttribute("paquete"); %>
             <div class="card mb-4">
               <div class="card-header">
                 <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Información del Paquete</h5>
@@ -110,7 +112,7 @@
                 </form>
               </div>
             </div>
-            <% Logica.DataRuta ruta = (Logica.DataRuta)request.getAttribute("ruta"); %>
+            <% uy.volando.publicar.DataRuta ruta = (uy.volando.publicar.DataRuta) request.getAttribute("ruta"); %>
             <% if (ruta != null) { %>
               <div class="card mb-4">
                 <div class="card-header">

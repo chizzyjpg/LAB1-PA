@@ -50,23 +50,73 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PerfilAerolineaUpdate }
+     * Create an instance of {@link DataPaquete }
      * 
      * @return
-     *     the new instance of {@link PerfilAerolineaUpdate }
+     *     the new instance of {@link DataPaquete }
      */
-    public PerfilAerolineaUpdate createPerfilAerolineaUpdate() {
-        return new PerfilAerolineaUpdate();
+    public DataPaquete createDataPaquete() {
+        return new DataPaquete();
     }
 
     /**
-     * Create an instance of {@link PerfilClienteUpdate }
+     * Create an instance of {@link DataRuta }
      * 
      * @return
-     *     the new instance of {@link PerfilClienteUpdate }
+     *     the new instance of {@link DataRuta }
      */
-    public PerfilClienteUpdate createPerfilClienteUpdate() {
-        return new PerfilClienteUpdate();
+    public DataRuta createDataRuta() {
+        return new DataRuta();
+    }
+
+    /**
+     * Create an instance of {@link DataCiudad }
+     * 
+     * @return
+     *     the new instance of {@link DataCiudad }
+     */
+    public DataCiudad createDataCiudad() {
+        return new DataCiudad();
+    }
+
+    /**
+     * Create an instance of {@link DataCategoria }
+     * 
+     * @return
+     *     the new instance of {@link DataCategoria }
+     */
+    public DataCategoria createDataCategoria() {
+        return new DataCategoria();
+    }
+
+    /**
+     * Create an instance of {@link DataPaqueteArray }
+     * 
+     * @return
+     *     the new instance of {@link DataPaqueteArray }
+     */
+    public DataPaqueteArray createDataPaqueteArray() {
+        return new DataPaqueteArray();
+    }
+
+    /**
+     * Create an instance of {@link DataRutaArray }
+     * 
+     * @return
+     *     the new instance of {@link DataRutaArray }
+     */
+    public DataRutaArray createDataRutaArray() {
+        return new DataRutaArray();
+    }
+
+    /**
+     * Create an instance of {@link DataAerolineaArray }
+     * 
+     * @return
+     *     the new instance of {@link DataAerolineaArray }
+     */
+    public DataAerolineaArray createDataAerolineaArray() {
+        return new DataAerolineaArray();
     }
 
 }

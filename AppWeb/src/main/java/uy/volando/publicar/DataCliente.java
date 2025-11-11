@@ -9,9 +9,9 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Clase Java para dataCliente complex type.</p>
+ * <p>Java class for dataCliente complex type</p>.
  * 
- * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.</p>
+ * <p>The following schema fragment specifies the expected content contained within this class.</p>
  * 
  * <pre>{@code
  * <complexType name="dataCliente">
@@ -52,7 +52,7 @@ public class DataCliente
     protected String numDocumento;
 
     /**
-     * Obtiene el valor de la propiedad apellido.
+     * Gets the value of the apellido property.
      * 
      * @return
      *     possible object is
@@ -64,7 +64,7 @@ public class DataCliente
     }
 
     /**
-     * Define el valor de la propiedad apellido.
+     * Sets the value of the apellido property.
      * 
      * @param value
      *     allowed object is
@@ -76,7 +76,7 @@ public class DataCliente
     }
 
     /**
-     * Obtiene el valor de la propiedad fechaNac.
+     * Gets the value of the fechaNac property.
      * 
      * @return
      *     possible object is
@@ -88,7 +88,7 @@ public class DataCliente
     }
 
     /**
-     * Define el valor de la propiedad fechaNac.
+     * Sets the value of the fechaNac property.
      * 
      * @param value
      *     allowed object is
@@ -100,7 +100,7 @@ public class DataCliente
     }
 
     /**
-     * Obtiene el valor de la propiedad nacionalidad.
+     * Gets the value of the nacionalidad property.
      * 
      * @return
      *     possible object is
@@ -112,7 +112,7 @@ public class DataCliente
     }
 
     /**
-     * Define el valor de la propiedad nacionalidad.
+     * Sets the value of the nacionalidad property.
      * 
      * @param value
      *     allowed object is
@@ -124,7 +124,7 @@ public class DataCliente
     }
 
     /**
-     * Obtiene el valor de la propiedad tipoDocumento.
+     * Gets the value of the tipoDocumento property.
      * 
      * @return
      *     possible object is
@@ -136,7 +136,7 @@ public class DataCliente
     }
 
     /**
-     * Define el valor de la propiedad tipoDocumento.
+     * Sets the value of the tipoDocumento property.
      * 
      * @param value
      *     allowed object is
@@ -148,7 +148,7 @@ public class DataCliente
     }
 
     /**
-     * Obtiene el valor de la propiedad numDocumento.
+     * Gets the value of the numDocumento property.
      * 
      * @return
      *     possible object is
@@ -160,7 +160,7 @@ public class DataCliente
     }
 
     /**
-     * Define el valor de la propiedad numDocumento.
+     * Sets the value of the numDocumento property.
      * 
      * @param value
      *     allowed object is

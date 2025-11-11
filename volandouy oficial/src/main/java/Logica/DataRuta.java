@@ -1,5 +1,9 @@
 package Logica;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlType;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -7,6 +11,14 @@ import java.util.Date;
  * DataRuta class represents a route with various attributes such as origin and
  * destination cities, costs, category, and status.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType (
+    name = "dataRuta",
+    propOrder = { "idRuta", "nombre", "descripcion", "descripcionCorta", "ciudadOrigen",
+        "ciudadDestino", "hora", "fechaAlta", "costoTurista", "costoEjecutivo",
+        "costoEquipajeExtra", "categoria", "nicknameAerolinea", "estado" }
+)
+
 public class DataRuta {
   private int idRuta;
   private String nombre;

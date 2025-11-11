@@ -8,33 +8,33 @@ import jakarta.xml.bind.annotation.XmlType;
 /**
  * 
  * 
- * <p>Java class for tipoDocumento</p>.
+ * <p>Java class for estadoRuta</p>.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.</p>
  * <pre>{@code
- * <simpleType name="tipoDocumento">
+ * <simpleType name="estadoRuta">
  *   <restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     <enumeration value="CEDULA"/>
- *     <enumeration value="PASAPORTE"/>
- *     <enumeration value="OTRO"/>
+ *     <enumeration value="CONFIRMADA"/>
+ *     <enumeration value="RECHAZADA"/>
+ *     <enumeration value="INGRESADA"/>
  *   </restriction>
  * </simpleType>
  * }</pre>
  * 
  */
-@XmlType(name = "tipoDocumento")
+@XmlType(name = "estadoRuta")
 @XmlEnum
-public enum TipoDocumento {
+public enum EstadoRuta {
 
-    CEDULA,
-    PASAPORTE,
-    OTRO;
+    CONFIRMADA,
+    RECHAZADA,
+    INGRESADA;
 
     public String value() {
         return name();
     }
 
-    public static TipoDocumento fromValue(String v) {
+    public static EstadoRuta fromValue(String v) {
         return valueOf(v);
     }
 

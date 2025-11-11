@@ -7,12 +7,12 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Clase Java para perfilClienteUpdate complex type.</p>
+ * <p>Java class for dataCategoria complex type</p>.
  * 
- * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.</p>
+ * <p>The following schema fragment specifies the expected content contained within this class.</p>
  * 
  * <pre>{@code
- * <complexType name="perfilClienteUpdate">
+ * <complexType name="dataCategoria">
  *   <complexContent>
  *     <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       <sequence>
@@ -25,8 +25,8 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "perfilClienteUpdate")
-public class PerfilClienteUpdate {
+@XmlType(name = "dataCategoria")
+public class DataCategoria {
 
 
 }
