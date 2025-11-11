@@ -16,7 +16,6 @@ import java.util.Date;
         name = "dataCliente",
         propOrder = { "apellido", "fechaNac", "nacionalidad", "tipoDocumento", "numDocumento" }
 )
-@XmlSeeAlso(PerfilClienteUpdate.class)
 public class DataCliente extends DataUsuario {
 
   private String apellido;
