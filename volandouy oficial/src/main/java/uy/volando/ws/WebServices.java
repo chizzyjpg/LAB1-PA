@@ -1,6 +1,8 @@
 package uy.volando.ws;
 
 import Logica.DataUsuario;
+import Logica.DataCliente;
+import Logica.DataAerolinea;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
@@ -54,10 +56,7 @@ public class WebServices {
     //     return "VolandoWS activo";
     // }
     //
-    // @WebMethod
-    // public DataUsuario obtenerUsuario(@WebParam(name = "nickname") String nick) {
-    //     return sistema.obtenerUsuario(nick);
-    // }
+    //
     //
     // (Todo lo que NO tenga @WebMethod(exclude = true) se publica en el WSDL)
 
@@ -70,5 +69,15 @@ public class WebServices {
     @WebMethod
     public String ping(@WebParam(name = "nombre") String nombre) {
         return "Hola " + nombre + ", VolandoWS está activo";
+    }
+
+    @WebMethod
+    public DataCliente verInfoCliente(String nickname){
+        return sistema.verInfoCliente(nickname);
+    }
+
+    @WebMethod
+    public DataAerolinea verInfoAerolinea(String nickname){
+        return sistema.verInfoAerolinea(nickname);
     }
 }

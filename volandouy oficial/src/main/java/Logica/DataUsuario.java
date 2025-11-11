@@ -38,4 +38,5 @@ public abstract class DataUsuario {
   public String getContrasenia() {
     return contrasenia;
   }
+
 }
