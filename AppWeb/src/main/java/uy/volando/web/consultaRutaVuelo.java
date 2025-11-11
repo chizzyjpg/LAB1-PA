@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import uy.volando.publicar.WebServices;
 
 import java.io.IOException;
@@ -53,6 +54,11 @@ public class consultaRutaVuelo extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+
+      HttpSession session = request.getSession();
+      Object usuario = session.getAttribute("usuario_logueado");
+      request.setAttribute("usuario", usuario);
+
       DataAerolineaArray dataAerolineaArray = port.listarAerolineas();
       System.out.println("[DEBUG] dataAerolineaArray: " + dataAerolineaArray);
       List<DataAerolinea> aerolineas = dataAerolineaArray != null ? dataAerolineaArray.getItem() : null;
@@ -89,6 +95,11 @@ public class consultaRutaVuelo extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
+
+      HttpSession session = request.getSession();
+      Object usuario = session.getAttribute("usuario_logueado");
+      request.setAttribute("usuario", usuario);
+
     String aerolineaSel = request.getParameter("aerolinea");
     System.out.println("[DEBUG] doPost - aerolineaSel inicial: " + aerolineaSel);
     if (aerolineaSel != null) {
