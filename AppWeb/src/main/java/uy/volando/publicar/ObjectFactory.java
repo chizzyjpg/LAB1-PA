@@ -149,6 +149,16 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DataCiudadArray }
+     * 
+     * @return
+     *     the new instance of {@link DataCiudadArray }
+     */
+    public DataCiudadArray createDataCiudadArray() {
+        return new DataCiudadArray();
+    }
+
+    /**
      * Create an instance of {@link DataReservaArray }
      * 
      * @return
