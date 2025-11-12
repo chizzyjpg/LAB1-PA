@@ -171,5 +171,18 @@ public class WebServices {
         return lista.toArray(new DataReserva[0]);
     }
 
+    @WebMethod
+    public byte[] obtenerAvatar(@WebParam(name = "nickname") String nickname) {
+        return sistema.obtenerAvatar(nickname);
+    }
+
+   @WebMethod
+    public void cambiarPassword(
+            @WebParam(name = "nickname") String nickname,
+            @WebParam(name = "pwdCurrent") String pwdCurrent,
+            @WebParam(name = "pwdNew") String  pwdNew
+    ) {
+        sistema.cambiarPassword(nickname,  pwdCurrent,  pwdNew);
+    }
 
 }

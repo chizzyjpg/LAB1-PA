@@ -7,9 +7,9 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for dataAerolinea complex type</p>.
+ * <p>Clase Java para dataAerolinea complex type.</p>
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.</p>
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.</p>
  * 
  * <pre>{@code
  * <complexType name="dataAerolinea">
@@ -39,7 +39,7 @@ public class DataAerolinea
     protected String sitioWeb;
 
     /**
-     * Gets the value of the descGeneral property.
+     * Obtiene el valor de la propiedad descGeneral.
      * 
      * @return
      *     possible object is
@@ -51,7 +51,7 @@ public class DataAerolinea
     }
 
     /**
-     * Sets the value of the descGeneral property.
+     * Define el valor de la propiedad descGeneral.
      * 
      * @param value
      *     allowed object is
@@ -63,7 +63,7 @@ public class DataAerolinea
     }
 
     /**
-     * Gets the value of the sitioWeb property.
+     * Obtiene el valor de la propiedad sitioWeb.
      * 
      * @return
      *     possible object is
@@ -75,7 +75,7 @@ public class DataAerolinea
     }
 
     /**
-     * Sets the value of the sitioWeb property.
+     * Define el valor de la propiedad sitioWeb.
      * 
      * @param value
      *     allowed object is

@@ -227,7 +227,7 @@ public class Sistema implements ISistema {
     delta.setEmail(emailActual);                 // se conserva el email
 
     // Avatar: SOLO si hay archivo nuevo; si no, lo dejamos NULL para "mantener"
-    if (upd.getAvatar() != null) {
+    if (upd.getAvatar() != null && upd.getAvatar().length > 0) {
       delta.setAvatar(upd.getAvatar());
     }
 
@@ -297,7 +297,7 @@ public class Sistema implements ISistema {
     delta.setEmail(existente.getEmail());
 
     // avatar: SOLO si hay archivo nuevo; si no, dejar null para "mantener" en el service
-    if (upd.getAvatar() != null) {
+    if (upd.getAvatar() != null && upd.getAvatar().length > 0) {
     	delta.setAvatar(upd.getAvatar());
     }
 

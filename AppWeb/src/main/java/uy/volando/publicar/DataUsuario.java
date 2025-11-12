@@ -8,9 +8,9 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for dataUsuario complex type</p>.
+ * <p>Clase Java para dataUsuario complex type.</p>
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.</p>
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.</p>
  * 
  * <pre>{@code
  * <complexType name="dataUsuario">
@@ -48,7 +48,7 @@ public abstract class DataUsuario {
     protected String contrasenia;
 
     /**
-     * Gets the value of the nombre property.
+     * Obtiene el valor de la propiedad nombre.
      * 
      * @return
      *     possible object is
@@ -60,7 +60,7 @@ public abstract class DataUsuario {
     }
 
     /**
-     * Sets the value of the nombre property.
+     * Define el valor de la propiedad nombre.
      * 
      * @param value
      *     allowed object is
@@ -72,7 +72,7 @@ public abstract class DataUsuario {
     }
 
     /**
-     * Gets the value of the nickname property.
+     * Obtiene el valor de la propiedad nickname.
      * 
      * @return
      *     possible object is
@@ -84,7 +84,7 @@ public abstract class DataUsuario {
     }
 
     /**
-     * Sets the value of the nickname property.
+     * Define el valor de la propiedad nickname.
      * 
      * @param value
      *     allowed object is
@@ -96,7 +96,7 @@ public abstract class DataUsuario {
     }
 
     /**
-     * Gets the value of the email property.
+     * Obtiene el valor de la propiedad email.
      * 
      * @return
      *     possible object is
@@ -108,7 +108,7 @@ public abstract class DataUsuario {
     }
 
     /**
-     * Sets the value of the email property.
+     * Define el valor de la propiedad email.
      * 
      * @param value
      *     allowed object is
@@ -120,7 +120,7 @@ public abstract class DataUsuario {
     }
 
     /**
-     * Gets the value of the contrasenia property.
+     * Obtiene el valor de la propiedad contrasenia.
      * 
      * @return
      *     possible object is
@@ -132,7 +132,7 @@ public abstract class DataUsuario {
     }
 
     /**
-     * Sets the value of the contrasenia property.
+     * Define el valor de la propiedad contrasenia.
      * 
      * @param value
      *     allowed object is
