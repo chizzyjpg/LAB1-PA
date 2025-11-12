@@ -39,6 +39,26 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DataCategoria }
+     * 
+     * @return
+     *     the new instance of {@link DataCategoria }
+     */
+    public DataCategoria createDataCategoria() {
+        return new DataCategoria();
+    }
+
+    /**
+     * Create an instance of {@link DataCiudad }
+     * 
+     * @return
+     *     the new instance of {@link DataCiudad }
+     */
+    public DataCiudad createDataCiudad() {
+        return new DataCiudad();
+    }
+
+    /**
      * Create an instance of {@link DataPasaje }
      * 
      * @return
@@ -56,6 +76,16 @@ public class ObjectFactory {
      */
     public DataReserva createDataReserva() {
         return new DataReserva();
+    }
+
+    /**
+     * Create an instance of {@link DataRuta }
+     * 
+     * @return
+     *     the new instance of {@link DataRuta }
+     */
+    public DataRuta createDataRuta() {
+        return new DataRuta();
     }
 
     /**
@@ -79,54 +109,23 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link DataPaquete }
-     * 
-     * @return
-     *     the new instance of {@link DataPaquete }
-     */
-
-    public DataPaquete createDataPaquete() {
-        return new DataPaquete();
-    }    
-    /** 
      * Create an instance of {@link DataCliente }
      * 
      * @return
      *     the new instance of {@link DataCliente }
      */
-
     public DataCliente createDataCliente() {
         return new DataCliente();
     }
 
     /**
-     * Create an instance of {@link DataRuta }
+     * Create an instance of {@link DataPaquete }
      * 
      * @return
-     *     the new instance of {@link DataRuta }
+     *     the new instance of {@link DataPaquete }
      */
-    public DataRuta createDataRuta() {
-        return new DataRuta();
-    }
-
-    /**
-     * Create an instance of {@link DataCiudad }
-     * 
-     * @return
-     *     the new instance of {@link DataCiudad }
-     */
-    public DataCiudad createDataCiudad() {
-        return new DataCiudad();
-    }
-
-    /**
-     * Create an instance of {@link DataCategoria }
-     * 
-     * @return
-     *     the new instance of {@link DataCategoria }
-     */
-    public DataCategoria createDataCategoria() {
-        return new DataCategoria();
+    public DataPaquete createDataPaquete() {
+        return new DataPaquete();
     }
 
     /**
@@ -137,6 +136,16 @@ public class ObjectFactory {
      */
     public DataPaqueteArray createDataPaqueteArray() {
         return new DataPaqueteArray();
+    }
+
+    /**
+     * Create an instance of {@link DataRutaArray }
+     * 
+     * @return
+     *     the new instance of {@link DataRutaArray }
+     */
+    public DataRutaArray createDataRutaArray() {
+        return new DataRutaArray();
     }
 
     /**
@@ -167,16 +176,6 @@ public class ObjectFactory {
      */
     public DataVueloEspecificoArray createDataVueloEspecificoArray() {
         return new DataVueloEspecificoArray();
-    }
-
-    /**
-     * Create an instance of {@link DataRutaArray }
-     * 
-     * @return
-     *     the new instance of {@link DataRutaArray }
-     */
-    public DataRutaArray createDataRutaArray() {
-        return new DataRutaArray();
     }
 
     /**

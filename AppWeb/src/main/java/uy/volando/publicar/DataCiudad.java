@@ -54,7 +54,11 @@ public class DataCiudad {
     /**
      * Obtiene el valor de la propiedad nombre.
      * 
+     * @return
+     *     possible object is
+     *     {@link String }
      *     
+     */
     public String getNombre() {
         return nombre;
     }
@@ -66,7 +70,11 @@ public class DataCiudad {
      *     allowed object is
      *     {@link String }
      *     
+     */
+    public void setNombre(String value) {
+        this.nombre = value;
     }
+
     /**
      * Obtiene el valor de la propiedad pais.
      * 
@@ -84,7 +92,11 @@ public class DataCiudad {
      * 
      * @param value
      *     allowed object is
+     *     {@link String }
+     *     
+     */
     public void setPais(String value) {
+        this.pais = value;
     }
 
     /**

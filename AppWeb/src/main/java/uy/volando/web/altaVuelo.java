@@ -10,14 +10,26 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import Logica.DataAerolinea;
-import Logica.DataRuta;
-import Logica.DataVueloEspecifico;
-import Logica.ISistema;
+import uy.volando.publicar.WebServices;
+import uy.volando.publicar.DataAerolinea;
+import uy.volando.publicar.DataRuta;
+import uy.volando.publicar.DataVueloEspecifico;
+
 
 @WebServlet("/altaVuelo")
 public class altaVuelo extends HttpServlet {
   private static final long serialVersionUID = 1L;
+
+  private WebServices port;
+
+  @Override
+  public void init() throws ServletException {
+      super.init();
+      this.port = (WebServices) getServletContext().getAttribute("volandoPort");
+      if(this.port == null) {
+          throw new ServletException("El cliente SOAP (WebServices) no fue inicializado por InicioServlet.");
+      }
+  }
 
   public altaVuelo() {
     super();
@@ -30,7 +42,6 @@ public class altaVuelo extends HttpServlet {
     Object usuario = session.getAttribute("usuario_logueado");
     request.setAttribute("usuario", usuario);
 
-    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
     if (usuario == null || !(usuario instanceof DataAerolinea)) {
       request.setAttribute("errorMsg",
           "Debes iniciar sesión como aerolínea para registrar un vuelo.");
@@ -42,7 +53,7 @@ public class altaVuelo extends HttpServlet {
     request.setAttribute("aerolineaSeleccionada", aerolineaId);
     request.setAttribute("aerolineaNombre", aerolinea.getNombre());
 
-    List<DataRuta> rutas = sistema.listarPorAerolinea(aerolineaId);
+    List<DataRuta> rutas = port.listarPorAerolinea(aerolineaId).getItem();
     request.setAttribute("rutas", rutas);
     request.getRequestDispatcher("/WEB-INF/vuelo/altaVuelo.jsp").forward(request, response);
   }
@@ -71,15 +82,14 @@ public class altaVuelo extends HttpServlet {
     String cantMaxEjecutivosStr = request.getParameter("cantMaxEjecutivos");
     // String imagenVuelo = request.getParameter("imagenVuelo");
 
-    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
-    if (sistema == null) {
+    if (port == null) {
       request.setAttribute("errorMsg", "Error interno: sistema no disponible.");
       doGet(request, response);
       return;
     }
 
     // Obtener el nombre de la ruta a partir del id
-    List<DataRuta> rutas = sistema.listarPorAerolinea(aerolineaId);
+    List<DataRuta> rutas = port.listarPorAerolinea(aerolineaId).getItem();
     String nombreRuta = rutas.stream().filter(r -> Integer.toString(r.getIdRuta()).equals(rutaId))
         .map(DataRuta::getNombre).findFirst().orElse(null);
     if (nombreRuta == null) {
@@ -89,7 +99,7 @@ public class altaVuelo extends HttpServlet {
     }
 
     // Validar nombre único en la ruta de la aerolínea
-    List<DataVueloEspecifico> vuelos = sistema.listarVuelos(aerolineaId, nombreRuta);
+    List<DataVueloEspecifico> vuelos = port.listarVuelos(aerolineaId, nombreRuta).getItem();
     boolean existeVuelo = vuelos.stream()
         .anyMatch(v -> v.getNombre().equalsIgnoreCase(nombreVuelo));
     if (existeVuelo) {
@@ -132,12 +142,56 @@ public class altaVuelo extends HttpServlet {
     }
 
     java.util.Date fechaAlta = new java.util.Date();
-    // Crear DTO de vuelo
-    DataVueloEspecifico dataVuelo = new DataVueloEspecifico(nombreVuelo, fecha, duracion,
-        cantMaxTuristas, cantMaxEjecutivos, fechaAlta);
+    // Crear DTO de vuelo para el WebService
+    DataVueloEspecifico dataVuelo = new DataVueloEspecifico();
+    dataVuelo.setNombre(nombreVuelo);
+    // Convertir java.util.Date a XMLGregorianCalendar
+    javax.xml.datatype.DatatypeFactory df = null;
+    try {
+      df = javax.xml.datatype.DatatypeFactory.newInstance();
+    } catch (Exception e) {
+      request.setAttribute("errorMsg", "Error interno al convertir fechas.");
+      doGet(request, response);
+      return;
+    }
+    java.util.Calendar calFecha = java.util.Calendar.getInstance();
+    calFecha.setTime(fecha);
+    javax.xml.datatype.XMLGregorianCalendar xmlFecha = df.newXMLGregorianCalendar(
+      calFecha.get(java.util.Calendar.YEAR),
+      calFecha.get(java.util.Calendar.MONTH) + 1,
+      calFecha.get(java.util.Calendar.DAY_OF_MONTH),
+      calFecha.get(java.util.Calendar.HOUR_OF_DAY),
+      calFecha.get(java.util.Calendar.MINUTE),
+      calFecha.get(java.util.Calendar.SECOND),
+      calFecha.get(java.util.Calendar.MILLISECOND),
+      java.util.TimeZone.getDefault().getRawOffset() / (60 * 1000)
+    );
+    dataVuelo.setFecha(xmlFecha);
+    dataVuelo.setDuracion(duracion);
+    dataVuelo.setMaxAsientosTur(cantMaxTuristas);
+    dataVuelo.setMaxAsientosEjec(cantMaxEjecutivos);
+    // Fecha alta
+    java.util.Calendar calAlta = java.util.Calendar.getInstance();
+    calAlta.setTime(fechaAlta);
+    javax.xml.datatype.XMLGregorianCalendar xmlFechaAlta = df.newXMLGregorianCalendar(
+      calAlta.get(java.util.Calendar.YEAR),
+      calAlta.get(java.util.Calendar.MONTH) + 1,
+      calAlta.get(java.util.Calendar.DAY_OF_MONTH),
+      calAlta.get(java.util.Calendar.HOUR_OF_DAY),
+      calAlta.get(java.util.Calendar.MINUTE),
+      calAlta.get(java.util.Calendar.SECOND),
+      calAlta.get(java.util.Calendar.MILLISECOND),
+      java.util.TimeZone.getDefault().getRawOffset() / (60 * 1000)
+    );
+    dataVuelo.setFechaAlta(xmlFechaAlta);
+    // Si necesitas setear la ruta, puedes buscarla y setearla:
+    DataRuta rutaSeleccionada = rutas.stream().filter(r -> Integer.toString(r.getIdRuta()).equals(rutaId)).findFirst().orElse(null);
+    if (rutaSeleccionada != null) {
+      dataVuelo.setDruta(rutaSeleccionada);
+    }
 
     try {
-      sistema.registrarVuelo(aerolineaId, nombreRuta, dataVuelo);
+      port.registrarVuelo(aerolineaId, nombreRuta, dataVuelo);
       request.setAttribute("successMsg", "Vuelo registrado exitosamente.");
     } catch (Exception e) {
       request.setAttribute("errorMsg", e.getMessage());

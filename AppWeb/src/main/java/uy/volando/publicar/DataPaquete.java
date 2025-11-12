@@ -12,9 +12,9 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for dataPaquete complex type</p>.
+ * <p>Clase Java para dataPaquete complex type.</p>
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.</p>
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.</p>
  * 
  * <pre>{@code
  * <complexType name="dataPaquete">
@@ -62,7 +62,7 @@ public class DataPaquete {
     protected List<String> rutasIncluidas;
 
     /**
-     * Gets the value of the nombre property.
+     * Obtiene el valor de la propiedad nombre.
      * 
      * @return
      *     possible object is
@@ -74,7 +74,7 @@ public class DataPaquete {
     }
 
     /**
-     * Sets the value of the nombre property.
+     * Define el valor de la propiedad nombre.
      * 
      * @param value
      *     allowed object is
@@ -86,7 +86,7 @@ public class DataPaquete {
     }
 
     /**
-     * Gets the value of the descripcion property.
+     * Obtiene el valor de la propiedad descripcion.
      * 
      * @return
      *     possible object is
@@ -98,7 +98,7 @@ public class DataPaquete {
     }
 
     /**
-     * Sets the value of the descripcion property.
+     * Define el valor de la propiedad descripcion.
      * 
      * @param value
      *     allowed object is
@@ -110,7 +110,7 @@ public class DataPaquete {
     }
 
     /**
-     * Gets the value of the cantRutas property.
+     * Obtiene el valor de la propiedad cantRutas.
      * 
      */
     public int getCantRutas() {
@@ -118,7 +118,7 @@ public class DataPaquete {
     }
 
     /**
-     * Sets the value of the cantRutas property.
+     * Define el valor de la propiedad cantRutas.
      * 
      */
     public void setCantRutas(int value) {
@@ -126,7 +126,7 @@ public class DataPaquete {
     }
 
     /**
-     * Gets the value of the tipoAsiento property.
+     * Obtiene el valor de la propiedad tipoAsiento.
      * 
      * @return
      *     possible object is
@@ -138,7 +138,7 @@ public class DataPaquete {
     }
 
     /**
-     * Sets the value of the tipoAsiento property.
+     * Define el valor de la propiedad tipoAsiento.
      * 
      * @param value
      *     allowed object is
@@ -150,7 +150,7 @@ public class DataPaquete {
     }
 
     /**
-     * Gets the value of the descuento property.
+     * Obtiene el valor de la propiedad descuento.
      * 
      */
     public int getDescuento() {
@@ -158,7 +158,7 @@ public class DataPaquete {
     }
 
     /**
-     * Sets the value of the descuento property.
+     * Define el valor de la propiedad descuento.
      * 
      */
     public void setDescuento(int value) {
@@ -166,7 +166,7 @@ public class DataPaquete {
     }
 
     /**
-     * Gets the value of the validez property.
+     * Obtiene el valor de la propiedad validez.
      * 
      */
     public int getValidez() {
@@ -174,7 +174,7 @@ public class DataPaquete {
     }
 
     /**
-     * Sets the value of the validez property.
+     * Define el valor de la propiedad validez.
      * 
      */
     public void setValidez(int value) {
@@ -182,7 +182,7 @@ public class DataPaquete {
     }
 
     /**
-     * Gets the value of the costo property.
+     * Obtiene el valor de la propiedad costo.
      * 
      * @return
      *     possible object is
@@ -194,7 +194,7 @@ public class DataPaquete {
     }
 
     /**
-     * Sets the value of the costo property.
+     * Define el valor de la propiedad costo.
      * 
      * @param value
      *     allowed object is
