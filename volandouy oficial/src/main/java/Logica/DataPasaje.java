@@ -1,12 +1,21 @@
 package Logica;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
 /**
  * DataPasaje class represents a data structure for storing passenger information.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "dataPasaje")
+@XmlType(propOrder = {"nombre", "apellido" })
 public class DataPasaje {
   private String nombre;
   private String apellido;
 
+  public DataPasaje() {}
   /**
    * Constructor to initialize DataPasaje with given name and surname.
    *

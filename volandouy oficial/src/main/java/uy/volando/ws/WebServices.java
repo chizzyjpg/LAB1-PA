@@ -139,4 +139,26 @@ public class WebServices {
         List<DataVueloEspecifico> lista = sistema.listarVuelos(nickname, nombre);
         return lista.toArray(new DataVueloEspecifico[0]);
     }
+
+    @WebMethod
+    public DataReserva buscarReserva(
+            @WebParam(name = "nicknameAerolinea") String nicknameAerolinea,
+            @WebParam(name = "rutaSel") String rutaSel,
+            @WebParam(name = "vueloSel") String vueloSel,
+            @WebParam(name = "idReserva") int idReserva
+    ) {
+        return sistema.buscarReserva(nicknameAerolinea, rutaSel, vueloSel, idReserva);
+    }
+
+    @WebMethod
+    public DataReserva[] listarReservas(
+            @WebParam(name = "nicknameAerolinea") String nicknameAerolinea,
+            @WebParam(name = "rutaSel") String rutaSel,
+            @WebParam(name = "vueloSel") String vueloSel
+    ) {
+        List<DataReserva> lista = sistema.listarReservas(nicknameAerolinea, rutaSel, vueloSel);
+        return lista.toArray(new DataReserva[0]);
+    }
+
+
 }

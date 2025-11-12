@@ -1,5 +1,10 @@
 package Logica;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,6 +13,9 @@ import java.util.List;
 /**
  * DataReserva class represents reservation data including details such as.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "dataReserva")
+@XmlType(propOrder = {"idReserva", "fechaReserva", "tipoAsiento", "equipaje", "cantEquipajeExtra", "costoTotal", "pasajes", "nickCliente" })
 public class DataReserva {
   private int idReserva;
   private Date fechaReserva;
@@ -18,6 +26,7 @@ public class DataReserva {
   private List<DataPasaje> pasajes;
   private DataCliente nickCliente;
 
+  public DataReserva() {}
   /**
    * Constructor for DataReserva.
    * 
