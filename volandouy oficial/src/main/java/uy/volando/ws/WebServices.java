@@ -171,5 +171,12 @@ public class WebServices {
         return lista.toArray(new DataReserva[0]);
     }
 
-
+    @WebMethod
+    public DataVueloEspecifico buscarVuelo(
+            @WebParam(name = "nicknameAerolinea") String nicknameAerolinea,
+            @WebParam(name = "rutaSel") String rutaSel,
+            @WebParam(name = "vueloSel") String vueloSel
+    ) {
+        return sistema.buscarVuelo(nicknameAerolinea, rutaSel, vueloSel);
+    }
 }
