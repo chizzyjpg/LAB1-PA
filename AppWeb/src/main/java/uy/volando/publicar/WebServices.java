@@ -27,6 +27,110 @@ public interface WebServices {
 
     /**
      * 
+     * @return
+     *     returns uy.volando.publicar.DataAerolineaArray
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://ws.volando.uy/WebServices/listarAerolineasRequest", output = "http://ws.volando.uy/WebServices/listarAerolineasResponse")
+    public DataAerolineaArray listarAerolineas();
+
+    /**
+     * 
+     * @param arg0
+     * @param arg1
+     * @return
+     *     returns uy.volando.publicar.DataUsuario
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://ws.volando.uy/WebServices/loguearUsuarioRequest", output = "http://ws.volando.uy/WebServices/loguearUsuarioResponse")
+    public DataUsuario loguearUsuario(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0,
+        @WebParam(name = "arg1", partName = "arg1")
+        String arg1);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns uy.volando.publicar.DataCliente
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://ws.volando.uy/WebServices/verInfoClienteRequest", output = "http://ws.volando.uy/WebServices/verInfoClienteResponse")
+    public DataCliente verInfoCliente(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
+     * @param nicknameAerolinea
+     * @return
+     *     returns uy.volando.publicar.DataRutaArray
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://ws.volando.uy/WebServices/listarPorAerolineaRequest", output = "http://ws.volando.uy/WebServices/listarPorAerolineaResponse")
+    public DataRutaArray listarPorAerolinea(
+        @WebParam(name = "nicknameAerolinea", partName = "nicknameAerolinea")
+        String nicknameAerolinea);
+
+    /**
+     * 
+     * @return
+     *     returns uy.volando.publicar.DataCategoriaArray
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://ws.volando.uy/WebServices/listarCategoriasRequest", output = "http://ws.volando.uy/WebServices/listarCategoriasResponse")
+    public DataCategoriaArray listarCategorias();
+
+    /**
+     * 
+     * @param nickname
+     * @param nombre
+     * @return
+     *     returns uy.volando.publicar.DataVueloEspecificoArray
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://ws.volando.uy/WebServices/listarVuelosRequest", output = "http://ws.volando.uy/WebServices/listarVuelosResponse")
+    public DataVueloEspecificoArray listarVuelos(
+        @WebParam(name = "nickname", partName = "nickname")
+        String nickname,
+        @WebParam(name = "nombre", partName = "nombre")
+        String nombre);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns uy.volando.publicar.DataAerolinea
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://ws.volando.uy/WebServices/verInfoAerolineaRequest", output = "http://ws.volando.uy/WebServices/verInfoAerolineaResponse")
+    public DataAerolinea verInfoAerolinea(
+        @WebParam(name = "arg0", partName = "arg0")
+        String arg0);
+
+    /**
+     * 
+     * @param nombre
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(partName = "return")
+    @Action(input = "http://ws.volando.uy/WebServices/pingRequest", output = "http://ws.volando.uy/WebServices/pingResponse")
+    public String ping(
+        @WebParam(name = "nombre", partName = "nombre")
+        String nombre);
+
+    /**
+     * 
      * @param apellido
      * @param avatarBytes
      * @param clearPhoto
@@ -95,60 +199,5 @@ public interface WebServices {
         byte[] avatarBytes,
         @WebParam(name = "clearPhoto", partName = "clearPhoto")
         boolean clearPhoto);
-
-    /**
-     * 
-     * @param nombre
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://ws.volando.uy/WebServices/pingRequest", output = "http://ws.volando.uy/WebServices/pingResponse")
-    public String ping(
-        @WebParam(name = "nombre", partName = "nombre")
-        String nombre);
-
-    /**
-     * 
-     * @param arg0
-     * @param arg1
-     * @return
-     *     returns uy.volando.publicar.DataUsuario
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://ws.volando.uy/WebServices/loguearUsuarioRequest", output = "http://ws.volando.uy/WebServices/loguearUsuarioResponse")
-    public DataUsuario loguearUsuario(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0,
-        @WebParam(name = "arg1", partName = "arg1")
-        String arg1);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns uy.volando.publicar.DataCliente
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://ws.volando.uy/WebServices/verInfoClienteRequest", output = "http://ws.volando.uy/WebServices/verInfoClienteResponse")
-    public DataCliente verInfoCliente(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns uy.volando.publicar.DataAerolinea
-     */
-    @WebMethod
-    @WebResult(partName = "return")
-    @Action(input = "http://ws.volando.uy/WebServices/verInfoAerolineaRequest", output = "http://ws.volando.uy/WebServices/verInfoAerolineaResponse")
-    public DataAerolinea verInfoAerolinea(
-        @WebParam(name = "arg0", partName = "arg0")
-        String arg0);
 
 }

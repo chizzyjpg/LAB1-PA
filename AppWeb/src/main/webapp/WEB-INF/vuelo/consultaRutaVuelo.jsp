@@ -1,8 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@page import="java.util.List" %>
-<%@page import="Logica.DataRuta" %>
-<%@page import="Logica.DataAerolinea" %>
-<%@page import="Logica.DataCategoria" %>
+<%@page import="uy.volando.publicar.DataRuta" %>
+<%@page import="uy.volando.publicar.DataAerolinea" %>
+<%@page import="uy.volando.publicar.DataCategoria" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -33,17 +33,17 @@
         <section class="mb-3">
           <form method="post" class="row g-2 align-items-end">
             <div class="col-md-4">
-              <label for="aerolinea" class="form-label">Aerolínea</label>
-              <% String aerolineaSel = request.getParameter("aerolinea"); %>
-              <select id="aerolinea" name="aerolinea" class="form-select">
-                <option value="" <%= (aerolineaSel == null || aerolineaSel.isEmpty()) ? "selected" : "" %>>Todas</option>
-                <% List<DataAerolinea> aerolineas = (List<DataAerolinea>) request.getAttribute("aerolineas");
-                   if (aerolineas != null) {
-                     for (DataAerolinea aer : aerolineas) { %>
-                       <option value="<%= aer.getNickname() %>" <%= (aer.getNickname().equals(aerolineaSel)) ? "selected" : "" %>><%= aer.getNombre() %></option>
-                <%   }
-                   } %>
-              </select>
+          <label for="aerolinea" class="form-label">Aerolínea</label>
+          <% String aerolineaSel = request.getParameter("aerolinea"); %>
+          <select id="aerolinea" name="aerolinea" class="form-select">
+            <option value="" <%= (aerolineaSel == null || aerolineaSel.isEmpty()) ? "selected" : "" %>>Todas</option>
+            <% List<DataAerolinea> aerolineas = (List<DataAerolinea>) request.getAttribute("aerolineas");
+               if (aerolineas != null) {
+                 for (DataAerolinea aer : aerolineas) { %>
+                   <option value="<%= aer.getNickname() %>" <%= (aer.getNickname().equals(aerolineaSel)) ? "selected" : "" %>><%= aer.getNombre() %></option>
+            <%   }
+               } %>
+          </select>
             </div>
             <div class="col-md-4">
               <label for="categoria" class="form-label">Categoría</label>
@@ -77,7 +77,7 @@
         <!-- Lista de vuelos de la ruta seleccionada -->
         <section>
           <% DataRuta rutaSeleccionada = (DataRuta) request.getAttribute("rutaSeleccionada");
-             List<Logica.DataVueloEspecifico> vuelos = (List<Logica.DataVueloEspecifico>) request.getAttribute("vuelos");
+             List<uy.volando.publicar.DataVueloEspecifico> vuelos = (List<uy.volando.publicar.DataVueloEspecifico>) request.getAttribute("vuelos");
              if (rutaSeleccionada != null) { %>
             <h2 class="mt-4">Datos de la ruta: <%= rutaSeleccionada.getNombre() %></h2>
             <div class="mb-3">
@@ -89,14 +89,14 @@
               <strong>Costo Ejecutivo:</strong> <%= rutaSeleccionada.getCostoEjecutivo() %> <br>
               <strong>Estado:</strong> <%= rutaSeleccionada.getEstado() != null ? rutaSeleccionada.getEstado().name() : "" %> <br>
               <% /* Imagen de la ruta (no implementado) */ %>
-              <% /* if (rutaSeleccionada.getImagen() != null && !rutaSeleccionada.getImagen().isBlank()) { %>
-                <img src="<%= rutaSeleccionada.getImagen() %>" alt="Imagen de la ruta" style="max-width:300px;max-height:200px;">
-              <% } */ %>
+              <% /* if (rutaSeleccionada.getImagen() != null && !rutaSeleccionada.getImagen().isBlank()) { */%>
+                <!--<img src="<%/*= rutaSeleccionada.getImagen()*/ %>" alt="Imagen de la ruta" style="max-width:300px;max-height:200px;">-->
+              <% /*} */ %>
             </div>
             <h3>Vuelos asociados</h3>
             <% if (vuelos != null && !vuelos.isEmpty()) { %>
               <ul class="list-group mt-3">
-                <% for (Logica.DataVueloEspecifico vuelo : vuelos) { %>
+                <% for (uy.volando.publicar.DataVueloEspecifico vuelo : vuelos) { %>
                   <li class="list-group-item">
                     <form method="post" style="display:inline;">
                       <input type="hidden" name="aerolinea" value="<%= rutaSeleccionada.getNicknameAerolinea() %>" />
@@ -115,7 +115,7 @@
             <% } %>
           <% } %>
         </section>
-        <% Logica.DataVueloEspecifico vueloSeleccionado = (Logica.DataVueloEspecifico) request.getAttribute("vueloSeleccionado");
+        <% uy.volando.publicar.DataVueloEspecifico vueloSeleccionado = (uy.volando.publicar.DataVueloEspecifico) request.getAttribute("vueloSeleccionado");
            if (vueloSeleccionado != null) { %>
         <section class="mt-4">
           <h3>Detalle del Vuelo Seleccionado</h3>
