@@ -10,9 +10,9 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for dataRuta complex type</p>.
+ * <p>Clase Java para dataRuta complex type.</p>
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.</p>
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.</p>
  * 
  * <pre>{@code
  * <complexType name="dataRuta">
@@ -78,7 +78,7 @@ public class DataRuta {
     protected EstadoRuta estado;
 
     /**
-     * Gets the value of the idRuta property.
+     * Obtiene el valor de la propiedad idRuta.
      * 
      */
     public int getIdRuta() {
@@ -86,7 +86,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the idRuta property.
+     * Define el valor de la propiedad idRuta.
      * 
      */
     public void setIdRuta(int value) {
@@ -94,7 +94,7 @@ public class DataRuta {
     }
 
     /**
-     * Gets the value of the nombre property.
+     * Obtiene el valor de la propiedad nombre.
      * 
      * @return
      *     possible object is
@@ -106,7 +106,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the nombre property.
+     * Define el valor de la propiedad nombre.
      * 
      * @param value
      *     allowed object is
@@ -118,7 +118,7 @@ public class DataRuta {
     }
 
     /**
-     * Gets the value of the descripcion property.
+     * Obtiene el valor de la propiedad descripcion.
      * 
      * @return
      *     possible object is
@@ -130,7 +130,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the descripcion property.
+     * Define el valor de la propiedad descripcion.
      * 
      * @param value
      *     allowed object is
@@ -142,7 +142,7 @@ public class DataRuta {
     }
 
     /**
-     * Gets the value of the descripcionCorta property.
+     * Obtiene el valor de la propiedad descripcionCorta.
      * 
      * @return
      *     possible object is
@@ -154,7 +154,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the descripcionCorta property.
+     * Define el valor de la propiedad descripcionCorta.
      * 
      * @param value
      *     allowed object is
@@ -166,7 +166,7 @@ public class DataRuta {
     }
 
     /**
-     * Gets the value of the ciudadOrigen property.
+     * Obtiene el valor de la propiedad ciudadOrigen.
      * 
      * @return
      *     possible object is
@@ -178,7 +178,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the ciudadOrigen property.
+     * Define el valor de la propiedad ciudadOrigen.
      * 
      * @param value
      *     allowed object is
@@ -190,7 +190,7 @@ public class DataRuta {
     }
 
     /**
-     * Gets the value of the ciudadDestino property.
+     * Obtiene el valor de la propiedad ciudadDestino.
      * 
      * @return
      *     possible object is
@@ -202,7 +202,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the ciudadDestino property.
+     * Define el valor de la propiedad ciudadDestino.
      * 
      * @param value
      *     allowed object is
@@ -214,7 +214,7 @@ public class DataRuta {
     }
 
     /**
-     * Gets the value of the hora property.
+     * Obtiene el valor de la propiedad hora.
      * 
      */
     public int getHora() {
@@ -222,7 +222,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the hora property.
+     * Define el valor de la propiedad hora.
      * 
      */
     public void setHora(int value) {
@@ -230,7 +230,7 @@ public class DataRuta {
     }
 
     /**
-     * Gets the value of the fechaAlta property.
+     * Obtiene el valor de la propiedad fechaAlta.
      * 
      * @return
      *     possible object is
@@ -242,7 +242,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the fechaAlta property.
+     * Define el valor de la propiedad fechaAlta.
      * 
      * @param value
      *     allowed object is
@@ -254,7 +254,7 @@ public class DataRuta {
     }
 
     /**
-     * Gets the value of the costoTurista property.
+     * Obtiene el valor de la propiedad costoTurista.
      * 
      * @return
      *     possible object is
@@ -266,7 +266,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the costoTurista property.
+     * Define el valor de la propiedad costoTurista.
      * 
      * @param value
      *     allowed object is
@@ -278,7 +278,7 @@ public class DataRuta {
     }
 
     /**
-     * Gets the value of the costoEjecutivo property.
+     * Obtiene el valor de la propiedad costoEjecutivo.
      * 
      * @return
      *     possible object is
@@ -290,7 +290,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the costoEjecutivo property.
+     * Define el valor de la propiedad costoEjecutivo.
      * 
      * @param value
      *     allowed object is
@@ -302,7 +302,7 @@ public class DataRuta {
     }
 
     /**
-     * Gets the value of the costoEquipajeExtra property.
+     * Obtiene el valor de la propiedad costoEquipajeExtra.
      * 
      */
     public int getCostoEquipajeExtra() {
@@ -310,7 +310,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the costoEquipajeExtra property.
+     * Define el valor de la propiedad costoEquipajeExtra.
      * 
      */
     public void setCostoEquipajeExtra(int value) {
@@ -318,7 +318,7 @@ public class DataRuta {
     }
 
     /**
-     * Gets the value of the categoria property.
+     * Obtiene el valor de la propiedad categoria.
      * 
      * @return
      *     possible object is
@@ -330,7 +330,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the categoria property.
+     * Define el valor de la propiedad categoria.
      * 
      * @param value
      *     allowed object is
@@ -342,7 +342,7 @@ public class DataRuta {
     }
 
     /**
-     * Gets the value of the nicknameAerolinea property.
+     * Obtiene el valor de la propiedad nicknameAerolinea.
      * 
      * @return
      *     possible object is
@@ -354,7 +354,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the nicknameAerolinea property.
+     * Define el valor de la propiedad nicknameAerolinea.
      * 
      * @param value
      *     allowed object is
@@ -366,7 +366,7 @@ public class DataRuta {
     }
 
     /**
-     * Gets the value of the estado property.
+     * Obtiene el valor de la propiedad estado.
      * 
      * @return
      *     possible object is
@@ -378,7 +378,7 @@ public class DataRuta {
     }
 
     /**
-     * Sets the value of the estado property.
+     * Define el valor de la propiedad estado.
      * 
      * @param value
      *     allowed object is

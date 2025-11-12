@@ -2,7 +2,7 @@ package Logica;
 
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlSeeAlso;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 import java.util.Date;
@@ -11,20 +11,16 @@ import java.util.Date;
  * Clase que representa los datos de una ciudad, incluyendo información sobre su aeropuerto.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(
-    name = "dataCiudad",
-    propOrder = { "nombre", "pais", "nombreAeropuerto", "descripcionAeropuerto", "fechaAlta", "sitioWeb" }
-)
-
+@XmlRootElement(name = "dataCiudad")
+@XmlType(propOrder = {"nombre", "pais", "nombreAeropuerto", "descripcionAeropuerto", "fechaAlta", "sitioWeb"})
 public class DataCiudad {
-  private  String nombre;
-  private  String pais;
-  private  String nombreAeropuerto;
-  private  String descripcionAeropuerto;
-  private  Date fechaAlta;
-  private  String sitioWeb;
+  private String nombre;
+  private String pais;
+  private String nombreAeropuerto;
+  private String descripcionAeropuerto;
+  private Date fechaAlta;
+  private String sitioWeb;
 
-  public DataCiudad() {}
 
   /**
    * Constructor de la clase DataCiudad.
@@ -39,7 +35,9 @@ public class DataCiudad {
     this.sitioWeb = sitioWeb;
   }
 
-
+  // Constructor por defecto requerido por JAXB
+  public DataCiudad() {
+  }
 
   public String getNombre() {
     return nombre;

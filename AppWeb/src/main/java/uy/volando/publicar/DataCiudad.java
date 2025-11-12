@@ -9,9 +9,9 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for dataCiudad complex type</p>.
+ * <p>Clase Java para dataCiudad complex type.</p>
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.</p>
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.</p>
  * 
  * <pre>{@code
  * <complexType name="dataCiudad">
@@ -52,31 +52,23 @@ public class DataCiudad {
     protected String sitioWeb;
 
     /**
-     * Gets the value of the nombre property.
+     * Obtiene el valor de la propiedad nombre.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
      *     
-     */
     public String getNombre() {
         return nombre;
     }
 
     /**
-     * Sets the value of the nombre property.
+     * Define el valor de la propiedad nombre.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
-     */
-    public void setNombre(String value) {
-        this.nombre = value;
     }
-
     /**
-     * Gets the value of the pais property.
+     * Obtiene el valor de la propiedad pais.
      * 
      * @return
      *     possible object is
@@ -88,19 +80,15 @@ public class DataCiudad {
     }
 
     /**
-     * Sets the value of the pais property.
+     * Define el valor de la propiedad pais.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
-     *     
-     */
     public void setPais(String value) {
-        this.pais = value;
     }
 
     /**
-     * Gets the value of the nombreAeropuerto property.
+     * Obtiene el valor de la propiedad nombreAeropuerto.
      * 
      * @return
      *     possible object is
@@ -112,7 +100,7 @@ public class DataCiudad {
     }
 
     /**
-     * Sets the value of the nombreAeropuerto property.
+     * Define el valor de la propiedad nombreAeropuerto.
      * 
      * @param value
      *     allowed object is
@@ -124,7 +112,7 @@ public class DataCiudad {
     }
 
     /**
-     * Gets the value of the descripcionAeropuerto property.
+     * Obtiene el valor de la propiedad descripcionAeropuerto.
      * 
      * @return
      *     possible object is
@@ -136,7 +124,7 @@ public class DataCiudad {
     }
 
     /**
-     * Sets the value of the descripcionAeropuerto property.
+     * Define el valor de la propiedad descripcionAeropuerto.
      * 
      * @param value
      *     allowed object is
@@ -148,7 +136,7 @@ public class DataCiudad {
     }
 
     /**
-     * Gets the value of the fechaAlta property.
+     * Obtiene el valor de la propiedad fechaAlta.
      * 
      * @return
      *     possible object is
@@ -160,7 +148,7 @@ public class DataCiudad {
     }
 
     /**
-     * Sets the value of the fechaAlta property.
+     * Define el valor de la propiedad fechaAlta.
      * 
      * @param value
      *     allowed object is
@@ -172,7 +160,7 @@ public class DataCiudad {
     }
 
     /**
-     * Gets the value of the sitioWeb property.
+     * Obtiene el valor de la propiedad sitioWeb.
      * 
      * @return
      *     possible object is
@@ -184,7 +172,7 @@ public class DataCiudad {
     }
 
     /**
-     * Sets the value of the sitioWeb property.
+     * Define el valor de la propiedad sitioWeb.
      * 
      * @param value
      *     allowed object is

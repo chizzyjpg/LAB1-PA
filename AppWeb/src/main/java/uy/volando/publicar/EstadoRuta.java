@@ -8,9 +8,9 @@ import jakarta.xml.bind.annotation.XmlType;
 /**
  * 
  * 
- * <p>Java class for estadoRuta</p>.
+ * <p>Clase Java para estadoRuta.</p>
  * 
- * <p>The following schema fragment specifies the expected content contained within this class.</p>
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.</p>
  * <pre>{@code
  * <simpleType name="estadoRuta">
  *   <restriction base="{http://www.w3.org/2001/XMLSchema}string">

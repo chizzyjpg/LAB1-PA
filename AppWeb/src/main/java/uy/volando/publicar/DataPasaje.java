@@ -7,28 +7,34 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Clase Java para dataCategoria complex type.</p>
+ * <p>Clase Java para dataPasaje complex type.</p>
  * 
  * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.</p>
  * 
  * <pre>{@code
- * <complexType name="dataCategoria">
+ * <complexType name="dataPasaje">
  *   <complexContent>
  *     <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       <sequence>
  *         <element name="nombre" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         <element name="apellido" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       </sequence>
  *     </restriction>
+ *   </complexContent>
+ * </complexType>
  * }</pre>
+ * 
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "dataCategoria", propOrder = {
-    "nombre"
+@XmlType(name = "dataPasaje", propOrder = {
+    "nombre",
+    "apellido"
 })
-public class DataCategoria {
+public class DataPasaje {
 
     protected String nombre;
+    protected String apellido;
 
     /**
      * Obtiene el valor de la propiedad nombre.
@@ -52,6 +58,30 @@ public class DataCategoria {
      */
     public void setNombre(String value) {
         this.nombre = value;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad apellido.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getApellido() {
+        return apellido;
+    }
+
+    /**
+     * Define el valor de la propiedad apellido.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setApellido(String value) {
+        this.apellido = value;
     }
 
 }

@@ -8,31 +8,31 @@ import jakarta.xml.bind.annotation.XmlType;
 /**
  * 
  * 
- * <p>Clase Java para tipoAsiento.</p>
+ * <p>Clase Java para equipaje.</p>
  * 
  * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.</p>
  * <pre>{@code
- * <simpleType name="tipoAsiento">
+ * <simpleType name="equipaje">
  *   <restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     <enumeration value="TURISTA"/>
- *     <enumeration value="EJECUTIVO"/>
+ *     <enumeration value="BOLSO"/>
+ *     <enumeration value="MOCHILAYCARRYON"/>
  *   </restriction>
  * </simpleType>
  * }</pre>
  * 
  */
-@XmlType(name = "tipoAsiento")
+@XmlType(name = "equipaje")
 @XmlEnum
-public enum TipoAsiento {
+public enum Equipaje {
 
-    TURISTA,
-    EJECUTIVO;
+    BOLSO,
+    MOCHILAYCARRYON;
 
     public String value() {
         return name();
     }
 
-    public static TipoAsiento fromValue(String v) {
+    public static Equipaje fromValue(String v) {
         return valueOf(v);
     }
 

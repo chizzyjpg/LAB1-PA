@@ -10,16 +10,16 @@ import jakarta.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Clase Java para dataAerolineaArray complex type.</p>
+ * <p>Clase Java para dataCategoriaArray complex type.</p>
  * 
  * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.</p>
  * 
  * <pre>{@code
- * <complexType name="dataAerolineaArray">
+ * <complexType name="dataCategoriaArray">
  *   <complexContent>
  *     <restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       <sequence>
- *         <element name="item" type="{http://ws.volando.uy/}dataAerolinea" maxOccurs="unbounded" minOccurs="0"/>
+ *         <element name="item" type="{http://ws.volando.uy/}dataCategoria" maxOccurs="unbounded" minOccurs="0"/>
  *       </sequence>
  *     </restriction>
  *   </complexContent>
@@ -29,13 +29,13 @@ import jakarta.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "dataAerolineaArray", propOrder = {
+@XmlType(name = "dataCategoriaArray", propOrder = {
     "item"
 })
-public class DataAerolineaArray {
+public class DataCategoriaArray {
 
     @XmlElement(nillable = true)
-    protected List<DataAerolinea> item;
+    protected List<DataCategoria> item;
 
     /**
      * Gets the value of the item property.
@@ -55,14 +55,14 @@ public class DataAerolineaArray {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link DataAerolinea }
+     * {@link DataCategoria }
      * </p>
      * 
      * 
      * @return
      *     The value of the item property.
      */
-    public List<DataAerolinea> getItem() {
+    public List<DataCategoria> getItem() {
         if (item == null) {
             item = new ArrayList<>();
         }

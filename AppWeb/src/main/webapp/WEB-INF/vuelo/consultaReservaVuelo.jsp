@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@page import="java.util.*" %>
-<%@page import="Logica.*" %>
+<%@page import="uy.volando.publicar.*" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
