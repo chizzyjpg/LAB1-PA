@@ -1,9 +1,19 @@
 package Logica;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "PerfilAerolineaUpdate")
+@XmlType(propOrder = {"nickname", "email", "nombre", "descGeneral", "sitioWeb", "avatar", "clearAvatar"})
 public class PerfilAerolineaUpdate {
 	String nickname, email, nombre, sitioWeb, descGeneral;
 	byte[] avatar;
 	boolean clearAvatar;
+
+    public PerfilAerolineaUpdate() {}
 
 	public PerfilAerolineaUpdate(String nickname, String email, String nombre, String descGeneral, String linkWeb,
 								 byte[] avatar, boolean clearAvatar) {

@@ -1,9 +1,5 @@
 package uy.volando.web;
 
-import Logica.DataAerolinea;
-import Logica.DataCliente;
-import Logica.ISistema;
-import Logica.TipoDocumento;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,7 +10,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
-import Logica.PerfilAerolineaUpdate;
+import uy.volando.publicar.WebServices;
+import uy.volando.publicar.DataAerolinea;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,6 +23,16 @@ import java.util.Date;
 public class altaUsuario extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
+    private WebServices port;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        this.port = (WebServices) getServletContext().getAttribute("volandoPort");
+        if(this.port == null) {
+            throw new ServletException("El cliente SOAP (WebServices) no fue inicializado por InicioServlet.");
+        }
+    }
   /**
    * Constructor de altaUsuario
    */
@@ -50,8 +57,6 @@ public class altaUsuario extends HttpServlet {
     Object usuario = session.getAttribute("usuario_logueado");
     request.setAttribute("usuario", usuario);
 
-    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
-
     String tipoUsuario = request.getParameter("tipoUsuario");
     String nickname    = request.getParameter("nickname");
     String nombre      = request.getParameter("nombre");
@@ -63,17 +68,16 @@ public class altaUsuario extends HttpServlet {
     boolean exito = false;
 
     // === Avatar OPCIONAL (no condiciona el flujo) ===
-    byte[] avatarBytes = null;
-    Part avatarPart = null;
+    byte[] avatarBytes = new byte[0];
     try {
-      avatarPart = request.getPart("avatarFile");
+      Part avatarPart = request.getPart("avatarFile");
       if (avatarPart != null && avatarPart.getSize() > 0) {
         try (InputStream is = avatarPart.getInputStream()) {
           avatarBytes = is.readAllBytes();
         }
       }
     } catch (Exception ignore) {
-      // si falla leer el avatar, seguimos sin avatar
+      // si falla leer el avatar, seguimos con array vacío
     }
 
     // === Validaciones comunes ===
@@ -82,9 +86,9 @@ public class altaUsuario extends HttpServlet {
         || password == null || password.isBlank()
         || tipoUsuario == null || tipoUsuario.isBlank()) {
       errorMsg = "Todos los campos son obligatorios.";
-    } else if (sistema.existeNickname(nickname)) {
+    } else if (port.existeNickname(nickname)) {
       errorMsg = "El nickname ya está en uso.";
-    } else if (sistema.existeEmail(email)) {
+    } else if (port.existeEmail(email)) {
       errorMsg = "El email ya está en uso.";
     }
 
@@ -102,15 +106,18 @@ public class altaUsuario extends HttpServlet {
               break;
             }
 
-            DataAerolinea a = new DataAerolinea(
-                nombreAerolinea, nickname, email, password, descripcion, sitioWeb);
-            sistema.altaAerolinea(a);
+            DataAerolinea a = new DataAerolinea();
+            a.setNombre(nombreAerolinea);
+            a.setNickname(nickname);
+            a.setEmail(email);
+            a.setContrasenia(password);
+            a.setDescGeneral(descripcion);
+            a.setSitioWeb(sitioWeb);
+            port.altaAerolinea(a);
 
             // Si subieron avatar, lo actualizo
             if (avatarBytes != null && avatarBytes.length > 0) {
-              PerfilAerolineaUpdate perfil = new PerfilAerolineaUpdate(
-                  nickname, email, nombreAerolinea, descripcion, sitioWeb, avatarBytes, false);
-              sistema.actualizarPerfilAerolinea(perfil);
+              port.actualizarPerfilAerolinea(nickname, email, nombreAerolinea, descripcion, sitioWeb, avatarBytes, false);
             }
 
             exito = true;
@@ -133,26 +140,62 @@ public class altaUsuario extends HttpServlet {
               break;
             }
 
-            TipoDocumento tipoDocumento = null;
-            if ("cedula".equalsIgnoreCase(tipoDocumentoStr)) {
-              tipoDocumento = TipoDocumento.CEDULA;
-            } else if ("pasaporte".equalsIgnoreCase(tipoDocumentoStr)) {
-              tipoDocumento = TipoDocumento.PASAPORTE;
+            uy.volando.publicar.TipoDocumento tipoDocEnum;
+            if ("CEDULA".equalsIgnoreCase(tipoDocumentoStr)) {
+                tipoDocEnum = uy.volando.publicar.TipoDocumento.CEDULA;
+            } else if ("PASAPORTE".equalsIgnoreCase(tipoDocumentoStr)) {
+                tipoDocEnum = uy.volando.publicar.TipoDocumento.PASAPORTE;
+            } else {
+                errorMsg = "Tipo de documento inválido. Debe ser 'CEDULA' o 'PASAPORTE'.";
+                break;
             }
 
             Date fechaNacimiento;
+            javax.xml.datatype.XMLGregorianCalendar xmlFecha;
             try {
               fechaNacimiento = new SimpleDateFormat("yyyy-MM-dd").parse(fechaNacimientoStr);
+              // Validar que la fecha no sea futura
+              if (fechaNacimiento.after(new Date())) {
+                errorMsg = "La fecha de nacimiento no puede ser futura.";
+                break;
+              }
+              javax.xml.datatype.DatatypeFactory df = javax.xml.datatype.DatatypeFactory.newInstance();
+              java.util.Calendar calFecha = java.util.Calendar.getInstance();
+              calFecha.setTime(fechaNacimiento);
+              xmlFecha = df.newXMLGregorianCalendar(
+                calFecha.get(java.util.Calendar.YEAR),
+                calFecha.get(java.util.Calendar.MONTH) + 1,
+                calFecha.get(java.util.Calendar.DAY_OF_MONTH),
+                0, 0, 0, 0, 0
+              );
             } catch (Exception e) {
               errorMsg = "Fecha de nacimiento inválida.";
               break;
             }
 
-            DataCliente c = new DataCliente(
-                nombre, nickname, email, password, apellido,
-                fechaNacimiento, nacionalidad, tipoDocumento, numeroDocumento);
+            uy.volando.publicar.DataCliente c = new uy.volando.publicar.DataCliente();
+            c.setNombre(nombre);
+            c.setNickname(nickname);
+            c.setEmail(email);
+            c.setContrasenia(password);
+            c.setApellido(apellido);
+            c.setNacionalidad(nacionalidad);
+            c.setTipoDocumento(tipoDocEnum);
+            c.setNumDocumento(numeroDocumento);
+            c.setFechaNac(xmlFecha);
 
-            sistema.altaCliente(c, avatarBytes);
+            // DEBUG: Mostrar todos los valores del objeto DataCliente
+            System.out.println("[DEBUG altaUsuario] nickname=" + c.getNickname());
+            System.out.println("[DEBUG altaUsuario] nombre=" + c.getNombre());
+            System.out.println("[DEBUG altaUsuario] apellido=" + c.getApellido());
+            System.out.println("[DEBUG altaUsuario] email=" + c.getEmail());
+            System.out.println("[DEBUG altaUsuario] password=" + c.getContrasenia());
+            System.out.println("[DEBUG altaUsuario] nacionalidad=" + c.getNacionalidad());
+            System.out.println("[DEBUG altaUsuario] tipoDocumento=" + c.getTipoDocumento());
+            System.out.println("[DEBUG altaUsuario] numDocumento=" + c.getNumDocumento());
+            System.out.println("[DEBUG altaUsuario] fechaNac=" + c.getFechaNac());
+
+            port.altaCliente(c, avatarBytes);
             exito = true;
             break;
           }
@@ -174,4 +217,3 @@ public class altaUsuario extends HttpServlet {
   }
 
  }
-  

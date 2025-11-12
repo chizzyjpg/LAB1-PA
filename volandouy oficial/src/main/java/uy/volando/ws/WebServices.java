@@ -179,4 +179,24 @@ public class WebServices {
     ) {
         sistema.registrarVuelo(nicknameAerolinea, nombreRuta, datosVuelo);
     }
+
+    @WebMethod
+    public boolean existeNickname(@WebParam(name = "nickname") String nickname) {
+        return sistema.existeNickname(nickname);
+    }
+
+    @WebMethod
+    public boolean existeEmail(@WebParam(name = "email") String email) {
+        return sistema.existeEmail(email);
+    }
+
+    @WebMethod
+    public void altaAerolinea(DataAerolinea aerolinea) {
+        sistema.altaAerolinea(aerolinea);
+    }
+
+    @WebMethod
+    public void altaCliente(DataCliente cliente, byte[] avatarBytes) {
+        sistema.altaCliente(cliente, avatarBytes);
+    }
 }

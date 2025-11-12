@@ -24,6 +24,9 @@ public class DataCliente extends DataUsuario {
   private TipoDocumento tipoDocumento;
   private String numDocumento;
 
+  public DataCliente() {
+    super("", "", "", "");
+  }
   /** 
    * Constructor de la clase DataCliente.
    */

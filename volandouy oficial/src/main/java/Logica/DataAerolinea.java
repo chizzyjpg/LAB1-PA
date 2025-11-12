@@ -18,6 +18,9 @@ public class DataAerolinea extends DataUsuario {
   private String descGeneral;
   private String sitioWeb;
 
+  public  DataAerolinea() {
+      super("", "", "", "");
+  }
   /**
    * Constructor de la clase DataAerolinea.
    * 

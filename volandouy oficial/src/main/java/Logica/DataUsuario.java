@@ -22,6 +22,9 @@ public abstract class DataUsuario {
   private String email;
   private String contrasenia;
 
+  public DataUsuario(){
+      super();
+  }
   /**
    * Constructor de la clase DataUsuario.
    * 
