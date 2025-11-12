@@ -26,6 +26,8 @@ public class ObjectFactory {
 
     private static final QName _DataCategoria_QNAME = new QName("http://ws.volando.uy/", "dataCategoria");
     private static final QName _DataCiudad_QNAME = new QName("http://ws.volando.uy/", "dataCiudad");
+    private static final QName _DataPasaje_QNAME = new QName("http://ws.volando.uy/", "dataPasaje");
+    private static final QName _DataReserva_QNAME = new QName("http://ws.volando.uy/", "dataReserva");
     private static final QName _DataRuta_QNAME = new QName("http://ws.volando.uy/", "dataRuta");
     private static final QName _DataVueloEspecifico_QNAME = new QName("http://ws.volando.uy/", "dataVueloEspecifico");
 
@@ -37,33 +39,23 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link DataCategoria }
+     * Create an instance of {@link DataPasaje }
      * 
      * @return
-     *     the new instance of {@link DataCategoria }
+     *     the new instance of {@link DataPasaje }
      */
-    public DataCategoria createDataCategoria() {
-        return new DataCategoria();
+    public DataPasaje createDataPasaje() {
+        return new DataPasaje();
     }
 
     /**
-     * Create an instance of {@link DataCiudad }
+     * Create an instance of {@link DataReserva }
      * 
      * @return
-     *     the new instance of {@link DataCiudad }
+     *     the new instance of {@link DataReserva }
      */
-    public DataCiudad createDataCiudad() {
-        return new DataCiudad();
-    }
-
-    /**
-     * Create an instance of {@link DataRuta }
-     * 
-     * @return
-     *     the new instance of {@link DataRuta }
-     */
-    public DataRuta createDataRuta() {
-        return new DataRuta();
+    public DataReserva createDataReserva() {
+        return new DataReserva();
     }
 
     /**
@@ -87,23 +79,74 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DataPaquete }
+     * 
+     * @return
+     *     the new instance of {@link DataPaquete }
+     */
+
+    public DataPaquete createDataPaquete() {
+        return new DataPaquete();
+    }    
+    /** 
      * Create an instance of {@link DataCliente }
      * 
      * @return
      *     the new instance of {@link DataCliente }
      */
+
     public DataCliente createDataCliente() {
         return new DataCliente();
     }
 
     /**
-     * Create an instance of {@link PerfilClienteUpdate }
+     * Create an instance of {@link DataRuta }
      * 
      * @return
-     *     the new instance of {@link PerfilClienteUpdate }
+     *     the new instance of {@link DataRuta }
      */
-    public PerfilClienteUpdate createPerfilClienteUpdate() {
-        return new PerfilClienteUpdate();
+    public DataRuta createDataRuta() {
+        return new DataRuta();
+    }
+
+    /**
+     * Create an instance of {@link DataCiudad }
+     * 
+     * @return
+     *     the new instance of {@link DataCiudad }
+     */
+    public DataCiudad createDataCiudad() {
+        return new DataCiudad();
+    }
+
+    /**
+     * Create an instance of {@link DataCategoria }
+     * 
+     * @return
+     *     the new instance of {@link DataCategoria }
+     */
+    public DataCategoria createDataCategoria() {
+        return new DataCategoria();
+    }
+
+    /**
+     * Create an instance of {@link DataPaqueteArray }
+     * 
+     * @return
+     *     the new instance of {@link DataPaqueteArray }
+     */
+    public DataPaqueteArray createDataPaqueteArray() {
+        return new DataPaqueteArray();
+    }
+
+    /**
+     * Create an instance of {@link DataReservaArray }
+     * 
+     * @return
+     *     the new instance of {@link DataReservaArray }
+     */
+    public DataReservaArray createDataReservaArray() {
+        return new DataReservaArray();
     }
 
     /**
@@ -170,6 +213,32 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://ws.volando.uy/", name = "dataCiudad")
     public JAXBElement<DataCiudad> createDataCiudad(DataCiudad value) {
         return new JAXBElement<>(_DataCiudad_QNAME, DataCiudad.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DataPasaje }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link DataPasaje }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://ws.volando.uy/", name = "dataPasaje")
+    public JAXBElement<DataPasaje> createDataPasaje(DataPasaje value) {
+        return new JAXBElement<>(_DataPasaje_QNAME, DataPasaje.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link DataReserva }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link DataReserva }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://ws.volando.uy/", name = "dataReserva")
+    public JAXBElement<DataReserva> createDataReserva(DataReserva value) {
+        return new JAXBElement<>(_DataReserva_QNAME, DataReserva.class, null, value);
     }
 
     /**

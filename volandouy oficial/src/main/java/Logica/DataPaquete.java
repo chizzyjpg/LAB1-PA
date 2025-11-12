@@ -1,5 +1,9 @@
 package Logica;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlType;
+
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -8,6 +12,13 @@ import java.util.Set;
 /**
  * DataPaquete: clase que representa la información de un paquete turístico.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(
+    name = "dataPaquete",
+    propOrder = { "nombre", "descripcion", "cantRutas", "tipoAsiento", "descuento", "validez",
+        "costo", "rutasIncluidas" }
+)
+
 public class DataPaquete {
   private final String nombre;
   private final String descripcion;

@@ -63,6 +63,12 @@ public class DataCiudad {
     return sitioWeb;
   }
 
+    public void setNombre(String nombre) { this.nombre = nombre; }public void setPais(String pais) { this.pais = pais; }
+    public void setNombreAeropuerto(String nombreAeropuerto) { this.nombreAeropuerto = nombreAeropuerto; }
+    public void setDescripcionAeropuerto(String descripcionAeropuerto) { this.descripcionAeropuerto = descripcionAeropuerto; }
+    public void setFechaAlta(Date fechaAlta) { this.fechaAlta = fechaAlta; }
+    public void setSitioWeb(String sitioWeb) { this.sitioWeb = sitioWeb; }
+
   @Override
   public String toString() {
     return nombre + pais; // Solo muestra el nombre de la ciudad

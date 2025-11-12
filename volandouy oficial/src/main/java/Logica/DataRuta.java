@@ -1,5 +1,9 @@
 package Logica;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlType;
+
 import java.math.BigDecimal;
 import java.util.Date;
 

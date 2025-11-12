@@ -1,17 +1,21 @@
 package uy.volando.web;
-
+/*
 import Logica.DataAerolinea;
 import Logica.DataReserva;
 import Logica.DataRuta;
 import Logica.DataUsuario;
 import Logica.DataVueloEspecifico;
-import Logica.ISistema;
+ */
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import uy.volando.publicar.*;
+
+
 import java.io.IOException;
 import java.util.List;
 
@@ -21,6 +25,17 @@ import java.util.List;
 @WebServlet("/consultaReservaVuelo")
 public class consultaReservaVuelo extends HttpServlet {
   public static final long serialVersionUID = 1L;
+
+    private WebServices port;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        this.port = (WebServices) getServletContext().getAttribute("volandoPort");
+        if(this.port == null) {
+            throw new ServletException("El cliente SOAP (WebServices) no fue inicializado por InicioServlet.");
+        }
+    }
 
   /**
    * Constructor de la clase consultaReservaVuelo.
@@ -39,7 +54,6 @@ public class consultaReservaVuelo extends HttpServlet {
       response.sendRedirect("iniciar.jsp");
       return;
     }
-    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
 
     String rol = (usuario instanceof DataAerolinea) ? "aerolinea" : "cliente";
     request.setAttribute("rol", rol);
@@ -54,66 +68,74 @@ public class consultaReservaVuelo extends HttpServlet {
 
     // Si no hay aerolínea seleccionada (cliente), mostrar selección de aerolínea
     if (rol.equals("cliente") && aerolineaSel == null) {
-      List<DataAerolinea> aerolineas = sistema.listarAerolineas();
-      request.setAttribute("aerolineas", aerolineas);
+    DataAerolineaArray dataAerolineaArray = port.listarAerolineas();
+    List<DataAerolinea> aerolineas = dataAerolineaArray != null ? dataAerolineaArray.getItem() : null;
+    request.setAttribute("aerolineas", aerolineas);
       request.getRequestDispatcher("/WEB-INF/vuelo/consultaReservaVuelo.jsp").forward(request,
           response);
       return;
     }
 
     // Mostrar selección de ruta y vuelo en la misma pantalla
-    List<DataRuta> rutas = sistema.listarPorAerolinea(nickAerolinea);
+    DataRutaArray dataRutaArray = port.listarPorAerolinea(nickAerolinea);
+    List<DataRuta> rutas = dataRutaArray != null ? dataRutaArray.getItem() : null;
     request.setAttribute("aerolineaSeleccionada", nickAerolinea);
     request.setAttribute("rutas", rutas);
 
     List<DataVueloEspecifico> vuelos = null;
     if (rutaSel != null && !rutaSel.isEmpty()) {
-      vuelos = sistema.listarVuelos(nickAerolinea, rutaSel);
-      request.setAttribute("rutaSeleccionada", rutaSel);
-      request.setAttribute("vuelos", vuelos);
-    }
-
-    // Si ya se seleccionó vuelo, continuar con el flujo normal
-    if (vueloSel != null && !vueloSel.isEmpty()) {
-      if (reservaSel != null) {
-        try {
-          int idReserva = Integer.parseInt(reservaSel);
-          DataReserva detalle = sistema.buscarReserva(nickAerolinea, rutaSel, vueloSel, idReserva);
-          request.setAttribute("detalleReserva", detalle);
-        } catch (Exception e) {
-          request.setAttribute("error",
-              "No se pudo obtener el detalle de la reserva: " + e.getMessage());
+        DataVueloEspecificoArray dataVueloEspecificoArray = port.listarVuelos(nickAerolinea, rutaSel);
+        if (dataVueloEspecificoArray != null && dataVueloEspecificoArray.getItem() != null) {
+            vuelos = dataVueloEspecificoArray.getItem();
         }
-        request.setAttribute("vueloSeleccionado", vueloSel);
-        request.getRequestDispatcher("/WEB-INF/vuelo/consultaReservaVuelo.jsp").forward(request,
-            response);
-        return;
-      }
+        request.setAttribute("rutaSeleccionada", rutaSel);
+        request.setAttribute("vuelos", vuelos);
 
-      if (rol.equals("aerolinea")) {
-        List<DataReserva> reservas = sistema.listarReservas(nickAerolinea, rutaSel, vueloSel);
-        request.setAttribute("vueloSeleccionado", vueloSel);
-        request.setAttribute("reservas", reservas);
-        request.getRequestDispatcher("/WEB-INF/vuelo/consultaReservaVuelo.jsp").forward(request,
-            response);
-        return;
-      } else {
-        List<DataReserva> reservas = sistema.listarReservas(nickAerolinea, rutaSel, vueloSel);
-        DataReserva miReserva = null;
-        for (DataReserva r : reservas) {
-          if (r.getNickCliente().getNickname().equals(((DataUsuario) usuario).getNickname())) {
-            miReserva = r;
-            break;
-          }
+        // Si ya se seleccionó vuelo, continuar con el flujo normal
+        if (vueloSel != null && !vueloSel.isEmpty()) {
+            if (reservaSel != null) {
+                try {
+                    int idReserva = Integer.parseInt(reservaSel);
+                    DataReserva detalle = port.buscarReserva(nickAerolinea, rutaSel, vueloSel, idReserva);
+                    request.setAttribute("detalleReserva", detalle);
+                } catch (Exception e) {
+                    request.setAttribute("error",
+                            "No se pudo obtener el detalle de la reserva: " + e.getMessage());
+                }
+                request.setAttribute("vueloSeleccionado", vueloSel);
+                request.getRequestDispatcher("/WEB-INF/vuelo/consultaReservaVuelo.jsp").forward(request,
+                        response);
+                return;
+            }
+
+            if (rol.equals("aerolinea")) {
+                DataReservaArray dataReservaArray = port.listarReservas(nickAerolinea, rutaSel, vueloSel);
+                List<DataReserva> reservas = dataReservaArray != null ? dataReservaArray.getItem() : null;
+                request.setAttribute("vueloSeleccionado", vueloSel);
+                request.setAttribute("reservas", reservas);
+                request.getRequestDispatcher("/WEB-INF/vuelo/consultaReservaVuelo.jsp").forward(request,
+                        response);
+                return;
+            } else {
+                DataReservaArray dataReservaArray = port.listarReservas(nickAerolinea, rutaSel, vueloSel);
+                List<DataReserva> reservas = dataReservaArray != null ? dataReservaArray.getItem() : null;
+                DataReserva miReserva = null;
+                assert reservas != null;
+                for (DataReserva r : reservas) {
+                    if (r.getNickCliente().getNickname().equals(((DataUsuario) usuario).getNickname())) {
+                        miReserva = r;
+                        break;
+                    }
+                }
+                request.setAttribute("vueloSeleccionado", vueloSel);
+                request.setAttribute("miReserva", miReserva);
+                // Asegurarse de que siempre se setea el atributo, aunque la lista esté vacía
+                request.setAttribute("reservasCliente", reservas);
+                request.getRequestDispatcher("/WEB-INF/vuelo/consultaReservaVuelo.jsp").forward(request,
+                        response);
+                return;
+            }
         }
-        request.setAttribute("vueloSeleccionado", vueloSel);
-        request.setAttribute("miReserva", miReserva);
-        // Asegurarse de que siempre se setea el atributo, aunque la lista esté vacía
-        request.setAttribute("reservasCliente", reservas);
-        request.getRequestDispatcher("/WEB-INF/vuelo/consultaReservaVuelo.jsp").forward(request,
-            response);
-        return;
-      }
     }
 
     // Si no se seleccionó vuelo, mostrar solo selección de ruta y vuelo

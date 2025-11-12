@@ -117,6 +117,17 @@ public class WebServices {
     }
 
     @WebMethod
+    public DataPaquete[] listarPaquetes() {
+        List<DataPaquete> lista = sistema.listarPaquetes();
+        return lista.toArray(new DataPaquete[0]);
+    }
+
+    @WebMethod
+    public DataPaquete verPaquete(@WebParam(name = "nombrePaquete") String nombrePaquete) {
+        return sistema.verPaquete(nombrePaquete);
+    }
+
+    @WebMethod
     public DataAerolinea[] listarAerolineas() {
         List<DataAerolinea> lista = sistema.listarAerolineas();
         return lista.toArray(new DataAerolinea[0]);
@@ -139,4 +150,26 @@ public class WebServices {
         List<DataVueloEspecifico> lista = sistema.listarVuelos(nickname, nombre);
         return lista.toArray(new DataVueloEspecifico[0]);
     }
+
+    @WebMethod
+    public DataReserva buscarReserva(
+            @WebParam(name = "nicknameAerolinea") String nicknameAerolinea,
+            @WebParam(name = "rutaSel") String rutaSel,
+            @WebParam(name = "vueloSel") String vueloSel,
+            @WebParam(name = "idReserva") int idReserva
+    ) {
+        return sistema.buscarReserva(nicknameAerolinea, rutaSel, vueloSel, idReserva);
+    }
+
+    @WebMethod
+    public DataReserva[] listarReservas(
+            @WebParam(name = "nicknameAerolinea") String nicknameAerolinea,
+            @WebParam(name = "rutaSel") String rutaSel,
+            @WebParam(name = "vueloSel") String vueloSel
+    ) {
+        List<DataReserva> lista = sistema.listarReservas(nicknameAerolinea, rutaSel, vueloSel);
+        return lista.toArray(new DataReserva[0]);
+    }
+
+
 }

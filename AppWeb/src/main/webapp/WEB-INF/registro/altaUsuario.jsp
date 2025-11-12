@@ -45,11 +45,11 @@
                                 <input type="email" class="form-control" id="email" name="email" required>
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="form-label">Contraseña</label>
+                                <label for="password" class="form-label">Contraseï¿½a</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
                             <div class="mb-3">
-                                <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                                <label for="confirmPassword" class="form-label">Confirmar Contraseï¿½a</label>
                                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                             </div>
                             <div class="mb-3">
@@ -57,6 +57,7 @@
                                 <input type="file" accept="image/*" id="avatarFile" class="form-control form-control-sm" name="avatarFile" />
                                 
                             </div>
+                            <!-- Campos especificos para Cliente -->
                             
                             <div id="clienteFields" style="display:none;">
                                 <div class="mb-3">
@@ -144,7 +145,7 @@
             function checkPasswords() {
                 if (!pwd || !pwd2) return true;
                 if (pwd.value !== pwd2.value) {
-                    clientError.textContent = 'Las contraseñas no coinciden. Por favor ingresa la misma contraseña en ambos campos.';
+                    clientError.textContent = 'Las contraseÃ±as no coinciden. Por favor ingresa la misma contraseÃ±a en ambos campos.';
                     clientError.style.display = 'block';
                     return false;
                 }
