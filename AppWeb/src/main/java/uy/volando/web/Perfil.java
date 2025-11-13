@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -93,6 +95,8 @@ public class Perfil extends HttpServlet {
             }
         }
 
+        String nick = null;
+
         // IMPORTANTE: ahora comparamos con los DTO del cliente SOAP
         if (u instanceof DataCliente dc) {
             request.setAttribute("tipo", "DataCliente");
@@ -103,8 +107,8 @@ public class Perfil extends HttpServlet {
             request.setAttribute("nombre", dc.getNombre());
             request.setAttribute("apellido", dc.getApellido());
 
-            // fechas (ISO para input date + bonita para vista)
-            Date fn = dc.getFechaNac().toGregorianCalendar().getTime();
+            // fechas (ISO para input date + bonita para vista) - null safe
+            Date fn = (dc.getFechaNac() != null) ? dc.getFechaNac().toGregorianCalendar().getTime() : null;
             request.setAttribute("fechaNacimientoISO",
                     fn != null ? new java.text.SimpleDateFormat("yyyy-MM-dd").format(fn) : "");
             request.setAttribute("fechaNacimientoView",
@@ -122,6 +126,8 @@ public class Perfil extends HttpServlet {
             request.setAttribute("tipoDocOptions", new String[] { "CEDULA", "PASAPORTE", "OTRO" });
             request.setAttribute("tipoDocLabels",  new String[] { "Cedula", "Pasaporte", "Otro" });
 
+            nick = dc.getNickname();
+
         } else if (u instanceof DataAerolinea da) {
             request.setAttribute("tipo", "DataAerolinea");
             request.setAttribute("nickname", da.getNickname());
@@ -129,13 +135,33 @@ public class Perfil extends HttpServlet {
             request.setAttribute("nombre",  da.getNombre());
             request.setAttribute("sitioWeb",    da.getSitioWeb());
             request.setAttribute("descripcion", da.getDescGeneral());
+
+            nick = da.getNickname();
+
         } else {
             request.getRequestDispatcher("/WEB-INF/home/iniciar.jsp").forward(request, response);
             return;
         }
 
+        // Si por algún motivo no quedó en atributos, tomarlo de ahí
+        if (nick == null) {
+            nick = (String) request.getAttribute("nickname");
+        }
+
+        // Versión para evitar caché pegada del avatar
+        Long ver = (Long) request.getSession().getAttribute("avatar_ver");
+        String version = (ver == null) ? "0" : ver.toString();
+
+        String avatarPreviewUrl = request.getContextPath()
+                + "/avatar?nickname="
+                + URLEncoder.encode(nick, StandardCharsets.UTF_8)
+                + "&v=" + version;
+
+        request.setAttribute("avatarPreviewUrl", avatarPreviewUrl);
+
         request.getRequestDispatcher("/WEB-INF/perfil/perfil.jsp").forward(request, response);
     }
+
 
     // =====================  POST  =====================
 
@@ -170,13 +196,13 @@ public class Perfil extends HttpServlet {
         }
 
         // Parámetros comunes
-        final String tipo     = req.getParameter("tipo"); // "DataCliente" | "DataAerolinea"
-        final String nickname = req.getParameter("nickname");
-        final String email    = req.getParameter("email");
+        final String tipo = req.getParameter("tipo"); // "DataCliente" | "DataAerolinea"
+        // OJO: nickname/email del form NO se usan para identificar; usamos nickSesion/emailSesion.
 
         // Imagen de perfil (3 estados: borrar | reemplazar | mantener)
         byte[] avatarBytes = null;
         boolean clearPhoto = false;
+
         try {
             String p = req.getParameter("clearPhoto");
             clearPhoto = "1".equals(p) || "true".equalsIgnoreCase(p) || "on".equalsIgnoreCase(p);
@@ -199,6 +225,9 @@ public class Perfil extends HttpServlet {
             throw new ServletException("Error al procesar la imagen de perfil.", ex);
         }
 
+        // Nunca mandes null por SOAP (BP 1.1): usa arreglo vacío
+        byte[] safeAvatar = (avatarBytes != null) ? avatarBytes : new byte[0];
+
         // Contraseña
         final String pwdCurrent = req.getParameter("pwdCurrent") != null
                 ? req.getParameter("pwdCurrent").trim()
@@ -207,9 +236,15 @@ public class Perfil extends HttpServlet {
         final String pwdNew2 = req.getParameter("pwdNew2") != null ? req.getParameter("pwdNew2").trim() : "";
         final boolean wantsPwdChange = !pwdCurrent.isBlank() || !pwdNew.isBlank() || !pwdNew2.isBlank();
 
-        try {
+        boolean avatarCambia = clearPhoto || (safeAvatar != null && safeAvatar.length > 0);
+        if (avatarCambia) {
+            Long ver = (Long) req.getSession().getAttribute("avatar_ver");
+            req.getSession().setAttribute("avatar_ver", (ver == null) ? 1L : ver + 1L);
+        }
 
-            DataUsuario usuarioActualizado = null;
+
+        try {
+            DataUsuario usuarioActualizado;
 
             if ("DataCliente".equals(tipo)) {
                 final String nombre   = req.getParameter("nombre");
@@ -218,8 +253,7 @@ public class Perfil extends HttpServlet {
                 final String ndoc     = req.getParameter("numeroDocumento");
 
                 Date fnac = null;
-                final String fnacStr = req.getParameter("fechaNacimiento"); // "2025-10-13" p.ej.
-
+                final String fnacStr = req.getParameter("fechaNacimiento"); // "yyyy-MM-dd"
                 if (fnacStr != null && !fnacStr.isBlank()) {
                     try {
                         fnac = java.sql.Date.valueOf(fnacStr);
@@ -230,7 +264,6 @@ public class Perfil extends HttpServlet {
                 }
 
                 final String tdocParam = req.getParameter("tipoDocumento");
-
                 TipoDocumento tipoDoc = null;
                 if (tdocParam != null && !tdocParam.isBlank()) {
                     try {
@@ -240,41 +273,46 @@ public class Perfil extends HttpServlet {
                     }
                 }
 
-                // ====== ARMAMOS EL DTO DE UPDATE PARA SOAP ======
-                port.actualizarPerfilCliente(
-                nickSesion,   // NOMBRES DE CAMPOS A AJUSTAR
-                emailSesion,
-                nombre,
-                apellido,
-                nac,
-                tipoDoc,
-                ndoc,
-                // OJO con la fecha: fijate qué tipo espera PerfilClienteUpdate (Date, XMLGregorianCalendar...)
-                toXMLGregorianCalendar(fnac),
-                avatarBytes,
-                clearPhoto
+                // Llamada SOAP y guardo retorno
+                usuarioActualizado = port.actualizarPerfilCliente(
+                        nickSesion,
+                        emailSesion,
+                        nombre,
+                        apellido,
+                        nac,
+                        tipoDoc,
+                        ndoc,
+                        toXMLGregorianCalendar(fnac),
+                        safeAvatar,
+                        clearPhoto
                 );
-
-                req.getSession().setAttribute("usuario_logueado", usuarioActualizado);
 
             } else if ("DataAerolinea".equals(tipo)) {
                 final String nombre = req.getParameter("nombre");
                 final String sitio  = req.getParameter("sitioWeb");
                 final String desc   = req.getParameter("descripcion");
 
-                port.actualizarPerfilAerolinea(
-                nickSesion,  // ajustar nombres según el DTO generado
-                emailSesion,
-                nombre,
-                desc,
-                sitio,
-                avatarBytes,
-                clearPhoto
+                // Llamada SOAP y guardo retorno
+                usuarioActualizado = port.actualizarPerfilAerolinea(
+                        nickSesion,
+                        emailSesion,
+                        nombre,
+                        desc,
+                        sitio,
+                        safeAvatar,
+                        clearPhoto
                 );
-                req.getSession().setAttribute("usuario_logueado", usuarioActualizado);
 
             } else {
                 throw new IllegalArgumentException("Tipo de usuario no soportado: " + tipo);
+            }
+
+            // **Solo** pisamos la sesión si el WS devolvió algo
+            if (usuarioActualizado != null) {
+                req.getSession().setAttribute("usuario_logueado", usuarioActualizado);
+            } else {
+                // mantener el usuario ya existente en sesión
+                System.out.println("[PERFIL] WARNING: WS devolvió null; mantengo usuario actual en sesión.");
             }
 
             // Cambio de contraseña vía SOAP
@@ -292,8 +330,8 @@ public class Perfil extends HttpServlet {
                 if (pwdNew.equals(pwdCurrent)) {
                     throw new IllegalArgumentException("La nueva contraseña debe ser diferente a la actual.");
                 }
-                // Cambiar sistema.cambiarPassword por el método SOAP equivalente
-                //port.cambiarPassword(nickname, pwdCurrent, pwdNew);
+                // Usar SIEMPRE nickSesion (el de la sesión), no lo que venga del form
+                port.cambiarPassword(nickSesion, pwdCurrent, pwdNew);
             }
 
             req.getSession().setAttribute("flash_ok", "Perfil actualizado correctamente.");
@@ -307,6 +345,7 @@ public class Perfil extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/perfil");
         }
     }
+
 
     private XMLGregorianCalendar toXMLGregorianCalendar(Date date) {
         if (date == null) {

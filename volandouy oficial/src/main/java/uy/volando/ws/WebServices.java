@@ -178,6 +178,28 @@ public class WebServices {
             DataVueloEspecifico datosVuelo
     ) {
         sistema.registrarVuelo(nicknameAerolinea, nombreRuta, datosVuelo);
+    public byte[] obtenerAvatar(@WebParam(name = "nickname") String nickname) {
+        return sistema.obtenerAvatar(nickname);
+    }
+
+   @WebMethod
+    public void cambiarPassword(
+            @WebParam(name = "nickname") String nickname,
+            @WebParam(name = "pwdCurrent") String pwdCurrent,
+            @WebParam(name = "pwdNew") String  pwdNew
+    ) {
+        sistema.cambiarPassword(nickname,  pwdCurrent,  pwdNew);
+    }
+
+    @WebMethod
+    public DataCiudad[] listarCiudades() {
+        List<DataCiudad> lista = sistema.listarCiudades();
+        return lista.toArray(new DataCiudad[0]);
+    }
+
+    @WebMethod
+    public void registrarRuta(DataRuta ruta) {
+        sistema.registrarRuta(ruta);
     }
 
     @WebMethod

@@ -56,7 +56,11 @@
           <p id="profileEmail" class="text-muted">
             <c:out value="${email}"/>
           </p>
-          <img id="profileAvatar" class="avatar-lg rounded-circle" src="${pageContext.request.contextPath}/avatar?nickname=${nickname}" alt="Avatar del usuario">
+            <img id="avatarPreview"
+                 class="rounded-circle object-fit-cover"
+                 width="72" height="72"
+                 alt="Avatar"
+                 src="${avatarPreviewUrl}">
 
           <!-- DETALLE + EDICIÓN -->
           <section class="container p-4">
@@ -191,7 +195,11 @@
                   <div class="col-12">
                     <label class="form-label mb-2">Imagen de perfil</label>
                     <div class="d-flex gap-3 align-items-center">
-                      <img id="avatarPreview" class="rounded-circle object-fit-cover" width="72" height="72" alt="Avatar" src="${pageContext.request.contextPath}/avatar?nickname=${nickname}">
+                        <img id="avatarPreview"
+                             class="rounded-circle object-fit-cover"
+                             width="72" height="72"
+                             alt="Avatar"
+                             src="${avatarPreviewUrl}">
                       <div class="d-flex flex-column gap-2">
                         <input type="file" accept="image/*" id="avatarFile" class="form-control form-control-sm" name="avatarFile" />
                         <div class="form-text">Si no se sube nada, se mantiene la actual.</div>
