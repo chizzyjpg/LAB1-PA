@@ -179,9 +179,56 @@ public class WebServices {
     ) {
         sistema.registrarVuelo(nicknameAerolinea, nombreRuta, datosVuelo);
     }
+    
     @WebMethod
     public byte[] obtenerAvatar(@WebParam(name = "nickname") String nickname) {
         return sistema.obtenerAvatar(nickname);
+    public DataVueloEspecifico buscarVuelo(
+            @WebParam(name = "nicknameAerolinea") String nicknameAerolinea,
+            @WebParam(name = "rutaSel") String rutaSel,
+            @WebParam(name = "vueloSel") String vueloSel
+    ) {
+        return sistema.buscarVuelo(nicknameAerolinea, rutaSel, vueloSel);
+    }
+
+    @WebMethod
+    public DataPaquete[] listarPaquetesDisponiblesParaCompra() {
+        List<DataPaquete> lista = sistema.listarPaquetesDisponiblesParaCompra();
+        return lista.toArray(new DataPaquete[0]);
+    }
+
+    @WebMethod
+    public void registrarReserva(
+            @WebParam(name = "nicknameAerolinea") String nicknameAerolinea,
+            @WebParam(name = "nomRuta") String nomRuta,
+            @WebParam(name = "codigoVuelo") String codigoVuelo,
+            @WebParam(name = "tipoAsiento") TipoAsiento tipoAsiento,
+            @WebParam(name = "equipaje") Equipaje equipaje,
+            @WebParam(name = "cantEquipajeExtra") int cantEquipajeExtra,
+            @WebParam(name = "costoTotal") Float costoTotal,
+            @WebParam(name = "nickCliente") DataCliente nickCliente,
+            @WebParam(name = "nombresLista") String[] nombresLista,
+            @WebParam(name = "apellidosLista") String[] apellidosLista
+    ) {
+
+        DataReserva datos = new DataReserva(0, new Date(), tipoAsiento, equipaje, cantEquipajeExtra, costoTotal, nickCliente);
+
+        // Construir lista de pasajes
+        List<DataPasaje> pasajes = new java.util.ArrayList<>();
+        for (int i = 0; i < nombresLista.length; i++) {
+            pasajes.add(new DataPasaje(nombresLista[i], apellidosLista[i]));
+        }
+        datos.setPasajes(pasajes);
+
+        // Print para depuración
+        System.out.println("[WebServices] Pasajeros: " + pasajes);
+
+        sistema.registrarReserva(
+                nicknameAerolinea,
+                nomRuta,
+                codigoVuelo,
+                datos
+        );
     }
 
    @WebMethod

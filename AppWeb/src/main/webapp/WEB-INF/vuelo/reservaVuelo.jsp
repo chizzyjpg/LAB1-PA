@@ -1,9 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@page import="java.util.List" %>
-<%@page import="Logica.DataAerolinea" %>
-<%@page import="Logica.DataRuta" %>
-<%@page import="Logica.DataVueloEspecifico" %>
-<%@page import="Logica.DataReserva" %>
+<%@page import="uy.volando.publicar.DataAerolinea" %>
+<%@page import="uy.volando.publicar.DataRuta" %>
+<%@page import="uy.volando.publicar.DataVueloEspecifico" %>
+<%@page import="uy.volando.publicar.DataReserva" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -65,14 +65,60 @@
             </div>
             <div class="col-12 col-md-3">
               <label for="selVuelo" class="form-label">Vuelo</label>
+              <!-- DEBUG: Mostrar valores de aerolineaSel y rutaSel -->
+              <p style="color:blue;">DEBUG: aerolineaSel: <%= aerolineaSel %> | rutaSel: <%= rutaSel %></p>
+              <!-- DEBUG: Mostrar cantidad de vuelos recibidos -->
+              <% List<DataVueloEspecifico> vuelos = (List<DataVueloEspecifico>) request.getAttribute("vuelos");
+                 String vueloSel = request.getParameter("vuelo");
+              %>
+              <p style="color:red;">DEBUG: Vuelos recibidos: <%= (vuelos != null ? vuelos.size() : 0) %></p>
+              <% if (vuelos != null) {
+                   for (DataVueloEspecifico v : vuelos) {
+                       String fechaStr = "";
+                       Object fechaObj = v.getFecha();
+                       if (fechaObj != null) {
+                           try {
+                               if (fechaObj instanceof javax.xml.datatype.XMLGregorianCalendar) {
+                                   java.util.Date fechaDate = ((javax.xml.datatype.XMLGregorianCalendar) fechaObj).toGregorianCalendar().getTime();
+                                   java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+                                   fechaStr = sdf.format(fechaDate);
+                               } else if (fechaObj instanceof java.util.Date) {
+                                   java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+                                   fechaStr = sdf.format((java.util.Date) fechaObj);
+                               } else {
+                                   fechaStr = fechaObj.toString();
+                               }
+                           } catch (Exception e) {
+                               fechaStr = fechaObj.toString();
+                           }
+                       }
+              %>
+                <p style="color:red;">DEBUG: Vuelo: <%= v.getNombre() %> - Fecha: <%= fechaStr %></p>
+              <%   }
+                 }
+              %>
               <select id="selVuelo" name="vuelo" class="form-select" <%= rutaSel == null || rutaSel.isEmpty() ? "disabled" : "" %> onchange="this.form.submit()">
                 <option value="" selected disabled>Seleccionar…</option>
-                <% List<DataVueloEspecifico> vuelos = (List<DataVueloEspecifico>) request.getAttribute("vuelos");
-                   String vueloSel = request.getParameter("vuelo");
-                   if (vuelos != null) {
+                <% if (vuelos != null) {
                      for (DataVueloEspecifico v : vuelos) {
-                         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
-                         String fechaStr = v.getFecha() != null ? sdf.format(v.getFecha()) : "";
+                         String fechaStr = "";
+                         Object fechaObj = v.getFecha();
+                         if (fechaObj != null) {
+                             try {
+                                 if (fechaObj instanceof javax.xml.datatype.XMLGregorianCalendar) {
+                                     java.util.Date fechaDate = ((javax.xml.datatype.XMLGregorianCalendar) fechaObj).toGregorianCalendar().getTime();
+                                     java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+                                     fechaStr = sdf.format(fechaDate);
+                                 } else if (fechaObj instanceof java.util.Date) {
+                                     java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+                                     fechaStr = sdf.format((java.util.Date) fechaObj);
+                                 } else {
+                                     fechaStr = fechaObj.toString();
+                                 }
+                             } catch (Exception e) {
+                                 fechaStr = fechaObj.toString();
+                             }
+                         }
                 %>
                   <option value="<%= v.getNombre() %>" <%= v.getNombre().equals(vueloSel) ? "selected" : "" %>><%= v.getNombre() %> - <%= fechaStr %></option>
                 <%   }
@@ -87,9 +133,25 @@
           <!-- Detalle del vuelo seleccionado -->
           <% DataVueloEspecifico vueloDetalle = (DataVueloEspecifico) request.getAttribute("vueloDetalle");
              if (vueloDetalle != null) { 
-               java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
-               String fechaStr = vueloDetalle.getFecha() != null ? sdf.format(vueloDetalle.getFecha()) : "";
-               DataRuta rutaDetalle = vueloDetalle.getDRuta();
+               String fechaStr = "";
+               Object fechaObj = vueloDetalle.getFecha();
+               if (fechaObj != null) {
+                   try {
+                       if (fechaObj instanceof javax.xml.datatype.XMLGregorianCalendar) {
+                           java.util.Date fechaDate = ((javax.xml.datatype.XMLGregorianCalendar) fechaObj).toGregorianCalendar().getTime();
+                           java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+                           fechaStr = sdf.format(fechaDate);
+                       } else if (fechaObj instanceof java.util.Date) {
+                           java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
+                           fechaStr = sdf.format((java.util.Date) fechaObj);
+                       } else {
+                           fechaStr = fechaObj.toString();
+                       }
+                   } catch (Exception e) {
+                       fechaStr = fechaObj.toString();
+                   }
+               }
+               DataRuta rutaDetalle = vueloDetalle.getDruta();
                String costoTurista = rutaDetalle != null && rutaDetalle.getCostoTurista() != null ? rutaDetalle.getCostoTurista().toString() : "N/A";
                String costoEjecutivo = rutaDetalle != null && rutaDetalle.getCostoEjecutivo() != null ? rutaDetalle.getCostoEjecutivo().toString() : "N/A";
           %>
@@ -150,9 +212,9 @@
                   <label for="paqueteSelect" class="form-label">Seleccionar paquete</label>
                   <select id="paqueteSelect" name="paquete" class="form-select">
                     <option value="" selected disabled>Seleccionar paquete…</option>
-                    <% List<Logica.DataPaquete> paquetes = (List<Logica.DataPaquete>) request.getAttribute("paquetesDisponibles");
+                    <% List<uy.volando.publicar.DataPaquete> paquetes = (List<uy.volando.publicar.DataPaquete>) request.getAttribute("paquetesDisponibles");
                        if (paquetes != null) {
-                         for (Logica.DataPaquete p : paquetes) {
+                         for (uy.volando.publicar.DataPaquete p : paquetes) {
                     %>
                       <option value="<%= p.getNombre() %>"><%= p.getNombre() %> (Rutas: <%= p.getCantRutas() %>)</option>
                     <%   }

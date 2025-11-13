@@ -41,6 +41,10 @@ public class DataCliente extends DataUsuario {
     this.numDocumento = numeroDocumento;
   }
 
+    public DataCliente() {
+        super("", "", "", "");
+    }
+
   // GETTERS
 
   public String getApellido() {
