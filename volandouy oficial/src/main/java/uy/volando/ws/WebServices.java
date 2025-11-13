@@ -178,6 +178,8 @@ public class WebServices {
             DataVueloEspecifico datosVuelo
     ) {
         sistema.registrarVuelo(nicknameAerolinea, nombreRuta, datosVuelo);
+    }
+    @WebMethod
     public byte[] obtenerAvatar(@WebParam(name = "nickname") String nickname) {
         return sistema.obtenerAvatar(nickname);
     }
