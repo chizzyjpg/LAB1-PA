@@ -8,8 +8,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-// Cliente SOAP generado (ajusta los imports según tu paquete)
 import uy.volando.publicar.WebServices;
 
 @WebServlet("/avatar")
@@ -45,11 +43,10 @@ public class AvatarServlet extends HttpServlet {
             System.err.println("[AvatarServlet] Error llamando al WS: " + e.getMessage());
         }
         if (imagen == null || imagen.length == 0) {
-            // Si no hay avatar, redirigimos a uno por defecto dentro del WAR
             resp.sendRedirect(req.getContextPath() + "/media/default-avatar.png");
             return;
         }
-        // Heurística simple para content-type (si todos tus avatares son JPG, dejá image/jpeg)
+        // Heurística simple para content-type
         String contentType = "image/jpeg";
         // Para detectar PNG, se mira los primeros bytes (signature 89 50 4E 47)
         if (imagen.length >= 4 &&

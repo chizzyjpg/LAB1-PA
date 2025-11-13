@@ -98,7 +98,7 @@
                       <dd class="col-sm-9" id="viewNac"><c:out value="${nacionalidad}"/></dd>
 
                       <dt class="col-sm-3">Tipo doc.</dt>
-                      <dd class="col-sm-9" id="viewTdoc"><c:out value="${tipoDocumentoLabel}"/></dd>
+                      <dd class="col-sm-9" id="viewTdoc"><c:out value="${tipoDocumentoValue}"/></dd>
 
                       <dt class="col-sm-3">Nº doc.</dt>
                       <dd class="col-sm-9" id="viewNdoc"><c:out value="${numeroDocumento}"/></dd>

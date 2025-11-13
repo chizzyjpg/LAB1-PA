@@ -97,7 +97,7 @@ public class Perfil extends HttpServlet {
 
         String nick = null;
 
-        // IMPORTANTE: ahora comparamos con los DTO del cliente SOAP
+        //comparamos con los DTO del cliente SOAP
         if (u instanceof DataCliente dc) {
             request.setAttribute("tipo", "DataCliente");
 
