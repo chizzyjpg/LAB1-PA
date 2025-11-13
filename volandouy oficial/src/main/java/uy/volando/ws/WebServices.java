@@ -215,6 +215,21 @@ public class WebServices {
     }
 
     @WebMethod
+    public boolean existePaquete(@WebParam(name = "nomPaquete") String nomPaquete){
+        return sistema.existePaquete(nomPaquete);
+    }
+
+    @WebMethod
+    public boolean clienteYaComproPaquete(@WebParam(name = "nicknameCliente") String nicknameCliente, @WebParam(name = "nomPaquete") String nomPaquete){
+        return sistema.clienteYaComproPaquete(nicknameCliente, nomPaquete);
+    }
+
+    @WebMethod
+    public void comprarPaquete(DataCompraPaquete compraPaquete) {
+        sistema.comprarPaquete(compraPaquete);
+    }
+
+    @WebMethod
     public void altaAerolinea(DataAerolinea aerolinea) {
         sistema.altaAerolinea(aerolinea);
     }

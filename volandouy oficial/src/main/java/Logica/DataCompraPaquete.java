@@ -1,18 +1,36 @@
 package Logica;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Data type para la compra de un paquete turístico.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "dataCompraPaquete")
+@XmlType(propOrder = {
+        "nombrePaquete",
+        "nicknameCliente",
+        "fechaCompra",
+        "vencimiento",
+        "costo"
+})
 public class DataCompraPaquete {
-  private final String nombrePaquete; // identifica el paquete (único por nombre)
-  private final String nicknameCliente; // identifica el cliente (único por nickname)
-  private final Date fechaCompra; // requerida por el caso de uso
-  private final Date vencimiento; // si es null -> calcular = fechaCompra + p.validez
-  private final BigDecimal costo; // si es null -> usar p.getCosto()
+  private String nombrePaquete; // identifica el paquete (único por nombre)
+  private String nicknameCliente; // identifica el cliente (único por nickname)
+  private Date fechaCompra; // requerida por el caso de uso
+  private Date vencimiento; // si es null -> calcular = fechaCompra + p.validez
+  private BigDecimal costo; // si es null -> usar p.getCosto()
 
+    public DataCompraPaquete(){
+        super();
+    }
   /**
    * Constructor de DataCompraPaquete.
    * 
