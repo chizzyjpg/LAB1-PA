@@ -69,12 +69,12 @@ public class WebServices {
     }
 
     @WebMethod
-    public DataCliente verInfoCliente(String nickname){
+    public DataCliente verInfoCliente(String nickname) {
         return sistema.verInfoCliente(nickname);
     }
 
     @WebMethod
-    public DataAerolinea verInfoAerolinea(String nickname){
+    public DataAerolinea verInfoAerolinea(String nickname) {
         return sistema.verInfoAerolinea(nickname);
     }
 
@@ -146,7 +146,7 @@ public class WebServices {
     }
 
     @WebMethod
-    public DataVueloEspecifico[] listarVuelos(@WebParam(name = "nickname") String nickname, @WebParam(name ="nombre") String nombre) {
+    public DataVueloEspecifico[] listarVuelos(@WebParam(name = "nickname") String nickname, @WebParam(name = "nombre") String nombre) {
         List<DataVueloEspecifico> lista = sistema.listarVuelos(nickname, nombre);
         return lista.toArray(new DataVueloEspecifico[0]);
     }
@@ -179,10 +179,13 @@ public class WebServices {
     ) {
         sistema.registrarVuelo(nicknameAerolinea, nombreRuta, datosVuelo);
     }
-    
+
     @WebMethod
     public byte[] obtenerAvatar(@WebParam(name = "nickname") String nickname) {
         return sistema.obtenerAvatar(nickname);
+    }
+
+    @WebMethod
     public DataVueloEspecifico buscarVuelo(
             @WebParam(name = "nicknameAerolinea") String nicknameAerolinea,
             @WebParam(name = "rutaSel") String rutaSel,
