@@ -4,7 +4,7 @@ package Logica;
  * Enum que representa los posibles estados de una ruta.
  */
 public enum EstadoRuta {
-  CONFIRMADA("Confirmada"), RECHAZADA("Rechazado"), INGRESADA("Ingresada");
+  CONFIRMADA("Confirmada"), RECHAZADA("Rechazado"), INGRESADA("Ingresada"), FINALIZADA("Finalizada");
 
   private final String descripcion;
 

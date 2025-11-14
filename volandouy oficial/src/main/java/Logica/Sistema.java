@@ -686,7 +686,45 @@ public class Sistema implements ISistema {
     paqueteService.actualizarPaquete(p);
   }
 
-  // =========================
+    // ===============================
+    // FINALIZAR RUTA DE VUELO
+    // ===============================
+    @Override
+    public void finalizarRutaDeVuelo(String nicknameAerolinea, String nomRuta) {
+        // Validar aerolínea
+        DataAerolinea aerolinea = verInfoAerolinea(nicknameAerolinea);
+        if (aerolinea == null) {
+            throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+        }
+        // Validar ruta
+        int idRuta = rutaService.buscarRutaPorNombreYObtenerId(nomRuta);
+        Ruta ruta = rutaService.buscarRutaPorId(idRuta);
+        if (ruta == null) {
+            throw new IllegalArgumentException("No existe una ruta con ese ID");
+        }
+        Ruta paquete = paqueteService.buscarRutaEnAerolinea(nicknameAerolinea, nomRuta);
+        if (paquete == null) {
+            throw new IllegalArgumentException("La ruta no pertenece a la aerolínea indicada");
+        }
+        if (ruta.getEstado() != EstadoRuta.CONFIRMADA) {
+            throw new IllegalArgumentException("Solo se pueden finalizar rutas en estado CONFIRMADA");
+        }
+        // Validar que no tenga vuelos pendientes
+        boolean tieneVuelosPendientes = ruta.getVuelosEspecificos().stream()
+                .anyMatch(v -> v.getFecha() != null && v.getFecha().after(new Date()));
+        if (tieneVuelosPendientes) {
+            throw new IllegalArgumentException("La ruta tiene vuelos pendientes");
+        }
+        // Validar que no esté en paquetes
+        if (rutaService.estaEnPaquete(idRuta)) { // Debes implementar este método
+            throw new IllegalArgumentException("La ruta está incluida en un paquete");
+        }
+        // Cambiar estado de la ruta a FINALIZADA
+        ruta.setEstado(EstadoRuta.FINALIZADA);
+        rutaService.actualizarRuta(ruta);
+    }
+
+    // =========================
   // RESERVAS
   // =========================
 

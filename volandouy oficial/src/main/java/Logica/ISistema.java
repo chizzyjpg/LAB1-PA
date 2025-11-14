@@ -49,7 +49,8 @@ public interface ISistema {
 	void cambiarPassword(String nickname, String pwdCurrent, String pwdNew);
 	void altaCliente(DataCliente cliente, byte[] avatar);
     void altaAerolinea(DataAerolinea aerolinea);
-	
+    void finalizarRutaDeVuelo(String nicknameAerolinea, String nomRuta);
+
     byte[] obtenerAvatar(String nickname);
 	Ciudad buscarCiudad(String nombre, String pais);    
 
