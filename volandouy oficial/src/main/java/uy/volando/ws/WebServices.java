@@ -288,4 +288,9 @@ public class WebServices {
     public void altaCliente(DataCliente cliente, byte[] avatarBytes) {
         sistema.altaCliente(cliente, avatarBytes);
     }
+
+    @WebMethod
+    public void registrarVisitaRuta(int codigoRuta) {
+        sistema.registrarVisitaRuta(codigoRuta);
+    }
 }

@@ -70,6 +70,9 @@ public class Ruta {
     @Enumerated(EnumType.STRING)
     @Column(name = "estado", nullable = false, length = 15)
     private EstadoRuta estado = EstadoRuta.INGRESADA;
+
+    @Column(name = "visitas", nullable = true)
+    private int visitas;
     
     protected Ruta() {}
 
@@ -90,6 +93,7 @@ public class Ruta {
         this.categoria = categoria;
         this.estado = EstadoRuta.INGRESADA;
         this.descripcionCorta = descCorta;
+        this.visitas = 0;
     }
 
     // getters
@@ -108,6 +112,7 @@ public class Ruta {
     public Set<Aerolinea> getAerolineas() { return aerolineas; }
     public EstadoRuta getEstado() { return estado; }
     public String getDescripcionCorta() { return descripcionCorta; }
+    public int getVisitas() { return visitas; }
 
     // setters
     public void setNombre(String n) { this.nombre = n; }
@@ -124,6 +129,7 @@ public class Ruta {
     public void setAerolineas(Set<Aerolinea> aerolineas) { this.aerolineas = aerolineas; }
     public void setEstado(EstadoRuta estado) { this.estado = estado; }
     public void setDescripcionCorta(String descCorta) { this.descripcionCorta = descCorta; }
+    public void setVisitas(int visitas) { this.visitas = visitas; }
 
     @Override public String toString() {
         return "Ruta [idRuta=" + idRuta +
@@ -139,7 +145,8 @@ public class Ruta {
                ", costoEquipajeExtra=" + costoEquipajeExtra +
                ", categoria=" + categoria + "]" +
                " vuelosEspecificos=" + vuelosEspecificos + "]" +
-               " estado=" + estado + "]";
+               " estado=" + estado + "]" +
+                " visitas=" + visitas + "]";
     }
 
 	public void addVuelosEspecificos(VueloEspecifico v) {

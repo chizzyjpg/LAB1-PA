@@ -7,6 +7,7 @@ import Logica.DataCiudad;
 import Logica.DataRuta;
 import Logica.JPAUtil;
 import Logica.Ruta;
+import Logica.DataRutaMasVisitada;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -202,4 +203,21 @@ public class RutaVueloService {
       em.close();
     }
   }
+
+    /**
+     * Lista las 5 rutas más visitadas.
+     */
+    public List<Ruta> listar5RutasMasVisitadas() {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            // Para una consulta de solo lectura no hace falta transacción
+            return em.createQuery(
+                            "SELECT r FROM Ruta r ORDER BY r.visitas DESC",
+                            Ruta.class)
+                    .setMaxResults(5)
+                    .getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }

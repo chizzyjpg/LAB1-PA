@@ -142,7 +142,7 @@ public class Sistema implements ISistema {
       return null; // falla autenticación
     }
 
-    // Traer el DTO como ya lo haces 
+    // Traer el DTO como ya lo haces
     return usuarioService.verInfoUsuario(u.getNickname());
 
   }
@@ -269,7 +269,7 @@ public class Sistema implements ISistema {
 
     usuarioService.actualizarUsuario(aerolinea, false);
   }
-  
+
   @Override
   public DataAerolinea actualizarPerfilAerolinea(PerfilAerolineaUpdate upd) {
     if (upd == null) {
@@ -802,12 +802,51 @@ public class Sistema implements ISistema {
     }
     ruta.setEstado(nuevoEstado);
     rutaService.actualizarRuta(ruta);
-
   }
 
-  // ======================
-  // CAMBIOS ALTAS PARA AVATAR
-  // ======================
+    // ======================
+    // VISITA DE RUTAS
+    // ======================
+
+
+  @Override
+  public void registrarVisitaRuta(int idRuta) {
+      Ruta ruta = rutaService.buscarRutaPorId(idRuta);
+      if (ruta == null) {
+          throw new IllegalArgumentException("No existe una ruta con ese ID");
+      }
+      ruta.setVisitas(ruta.getVisitas() + 1);
+
+      rutaService.actualizarRuta(ruta);
+  }
+
+    @Override
+    public List<DataRutaMasVisitada> obtener5RutasMasVisitadas() {
+        List<Ruta> rutas = rutaService.listar5RutasMasVisitadas();
+
+        return rutas.stream()
+                .map(r -> {
+                    // Sacar un nickname de aerolínea
+                    String nickAerolinea = null;
+                    if (r.getAerolineas() != null && !r.getAerolineas().isEmpty()) {
+                        Aerolinea aerolinea = r.getAerolineas().iterator().next();
+                        nickAerolinea = aerolinea.getNickname();
+                    }
+
+                    return new DataRutaMasVisitada(
+                            r.getIdRuta(),       // idRuta
+                            nickAerolinea,       // nickAerolinea
+                            r.getOrigen(),       // ciudadOrigen (Entidad Ciudad)
+                            r.getDestino(),      // ciudadDestino
+                            r.getVisitas()       // visitas
+                    );
+                })
+                .collect(Collectors.toList());
+    }
+
+    // ======================
+    // CAMBIOS ALTAS PARA AVATAR
+    // ======================
 
   @Override
   public boolean existeNickname(String nickname) {
