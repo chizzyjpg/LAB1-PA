@@ -1,5 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@ page import="java.util.List,Logica.DataAerolinea,Logica.DataRuta,Logica.DataVueloEspecifico" %>
+<%@ page import="java.util.List,uy.volando.publicar.DataAerolinea,uy.volando.publicar.DataRuta,uy.volando.publicar.DataVueloEspecifico" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -72,9 +72,9 @@
                boolean mostrar = true;
                if (filtro != null && !filtro.isBlank()) {
                  mostrar = v.getNombre().toLowerCase().contains(filtro.toLowerCase()) ||
-                           (v.getDRuta() != null && (
-                             v.getDRuta().getCiudadOrigen().getNombre().toLowerCase().contains(filtro.toLowerCase()) ||
-                             v.getDRuta().getCiudadDestino().getNombre().toLowerCase().contains(filtro.toLowerCase())
+                           (v.getDruta() != null && (
+                             v.getDruta().getCiudadOrigen().getNombre().toLowerCase().contains(filtro.toLowerCase()) ||
+                             v.getDruta().getCiudadDestino().getNombre().toLowerCase().contains(filtro.toLowerCase())
                            ));
                }
                if (mostrar) { %>
@@ -103,10 +103,10 @@
              <div class="card-body">
                <h5 class="card-title"><%= detalle.getNombre() %></h5>
                <p class="card-text">
-                 <strong>Origen:</strong> <%= detalle.getDRuta() != null && detalle.getDRuta().getCiudadOrigen() != null ? detalle.getDRuta().getCiudadOrigen().getNombre() : "No disponible" %><br>
-                 <strong>Destino:</strong> <%= detalle.getDRuta() != null && detalle.getDRuta().getCiudadDestino() != null ? detalle.getDRuta().getCiudadDestino().getNombre() : "No disponible" %><br>
+                 <strong>Origen:</strong> <%= detalle.getDruta() != null && detalle.getDruta().getCiudadOrigen() != null ? detalle.getDruta().getCiudadOrigen().getNombre() : "No disponible" %><br>
+                 <strong>Destino:</strong> <%= detalle.getDruta() != null && detalle.getDruta().getCiudadDestino() != null ? detalle.getDruta().getCiudadDestino().getNombre() : "No disponible" %><br>
                  <strong>Fecha salida:</strong> <%= detalle.getFecha() %><br>
-                 <strong>Estado:</strong> <%= detalle.getDRuta() != null && detalle.getDRuta().getEstado() != null ? detalle.getDRuta().getEstado() : "No disponible" %>
+                 <strong>Estado:</strong> <%= detalle.getDruta() != null && detalle.getDruta().getEstado() != null ? detalle.getDruta().getEstado() : "No disponible" %>
                </p>
                <% if (reservasVuelo != null) { %>
                  <div style="color: red; font-weight: bold;">Reservas recibidas: <%= reservasVuelo.size() %></div>
@@ -116,7 +116,7 @@
                  <h6>Reservas del vuelo:</h6>
                  <ul class="list-group mb-3">
                  <% for (Object obj : reservasVuelo) {
-                      Logica.DataReserva r = (Logica.DataReserva) obj; %>
+                      uy.volando.publicar.DataReserva r = (uy.volando.publicar.DataReserva) obj; %>
                    <li class="list-group-item">
                      <form method="get" action="consultaVuelo" style="display:inline;">
                        <input type="hidden" name="fltAerolinea" value="<%= request.getParameter("fltAerolinea") %>">
@@ -131,7 +131,7 @@
                <% } %>
                <%-- Mostrar reserva del cliente si corresponde --%>
                <% if (reservaCliente != null) {
-                    Logica.DataReserva r = (Logica.DataReserva) reservaCliente; %>
+                    uy.volando.publicar.DataReserva r = (uy.volando.publicar.DataReserva) reservaCliente; %>
                  <h6>Tu reserva en este vuelo:</h6>
                  <form method="get" action="consultaVuelo">
                    <input type="hidden" name="fltAerolinea" value="<%= request.getParameter("fltAerolinea") %>">
@@ -143,7 +143,7 @@
                <% } %>
                <%-- Mostrar detalle de reserva si corresponde --%>
                <% if (detalleReserva != null) {
-                    Logica.DataReserva r = (Logica.DataReserva) detalleReserva; %>
+                    uy.volando.publicar.DataReserva r = (uy.volando.publicar.DataReserva) detalleReserva; %>
                  <div class="card mt-3">
                    <div class="card-header">Detalle de Reserva</div>
                    <div class="card-body">

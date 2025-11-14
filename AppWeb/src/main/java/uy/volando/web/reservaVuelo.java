@@ -1,12 +1,16 @@
 package uy.volando.web;
 
-import Logica.ISistema;
+
+import Logica.DataPasaje;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import uy.volando.publicar.StringArray;
+import uy.volando.publicar.WebServices;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -16,6 +20,17 @@ import java.util.List;
 @WebServlet("/reservaVuelo")
 public class reservaVuelo extends HttpServlet {
   public static final long serialVersionUID = 1L;
+
+  public WebServices port;
+
+  @Override
+  public void init() throws ServletException {
+      super.init();
+      this.port = (WebServices) getServletContext().getAttribute("volandoPort");
+      if (this.port == null) {
+          throw new ServletException("El cliente SOAP (WebServices) no fue inicializado por InicioServlet.");
+      }
+  }
 
   public reservaVuelo() {
     super();
@@ -29,23 +44,24 @@ public class reservaVuelo extends HttpServlet {
     Object usuario = session.getAttribute("usuario_logueado");
     request.setAttribute("usuario", usuario);
 
-    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
-
     // ===== 1) Aerolíneas (siempre) =====
-    List<Logica.DataAerolinea> aerolineas = sistema.listarAerolineas();
+    List<uy.volando.publicar.DataAerolinea> aerolineas = port.listarAerolineas().getItem();
     request.setAttribute("aerolineas", aerolineas);
 
     // ===== 2) Parámetros saneados =====
     String aerolineaSel = trimOrNull(request.getParameter("aerolinea"));
     String rutaSel = trimOrNull(request.getParameter("ruta"));
     String vueloSel = trimOrNull(request.getParameter("vuelo"));
+    System.out.println("DEBUG reservaVuelo.doGet - aerolineaSel: " + aerolineaSel);
+    System.out.println("DEBUG reservaVuelo.doGet - rutaSel: " + rutaSel);
+    System.out.println("DEBUG reservaVuelo.doGet - vueloSel: " + vueloSel);
 
     // ===== 3) Rutas confirmadas de la aerolínea (si hay aerolínea) =====
-    List<Logica.DataRuta> rutas = null;
+    List<uy.volando.publicar.DataRuta> rutas = null;
     if (aerolineaSel != null) {
-      List<Logica.DataRuta> todas = sistema.listarPorAerolinea(aerolineaSel);
+      List<uy.volando.publicar.DataRuta> todas = port.listarPorAerolinea(aerolineaSel).getItem();
       rutas = (todas == null ? List.of()
-          : todas.stream().filter(r -> r != null && r.getEstado() == Logica.EstadoRuta.CONFIRMADA)
+          : todas.stream().filter(r -> r != null && r.getEstado() == uy.volando.publicar.EstadoRuta.CONFIRMADA)
               .toList());
     }
     request.setAttribute("rutas", rutas);
@@ -64,16 +80,22 @@ public class reservaVuelo extends HttpServlet {
     }
 
     // ===== 5) Vuelos (solo si aerolínea y ruta son válidas) =====
-    List<Logica.DataVueloEspecifico> vuelos = null;
+    List<uy.volando.publicar.DataVueloEspecifico> vuelos = null;
     if (aerolineaSel != null && rutaSel != null) {
-      vuelos = sistema.listarVuelos(aerolineaSel, rutaSel);
+      vuelos = port.listarVuelos(aerolineaSel, rutaSel).getItem();
+      System.out.println("DEBUG reservaVuelo.doGet - vuelos.size(): " + (vuelos != null ? vuelos.size() : 0));
+      if (vuelos != null) {
+        for (uy.volando.publicar.DataVueloEspecifico v : vuelos) {
+          System.out.println("DEBUG reservaVuelo.doGet - Vuelo: " + v.getNombre() + ", Fecha: " + v.getFecha());
+        }
+      }
     }
     request.setAttribute("vuelos", vuelos);
 
     // ===== 6) Detalle de vuelo (y validación Ruta–Vuelo) =====
-    Logica.DataVueloEspecifico vueloDetalle = null;
+    uy.volando.publicar.DataVueloEspecifico vueloDetalle = null;
     if (aerolineaSel != null && rutaSel != null && vueloSel != null) {
-      vueloDetalle = sistema.buscarVuelo(aerolineaSel, rutaSel, vueloSel);
+      vueloDetalle = port.buscarVuelo(aerolineaSel, rutaSel, vueloSel);
       if (vueloDetalle == null) {
         session.setAttribute("flash_error",
             "El vuelo no corresponde a la aerolínea y ruta seleccionadas.");
@@ -84,9 +106,8 @@ public class reservaVuelo extends HttpServlet {
 
       // ===== 7) Si hay cliente y vuelo, cargar paquetes disponibles filtrados por
       // ruta =====
-      if (usuario instanceof Logica.DataCliente dc) {
-        List<Logica.DataPaquete> paquetesDisponibles = sistema
-            .listarPaquetesDisponiblesParaCompra();
+      if (usuario instanceof uy.volando.publicar.DataCliente dc) {
+        List<uy.volando.publicar.DataPaquete> paquetesDisponibles = port.listarPaquetesDisponiblesParaCompra().getItem();
         int cantidadPasajes = 1;
         try {
           String cantStr = request.getParameter("cantidadPasajes");
@@ -97,12 +118,12 @@ public class reservaVuelo extends HttpServlet {
         }
 
         // Filtramos por que el paquete incluya la ruta seleccionada (por nombre)
-        List<Logica.DataPaquete> paquetesFiltrados = (paquetesDisponibles == null
-            ? List.<Logica.DataPaquete>of()
-            : paquetesDisponibles.stream()
+        List<uy.volando.publicar.DataPaquete> paquetesFiltrados = (paquetesDisponibles == null
+            ? List.<uy.volando.publicar.DataPaquete>of()
+            : (List<uy.volando.publicar.DataPaquete>) paquetesDisponibles.stream()
                 .filter(p -> p != null && p.getCantRutas() > 0 && p.getRutasIncluidas() != null)
                 .filter(p -> p.getRutasIncluidas().stream().filter(ri -> ri != null)
-                    .anyMatch(ri -> ri.trim().equalsIgnoreCase(rutaSel)))
+                        .anyMatch(ri -> ri.trim().equalsIgnoreCase(rutaSel)))
                 .toList());
 
         request.setAttribute("paquetesDisponibles", paquetesFiltrados);
@@ -136,7 +157,12 @@ public class reservaVuelo extends HttpServlet {
       throws ServletException, IOException {
     HttpSession session = request.getSession();
     Object usuario = session.getAttribute("usuario_logueado");
-    Logica.ISistema sistema = (Logica.ISistema) getServletContext().getAttribute("sistema");
+    if (!(usuario instanceof uy.volando.publicar.DataCliente dc)) {
+      request.setAttribute("error", "Debes estar logueado como cliente para reservar.");
+      doGet(request, response);
+      return;
+    }
+    final String nicknameCliente = dc.getNickname();
     String aerolinea = request.getParameter("aerolinea");
     String ruta = request.getParameter("ruta");
     String vuelo = request.getParameter("vuelo");
@@ -145,12 +171,10 @@ public class reservaVuelo extends HttpServlet {
     int equipajeExtra = 0;
     try {
       cantidadPasajes = Integer.parseInt(request.getParameter("cantidadPasajes"));
-    } catch (Exception e) {
-    }
+    } catch (Exception e) {}
     try {
       equipajeExtra = Integer.parseInt(request.getParameter("equipajeExtra"));
-    } catch (Exception e) {
-    }
+    } catch (Exception e) {}
     String formaPago = request.getParameter("formaPago");
     String paquete = request.getParameter("paquete");
     // Nombres y apellidos de pasajeros
@@ -160,56 +184,80 @@ public class reservaVuelo extends HttpServlet {
       nombres[i] = request.getParameter("nombrePasajero" + (i + 1));
       apellidos[i] = request.getParameter("apellidoPasajero" + (i + 1));
     }
-    // Validar usuario logueado y tipo cliente
-    if (!(usuario instanceof Logica.DataCliente)) {
-      request.setAttribute("error", "Debes estar logueado como cliente para reservar.");
-      doGet(request, response);
-      return;
-    }
-    String nicknameCliente = ((Logica.DataCliente) usuario).getNickname();
     // Validar reserva duplicada
-    List<Logica.DataReserva> reservasExistentes = sistema.listarReservas(aerolinea, ruta, vuelo);
+    List<uy.volando.publicar.DataReserva> reservasExistentes = port.listarReservas(aerolinea, ruta, vuelo).getItem();
     boolean yaReservo = reservasExistentes.stream()
-        .anyMatch(r -> r.getNickCliente().getNickname().equalsIgnoreCase(nicknameCliente));
+      .anyMatch(r -> r.getNickCliente().getNickname().equalsIgnoreCase(nicknameCliente));
     if (yaReservo) {
       request.setAttribute("error", "Ya existe una reserva para este cliente en este vuelo.");
       doGet(request, response);
       return;
     }
-    // Construir lista de pasajes
-    java.util.List<Logica.DataPasaje> pasajes = new java.util.ArrayList<>();
-    for (int i = 0; i < cantidadPasajes; i++) {
-      pasajes.add(new Logica.DataPasaje(nombres[i], apellidos[i]));
-    }
-    // Tipo de asiento
-    Logica.TipoAsiento tipoAsiento = Logica.TipoAsiento.valueOf(tipoAsientoStr);
+    // Construir lista de pasajes (solo si el WebService lo requiere)
+    // List<uy.volando.publicar.DataPasaje> pasajes = new java.util.ArrayList<>();
+    // for (int i = 0; i < cantidadPasajes; i++) {
+    //   pasajes.add(new uy.volando.publicar.DataPasaje());
+    // }
+    uy.volando.publicar.TipoAsiento tipoAsiento = uy.volando.publicar.TipoAsiento.valueOf(tipoAsientoStr);
     String equipajeTipoStr = request.getParameter("equipajeTipo");
-    Logica.Equipaje equipaje = Logica.Equipaje.BOLSO;
+    uy.volando.publicar.Equipaje equipaje = uy.volando.publicar.Equipaje.BOLSO;
     if (equipajeTipoStr != null) {
-      equipaje = Logica.Equipaje.valueOf(equipajeTipoStr);
+      equipaje = uy.volando.publicar.Equipaje.valueOf(equipajeTipoStr);
     }
     // Calcular costo (simplificado, deberías ajustar según lógica de negocio)
     float costoTotal = 0f;
-    Logica.DataVueloEspecifico vueloDetalle = sistema.buscarVuelo(aerolinea, ruta, vuelo);
-    if (vueloDetalle != null && vueloDetalle.getDRuta() != null) {
-      if (tipoAsiento == Logica.TipoAsiento.TURISTA
-          && vueloDetalle.getDRuta().getCostoTurista() != null) {
-        costoTotal = vueloDetalle.getDRuta().getCostoTurista().floatValue() * cantidadPasajes;
-      } else if (tipoAsiento == Logica.TipoAsiento.EJECUTIVO
-          && vueloDetalle.getDRuta().getCostoEjecutivo() != null) {
-        costoTotal = vueloDetalle.getDRuta().getCostoEjecutivo().floatValue() * cantidadPasajes;
+    uy.volando.publicar.DataVueloEspecifico vueloDetalle = port.buscarVuelo(aerolinea, ruta, vuelo);
+    if (vueloDetalle != null && vueloDetalle.getDruta() != null) {
+      if (tipoAsiento == uy.volando.publicar.TipoAsiento.TURISTA
+          && vueloDetalle.getDruta().getCostoTurista() != null) {
+        costoTotal = vueloDetalle.getDruta().getCostoTurista().floatValue() * cantidadPasajes;
+      } else if (tipoAsiento == uy.volando.publicar.TipoAsiento.EJECUTIVO
+          && vueloDetalle.getDruta().getCostoEjecutivo() != null) {
+        costoTotal = vueloDetalle.getDruta().getCostoEjecutivo().floatValue() * cantidadPasajes;
       }
     }
-    // Crear DataReserva
-    Logica.DataReserva reserva = new Logica.DataReserva(0, new java.util.Date(), tipoAsiento,
-        equipaje, equipajeExtra, costoTotal, (Logica.DataCliente) usuario);
-    reserva.setPasajes(pasajes);
     // Registrar reserva
     try {
-      sistema.registrarReserva(aerolinea, ruta, vuelo, reserva);
+          // LOG: Mostrar todos los datos antes de llamar al WebService
+      System.out.println("[DEBUG reservaVuelo] --- DATOS PARA registrarReserva ---");
+      System.out.println("aerolinea: " + aerolinea);
+      System.out.println("ruta: " + ruta);
+      System.out.println("vuelo: " + vuelo);
+      System.out.println("tipoAsiento: " + tipoAsiento);
+      System.out.println("equipaje: " + equipaje);
+      System.out.println("equipajeExtra: " + equipajeExtra);
+      System.out.println("costoTotal: " + costoTotal);
+      System.out.println("usuario: " + usuario);
+      System.out.println("nombresArray: " + java.util.Arrays.toString(nombres));
+      System.out.println("apellidosArray: " + java.util.Arrays.toString(apellidos));
+      // Construir arrays de nombres y apellidos para enviar al WebService
+      String[] nombresLista = new String[cantidadPasajes];
+      String[] apellidosLista = new String[cantidadPasajes];
+      for (int i = 0; i < cantidadPasajes; i++) {
+        nombresLista[i] = nombres[i];
+        apellidosLista[i] = apellidos[i];
+      }
+      uy.volando.publicar.StringArray nombresArray = new uy.volando.publicar.StringArray();
+      nombresArray.getItem().addAll(java.util.Arrays.asList(nombresLista));
+      uy.volando.publicar.StringArray apellidosArray = new uy.volando.publicar.StringArray();
+      apellidosArray.getItem().addAll(java.util.Arrays.asList(apellidosLista));
+      port.registrarReserva(
+        aerolinea,
+        ruta,
+        vuelo,
+        tipoAsiento,
+        equipaje,
+        equipajeExtra,
+        costoTotal,
+        (uy.volando.publicar.DataCliente) usuario,
+        nombresArray,
+        apellidosArray
+      );
+      System.out.println("[DEBUG reservaVuelo] --- RESERVA ENVIADA CORRECTAMENTE ---");
       request.setAttribute("exito", "Reserva registrada correctamente.");
     } catch (Exception ex) {
-      request.setAttribute("error", ex.getMessage());
+      ex.printStackTrace();
+      request.setAttribute("error", ex.toString());
     }
     doGet(request, response);
   }

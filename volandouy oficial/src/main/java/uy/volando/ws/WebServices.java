@@ -69,12 +69,12 @@ public class WebServices {
     }
 
     @WebMethod
-    public DataCliente verInfoCliente(String nickname){
+    public DataCliente verInfoCliente(String nickname) {
         return sistema.verInfoCliente(nickname);
     }
 
     @WebMethod
-    public DataAerolinea verInfoAerolinea(String nickname){
+    public DataAerolinea verInfoAerolinea(String nickname) {
         return sistema.verInfoAerolinea(nickname);
     }
 
@@ -146,7 +146,7 @@ public class WebServices {
     }
 
     @WebMethod
-    public DataVueloEspecifico[] listarVuelos(@WebParam(name = "nickname") String nickname, @WebParam(name ="nombre") String nombre) {
+    public DataVueloEspecifico[] listarVuelos(@WebParam(name = "nickname") String nickname, @WebParam(name = "nombre") String nombre) {
         List<DataVueloEspecifico> lista = sistema.listarVuelos(nickname, nombre);
         return lista.toArray(new DataVueloEspecifico[0]);
     }
@@ -185,6 +185,55 @@ public class WebServices {
         return sistema.obtenerAvatar(nickname);
     }
 
+    @WebMethod
+    public DataVueloEspecifico buscarVuelo(
+            @WebParam(name = "nicknameAerolinea") String nicknameAerolinea,
+            @WebParam(name = "rutaSel") String rutaSel,
+            @WebParam(name = "vueloSel") String vueloSel
+    ) {
+        return sistema.buscarVuelo(nicknameAerolinea, rutaSel, vueloSel);
+    }
+
+    @WebMethod
+    public DataPaquete[] listarPaquetesDisponiblesParaCompra() {
+        List<DataPaquete> lista = sistema.listarPaquetesDisponiblesParaCompra();
+        return lista.toArray(new DataPaquete[0]);
+    }
+
+    @WebMethod
+    public void registrarReserva(
+            @WebParam(name = "nicknameAerolinea") String nicknameAerolinea,
+            @WebParam(name = "nomRuta") String nomRuta,
+            @WebParam(name = "codigoVuelo") String codigoVuelo,
+            @WebParam(name = "tipoAsiento") TipoAsiento tipoAsiento,
+            @WebParam(name = "equipaje") Equipaje equipaje,
+            @WebParam(name = "cantEquipajeExtra") int cantEquipajeExtra,
+            @WebParam(name = "costoTotal") Float costoTotal,
+            @WebParam(name = "nickCliente") DataCliente nickCliente,
+            @WebParam(name = "nombresLista") String[] nombresLista,
+            @WebParam(name = "apellidosLista") String[] apellidosLista
+    ) {
+
+        DataReserva datos = new DataReserva(0, new Date(), tipoAsiento, equipaje, cantEquipajeExtra, costoTotal, nickCliente);
+
+        // Construir lista de pasajes
+        List<DataPasaje> pasajes = new java.util.ArrayList<>();
+        for (int i = 0; i < nombresLista.length; i++) {
+            pasajes.add(new DataPasaje(nombresLista[i], apellidosLista[i]));
+        }
+        datos.setPasajes(pasajes);
+
+        // Print para depuración
+        System.out.println("[WebServices] Pasajeros: " + pasajes);
+
+        sistema.registrarReserva(
+                nicknameAerolinea,
+                nomRuta,
+                codigoVuelo,
+                datos
+        );
+    }
+
    @WebMethod
     public void cambiarPassword(
             @WebParam(name = "nickname") String nickname,
@@ -213,6 +262,21 @@ public class WebServices {
     @WebMethod
     public boolean existeEmail(@WebParam(name = "email") String email) {
         return sistema.existeEmail(email);
+    }
+
+    @WebMethod
+    public boolean existePaquete(@WebParam(name = "nomPaquete") String nomPaquete){
+        return sistema.existePaquete(nomPaquete);
+    }
+
+    @WebMethod
+    public boolean clienteYaComproPaquete(@WebParam(name = "nicknameCliente") String nicknameCliente, @WebParam(name = "nomPaquete") String nomPaquete){
+        return sistema.clienteYaComproPaquete(nicknameCliente, nomPaquete);
+    }
+
+    @WebMethod
+    public void comprarPaquete(DataCompraPaquete compraPaquete) {
+        sistema.comprarPaquete(compraPaquete);
     }
 
     @WebMethod

@@ -14,15 +14,25 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import Logica.DataCliente;
-import Logica.DataCompraPaquete;
-import Logica.DataPaquete;
-import Logica.ISistema;
+import uy.volando.publicar.WebServices;
+import uy.volando.publicar.DataPaquete;
+import uy.volando.publicar.DataCompraPaquete;
+import uy.volando.publicar.DataCliente;
 
 @WebServlet("/compraPaquete")
 public class compraPaquete extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
+    private WebServices port;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        this.port = (WebServices) getServletContext().getAttribute("volandoPort");
+        if(this.port == null) {
+            throw new ServletException("El cliente SOAP (WebServices) no fue inicializado por InicioServlet.");
+        }
+    }
   // ============================
   // muestra la lista de paquetes y mensajes flash
   // ============================
@@ -34,8 +44,7 @@ public class compraPaquete extends HttpServlet {
     Object usuario = session.getAttribute("usuario_logueado");
     request.setAttribute("usuario", usuario);
 
-    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
-    List<DataPaquete> paquetes = sistema.listarPaquetes();
+    List<DataPaquete> paquetes = port.listarPaquetes().getItem();
     request.setAttribute("paquetesDisponibles", paquetes);
 
     request.getRequestDispatcher("/WEB-INF/paquete/compraPaquete.jsp").forward(request, response);
@@ -49,7 +58,6 @@ public class compraPaquete extends HttpServlet {
       throws ServletException, IOException {
 
     HttpSession session = request.getSession();
-    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
 
     try {
       // ---- Login y parámetros ----
@@ -68,21 +76,21 @@ public class compraPaquete extends HttpServlet {
       }
 
       // ---- Validaciones previas ----
-      if (!sistema.existePaquete(nombrePaquete)) {
+      if (!port.existePaquete(nombrePaquete)) {
         session.setAttribute("flash_error", "El paquete seleccionado no existe.");
         response.sendRedirect(request.getContextPath() + "/compraPaquete");
         return;
       }
 
       String nickname = dc.getNickname();
-      if (sistema.clienteYaComproPaquete(nickname, nombrePaquete)) {
+      if (port.clienteYaComproPaquete(nickname, nombrePaquete)) {
         session.setAttribute("flash_info", "Ya has comprado este paquete anteriormente.");
         response.sendRedirect(request.getContextPath() + "/compraPaquete");
         return;
       }
 
       DataPaquete dto = null;
-      List<DataPaquete> todos = sistema.listarPaquetes();
+      List<DataPaquete> todos = port.listarPaquetes().getItem();
       if (todos != null) {
         for (DataPaquete p : todos) {
           if (p != null && nombrePaquete.equals(p.getNombre())) {
@@ -129,11 +137,23 @@ public class compraPaquete extends HttpServlet {
       }
 
       // Ejecutar compra ----
-      DataCompraPaquete compra = new DataCompraPaquete(nombrePaquete, nickname,
-          new java.util.Date(), null, null);
+      javax.xml.datatype.DatatypeFactory dtFactory = javax.xml.datatype.DatatypeFactory.newInstance();
+      java.util.Date fechaActual = new java.util.Date();
+      java.util.GregorianCalendar cal = new java.util.GregorianCalendar();
+      cal.setTime(fechaActual);
+      jakarta.xml.bind.annotation.XmlSchemaType schemaType = null; // No se usa directamente, solo para claridad
+      javax.xml.datatype.XMLGregorianCalendar xmlFecha = dtFactory.newXMLGregorianCalendar(cal);
+
+      DataCompraPaquete compra = new DataCompraPaquete();
+      compra.setNombrePaquete(nombrePaquete);
+      compra.setNicknameCliente(nickname);
+      compra.setFechaCompra(xmlFecha);
+      // Si tienes vencimiento y costo, asígnalos aquí:
+      // compra.setVencimiento(...);
+      // compra.setCosto(...);
 
       try {
-        sistema.comprarPaquete(compra);
+        port.comprarPaquete(compra);
         session.setAttribute("flash_success", "¡Compra realizada con éxito!");
         response.sendRedirect(request.getContextPath() + "/compraPaquete");
         return;
@@ -147,8 +167,13 @@ public class compraPaquete extends HttpServlet {
         return;
 
       } catch (Exception e) {
-        session.setAttribute("flash_error", "No se pudo completar la compra: "
-            + (e.getMessage() != null ? e.getMessage() : "error inesperado"));
+        String msg = e.getMessage();
+        if (msg != null && msg.contains("No hay cupos disponibles para este paquete")) {
+          msg = "No hay cupos disponibles para este paquete.";
+        } else {
+          msg = "No se pudo completar la compra. Intenta nuevamente.";
+        }
+        session.setAttribute("flash_error", msg);
         response.sendRedirect(request.getContextPath() + "/compraPaquete");
         return;
       }
