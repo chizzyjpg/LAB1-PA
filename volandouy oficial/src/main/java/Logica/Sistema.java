@@ -824,24 +824,27 @@ public class Sistema implements ISistema {
     public List<DataRutaMasVisitada> obtener5RutasMasVisitadas() {
         List<Ruta> rutas = rutaService.listar5RutasMasVisitadas();
 
-        return rutas.stream()
+        List<DataRutaMasVisitada> resultado = rutas.stream()
                 .map(r -> {
-                    // Sacar un nickname de aerolínea
                     String nickAerolinea = null;
                     if (r.getAerolineas() != null && !r.getAerolineas().isEmpty()) {
                         Aerolinea aerolinea = r.getAerolineas().iterator().next();
                         nickAerolinea = aerolinea.getNickname();
                     }
 
-                    return new DataRutaMasVisitada(
-                            r.getIdRuta(),       // idRuta
-                            nickAerolinea,       // nickAerolinea
-                            r.getOrigen(),       // ciudadOrigen (Entidad Ciudad)
-                            r.getDestino(),      // ciudadDestino
-                            r.getVisitas()       // visitas
+                    DataRutaMasVisitada dto = new DataRutaMasVisitada(
+                            r.getIdRuta(),
+                            nickAerolinea,
+                            r.getOrigen(),
+                            r.getDestino(),
+                            r.getVisitas()
                     );
+
+                    return dto;
                 })
-                .collect(Collectors.toList());
+                .toList();
+
+        return resultado;
     }
 
     // ======================

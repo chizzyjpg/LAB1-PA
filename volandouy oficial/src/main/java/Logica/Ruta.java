@@ -58,7 +58,7 @@ public class Ruta {
     @JoinColumn(name = "categoria_nombre", nullable = false, referencedColumnName = "nombre")
     private Categoria categoria;
     
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "aerolinea_ruta",
         joinColumns = @JoinColumn(name = "idRuta"),

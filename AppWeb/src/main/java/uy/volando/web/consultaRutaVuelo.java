@@ -78,8 +78,9 @@ public class consultaRutaVuelo extends HttpServlet {
       String aerolineaSel = request.getParameter("aerolinea");
     System.out.println("[DEBUG] Valor de aerolineaSel: " + aerolineaSel);
       List<DataRuta> rutas = null;
+      DataRutaArray dataRutaArray = null;
       if (aerolineaSel != null && !aerolineaSel.isEmpty()) {
-          DataRutaArray dataRutaArray = port.listarPorAerolinea(aerolineaSel);
+          dataRutaArray = port.listarPorAerolinea(aerolineaSel);
           if (dataRutaArray != null && dataRutaArray.getItem() != null) {
               rutas = dataRutaArray.getItem().stream()
                       .filter(r -> r.getEstado() != null && r.getEstado().name().equalsIgnoreCase("CONFIRMADA"))
@@ -92,74 +93,108 @@ public class consultaRutaVuelo extends HttpServlet {
       request.getRequestDispatcher("/WEB-INF/vuelo/consultaRutaVuelo.jsp").forward(request, response);
   }
 
-  @Override
-  protected void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-      HttpSession session = request.getSession();
-      Object usuario = session.getAttribute("usuario_logueado");
-      request.setAttribute("usuario", usuario);
+        HttpSession session = request.getSession();
+        Object usuario = session.getAttribute("usuario_logueado");
+        request.setAttribute("usuario", usuario);
 
-    String aerolineaSel = request.getParameter("aerolinea");
-    System.out.println("[DEBUG] doPost - aerolineaSel inicial: " + aerolineaSel);
-    if (aerolineaSel != null) {
-      aerolineaSel = aerolineaSel.trim();
-    }
-    String categoriaSel = request.getParameter("categoria");
-    String rutaSel = request.getParameter("ruta");
-
-  DataAerolineaArray dataAerolineaArray = port.listarAerolineas();
-  System.out.println("[DEBUG] dataAerolineaArray: " + dataAerolineaArray);
-  List<DataAerolinea> aerolineas = dataAerolineaArray != null ? dataAerolineaArray.getItem() : null;
-  System.out.println("[DEBUG] aerolineas: " + aerolineas);
-  request.setAttribute("aerolineas", aerolineas);
-      if (aerolineas != null) {
-          for (DataAerolinea a : aerolineas) {
-              System.out.println("[DEBUG] Aerolínea: " + a.getNombre() + " (" + a.getNickname() + ")");
-          }
-      }
-
-  DataCategoriaArray dataCategoriaArray = port.listarCategorias();
-  List<DataCategoria> categorias = dataCategoriaArray != null ? dataCategoriaArray.getItem() : null;
-  request.setAttribute("categorias", categorias);
-
-
-      List<DataRuta> rutas = null;
-      DataRutaArray dataRutaArray = port.listarPorAerolinea(aerolineaSel);
-      if (dataRutaArray != null && dataRutaArray.getItem() != null) {
-          rutas = dataRutaArray.getItem().stream()
-                  .filter(r -> r.getEstado() != null && r.getEstado().name().equalsIgnoreCase("CONFIRMADA"))
-                  .toList();
-      }
-      request.setAttribute("rutas", rutas);
-
-
-      if (aerolineaSel == null || aerolineaSel.isEmpty()) {
-      request.setAttribute("errorMsg", "Debe seleccionar una aerolínea.");
-    }
-
-    // Validar que el nickname no se pierda antes de consultar vuelos
-    System.out.println("[DEBUG] doPost - aerolineaSel antes de consultar vuelos: " + aerolineaSel);
-    if (rutaSel != null && !rutaSel.isEmpty() && rutas != null) {
-      DataRuta ruta = rutas.stream().filter(r -> r.getNombre().equals(rutaSel)).findFirst()
-          .orElse(null);
-      if (ruta != null) {
-        System.out
-            .println("[DEBUG] doPost - nickname para listarVuelos: " + ruta.getNicknameAerolinea());
-        List<DataVueloEspecifico> vuelos = port.listarVuelos(ruta.getNicknameAerolinea(),
-            ruta.getNombre()).getItem();
-        request.setAttribute("rutaSeleccionada", ruta);
-        request.setAttribute("vuelos", vuelos);
-        // Si se seleccionó un vuelo específico, buscarlo y mostrar detalles
-        String vueloSel = request.getParameter("vuelo");
-        if (vueloSel != null && !vueloSel.isEmpty()) {
-          DataVueloEspecifico vueloSeleccionado = vuelos.stream()
-            .filter(v -> v.getNombre().equals(vueloSel))
-            .findFirst().orElse(null);
-          request.setAttribute("vueloSeleccionado", vueloSeleccionado);
+        String aerolineaSel = request.getParameter("aerolinea");
+        if (aerolineaSel != null) {
+            aerolineaSel = aerolineaSel.trim();
         }
-      }
+
+        String categoriaSel = request.getParameter("categoria");
+        if (categoriaSel != null) {
+            categoriaSel = categoriaSel.trim();
+        }
+
+        String rutaSel = request.getParameter("ruta");
+        if (rutaSel != null) {
+            rutaSel = rutaSel.trim();
+        }
+
+        // Copias finales para las lambdas
+        final String categoriaFinal = categoriaSel;
+        final String rutaFinal = rutaSel;
+
+        // Siempre volvemos a cargar aerolíneas y categorías para el formulario
+        DataAerolineaArray dataAerolineaArray = port.listarAerolineas();
+        System.out.println("[DEBUG] dataAerolineaArray: " + dataAerolineaArray);
+        List<DataAerolinea> aerolineas = dataAerolineaArray != null ? dataAerolineaArray.getItem() : null;
+        System.out.println("[DEBUG] aerolineas: " + aerolineas);
+        request.setAttribute("aerolineas", aerolineas);
+        if (aerolineas != null) {
+            for (DataAerolinea a : aerolineas) {
+                System.out.println("[DEBUG] Aerolínea: " + a.getNombre() + " (" + a.getNickname() + ")");
+            }
+        }
+
+        DataCategoriaArray dataCategoriaArray = port.listarCategorias();
+        List<DataCategoria> categorias = dataCategoriaArray != null ? dataCategoriaArray.getItem() : null;
+        request.setAttribute("categorias", categorias);
+
+        // 1) Si no hay aerolínea seleccionada, mostramos error y no seguimos
+        if (aerolineaSel == null || aerolineaSel.isEmpty()) {
+            request.setAttribute("errorMsg", "Debe seleccionar una aerolínea.");
+            request.getRequestDispatcher("/WEB-INF/vuelo/consultaRutaVuelo.jsp").forward(request, response);
+            return;
+        }
+
+        // 2) Cargar rutas por aerolínea y estado CONFIRMADA
+        List<DataRuta> rutas = null;
+        DataRutaArray dataRutaArray = port.listarPorAerolinea(aerolineaSel);
+        if (dataRutaArray != null && dataRutaArray.getItem() != null) {
+            rutas = dataRutaArray.getItem().stream()
+                    .filter(r -> r.getEstado() != null && r.getEstado().name().equalsIgnoreCase("CONFIRMADA"))
+                    .toList();
+        }
+
+        // 3) Aplicar filtro por categoría si se seleccionó alguna (distinta de "Todas")
+        if (rutas != null && categoriaFinal != null && !categoriaFinal.isEmpty()) {
+            rutas = rutas.stream()
+                    .filter(r -> r.getCategoria() != null
+                            && categoriaFinal.equals(r.getCategoria().getNombre()))
+                    .toList();
+        }
+
+        request.setAttribute("rutas", rutas);
+
+        System.out.println("[DEBUG] doPost - aerolineaSel antes de consultar vuelos: " + aerolineaSel);
+
+        // 4) Si hay una ruta seleccionada, buscamos esa ruta y cargamos sus vuelos
+        if (rutaFinal != null && !rutaFinal.isEmpty() && rutas != null) {
+            DataRuta ruta = rutas.stream()
+                    .filter(r -> r.getNombre().equals(rutaFinal))
+                    .findFirst()
+                    .orElse(null);
+
+            if (ruta != null) {
+                System.out.println("[DEBUG] doPost - nickname para listarVuelos: " + ruta.getNicknameAerolinea());
+
+                List<DataVueloEspecifico> vuelos = port
+                        .listarVuelos(ruta.getNicknameAerolinea(), ruta.getNombre())
+                        .getItem();
+
+                request.setAttribute("rutaSeleccionada", ruta);
+                request.setAttribute("vuelos", vuelos);
+
+                // Si se seleccionó un vuelo específico, buscarlo y mostrar detalles
+                String vueloSel = request.getParameter("vuelo");
+                if (vueloSel != null && !vueloSel.isEmpty() && vuelos != null) {
+                    DataVueloEspecifico vueloSeleccionado = vuelos.stream()
+                            .filter(v -> v.getNombre().equals(vueloSel))
+                            .findFirst()
+                            .orElse(null);
+                    request.setAttribute("vueloSeleccionado", vueloSeleccionado);
+                }
+            }
+        }
+
+        request.getRequestDispatcher("/WEB-INF/vuelo/consultaRutaVuelo.jsp").forward(request, response);
     }
-    request.getRequestDispatcher("/WEB-INF/vuelo/consultaRutaVuelo.jsp").forward(request, response);
-  }
+
+
 }
