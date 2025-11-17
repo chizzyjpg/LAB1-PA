@@ -5,6 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import uy.volando.model.EstadoSesion;
 import java.io.IOException;
 
 /**
@@ -27,9 +29,18 @@ public class Visitante extends HttpServlet {
    */
   private void processRequest(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    req.getRequestDispatcher("/WEB-INF/home/iniciado.jsp").forward(req, resp);
-  }
 
+    HttpSession objSesion = req.getSession();
+    DeviceUtils.DeviceType deviceType = (DeviceUtils.DeviceType) objSesion.getAttribute("deviceType");
+
+    if (deviceType == DeviceUtils.DeviceType.MOBILE) {
+        objSesion.setAttribute("estado_sesion", EstadoSesion.LOGIN_INCORRECTO);
+        resp.sendRedirect(req.getContextPath() + "/home");
+    }
+    else {
+        req.getRequestDispatcher("/WEB-INF/home/iniciado.jsp").forward(req, resp);
+    }
+  }
   /**
    * Configura la sesión del visitante.
    */

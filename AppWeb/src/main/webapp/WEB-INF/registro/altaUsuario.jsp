@@ -41,15 +41,15 @@
                                 <input type="text" class="form-control" id="username" name="nickname" required>
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Correo electronico</label>
+                                <label for="email" class="form-label">Correo electrónico</label>
                                 <input type="email" class="form-control" id="email" name="email" required>
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="form-label">Contrase�a</label>
+                                <label for="password" class="form-label">Contraseña</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
                             </div>
                             <div class="mb-3">
-                                <label for="confirmPassword" class="form-label">Confirmar Contrase�a</label>
+                                <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
                                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                             </div>
                             <div class="mb-3">
@@ -77,7 +77,7 @@
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="numeroDocumento" class="form-label">Numero de Documento</label>
+                                    <label for="numeroDocumento" class="form-label">Número de Documento</label>
                                     <input type="text" class="form-control" id="numeroDocumento" name="numeroDocumento">
                                 </div>
                                 <div class="mb-3">
@@ -92,12 +92,12 @@
                             
                             <div id="aerolineaFields" style="display:none;">
                                 <div class="mb-3">
-                                    <label for="nombreAerolinea" class="form-label">Nombre de la Aerolinea</label>
+                                    <label for="nombreAerolinea" class="form-label">Nombre de la Aerolínea</label>
                                     <input type="text" class="form-control" id="nombreAerolinea" name="nombreAerolinea">
                                 </div>
                                 
                                 <div class="mb-3">
-                                    <label for="descripcion" class="form-label">Descripcion</label>
+                                    <label for="descripcion" class="form-label">Descripción</label>
                                     <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Descripcion de la aerolinea"></textarea>
                                 </div>
                                 <div class="mb-3">

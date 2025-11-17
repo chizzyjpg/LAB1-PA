@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import uy.volando.web.DeviceUtils;
 
 import uy.volando.model.EstadoSesion;
 
@@ -43,10 +44,13 @@ public class Login extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println("[DEBUG] Entrando a processRequest");
         request.setCharacterEncoding("UTF-8");
 
         HttpSession objSesion = request.getSession();
+
+        DeviceUtils.DeviceType deviceType = (DeviceUtils.DeviceType) objSesion.getAttribute("deviceType"); //Leemos tipo de dispositivo detectado por el filtro
+        System.out.println("[DEBUG] deviceType en login: " + deviceType);
+
         String login = request.getParameter("login");   // nickname
         String password = request.getParameter("password");
         System.out.println("[DEBUG] login param: " + login);
@@ -60,7 +64,7 @@ public class Login extends HttpServlet {
         DataUsuario dto = null;
         try {
             System.out.println("[DEBUG] Llamando a loguearUsuario (SOAP)");
-            // LLAMADA AL WEB SERVICE, ya no al ISistema del core
+            // LLAMADA AL WEB SERVICE
             dto = port.loguearUsuario(login, password);
             System.out.println("[DEBUG] Resultado loguearUsuario: " + (dto != null ? "OK" : "NULL"));
         } catch (Exception e) {
@@ -79,15 +83,9 @@ public class Login extends HttpServlet {
             return;
         }
 
-        System.out.println("[DEBUG] Login correcto, redirigiendo a /home");
         nuevoEstado = EstadoSesion.LOGIN_CORRECTO;
 
-        // Guardamos el DataUsuario generado por el WS en la sesión
-        objSesion.setAttribute("usuario_logueado", dto);
-        objSesion.setAttribute("estado_sesion", nuevoEstado);
-
         // === Determinar el rol ===
-
         String rol = null; // null = visitante
         if (dto instanceof uy.volando.publicar.DataCliente) {
             rol = "Cliente";
@@ -96,6 +94,25 @@ public class Login extends HttpServlet {
             rol = "Aerolínea";
         }
         objSesion.setAttribute("rol", rol);
+
+        // === RESTRICCIÓN POR DISPOSITIVO ===
+        // Si es MOBILE: solo se permite Cliente.
+        // No puede entrar Aerolínea ni Visitante (rol == null).
+        if (deviceType == DeviceUtils.DeviceType.MOBILE) {
+            if (!"Cliente".equals(rol)) {
+                System.out.println("[DEBUG] Login denegado desde móvil para rol: " + rol);
+                objSesion.setAttribute("estado_sesion", EstadoSesion.LOGIN_INCORRECTO);
+                // Mensaje para la pagina JSP
+                request.setAttribute("mensaje_error",
+                        "Solo los clientes pueden iniciar sesión desde dispositivos móviles.");
+                request.getRequestDispatcher("/WEB-INF/home/login.jsp").forward(request, response);
+                return;
+            }
+        }
+        // Si no es MOBILE (DESKTOP o UNKNOWN), dejamos pasar
+        System.out.println("[DEBUG] Login correcto, redirigiendo a /home");
+        objSesion.setAttribute("usuario_logueado", dto);
+        objSesion.setAttribute("estado_sesion", nuevoEstado);
 
         response.sendRedirect(request.getContextPath() + "/home");
     }
