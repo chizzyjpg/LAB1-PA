@@ -1,4 +1,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="uy.volando.web.DeviceUtils" %>
+
+
+<%
+    DeviceUtils.DeviceType deviceType =
+            (DeviceUtils.DeviceType) session.getAttribute("deviceType");
+
+    boolean esMobile = (deviceType != null
+            && deviceType == DeviceUtils.DeviceType.MOBILE);
+%>
+
 <!doctype html>
 <html>
 <head>
@@ -14,7 +25,12 @@
           <div class="d-grid gap-3 btn-panel">
             <a href="iniciar-sesion" class="btn btn-primary">Iniciar sesión</a>
             <a href="altaUsuario" class="btn btn-primary">Registrarse</a>
-            <a href="visitante" class="btn btn-secondary">Entrar como visitante</a>
+              <% if (!esMobile) { %>
+                  <a href="visitante"
+                     class="btn btn-outline-secondary">
+                      Entrar como visitante
+                  </a>
+              <% } %>
           </div>
         </div>
       </div>

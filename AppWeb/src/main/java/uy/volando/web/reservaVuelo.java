@@ -1,14 +1,11 @@
 package uy.volando.web;
 
-
-import Logica.DataPasaje;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import uy.volando.publicar.StringArray;
 import uy.volando.publicar.WebServices;
 
 import java.io.IOException;
@@ -135,7 +132,7 @@ public class reservaVuelo extends HttpServlet {
     request.getRequestDispatcher("/WEB-INF/vuelo/reservaVuelo.jsp").forward(request, response);
   }
 
-  /* === Helpers usados por doGet === */
+
   private static String trimOrNull(String s) {
     if (s == null) {
       return null;      

@@ -142,7 +142,7 @@ public class Sistema implements ISistema {
       return null; // falla autenticación
     }
 
-    // Traer el DTO como ya lo haces 
+    // Traer el DTO como ya lo haces
     return usuarioService.verInfoUsuario(u.getNickname());
 
   }
@@ -269,7 +269,7 @@ public class Sistema implements ISistema {
 
     usuarioService.actualizarUsuario(aerolinea, false);
   }
-  
+
   @Override
   public DataAerolinea actualizarPerfilAerolinea(PerfilAerolineaUpdate upd) {
     if (upd == null) {
@@ -686,7 +686,45 @@ public class Sistema implements ISistema {
     paqueteService.actualizarPaquete(p);
   }
 
-  // =========================
+    // ===============================
+    // FINALIZAR RUTA DE VUELO
+    // ===============================
+    @Override
+    public void finalizarRutaDeVuelo(String nicknameAerolinea, String nomRuta) {
+        // Validar aerolínea
+        DataAerolinea aerolinea = verInfoAerolinea(nicknameAerolinea);
+        if (aerolinea == null) {
+            throw new IllegalArgumentException("No existe una aerolínea con ese nickname");
+        }
+        // Validar ruta
+        int idRuta = rutaService.buscarRutaPorNombreYObtenerId(nomRuta);
+        Ruta ruta = rutaService.buscarRutaPorId(idRuta);
+        if (ruta == null) {
+            throw new IllegalArgumentException("No existe una ruta con ese ID");
+        }
+        Ruta paquete = paqueteService.buscarRutaEnAerolinea(nicknameAerolinea, nomRuta);
+        if (paquete == null) {
+            throw new IllegalArgumentException("La ruta no pertenece a la aerolínea indicada");
+        }
+        if (ruta.getEstado() != EstadoRuta.CONFIRMADA) {
+            throw new IllegalArgumentException("Solo se pueden finalizar rutas en estado CONFIRMADA");
+        }
+        // Validar que no tenga vuelos pendientes
+        boolean tieneVuelosPendientes = ruta.getVuelosEspecificos().stream()
+                .anyMatch(v -> v.getFecha() != null && v.getFecha().after(new Date()));
+        if (tieneVuelosPendientes) {
+            throw new IllegalArgumentException("La ruta tiene vuelos pendientes");
+        }
+        // Validar que no esté en paquetes
+        if (rutaService.estaEnPaquete(idRuta)) { // Debes implementar este método
+            throw new IllegalArgumentException("La ruta está incluida en un paquete");
+        }
+        // Cambiar estado de la ruta a FINALIZADA
+        ruta.setEstado(EstadoRuta.FINALIZADA);
+        rutaService.actualizarRuta(ruta);
+    }
+
+    // =========================
   // RESERVAS
   // =========================
 
@@ -802,12 +840,54 @@ public class Sistema implements ISistema {
     }
     ruta.setEstado(nuevoEstado);
     rutaService.actualizarRuta(ruta);
-
   }
 
-  // ======================
-  // CAMBIOS ALTAS PARA AVATAR
-  // ======================
+    // ======================
+    // VISITA DE RUTAS
+    // ======================
+
+
+  @Override
+  public void registrarVisitaRuta(int idRuta) {
+      Ruta ruta = rutaService.buscarRutaPorId(idRuta);
+      if (ruta == null) {
+          throw new IllegalArgumentException("No existe una ruta con ese ID");
+      }
+      ruta.setVisitas(ruta.getVisitas() + 1);
+
+      rutaService.actualizarRuta(ruta);
+  }
+
+    @Override
+    public List<DataRutaMasVisitada> obtener5RutasMasVisitadas() {
+        List<Ruta> rutas = rutaService.listar5RutasMasVisitadas();
+
+        List<DataRutaMasVisitada> resultado = rutas.stream()
+                .map(r -> {
+                    String nickAerolinea = null;
+                    if (r.getAerolineas() != null && !r.getAerolineas().isEmpty()) {
+                        Aerolinea aerolinea = r.getAerolineas().iterator().next();
+                        nickAerolinea = aerolinea.getNickname();
+                    }
+
+                    DataRutaMasVisitada dto = new DataRutaMasVisitada(
+                            r.getIdRuta(),
+                            nickAerolinea,
+                            r.getOrigen(),
+                            r.getDestino(),
+                            r.getVisitas()
+                    );
+
+                    return dto;
+                })
+                .toList();
+
+        return resultado;
+    }
+
+    // ======================
+    // CAMBIOS ALTAS PARA AVATAR
+    // ======================
 
   @Override
   public boolean existeNickname(String nickname) {

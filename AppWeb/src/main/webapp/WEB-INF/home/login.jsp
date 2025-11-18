@@ -28,11 +28,15 @@
 				<%
 				uy.volando.model.EstadoSesion estado = (uy.volando.model.EstadoSesion) session.getAttribute("estado_sesion");
 				boolean loginIncorrecto = (estado == uy.volando.model.EstadoSesion.LOGIN_INCORRECTO);
+
+                String mensajeError = (String) request.getAttribute("mensaje_error");
 				%>
 				
 				<div class="mb-3" id="loginError" style="<%= loginIncorrecto ? "" : "display:none;" %>">
 				    <div class="alert alert-danger" role="alert">
-				        Usuario o contraseña incorrectos
+                        <%= (mensajeError != null
+                                ? mensajeError
+                                : "Usuario o contraseña incorrectos") %>
 				    </div>
 				</div>
 
