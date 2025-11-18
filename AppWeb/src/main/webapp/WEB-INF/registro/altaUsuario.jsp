@@ -1,3 +1,5 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,10 +41,12 @@
                             <div class="mb-3">
                                 <label for="username" class="form-label">Nickname</label>
                                 <input type="text" class="form-control" id="username" name="nickname" required>
+                                <div id="nickStatus" class="form-text"></div>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Correo electrónico</label>
                                 <input type="email" class="form-control" id="email" name="email" required>
+                                <div id="emailStatus" class="form-text"></div>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Contraseña</label>
@@ -164,6 +168,119 @@
             // Comprobacion en tiempo real para mejor experiencia
             pwd.addEventListener('input', checkPasswords);
             pwd2.addEventListener('input', checkPasswords);
+
+            // ==============================
+            // verificación AJAX nick/email
+            // ==============================
+
+            // Context path de la app (ej: /volandouy-oficial)
+            const CONTEXT_PATH = '${pageContext.request.contextPath}';
+
+            const nicknameInput = document.getElementById('username');
+            const emailInput    = document.getElementById('email');
+            const nickStatus    = document.getElementById('nickStatus');
+            const emailStatus   = document.getElementById('emailStatus');
+
+            let nickTimer = null;
+            let emailTimer = null;
+
+            // Helper para mostrar mensajes con color
+            function setStatus(element, message, state) {
+                if (!element) return;
+                element.textContent = message || '';
+                element.classList.remove('text-success', 'text-danger');
+
+                if (state === 'ok') {
+                    element.classList.add('text-success');
+                } else if (state === 'error') {
+                    element.classList.add('text-danger');
+                }
+            }
+
+            // Llamada asíncrona para verificar nickname
+            async function checkNickname() {
+                const value = nicknameInput.value.trim();
+                if (!value) {
+                    setStatus(nickStatus, '');
+                    return;
+                }
+
+                setStatus(nickStatus, 'Verificando...', null);
+
+                try {
+                    const resp = await fetch(
+                        CONTEXT_PATH + '/api/verificarNickname?nickname=' + encodeURIComponent(value)
+                    );
+
+                    if (!resp.ok) {
+                        setStatus(nickStatus, 'No se pudo verificar el nickname.', 'error');
+                        return;
+                    }
+
+                    const data = await resp.json(); // esperamos JSON: {disponible: true/false}
+
+                    if (data.disponible) {
+                        setStatus(nickStatus, 'Nickname disponible.', 'ok');
+                    } else {
+                        setStatus(nickStatus, 'Nickname no disponible.', 'error');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    setStatus(nickStatus, 'Error al conectar con el servidor.', 'error');
+                }
+            }
+
+            // Llamada asíncrona para verificar email
+            async function checkEmail() {
+                const value = emailInput.value.trim();
+                if (!value) {
+                    setStatus(emailStatus, '');
+                    return;
+                }
+
+                setStatus(emailStatus, 'Verificando...', null);
+
+                try {
+                    const resp = await fetch(
+                        CONTEXT_PATH + '/api/verificarEmail?email=' + encodeURIComponent(value)
+                    );
+
+                    if (!resp.ok) {
+                        setStatus(emailStatus, 'No se pudo verificar el correo.', 'error');
+                        return;
+                    }
+
+                    const data = await resp.json();
+
+                    if (data.disponible) {
+                        setStatus(emailStatus, 'Correo disponible.', 'ok');
+                    } else {
+                        setStatus(emailStatus, 'Ya existe un usuario con este correo.', 'error');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    setStatus(emailStatus, 'Error al conectar con el servidor.', 'error');
+                }
+            }
+
+            // Debounce: espera unos ms desde la última tecla antes de consultar
+            function debounceNick() {
+                clearTimeout(nickTimer);
+                nickTimer = setTimeout(checkNickname, 400);
+            }
+
+            function debounceEmail() {
+                clearTimeout(emailTimer);
+                emailTimer = setTimeout(checkEmail, 400);
+            }
+
+            if (nicknameInput) {
+                nicknameInput.addEventListener('input', debounceNick);
+            }
+
+            if (emailInput) {
+                emailInput.addEventListener('input', debounceEmail);
+            }
         });
     </script>
 

@@ -14,7 +14,7 @@ public class DeviceUtils {
             return DeviceType.UNKNOWN;
         }
         ua = ua.toLowerCase();
-        
+
         if (ua.contains("android") || ua.contains("iphone") ||
                 ua.contains("ipad")   || ua.contains("ipod")) {
             return DeviceType.MOBILE;
