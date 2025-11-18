@@ -1,11 +1,19 @@
 package Logica;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Clase que representa los datos de un vuelo espec��fico.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "dataVueloEspecifico")
+@XmlType(propOrder = {"nombre", "fecha", "duracion", "maxAsientosTur", "maxAsientosEjec", "fechaAlta", "Druta" })
 public class DataVueloEspecifico {
 
   private String nombre;
@@ -16,6 +24,7 @@ public class DataVueloEspecifico {
   private Date fechaAlta;
   private DataRuta Druta;
 
+  public DataVueloEspecifico() {}
   /**
    * Constructor de la clase DataVueloEspecifico.
    *

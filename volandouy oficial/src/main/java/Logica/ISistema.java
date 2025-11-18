@@ -33,6 +33,7 @@ public interface ISistema {
     List<DataPaquete> listarPaquetesSinCompras();
     List<DataVueloEspecifico> listarVuelos(String nickname, String nombre);
     List<DataReserva> listarReservas(String nickname, String nombre, String codigoVuelo);
+    List<DataRutaMasVisitada> obtener5RutasMasVisitadas();
    
     void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos); 
     void registrarUsuario(DataUsuario data); // DataCliente o DataAerolinea
@@ -49,7 +50,9 @@ public interface ISistema {
 	void cambiarPassword(String nickname, String pwdCurrent, String pwdNew);
 	void altaCliente(DataCliente cliente, byte[] avatar);
     void altaAerolinea(DataAerolinea aerolinea);
-	
+    void  registrarVisitaRuta(int codigoRuta);
+    void finalizarRutaDeVuelo(String nicknameAerolinea, String nomRuta);
+
     byte[] obtenerAvatar(String nickname);
 	Ciudad buscarCiudad(String nombre, String pais);    
 

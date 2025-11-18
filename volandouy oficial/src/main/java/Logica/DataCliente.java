@@ -1,11 +1,21 @@
 package Logica;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
+import jakarta.xml.bind.annotation.XmlType;
+
 import java.util.Date;
 
 /**
  * DataCliente es una clase que representa la información de un cliente en el sistema.
  * Hereda de DataUsuario e incluye atributos adicionales específicos del cliente.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(
+        name = "dataCliente",
+        propOrder = { "apellido", "fechaNac", "nacionalidad", "tipoDocumento", "numDocumento" }
+)
 public class DataCliente extends DataUsuario {
 
   private String apellido;
@@ -14,6 +24,9 @@ public class DataCliente extends DataUsuario {
   private TipoDocumento tipoDocumento;
   private String numDocumento;
 
+  public DataCliente() {
+    super("", "", "", "");
+  }
   /** 
    * Constructor de la clase DataCliente.
    */
@@ -27,7 +40,6 @@ public class DataCliente extends DataUsuario {
     this.tipoDocumento = tipo;
     this.numDocumento = numeroDocumento;
   }
-
   // GETTERS
 
   public String getApellido() {

@@ -255,6 +255,21 @@ public class Menu extends JFrame {
     });
     menuAceptarRechazar.add(menuItemAceptarRechazarRuta);
 
+    JMenu menuVisitas = new JMenu("Visitas");
+    menuBar.add(menuVisitas);
+
+    JMenuItem menuItemVisitasRuta = new JMenuItem("Ruta de Vuelo");
+    menuItemVisitasRuta.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            RutasMasVisitadas visitas = new RutasMasVisitadas(sistema);
+            visitas.setVisible(true);
+            desktopPane.add(visitas);
+            desktopPane.revalidate();
+            desktopPane.repaint();
+        }
+    });
+    menuVisitas.add(menuItemVisitasRuta);
+
     contentPane = new JPanel();
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
     setContentPane(contentPane);

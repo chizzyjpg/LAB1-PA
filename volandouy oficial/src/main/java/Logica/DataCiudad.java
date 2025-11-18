@@ -1,17 +1,26 @@
 package Logica;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlType;
+
 import java.util.Date;
 
 /**
  * Clase que representa los datos de una ciudad, incluyendo información sobre su aeropuerto.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "dataCiudad")
+@XmlType(propOrder = {"nombre", "pais", "nombreAeropuerto", "descripcionAeropuerto", "fechaAlta", "sitioWeb"})
 public class DataCiudad {
-  private final String nombre;
-  private final String pais;
-  private final String nombreAeropuerto;
-  private final String descripcionAeropuerto;
-  private final Date fechaAlta;
-  private final String sitioWeb;
+  private String nombre;
+  private String pais;
+  private String nombreAeropuerto;
+  private String descripcionAeropuerto;
+  private Date fechaAlta;
+  private String sitioWeb;
+
 
   /**
    * Constructor de la clase DataCiudad.
@@ -24,6 +33,10 @@ public class DataCiudad {
     this.descripcionAeropuerto = descripcionAeropuerto;
     this.fechaAlta = fechaAlta;
     this.sitioWeb = sitioWeb;
+  }
+
+  // Constructor por defecto requerido por JAXB
+  public DataCiudad() {
   }
 
   public String getNombre() {
@@ -49,6 +62,12 @@ public class DataCiudad {
   public String getSitioWeb() {
     return sitioWeb;
   }
+
+    public void setNombre(String nombre) { this.nombre = nombre; }public void setPais(String pais) { this.pais = pais; }
+    public void setNombreAeropuerto(String nombreAeropuerto) { this.nombreAeropuerto = nombreAeropuerto; }
+    public void setDescripcionAeropuerto(String descripcionAeropuerto) { this.descripcionAeropuerto = descripcionAeropuerto; }
+    public void setFechaAlta(Date fechaAlta) { this.fechaAlta = fechaAlta; }
+    public void setSitioWeb(String sitioWeb) { this.sitioWeb = sitioWeb; }
 
   @Override
   public String toString() {

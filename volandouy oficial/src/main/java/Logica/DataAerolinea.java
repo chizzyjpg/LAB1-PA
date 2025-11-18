@@ -1,13 +1,26 @@
 package Logica;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
+import jakarta.xml.bind.annotation.XmlType;
+
 /**
  * Clase que representa los datos de una aerolínea.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(
+        name = "dataAerolinea",
+        propOrder = { "descGeneral", "sitioWeb" }
+)
 public class DataAerolinea extends DataUsuario {
 
   private String descGeneral;
   private String sitioWeb;
 
+  public  DataAerolinea() {
+      super("", "", "", "");
+  }
   /**
    * Constructor de la clase DataAerolinea.
    * 

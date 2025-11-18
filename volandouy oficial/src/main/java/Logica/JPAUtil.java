@@ -9,9 +9,10 @@ import jakarta.persistence.Persistence;
  */
 public class JPAUtil {
   static {
-    System.err.println(">>> JPAUtil <clinit> (clase cargada) — ¿quién me trajo?");
     new RuntimeException("TRACE JPAUtil <clinit>").printStackTrace();
   }
+  
+  
 
   private static final EntityManagerFactory emf = Persistence
       .createEntityManagerFactory("persistencia");

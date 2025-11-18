@@ -1,5 +1,9 @@
 package Logica;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlType;
+
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -8,20 +12,30 @@ import java.util.Set;
 /**
  * DataPaquete: clase que representa la información de un paquete turístico.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(
+    name = "dataPaquete",
+    propOrder = { "nombre", "descripcion", "cantRutas", "tipoAsiento", "descuento", "validez",
+        "costo", "rutasIncluidas" }
+)
+
 public class DataPaquete {
-  private final String nombre;
-  private final String descripcion;
-  private final int cantRutas;
-  private final TipoAsiento tipoAsiento;
-  private final int descuento; // ej. 20 (%)
-  private final int validez; // días
-  private final BigDecimal costo;
+  private String nombre;
+  private String descripcion;
+  private int cantRutas;
+  private TipoAsiento tipoAsiento;
+  private int descuento; // ej. 20 (%)
+  private int validez; // días
+  private BigDecimal costo;
 
   // NUEVO: ruta -> cupos (inmutable hacia afuera)
-  private final Set<String> rutasIncluidas;
+  private Set<String> rutasIncluidas;
 
   /* ================== CONSTRUCTORES ================== */
 
+    public DataPaquete() {
+        super();
+    }
   // Nuevo constructor que recibe el mapa de cupos
   /**
    * Constructor de DataPaquete.
