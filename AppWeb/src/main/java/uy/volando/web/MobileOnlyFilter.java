@@ -12,22 +12,11 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter({
-        "/reservaVuelo",
-        "/compraPaquete",
-        "/altaVuelo",
-        "/regRutVuelo",
-        "/consultaPaqRutasVuelo",
-        "/listado-usuarios",
-        "/regRutVuelo",
-
-})
-public class DesktopOnlyFilter implements Filter {
+@WebFilter({"/checkInReservaVuelo"}) //Cuando se haga hay que cambiar aca
+public class MobileOnlyFilter implements Filter {
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response,
-                         FilterChain chain) throws IOException, ServletException {
-
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession(false);
@@ -37,14 +26,13 @@ public class DesktopOnlyFilter implements Filter {
             deviceType = (DeviceUtils.DeviceType) session.getAttribute("deviceType");
         }
 
-        // Si es móvil, NO dejamos entrar a estas URLs
-        if (deviceType == DeviceUtils.DeviceType.MOBILE) {
-            System.out.println("[DesktopOnlyFilter] Bloqueando acceso móvil a " + req.getRequestURI());
+        if (deviceType == DeviceUtils.DeviceType.DESKTOP) {
+            System.out.println("[MobileOnlyFilter] Bloqueando acceso de escritorio a " + req.getRequestURI());
             resp.sendRedirect(req.getContextPath() + "/home");
             return;
         }
 
-        // Si no es móvil, dejamos pasar
         chain.doFilter(request, response);
     }
 }
+
