@@ -46,6 +46,8 @@
                                class="list-group-item list-group-item-action">Nuevo Vuelo</a>
                             <a href="${pageContext.request.contextPath}/regRutVuelo"
                                class="list-group-item list-group-item-action">Nueva Ruta de Vuelo</a>
+                            <a href="${pageContext.request.contextPath}/finalizarRutaVuelo"
+                                class="list-group-item list-group-item-action">Finalizar Ruta de Vuelo</a>
                         </div>
                         <br/>
                     </c:if>

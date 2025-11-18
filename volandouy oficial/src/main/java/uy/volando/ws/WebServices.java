@@ -234,13 +234,13 @@ public class WebServices {
         );
     }
 
-   @WebMethod
+    @WebMethod
     public void cambiarPassword(
             @WebParam(name = "nickname") String nickname,
             @WebParam(name = "pwdCurrent") String pwdCurrent,
-            @WebParam(name = "pwdNew") String  pwdNew
+            @WebParam(name = "pwdNew") String pwdNew
     ) {
-        sistema.cambiarPassword(nickname,  pwdCurrent,  pwdNew);
+        sistema.cambiarPassword(nickname, pwdCurrent, pwdNew);
     }
 
     @WebMethod
@@ -265,12 +265,12 @@ public class WebServices {
     }
 
     @WebMethod
-    public boolean existePaquete(@WebParam(name = "nomPaquete") String nomPaquete){
+    public boolean existePaquete(@WebParam(name = "nomPaquete") String nomPaquete) {
         return sistema.existePaquete(nomPaquete);
     }
 
     @WebMethod
-    public boolean clienteYaComproPaquete(@WebParam(name = "nicknameCliente") String nicknameCliente, @WebParam(name = "nomPaquete") String nomPaquete){
+    public boolean clienteYaComproPaquete(@WebParam(name = "nicknameCliente") String nicknameCliente, @WebParam(name = "nomPaquete") String nomPaquete) {
         return sistema.clienteYaComproPaquete(nicknameCliente, nomPaquete);
     }
 
@@ -291,6 +291,14 @@ public class WebServices {
 
     @WebMethod
     public void registrarVisitaRuta(int codigoRuta) {
-        sistema.registrarVisitaRuta(codigoRuta);
+        sistema.registrarVisitaRuta(codigoRuta); 
+    }
+
+    @WebMethod
+    public void finalizarRutaDeVuelo(
+            @WebParam(name = "nicknameAerolinea") String nicknameAerolinea,
+            @WebParam(name = "nomRuta") String nomRuta
+    ) {
+        sistema.finalizarRutaDeVuelo(nicknameAerolinea, nomRuta);
     }
 }

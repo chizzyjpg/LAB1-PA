@@ -203,21 +203,50 @@ public class RutaVueloService {
       em.close();
     }
   }
+  /**
+   * Lista las 5 rutas más visitadas.
+   */
+  public List<Ruta> listar5RutasMasVisitadas() {
+      EntityManager em = JPAUtil.getEntityManager();
+      try {
+          // Para una consulta de solo lectura no hace falta transacción
+          return em.createQuery(
+                          "SELECT r FROM Ruta r ORDER BY r.visitas DESC",
+                          Ruta.class)
+                  .setMaxResults(5)
+                  .getResultList();
+      } finally {
+          em.close();
+      }
+  }
+  /**
+   * Busca una ruta en un paquete
+   */
+  public boolean estaEnPaquete(int idRuta){
+      EntityManager em = JPAUtil.getEntityManager();
+      try {
+          em.getTransaction().begin();
+          // Recuperar el nombre canónico de la ruta
+          Ruta ruta = em.find(Ruta.class, idRuta);
+          if (ruta == null) {
+              em.getTransaction().commit();
+              return false;
+          }
+          String nombreCanonico = ruta.getNombre().trim().toLowerCase(java.util.Locale.ROOT);
+          Long count = em.createQuery(
+                          "SELECT COUNT(p) FROM Paquete p JOIN p.rutasIncluidas r WHERE r = :nombreRuta", Long.class)
+                  .setParameter("nombreRuta", nombreCanonico)
+                  .getSingleResult();
+          em.getTransaction().commit();
+          return count != null && count > 0;
+      } catch (RuntimeException ex) {
+          if (em.getTransaction().isActive()) {
+              em.getTransaction().rollback();
+          }
+          throw ex;
+      } finally {
+          em.close();
+      }
+  }
 
-    /**
-     * Lista las 5 rutas más visitadas.
-     */
-    public List<Ruta> listar5RutasMasVisitadas() {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            // Para una consulta de solo lectura no hace falta transacción
-            return em.createQuery(
-                            "SELECT r FROM Ruta r ORDER BY r.visitas DESC",
-                            Ruta.class)
-                    .setMaxResults(5)
-                    .getResultList();
-        } finally {
-            em.close();
-        }
-    }
 }

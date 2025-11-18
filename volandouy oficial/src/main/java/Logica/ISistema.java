@@ -51,7 +51,8 @@ public interface ISistema {
 	void altaCliente(DataCliente cliente, byte[] avatar);
     void altaAerolinea(DataAerolinea aerolinea);
     void  registrarVisitaRuta(int codigoRuta);
-	
+    void finalizarRutaDeVuelo(String nicknameAerolinea, String nomRuta);
+
     byte[] obtenerAvatar(String nickname);
 	Ciudad buscarCiudad(String nombre, String pais);    
 
