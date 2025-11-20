@@ -35,7 +35,13 @@ public class Reserva {
 	
 	@Column(name = "costoTotal", nullable = false)
 	private Float costoTotal;
-	
+
+    @Column(name = "checkInRealizado", length = 10)
+    private Boolean checkInRealizado = false;
+
+    @Column(name = "horaEmbarque", nullable = true)
+    private Date horaEmbarque;
+
 	@ManyToOne
 	private VueloEspecifico vueloEspecifico;
 
@@ -79,6 +85,10 @@ public class Reserva {
 	public Float getCostoTotal() {
 		return costoTotal;
 	}
+    public Boolean isCheckInRealizado() {
+        return checkInRealizado;
+    }
+    public Date getHoraEmbarque() {return horaEmbarque;}
 	
 	public List<Pasaje> getPasajes() {
 		return pasajes;
@@ -119,6 +129,11 @@ public class Reserva {
 	public void setVueloEspecifico(VueloEspecifico vueloEspecifico) {
 		this.vueloEspecifico = vueloEspecifico;
 	}
+    public void setCheckInRealizado(Boolean checkInRealizado) {
+        this.checkInRealizado = checkInRealizado;
+    }
+    public void setHoraEmbarque(Date horaEmbarque) {this.horaEmbarque = horaEmbarque;}
+
 	@Override public String toString() {
 		return "Reserva [fechaReserva=" + fechaReserva + ", tipoAsiento=" + tipoAsiento
 				+ ", equipaje=" + equipaje + ", cantEquipajeExtra=" + cantEquipajeExtra + ", costoTotal=" + costoTotal

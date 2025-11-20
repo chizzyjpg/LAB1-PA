@@ -15,7 +15,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "dataReserva")
-@XmlType(propOrder = {"idReserva", "fechaReserva", "tipoAsiento", "equipaje", "cantEquipajeExtra", "costoTotal", "pasajes", "nickCliente" })
+@XmlType(propOrder = {"idReserva", "fechaReserva", "tipoAsiento", "equipaje", "cantEquipajeExtra", "costoTotal", "pasajes", "nickCliente", "checkInRealizado", "horaEmbarque" })
 public class DataReserva {
   private int idReserva;
   private Date fechaReserva;
@@ -25,6 +25,9 @@ public class DataReserva {
   private Float costoTotal;
   private List<DataPasaje> pasajes;
   private DataCliente nickCliente;
+  private Boolean checkInRealizado = false;
+  private Date horaEmbarque;
+
 
   public DataReserva() {}
   /**
@@ -76,6 +79,12 @@ public class DataReserva {
     return nickCliente;
   }
 
+  public Boolean isCheckInRealizado() {
+    return checkInRealizado;
+  }
+    public Date getHoraEmbarque() {
+        return horaEmbarque;
+    }
   /**
    * Overrides toString method to provide a string representation of the reservation.
    */

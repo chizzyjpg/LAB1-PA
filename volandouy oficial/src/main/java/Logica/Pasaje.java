@@ -26,6 +26,9 @@ public class Pasaje {
   @Column(name = "Apellido", nullable = false, length = 40)
   private String apellido;
 
+  @Column(name = "asientoAsignado", nullable = true, length = 40)
+  private String asientoAsignado;
+
   @ManyToOne
   @JoinColumn(name = "idReserva")
   private Reserva reserva;
@@ -60,6 +63,10 @@ public class Pasaje {
   public void setApellido(String apellido) {
     this.apellido = apellido;
   }
+
+  public String getAsientoAsignado() {return asientoAsignado;}
+
+  public void setAsientoAsignado(String asientoAsignado) {this.asientoAsignado = asientoAsignado;}
 
   public Reserva getReserva() {
     return reserva;
