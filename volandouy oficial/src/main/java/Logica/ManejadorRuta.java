@@ -97,4 +97,27 @@ public class ManejadorRuta {
     categoriaService = cs;
   }
 
+/**
+ * Convierte una entidad Ruta en un objeto DataBusquedaItem.
+ *
+ */
+
+    public static DataBusquedaItem toDataBusquedaItem(Ruta r) {
+        Objects.requireNonNull(r, "La ruta no puede ser nula");
+
+        if(r.getFechaAlta() == null) {
+            r.setFechaAlta(new java.util.Date(0));
+        }
+
+        DataBusquedaItem dto = new DataBusquedaItem(String.valueOf(r.getIdRuta()),r.getNombre(), r.getDescripcion(), r.getFechaAlta(), TipoResultado.RUTA);
+        return dto;
+    }
+/**
+ * Convierte una lista de Rutas una lista de DataBusquedaItem.
+ *
+ *
+ */
+    public static List<DataBusquedaItem> toDataBusquedaItem(List<Ruta> rutas) {
+        return rutas.stream().map(ManejadorRuta::toDataBusquedaItem).collect(Collectors.toList());
+    }
 }

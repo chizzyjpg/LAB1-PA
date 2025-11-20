@@ -926,4 +926,30 @@ public class Sistema implements ISistema {
   public void altaAerolinea(DataAerolinea aerolinea) {
     registrarUsuario(aerolinea);
   }
+
+    // =============================
+    // BUSQUEDAS DE CUADRO DE TEXTO
+    // =============================
+
+    @Override
+    public List<DataBusquedaItem> buscarRutasYPaquetes(String texto){
+      List<Ruta> rutas = rutaService.buscarPorTexto(texto);
+      List<Paquete> paquetes = paqueteService.buscarPorTexto(texto);
+
+      List<DataBusquedaItem> resultados = new ArrayList<>();
+      List<DataBusquedaItem> rutasDTO = ManejadorRuta.toDataBusquedaItem(rutas);
+      List<DataBusquedaItem> paquetesDTO = ManejadorPaquete.toDataBusquedaItem(paquetes);
+
+      resultados.addAll(rutasDTO);
+      resultados.addAll(paquetesDTO);
+
+        resultados.sort(
+                Comparator.comparing(
+                        DataBusquedaItem::getFechaAlta,
+                        Comparator.nullsLast(Date::compareTo)
+                ).reversed()
+        );
+
+      return resultados;
+    }
 }

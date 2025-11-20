@@ -14,10 +14,11 @@
 
     <!-- Buscador centrado -->
     <div class="flex-grow-1 d-none d-md-flex justify-content-center">
-      <form class="search-bar" role="search">
+      <form class="search-bar" role="search" method="get" action="${pageContext.request.contextPath}/buscar">
         <div class="input-group input-group-sm" style="max-width: 420px;">
           <span class="input-group-text">Buscar</span>
-          <input class="form-control form-control-sm" type="search" placeholder="Vuelos, rutas..." aria-label="Buscar">
+          <input class="form-control form-control-sm" type="search" placeholder="Rutas o paquetes..." aria-label="Buscar" name="q" value="${param.q != null ? param.q : q}">
+            <button class="btn btn-outline-light btn-sm" type="submit">Ir</button>
         </div>
       </form>
     </div>

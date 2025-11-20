@@ -2,6 +2,7 @@ package Logica;
 
 import BD.PaqueteService;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -131,4 +132,31 @@ public final class ManejadorPaquete {
   static void setServiceForTests(PaqueteService s) {
     service = (s == null) ? new PaqueteService() : s;
   }
+
+
+    /**
+     * Convierte una entidad Paquete en un objeto DataBusquedaItem.
+     *
+     */
+
+    public static DataBusquedaItem toDataBusquedaItem(Paquete p) {
+        Objects.requireNonNull(p, "El paquete no puede ser nulo");
+
+        if (p.getFechaAlta() == null) {
+            p.setFechaAlta(new Date(0));
+        }
+
+        DataBusquedaItem dto = new DataBusquedaItem(p.getNombre(),p.getNombre(), p.getDescripcion(), p.getFechaAlta(), TipoResultado.PAQUETE);
+        return dto;
+    }
+
+    /**
+     * Convierte una lista de Paquetes a una lista de DataBusquedaItem.
+     *
+     *
+     */
+    public static List<DataBusquedaItem> toDataBusquedaItem(List<Paquete> paquetes) {
+        return paquetes.stream().map(ManejadorPaquete::toDataBusquedaItem).collect(Collectors.toList());
+    }
+
 }
