@@ -173,4 +173,33 @@ public class PaqueteService {
     }
   }
 
+    /**
+     * Busca un paquete para cuadro de búsqueda
+     */
+    public List<Paquete> buscarPorTexto(String texto) {
+        EntityManager em = JPAUtil.getEntityManager();
+        if (texto == null || texto.trim().isEmpty()) {
+            try {
+                em.getTransaction().begin();
+                List<Paquete> paquetes = em.createQuery("SELECT p FROM Paquete p ORDER BY p.fechaAlta DESC", Paquete.class).getResultList();
+                em.getTransaction().commit();
+                return paquetes;
+            } finally {
+                em.close();
+            }
+        } else {
+            try {
+                String patron = "%" + texto.toLowerCase().trim() + "%";
+                return em.createQuery(
+                        "SELECT p FROM Paquete p " +
+                                "WHERE LOWER(p.nombre) LIKE :patron " +
+                                "   OR LOWER(p.descripcion) LIKE :patron " +
+                                "ORDER BY p.fechaAlta DESC",
+                        Paquete.class).setParameter("patron", patron).getResultList();
+            } finally {
+                em.close();
+            }
+        }
+    }
+
 }
