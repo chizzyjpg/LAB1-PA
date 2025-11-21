@@ -10,10 +10,11 @@ import jakarta.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "dataPasaje")
-@XmlType(propOrder = {"nombre", "apellido" })
+@XmlType(propOrder = {"nombre", "apellido", "asientoAsignado" })
 public class DataPasaje {
   private String nombre;
   private String apellido;
+  private String asientoAsignado;
 
   public DataPasaje() {}
   /**
@@ -32,6 +33,8 @@ public class DataPasaje {
   public String getApellido() {
     return apellido;
   }
+
+  public String getAsientoAsignado() {return asientoAsignado;}
 
   /**
    * Returns a string representation of the DataPasaje object.

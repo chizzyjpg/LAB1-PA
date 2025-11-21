@@ -6,6 +6,8 @@ import Logica.Reserva;
 import Logica.VueloEspecifico;
 import jakarta.persistence.EntityManager;
 
+import java.util.List;
+
 /**
  * Servicio para gestionar operaciones relacionadas con Reserva.
  */
@@ -59,4 +61,68 @@ public class ReservaService {
       em.close();
     }
   }
+  public Reserva buscarReservaPorId(int idReserva) {
+      System.out.println("[buscarReservaPorId] Buscando reserva con id: " + idReserva);
+      EntityManager em = JPAUtil.getEntityManager();
+      try {
+          Reserva reserva = em.find(Reserva.class, idReserva);
+          if (reserva != null) {
+              System.out.println("[buscarReservaPorId] Reserva encontrada: " + reserva.toString());
+              return reserva;
+          } else {
+              System.out.println("[buscarReservaPorId] No se encontró ninguna reserva con ID: " + idReserva);
+          }
+      } catch (Exception ex) {
+          ex.printStackTrace();
+      } finally {
+          em.close();
+      }
+      return null;
+  }
+
+    public List<Reserva> listarReservasPendientesCheckIn(Cliente cliente) {
+        EntityManager em = JPAUtil.getEntityManager();
+        List<Reserva> reservas = null;
+        try {
+            reservas = em.createQuery(
+                    "SELECT r FROM Reserva r WHERE r.cliente.nickname = :nickname AND r.checkInRealizado = false",
+                    Reserva.class)
+                    .setParameter("nickname", cliente.getNickname())
+                    .getResultList();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        finally {
+            em.close();
+        }
+        return reservas;
+    }
+
+    public void actualizarReserva(Reserva reserva) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            System.out.println("[actualizarReserva] Antes de merge: " + reserva);
+            // Obtener el vuelo gestionado
+            VueloEspecifico vuelo = null;
+            if (reserva.getVueloEspecifico() != null) {
+                vuelo = em.find(VueloEspecifico.class, reserva.getVueloEspecifico().getIdVueloEspecifico());
+                if (vuelo != null) {
+                    // Actualizar los campos de asientos directamente sobre la instancia gestionada
+                    vuelo.setMaxAsientosTur(reserva.getVueloEspecifico().getMaxAsientosTur());
+                    vuelo.setMaxAsientosEjec(reserva.getVueloEspecifico().getMaxAsientosEjec());
+                    System.out.println("[actualizarReserva] VueloEspecifico gestionado actualizado: " + vuelo);
+                }
+            }
+            Reserva managedReserva = em.merge(reserva);
+            em.flush();
+            em.refresh(managedReserva);
+            System.out.println("[actualizarReserva] Después de merge y flush: " + managedReserva);
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
 }

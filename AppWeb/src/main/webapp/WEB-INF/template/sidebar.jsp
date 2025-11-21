@@ -169,7 +169,7 @@
 
                     <!-- Check-in: visible en móvil para cliente -->
                     <c:if test="${isCliente and esMobile}">
-                        <a href="${pageContext.request.contextPath}/checkinReservaVuelo"
+                        <a href="${pageContext.request.contextPath}/checkInReservaVuelo"
                            class="list-group-item list-group-item-action">Check-in de Reserva de Vuelo</a>
                     </c:if>
                 </div>

@@ -303,6 +303,22 @@ public class WebServices {
     }
 
     @WebMethod
+    public DataReserva[] listarReservasPendientesCheckIn(@WebParam(name = "nicknameCliente") String nicknameCliente) {
+        List<DataReserva> lista = sistema.listarReservasPendientesCheckIn(nicknameCliente);
+        return lista.toArray(new DataReserva[0]);
+    }
+
+    @WebMethod
+    public DataReserva verDetalleReserva(@WebParam(name = "idReserva") int idReserva) {
+        return sistema.verDetalleReserva(idReserva);
+    }
+
+    @WebMethod
+    public void realizarCheckIn(@WebParam(name = "idReserva") int idReserva) {
+        sistema.realizarCheckIn(idReserva);
+    }
+    
+    @WebMethod
     public DataBusquedaItem[] buscarRutasYPaquetes(@WebParam(name = "texto") String texto) {
        List<DataBusquedaItem> lista = sistema.buscarRutasYPaquetes(texto);
        return lista.toArray(new DataBusquedaItem[0]);

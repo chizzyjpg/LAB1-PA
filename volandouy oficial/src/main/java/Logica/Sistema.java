@@ -820,6 +820,92 @@ public class Sistema implements ISistema {
     reservaService.registrarReserva(res);
   }
 
+  @Override
+  public DataReserva verDetalleReserva(int idReserva) {
+    Reserva reserva = reservaService.buscarReservaPorId(idReserva);
+    if (reserva == null) {
+      throw new IllegalArgumentException("No existe una reserva con ese ID");
+    }
+    return ManejadorReserva.toData(reserva);
+  }
+
+  @Override
+  public List<DataReserva> listarReservasPendientesCheckIn(String nicknameCliente) {
+    Cliente cliente = usuarioService.obtenerClientePorNickname(canonical(nicknameCliente));
+    if (cliente == null) {
+      throw new IllegalArgumentException("No existe un cliente con ese nickname");
+    }
+    List<Reserva> reservasPendientes = reservaService.listarReservasPendientesCheckIn(cliente);
+    return ManejadorReserva.toDatas(reservasPendientes);
+  }
+
+  @Override
+  public void realizarCheckIn(int idReserva) {
+        System.out.println("[realizarCheckIn] idReserva recibido: " + idReserva);
+        Reserva reserva = reservaService.buscarReservaPorId(idReserva);
+        if (reserva == null) {
+            System.out.println("[realizarCheckIn] No existe una reserva con ese ID: " + idReserva);
+            throw new IllegalArgumentException("No existe una reserva con ese ID");
+        }
+        if (reserva.isCheckInRealizado()) {
+            System.out.println("[realizarCheckIn] El check-in ya ha sido realizado para la reserva ID: " + idReserva);
+            throw new IllegalStateException("El check-in ya ha sido realizado para esta reserva");
+        }
+        // Obtener asientos ya ocupados en el vuelo
+        VueloEspecifico vuelo = reserva.getVueloEspecifico();
+        Set<String> asientosOcupados = new HashSet<>();
+        for (Reserva r : vuelo.getReservas()) {
+            if (r.isCheckInRealizado()) {
+                for (Pasaje p : r.getPasajes()) {
+                    if (p.getAsientoAsignado() != null) {
+                        asientosOcupados.add(p.getAsientoAsignado());
+                    }
+                }
+            }
+        }
+        // Asignar asientos a cada pasajero evitando repeticiones
+        List<Pasaje> pasajes = reserva.getPasajes();
+        char letra = 'A';
+        int fila = 1;
+        for (Pasaje pasaje : pasajes) {
+            String asiento;
+            do {
+                asiento = fila + String.valueOf(letra);
+                letra++;
+                if (letra > 'F') { // asumiendo 6 asientos por fila
+                    letra = 'A';
+                    fila++;
+                }
+            } while (asientosOcupados.contains(asiento));
+            pasaje.setAsientoAsignado(asiento);
+            asientosOcupados.add(asiento);
+            System.out.println("[realizarCheckIn] Asignado asiento " + asiento + " a pasaje: " + pasaje);
+        }
+        // Descontar asientos disponibles según tipo
+        int cantidad = pasajes.size();
+        if (reserva.getTipoAsiento() == TipoAsiento.TURISTA) {
+            int disponibles = vuelo.getMaxAsientosTur();
+            if (disponibles < cantidad) {
+                throw new IllegalStateException("No hay suficientes asientos Turista disponibles");
+            }
+            vuelo.setMaxAsientosTur(disponibles - cantidad);
+            System.out.println("[realizarCheckIn] Asientos Turista restantes: " + vuelo.getMaxAsientosTur());
+        } else if (reserva.getTipoAsiento() == TipoAsiento.EJECUTIVO) {
+            int disponibles = vuelo.getMaxAsientosEjec();
+            if (disponibles < cantidad) {
+                throw new IllegalStateException("No hay suficientes asientos Ejecutivo disponibles");
+            }
+            vuelo.setMaxAsientosEjec(disponibles - cantidad);
+            System.out.println("[realizarCheckIn] Asientos Ejecutivo restantes: " + vuelo.getMaxAsientosEjec());
+        }
+        // Registrar hora de embarque
+        Date ahora = new Date();
+        reserva.setHoraEmbarque(ahora);
+        System.out.println("[realizarCheckIn] Hora de embarque registrada: " + ahora);
+        reserva.setCheckInRealizado(true);
+        System.out.println("[realizarCheckIn] Check-in realizado para reserva ID: " + idReserva);
+        reservaService.actualizarReserva(reserva);
+    }
   // ======================
   // CAMBIAR ESTADO RUTA
   // ======================
