@@ -2,6 +2,8 @@
 <%@ page import="java.util.*, java.text.SimpleDateFormat" %>
 <%@ page import="uy.volando.publicar.DataBusquedaItem" %>
 <%@ page import="uy.volando.publicar.TipoResultado" %>
+<%@ page import="javax.xml.datatype.XMLGregorianCalendar" %>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -81,16 +83,12 @@
                         boolean esRuta = "RUTA".equals(tipoStr);
 
                         // Fecha alta: si es Date la formateo, sino toString
-                        String fechaFormateada = "";
-                        Object fechaObj = item.getFechaAlta();
-                        if (fechaObj != null) {
-                            if (fechaObj instanceof Date) {
-                                fechaFormateada = sdf.format((Date) fechaObj);
-                            } else {
-                                fechaFormateada = fechaObj.toString();
-                            }
-                        } else {
-                            fechaFormateada = "-";
+                        String fechaFormateada = "-";
+                        javax.xml.datatype.XMLGregorianCalendar xcal = item.getFechaAlta();
+
+                        if (xcal != null) {
+                            Date d = xcal.toGregorianCalendar().getTime();
+                            fechaFormateada = sdf.format(d);
                         }
 
                         // Links de detalle (ajustá rutas reales)
@@ -142,5 +140,6 @@
 </div>
 
 <jsp:include page="/WEB-INF/template/footer.jsp" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
