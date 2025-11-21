@@ -65,38 +65,10 @@
             </div>
             <div class="col-12 col-md-3">
               <label for="selVuelo" class="form-label">Vuelo</label>
-              <!-- DEBUG: Mostrar valores de aerolineaSel y rutaSel -->
-              <p style="color:blue;">DEBUG: aerolineaSel: <%= aerolineaSel %> | rutaSel: <%= rutaSel %></p>
-              <!-- DEBUG: Mostrar cantidad de vuelos recibidos -->
               <% List<DataVueloEspecifico> vuelos = (List<DataVueloEspecifico>) request.getAttribute("vuelos");
                  String vueloSel = request.getParameter("vuelo");
               %>
-              <p style="color:red;">DEBUG: Vuelos recibidos: <%= (vuelos != null ? vuelos.size() : 0) %></p>
-              <% if (vuelos != null) {
-                   for (DataVueloEspecifico v : vuelos) {
-                       String fechaStr = "";
-                       Object fechaObj = v.getFecha();
-                       if (fechaObj != null) {
-                           try {
-                               if (fechaObj instanceof javax.xml.datatype.XMLGregorianCalendar) {
-                                   java.util.Date fechaDate = ((javax.xml.datatype.XMLGregorianCalendar) fechaObj).toGregorianCalendar().getTime();
-                                   java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
-                                   fechaStr = sdf.format(fechaDate);
-                               } else if (fechaObj instanceof java.util.Date) {
-                                   java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy");
-                                   fechaStr = sdf.format((java.util.Date) fechaObj);
-                               } else {
-                                   fechaStr = fechaObj.toString();
-                               }
-                           } catch (Exception e) {
-                               fechaStr = fechaObj.toString();
-                           }
-                       }
-              %>
-                <p style="color:red;">DEBUG: Vuelo: <%= v.getNombre() %> - Fecha: <%= fechaStr %></p>
-              <%   }
-                 }
-              %>
+                
               <select id="selVuelo" name="vuelo" class="form-select" <%= rutaSel == null || rutaSel.isEmpty() ? "disabled" : "" %> onchange="this.form.submit()">
                 <option value="" selected disabled>Seleccionar…</option>
                 <% if (vuelos != null) {

@@ -249,4 +249,33 @@ public class RutaVueloService {
       }
   }
 
+    /**
+     * Busca una ruta para cuadro de búsqueda
+     */
+    public List<Ruta> buscarPorTexto(String texto) {
+        EntityManager em = JPAUtil.getEntityManager();
+        if (texto == null || texto.trim().isEmpty()) {
+            try {
+                em.getTransaction().begin();
+                List<Ruta> rutas = em.createQuery("SELECT r FROM Ruta r ORDER BY r.fechaAlta DESC", Ruta.class).getResultList();
+                em.getTransaction().commit();
+                return rutas;
+            } finally {
+                em.close();
+            }
+        } else {
+            try {
+                String patron = "%" + texto.toLowerCase().trim() + "%";
+                return em.createQuery(
+                                "SELECT r FROM Ruta r " +
+                                        "WHERE LOWER(r.nombre) LIKE :patron " +
+                                        "   OR LOWER(r.descripcion) LIKE :patron " +
+                                        "ORDER BY r.fechaAlta DESC",
+                                Ruta.class).setParameter("patron", patron).getResultList();
+            } finally {
+                em.close();
+            }
+        }
+    }
+
 }

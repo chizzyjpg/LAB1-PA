@@ -117,10 +117,11 @@ public class DataRuta {
   }
 
   public String getDescripcionCorta() {
-    return descripcionCorta;
+      return descripcionCorta != null ? descripcionCorta : "Sin descripción corta";
   }
 
-  public void setIdRuta(int idRuta) {
+
+    public void setIdRuta(int idRuta) {
     this.idRuta = idRuta;
   }
 

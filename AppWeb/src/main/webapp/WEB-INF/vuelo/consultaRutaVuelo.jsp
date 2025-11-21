@@ -104,7 +104,22 @@
                       <input type="hidden" name="vuelo" value="<%= vuelo.getNombre() %>" />
                       <button type="submit" class="btn btn-link p-0" style="text-decoration:underline;">
                         <strong>Código:</strong> <%= vuelo.getNombre() %> |
-                        <strong>Fecha:</strong> <%= new java.text.SimpleDateFormat("dd/MM/yyyy").format(vuelo.getFecha()) %>
+                        <strong>Fecha:</strong>
+                        <%
+                          java.text.SimpleDateFormat sdfLista = new java.text.SimpleDateFormat("dd/MM/yyyy");
+                          String fechaListaStr = "";
+                          // vuelo.getFecha() es XMLGregorianCalendar, hay que pasar a java.util.Date de forma segura
+                          if (vuelo.getFecha() != null) {
+                              try {
+                                  javax.xml.datatype.XMLGregorianCalendar xc = vuelo.getFecha();
+                                  java.util.Date fechaJava = xc.toGregorianCalendar().getTime();
+                                  fechaListaStr = sdfLista.format(fechaJava);
+                              } catch (Exception e) {
+                                  fechaListaStr = ""; // si algo raro viene en la fecha, no romper la página
+                              }
+                          }
+                        %>
+                        <%= fechaListaStr %>
                       </button>
                     </form>
                   </li>
@@ -121,11 +136,41 @@
           <h3>Detalle del Vuelo Seleccionado</h3>
           <ul class="list-group">
             <li class="list-group-item"><strong>Código:</strong> <%= vueloSeleccionado.getNombre() %></li>
-            <li class="list-group-item"><strong>Fecha:</strong> <%= new java.text.SimpleDateFormat("dd/MM/yyyy").format(vueloSeleccionado.getFecha()) %></li>
+            <li class="list-group-item"><strong>Fecha:</strong>
+              <%
+                java.text.SimpleDateFormat sdfDet = new java.text.SimpleDateFormat("dd/MM/yyyy");
+                String fechaDetStr = "";
+                if (vueloSeleccionado.getFecha() != null) {
+                    try {
+                        javax.xml.datatype.XMLGregorianCalendar xcSel = vueloSeleccionado.getFecha();
+                        java.util.Date fechaJavaSel = xcSel.toGregorianCalendar().getTime();
+                        fechaDetStr = sdfDet.format(fechaJavaSel);
+                    } catch (Exception e) {
+                        fechaDetStr = "";
+                    }
+                }
+              %>
+              <%= fechaDetStr %>
+            </li>
             <li class="list-group-item"><strong>Duración:</strong> <%= vueloSeleccionado.getDuracion() %> minutos</li>
             <li class="list-group-item"><strong>Max. Asientos Turista:</strong> <%= vueloSeleccionado.getMaxAsientosTur() %></li>
             <li class="list-group-item"><strong>Max. Asientos Ejecutivo:</strong> <%= vueloSeleccionado.getMaxAsientosEjec() %></li>
-            <li class="list-group-item"><strong>Fecha de Alta:</strong> <%= vueloSeleccionado.getFechaAlta() != null ? new java.text.SimpleDateFormat("dd/MM/yyyy").format(vueloSeleccionado.getFechaAlta()) : "" %></li>
+            <li class="list-group-item"><strong>Fecha de Alta:</strong>
+              <%
+                java.text.SimpleDateFormat sdfAlta = new java.text.SimpleDateFormat("dd/MM/yyyy");
+                String fechaAltaStr = "";
+                if (vueloSeleccionado.getFechaAlta() != null) {
+                    try {
+                        javax.xml.datatype.XMLGregorianCalendar xcAlta = vueloSeleccionado.getFechaAlta();
+                        java.util.Date fechaAltaJava = xcAlta.toGregorianCalendar().getTime();
+                        fechaAltaStr = sdfAlta.format(fechaAltaJava);
+                    } catch (Exception e) {
+                        fechaAltaStr = "";
+                    }
+                }
+              %>
+              <%= fechaAltaStr %>
+            </li>
             <!-- Agrega aquí más campos si es necesario -->
           </ul>
         </section>

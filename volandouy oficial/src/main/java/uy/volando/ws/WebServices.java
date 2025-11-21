@@ -317,5 +317,10 @@ public class WebServices {
     public void realizarCheckIn(@WebParam(name = "idReserva") int idReserva) {
         sistema.realizarCheckIn(idReserva);
     }
-
+    
+    @WebMethod
+    public DataBusquedaItem[] buscarRutasYPaquetes(@WebParam(name = "texto") String texto) {
+       List<DataBusquedaItem> lista = sistema.buscarRutasYPaquetes(texto);
+       return lista.toArray(new DataBusquedaItem[0]);
+    }
 }

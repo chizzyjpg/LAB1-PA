@@ -36,8 +36,10 @@ public interface ISistema {
     List<DataReserva> listarReservas(String nickname, String nombre, String codigoVuelo);
     List<DataRutaMasVisitada> obtener5RutasMasVisitadas();
     List<DataReserva> listarReservasPendientesCheckIn(String nicknameCliente);
-
-    void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos);
+    List<DataBusquedaItem> buscarRutasYPaquetes(String texto);
+   
+  void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos);
+    void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos); 
     void registrarUsuario(DataUsuario data); // DataCliente o DataAerolinea
     void modificarCliente(String nickname, DataCliente nuevosDatos);
     void modificarAerolinea(String nickname, DataAerolinea nuevosDatos);
