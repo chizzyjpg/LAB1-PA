@@ -1,12 +1,10 @@
 package Logica;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.DynamicUpdate;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Table;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clase que representa a un usuario en el sistema.
@@ -32,6 +30,18 @@ public class Usuario {
 
   @Column(name = "avatar", nullable = true)
   private byte[] avatar;
+
+  // A quién sigo yo
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "usuario_seguidos",
+        joinColumns = @JoinColumn(name = "seguidor_nickname", referencedColumnName = "nickname"),
+        inverseJoinColumns = @JoinColumn(name = "seguido_nickname", referencedColumnName = "nickname")
+  )
+  private List<Usuario> seguidos = new ArrayList<>();
+
+  // Quién me sigue a mí
+  @ManyToMany(mappedBy = "seguidos", fetch = FetchType.LAZY)
+  private List<Usuario> seguidores = new ArrayList<>();
 
   // Constructor vacío requerido por JPA
   /**
@@ -84,7 +94,11 @@ public class Usuario {
     return avatar;
   }
 
-  // Setters
+  public List<Usuario> getSeguidos() { return seguidos; }
+
+  public List<Usuario> getSeguidores() { return seguidores; }
+
+    // Setters
   public void setNombre(String nombre) {
     this.nombre = nombre;
   }
@@ -104,6 +118,24 @@ public class Usuario {
   public void setAvatar(byte[] avatar) {
     this.avatar = avatar;
   }
+
+  public void setSeguidos(List<Usuario> seguidos) { this.seguidos = seguidos; }
+
+  public void setSeguidores(List<Usuario> seguidores) { this.seguidores = seguidores; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof Usuario)) return false;
+    Usuario other = (Usuario) o;
+    return nickname != null && nickname.equals(other.nickname);
+  }
+
+  @Override
+  public int hashCode() {
+        return nickname != null ? nickname.hashCode() : 0;
+    }
+
 
   @Override
   public String toString() {

@@ -1038,4 +1038,32 @@ public class Sistema implements ISistema {
 
       return resultados;
     }
+
+    @Override
+    public List<DataUsuarioMuestraWeb> listarUsuariosWeb(String nickLogueado) {
+        if (nickLogueado == null || nickLogueado.isBlank()) {
+            return List.of();
+        }
+
+        String key = nickLogueado.trim();
+        return usuarioService.listarUsuariosWeb(key);
+    }
+
+    @Override
+    public void seguirUsuario(String seguidorNick, String seguidoNick) {
+        if (seguidorNick == null || seguidoNick == null) return;
+        if (seguidorNick.isBlank() || seguidoNick.isBlank()) return;
+        if (seguidorNick.equals(seguidoNick)) return;
+
+        usuarioService.seguirUsuario(seguidorNick.trim(), seguidoNick.trim());
+    }
+
+    @Override
+    public void dejarDeSeguirUsuario(String seguidorNick, String seguidoNick) {
+        if (seguidorNick == null || seguidoNick == null) return;
+        if (seguidorNick.isBlank() || seguidoNick.isBlank()) return;
+        if (seguidorNick.equals(seguidoNick)) return;
+
+        usuarioService.dejarDeSeguirUsuario(seguidorNick.trim(), seguidoNick.trim());
+    }
 }

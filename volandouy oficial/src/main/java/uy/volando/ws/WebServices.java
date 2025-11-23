@@ -323,4 +323,20 @@ public class WebServices {
        List<DataBusquedaItem> lista = sistema.buscarRutasYPaquetes(texto);
        return lista.toArray(new DataBusquedaItem[0]);
     }
+
+    @WebMethod
+    public void seguirUsuario(String seguidorNick, String seguidoNick){
+        sistema.seguirUsuario(seguidorNick, seguidoNick);
+    }
+
+    @WebMethod
+    public void dejarDeSeguirUsuario(String seguidorNick, String seguidoNick){
+        sistema.dejarDeSeguirUsuario(seguidorNick, seguidoNick);
+    }
+
+    @WebMethod
+    public DataUsuarioMuestraWeb[] listarUsuariosWeb(String nickLogueado){
+        List<DataUsuarioMuestraWeb> lista = sistema.listarUsuariosWeb(nickLogueado);
+        return lista.toArray(new DataUsuarioMuestraWeb[0]);
+    }
 }
