@@ -22,23 +22,31 @@
             <groupId>com.sun.xml.ws</groupId>
             <artifactId>jaxws-maven-plugin</artifactId>
             <version>4.0.3</version>
-            <configuration>
-                <wsdlUrls>
-                    <wsdlUrl>http://localhost:9128/volando?wsdl</wsdlUrl>
-                </wsdlUrls>
-                <packageName>uy.volando.publicar</packageName>
-                <sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
-            </configuration>
+
             <executions>
                 <execution>
+                    <id>wsimport-local</id>
                     <goals>
                         <goal>wsimport</goal>
                     </goals>
                     <configuration>
-                        <wsdlUrls>
-                            <wsdlUrl>http://localhost:9128/volando?wsdl</wsdlUrl>
-                        </wsdlUrls>
+
+                        <!-- WSDL LOCAL (NO localhost) -->
+                        <wsdlFiles>
+                            <wsdlFile>${project.basedir}/src/main/resources/wsdl/volando.wsdl</wsdlFile>
+                        </wsdlFiles>
+
+                        <!-- paquete donde genera los stubs -->
                         <packageName>uy.volando.publicar</packageName>
+
+                        <!-- genera dentro de src/main/java -->
+                        <sourceDestDir>${project.basedir}/src/main/java</sourceDestDir>
+
+                        <!-- útil para debug y evitar recompilado redundante -->
+                        <keep>true</keep>
+                        <xnocompile>true</xnocompile>
+                        <encoding>UTF-8</encoding>
+
                     </configuration>
                 </execution>
             </executions>
@@ -57,19 +65,14 @@
 
   <dependencies>
 
-  	
-	<dependency>
-	  <groupId>volandouy.oficial</groupId>
-	  <artifactId>volandouy-oficial</artifactId>
-	  <version>0.0.1-SNAPSHOT</version>
-	</dependency>
-    <!-- API de JPA (DEJAR SIN scope; debe ir dentro del WAR) -->
 
+      <!--<dependency>
+      <groupId>volandouy.oficial</groupId>
+      <artifactId>volandouy-oficial</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+   API de JPA (DEJAR SIN scope; debe ir dentro del WAR) -->
 
-    <!-- Hibernate -->
-
-    <!-- Driver PostgreSQL -->
-   
 
     <!-- Logs simples -->
     <dependency>

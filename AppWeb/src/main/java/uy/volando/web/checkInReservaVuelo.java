@@ -1,6 +1,5 @@
 package uy.volando.web;
 
-import Logica.Reserva;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

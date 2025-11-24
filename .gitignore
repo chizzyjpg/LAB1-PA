@@ -41,3 +41,4 @@ Servers/apache-tomcat-10.1.36 at localhost-config/web.xml
 /AppWeb/.idea
 /volandouy oficial/.idea
 /AppWeb/src/main/java/uy/volando/publicar
+volandouy oficial/dependency-reduced-pom.xml

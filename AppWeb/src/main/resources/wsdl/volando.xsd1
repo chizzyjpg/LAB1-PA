@@ -1,0 +1,228 @@
+<xs:schema xmlns:tns="http://ws.volando.uy/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://ws.volando.uy/">
+<xs:element name="dataCategoria" type="tns:dataCategoria"/>
+<xs:element name="dataCiudad" type="tns:dataCiudad"/>
+<xs:element name="dataCompraPaquete" type="tns:dataCompraPaquete"/>
+<xs:element name="dataPasaje" type="tns:dataPasaje"/>
+<xs:element name="dataReserva" type="tns:dataReserva"/>
+<xs:element name="dataRuta" type="tns:dataRuta"/>
+<xs:element name="dataVueloEspecifico" type="tns:dataVueloEspecifico"/>
+<xs:complexType name="dataAerolinea">
+<xs:complexContent>
+<xs:extension base="tns:dataUsuario">
+<xs:sequence>
+<xs:element name="descGeneral" type="xs:string" minOccurs="0"/>
+<xs:element name="sitioWeb" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="dataUsuario" abstract="true">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="nickname" type="xs:string" minOccurs="0"/>
+<xs:element name="email" type="xs:string" minOccurs="0"/>
+<xs:element name="contrasenia" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataCliente">
+<xs:complexContent>
+<xs:extension base="tns:dataUsuario">
+<xs:sequence>
+<xs:element name="apellido" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaNac" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="nacionalidad" type="xs:string" minOccurs="0"/>
+<xs:element name="tipoDocumento" type="tns:tipoDocumento" minOccurs="0"/>
+<xs:element name="numDocumento" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:extension>
+</xs:complexContent>
+</xs:complexType>
+<xs:complexType name="dataPaquete">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="cantRutas" type="xs:int"/>
+<xs:element name="tipoAsiento" type="tns:tipoAsiento" minOccurs="0"/>
+<xs:element name="descuento" type="xs:int"/>
+<xs:element name="validez" type="xs:int"/>
+<xs:element name="costo" type="xs:decimal" minOccurs="0"/>
+<xs:element name="rutasIncluidas" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataRuta">
+<xs:sequence>
+<xs:element name="idRuta" type="xs:int"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="descripcionCorta" type="xs:string" minOccurs="0"/>
+<xs:element name="ciudadOrigen" type="tns:dataCiudad" minOccurs="0"/>
+<xs:element name="ciudadDestino" type="tns:dataCiudad" minOccurs="0"/>
+<xs:element name="hora" type="xs:int"/>
+<xs:element name="fechaAlta" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="costoTurista" type="xs:decimal" minOccurs="0"/>
+<xs:element name="costoEjecutivo" type="xs:decimal" minOccurs="0"/>
+<xs:element name="costoEquipajeExtra" type="xs:int"/>
+<xs:element name="categoria" type="tns:dataCategoria" minOccurs="0"/>
+<xs:element name="nicknameAerolinea" type="xs:string" minOccurs="0"/>
+<xs:element name="estado" type="tns:estadoRuta" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataCiudad">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="pais" type="xs:string" minOccurs="0"/>
+<xs:element name="nombreAeropuerto" type="xs:string" minOccurs="0"/>
+<xs:element name="descripcionAeropuerto" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaAlta" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="sitioWeb" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataCategoria">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataVueloEspecifico">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="fecha" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="duracion" type="xs:int"/>
+<xs:element name="maxAsientosTur" type="xs:int"/>
+<xs:element name="maxAsientosEjec" type="xs:int"/>
+<xs:element name="fechaAlta" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="Druta" type="tns:dataRuta" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataReserva">
+<xs:sequence>
+<xs:element name="idReserva" type="xs:int"/>
+<xs:element name="fechaReserva" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="tipoAsiento" type="tns:tipoAsiento" minOccurs="0"/>
+<xs:element name="equipaje" type="tns:equipaje" minOccurs="0"/>
+<xs:element name="cantEquipajeExtra" type="xs:int"/>
+<xs:element name="costoTotal" type="xs:float" minOccurs="0"/>
+<xs:element name="pasajes" type="tns:dataPasaje" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="nickCliente" type="tns:dataCliente" minOccurs="0"/>
+<xs:element name="checkInRealizado" type="xs:boolean" minOccurs="0"/>
+<xs:element name="horaEmbarque" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataPasaje">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="apellido" type="xs:string" minOccurs="0"/>
+<xs:element name="asientoAsignado" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataUsuarioMuestraWeb">
+<xs:sequence>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="nickname" type="xs:string" minOccurs="0"/>
+<xs:element name="email" type="xs:string" minOccurs="0"/>
+<xs:element name="siguiendo" type="xs:boolean"/>
+<xs:element name="tipoUsuario" type="tns:tipoUsuario" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataCompraPaquete">
+<xs:sequence>
+<xs:element name="nombrePaquete" type="xs:string" minOccurs="0"/>
+<xs:element name="nicknameCliente" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaCompra" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="vencimiento" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="costo" type="xs:decimal" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataBusquedaItem">
+<xs:sequence>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaAlta" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="identificador" type="xs:string" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="tipo" type="tns:tipoResultado" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+<xs:simpleType name="tipoDocumento">
+<xs:restriction base="xs:string">
+<xs:enumeration value="CEDULA"/>
+<xs:enumeration value="PASAPORTE"/>
+<xs:enumeration value="OTRO"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="tipoAsiento">
+<xs:restriction base="xs:string">
+<xs:enumeration value="TURISTA"/>
+<xs:enumeration value="EJECUTIVO"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="equipaje">
+<xs:restriction base="xs:string">
+<xs:enumeration value="BOLSO"/>
+<xs:enumeration value="MOCHILAYCARRYON"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="estadoRuta">
+<xs:restriction base="xs:string">
+<xs:enumeration value="CONFIRMADA"/>
+<xs:enumeration value="RECHAZADA"/>
+<xs:enumeration value="INGRESADA"/>
+<xs:enumeration value="FINALIZADA"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="tipoUsuario">
+<xs:restriction base="xs:string">
+<xs:enumeration value="CLIENTE"/>
+<xs:enumeration value="AEROLINEA"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:simpleType name="tipoResultado">
+<xs:restriction base="xs:string">
+<xs:enumeration value="RUTA"/>
+<xs:enumeration value="PAQUETE"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:complexType name="dataPaqueteArray" final="#all">
+<xs:sequence>
+<xs:element name="item" type="tns:dataPaquete" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataRutaArray" final="#all">
+<xs:sequence>
+<xs:element name="item" type="tns:dataRuta" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataReservaArray" final="#all">
+<xs:sequence>
+<xs:element name="item" type="tns:dataReserva" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataUsuarioMuestraWebArray" final="#all">
+<xs:sequence>
+<xs:element name="item" type="tns:dataUsuarioMuestraWeb" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataBusquedaItemArray" final="#all">
+<xs:sequence>
+<xs:element name="item" type="tns:dataBusquedaItem" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataCiudadArray" final="#all">
+<xs:sequence>
+<xs:element name="item" type="tns:dataCiudad" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataCategoriaArray" final="#all">
+<xs:sequence>
+<xs:element name="item" type="tns:dataCategoria" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataVueloEspecificoArray" final="#all">
+<xs:sequence>
+<xs:element name="item" type="tns:dataVueloEspecifico" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="dataAerolineaArray" final="#all">
+<xs:sequence>
+<xs:element name="item" type="tns:dataAerolinea" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
