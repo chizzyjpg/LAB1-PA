@@ -1,21 +1,13 @@
 package BD;
 
-import Logica.Aerolinea;
-import Logica.Cliente;
-import Logica.DataAerolinea;
-import Logica.DataCliente;
-import Logica.DataRuta;
-import Logica.DataUsuario;
-import Logica.DataUsuarioAux;
-import Logica.DataVueloEspecifico;
-import Logica.JPAUtil;
-import Logica.ManejadorRuta;
-import Logica.Ruta;
-import Logica.Usuario;
+import Logica.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -294,11 +286,16 @@ public class UsuarioService {
     try {
       em.getTransaction().begin();
       List<DataVueloEspecifico> vuelos = em.createQuery(
-          "SELECT new DataVueloEspecifico(ve.nombre, ve.fecha, ve.duracion, ve.maxAsientosTur, ve.maxAsientosEjec, ve.fechaAlta) "
-              + "FROM VueloEspecifico ve " + "JOIN ve.ruta r " + "JOIN r.aerolineas a "
-              + "WHERE a.nickname = :nickname AND r.nombre = :nombre",
-          DataVueloEspecifico.class).setParameter("nickname", nickname)
-          .setParameter("nombre", nombre).getResultList();
+                      "SELECT new Logica.DataVueloEspecifico(ve.nombre, ve.fecha, ve.duracion, " +
+                              "ve.maxAsientosTur, ve.maxAsientosEjec, ve.fechaAlta) " +
+                              "FROM VueloEspecifico ve " +
+                              "JOIN ve.ruta r " +
+                              "JOIN r.aerolineas a " +
+                              "WHERE a.nickname = :nickname AND r.nombre = :nombre",
+                      DataVueloEspecifico.class)
+              .setParameter("nickname", nickname)
+              .setParameter("nombre", nombre)
+              .getResultList();
       em.getTransaction().commit();
       return vuelos;
     } catch (RuntimeException ex) {
@@ -456,7 +453,122 @@ public class UsuarioService {
 	public void flush() {
 		EntityManager em = JPAUtil.getEntityManager();
 		em.flush(); 
-		}
+    }
 
-  
+    // ===============================
+    // LISTAR PARA WEB (SEGUIR)
+    // ===============================
+
+    public void seguirUsuario(String seguidorNick, String seguidoNick) {
+        if (seguidorNick == null || seguidoNick == null) return;
+        if (seguidorNick.equals(seguidoNick)) return;
+
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            Usuario seguidor = em.find(Usuario.class, seguidorNick);
+            Usuario seguido  = em.find(Usuario.class, seguidoNick);
+
+            if (seguidor == null || seguido == null) {
+                throw new IllegalArgumentException("Seguidor o seguido inexistente.");
+            }
+
+            // actualizar lado dueño (seguidos)
+            if (!seguidor.getSeguidos().contains(seguido)) {
+                seguidor.getSeguidos().add(seguido);
+            }
+
+            em.getTransaction().commit();
+        } catch (RuntimeException ex) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw ex;
+        } finally {
+            em.close();
+        }
+    }
+
+    public void dejarDeSeguirUsuario(String seguidorNick, String seguidoNick) {
+        if (seguidorNick == null || seguidoNick == null) return;
+        if (seguidorNick.equals(seguidoNick)) return;
+
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            Usuario seguidor = em.find(Usuario.class, seguidorNick);
+            Usuario seguido  = em.find(Usuario.class, seguidoNick);
+
+            if (seguidor == null || seguido == null) {
+                throw new IllegalArgumentException("Seguidor o seguido inexistente.");
+            }
+
+            seguidor.getSeguidos().remove(seguido);
+
+            em.getTransaction().commit();
+        } catch (RuntimeException ex) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw ex;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<DataUsuarioMuestraWeb> listarUsuariosWeb(String nickLogueado) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            // todos los usuarios
+            List<Usuario> usuarios = em.createQuery(
+                    "SELECT u FROM Usuario u ORDER BY LOWER(COALESCE(u.nickname, ''))",
+                    Usuario.class
+            ).getResultList();
+
+            Set<String> seguidosNicks = new HashSet<>();
+
+            // SOLO si hay logueado, cargo seguidos
+            if (nickLogueado != null && !nickLogueado.isBlank()) {
+                Usuario logueado = em.createQuery(
+                                "SELECT u FROM Usuario u LEFT JOIN FETCH u.seguidos WHERE u.nickname = :nick",
+                                Usuario.class
+                        ).setParameter("nick", nickLogueado)
+                        .getResultStream().findFirst().orElse(null);
+
+                if (logueado != null && logueado.getSeguidos() != null) {
+                    for (Usuario s : logueado.getSeguidos()) {
+                        seguidosNicks.add(s.getNickname());
+                    }
+                }
+            }
+
+            em.getTransaction().commit();
+            // mapear a DTO web
+            return usuarios.stream()
+                    .filter(u -> nickLogueado == null || !u.getNickname().equals(nickLogueado))
+                    .map(u -> {
+                        TipoUsuario tipo = null;
+                        if (u instanceof Cliente) {
+                            tipo = TipoUsuario.CLIENTE;
+                        } else if (u instanceof Aerolinea) {
+                            tipo = TipoUsuario.AEROLINEA;
+                        }
+                        return new DataUsuarioMuestraWeb(
+                                u.getNombre(),
+                                u.getNickname(),
+                                u.getEmail(),
+                                seguidosNicks.contains(u.getNickname()),
+                                tipo
+                        );
+                    })
+                    .collect(Collectors.toList());
+
+        } catch (RuntimeException ex) {
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
+            throw ex;
+        } finally {
+            em.close();
+        }
+    }
+
 }
