@@ -58,7 +58,9 @@ public class RutaVueloService {
       em.getTransaction().commit();
 
       return rutas.stream().map(r -> {
-        DataRuta dto = new DataRuta(r.getNombre(), r.getDescripcion(),
+        DataRuta dto = new DataRuta(
+            r.getNombre(),
+            r.getDescripcion(),
             new DataCiudad(r.getOrigen().getNombre(), r.getOrigen().getPais(),
                 r.getOrigen().getNombreAeropuerto(), r.getOrigen().getDescripcionAeropuerto(),
                 r.getOrigen().getFechaAlta(), r.getOrigen().getSitioWeb()),
@@ -66,13 +68,12 @@ public class RutaVueloService {
                 r.getDestino().getNombreAeropuerto(), r.getDestino().getDescripcionAeropuerto(),
                 r.getDestino().getFechaAlta(), r.getDestino().getSitioWeb()),
             r.getHora(), r.getFechaAlta(), r.getCostoTurista(), r.getCostoEquipajeExtra(),
-            r.getCostoEjecutivo(), new DataCategoria(r.getCategoriaR().getNombre()), "", // no
-                                                                                         // conocemos
-                                                                                         // el
-                                                                                         // nicknameAerolinea
-                                                                                         // aquí
-            r.getEstado(), r.getDescripcionCorta());
-        dto.setIdRuta(r.getIdRuta()); // ← CLAVE: pasar el ID real
+            r.getCostoEjecutivo(), new DataCategoria(r.getCategoriaR().getNombre()),
+            "",                // nicknameAerolinea no conocido aquí
+            r.getEstado(), r.getDescripcionCorta(),
+            r.getVideoUrl()      // nuevo campo
+        );
+        dto.setIdRuta(r.getIdRuta());
         return dto;
       }).collect(Collectors.toList());
 
@@ -180,7 +181,9 @@ public class RutaVueloService {
       em.getTransaction().commit();
 
       return rutas.stream().map(r -> {
-        DataRuta dto = new DataRuta(r.getNombre(), r.getDescripcion(),
+        DataRuta dto = new DataRuta(
+            r.getNombre(),
+            r.getDescripcion(),
             new DataCiudad(r.getOrigen().getNombre(), r.getOrigen().getPais(),
                 r.getOrigen().getNombreAeropuerto(), r.getOrigen().getDescripcionAeropuerto(),
                 r.getOrigen().getFechaAlta(), r.getOrigen().getSitioWeb()),
@@ -189,8 +192,10 @@ public class RutaVueloService {
                 r.getDestino().getFechaAlta(), r.getDestino().getSitioWeb()),
             r.getHora(), r.getFechaAlta(), r.getCostoTurista(), r.getCostoEquipajeExtra(),
             r.getCostoEjecutivo(), new DataCategoria(r.getCategoriaR().getNombre()),
-            nicknameAerolinea, // setea el nickname de la aerolínea asociada
-            r.getEstado(), r.getDescripcionCorta());
+            nicknameAerolinea,       // aerolínea asociada conocida aquí
+            r.getEstado(), r.getDescripcionCorta(),
+            r.getVideoUrl()          // nuevo campo
+        );
         dto.setIdRuta(r.getIdRuta());
         return dto;
       }).collect(Collectors.toList());

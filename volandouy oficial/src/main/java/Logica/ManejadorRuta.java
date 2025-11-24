@@ -56,9 +56,22 @@ public class ManejadorRuta {
       Aerolinea aerolinea = r.getAerolineas().iterator().next();
       nicknameAerolinea = aerolinea.getNickname();
     }
-    DataRuta dto = new DataRuta(r.getNombre(), r.getDescripcion(), origen, destino, r.getHora(),
-        r.getFechaAlta(), r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo(),
-        categoria, nicknameAerolinea, r.getEstado(), r.getDescripcionCorta());
+    DataRuta dto = new DataRuta(
+        r.getNombre(),
+        r.getDescripcion(),
+        origen,
+        destino,
+        r.getHora(),
+        r.getFechaAlta(),
+        r.getCostoTurista(),
+        r.getCostoEquipajeExtra(),
+        r.getCostoEjecutivo(),
+        categoria,
+        nicknameAerolinea,
+        r.getEstado(),
+        r.getDescripcionCorta(),
+        r.getVideoUrl()    // <-- nuevo campo propagado
+    );
     dto.setIdRuta(r.getIdRuta());
     return dto;
   }
