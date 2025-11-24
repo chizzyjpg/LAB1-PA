@@ -38,18 +38,20 @@ public class ListadoUsuarios extends HttpServlet {
                 ? (DataUsuario) session.getAttribute("usuario_logueado")
                 : null;
 
-        if (logueado == null) {
-            response.sendRedirect(request.getContextPath() + "/home");
-            return;
+        boolean mostrarAccion = (logueado != null);
+        List<DataUsuarioMuestraWeb> usuarios;
+
+        if (mostrarAccion) {
+            String nickLogueado = logueado.getNickname();
+            usuarios = port.listarUsuariosWeb(nickLogueado).getItem();
+        } else {
+            // modo público: no hay seguidor, todos vienen con siguiendo=false
+            usuarios = port.listarUsuariosWeb("").getItem();
         }
 
-        String nickLogueado = logueado.getNickname();
-
-        List<DataUsuarioMuestraWeb> usuarios = port.listarUsuariosWeb(nickLogueado).getItem();
-
+        request.setAttribute("mostrarAccion", mostrarAccion);
         request.setAttribute("usuarios", usuarios);
-        request.getRequestDispatcher("/WEB-INF/consulta/listadoUsuarios.jsp")
-                .forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/consulta/listadoUsuarios.jsp").forward(request, response);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class ListadoUsuarios extends HttpServlet {
                 : null;
 
         if (logueado == null) {
-            response.sendRedirect(request.getContextPath() + "/login");
+            response.sendRedirect(request.getContextPath() + "/home");
             return;
         }
 
@@ -78,7 +80,6 @@ public class ListadoUsuarios extends HttpServlet {
             }
         }
 
-        // PRG: volvemos al GET para evitar re-POST con F5
         response.sendRedirect(request.getContextPath() + "/listado-usuarios");
     }
 }

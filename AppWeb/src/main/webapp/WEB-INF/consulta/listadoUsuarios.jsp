@@ -26,7 +26,10 @@
                         <th>Nickname</th>
                         <th>Nombre</th>
                         <th>Email</th>
-                        <th>Acción</th>
+                        <th>Tipo de Usuario</th>
+                        <c:if test="${mostrarAccion}">
+                            <th>Seguir/Dejar de seguir</th>
+                        </c:if>
                     </tr>
                     </thead>
 
@@ -36,33 +39,35 @@
                             <td>${usuario.nickname}</td>
                             <td>${usuario.nombre}</td>
                             <td>${usuario.email}</td>
+                            <td>${usuario.tipoUsuario}</td>
+                            <c:if test="${mostrarAccion}">
+                                <td>
+                                    <form method="post"
+                                          action="${pageContext.request.contextPath}/listado-usuarios"
+                                          class="d-inline">
+                                        <input type="hidden" name="nickObjetivo" value="${usuario.nickname}" />
 
-                            <td>
-                                <form method="post"
-                                      action="${pageContext.request.contextPath}/listado-usuarios"
-                                      class="d-inline">
-                                    <input type="hidden" name="nickObjetivo" value="${usuario.nickname}" />
-
-                                    <c:choose>
-                                        <c:when test="${usuario.siguiendo}">
-                                            <button type="submit"
-                                                    class="btn btn-secondary btn-sm"
-                                                    name="accion"
-                                                    value="dejar">
-                                                Dejar de seguir
-                                            </button>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <button type="submit"
-                                                    class="btn btn-primary btn-sm"
-                                                    name="accion"
-                                                    value="seguir">
-                                                Seguir
-                                            </button>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </form>
-                            </td>
+                                        <c:choose>
+                                            <c:when test="${usuario.siguiendo}">
+                                                <button type="submit"
+                                                        class="btn btn-secondary btn-sm"
+                                                        name="accion"
+                                                        value="dejar">
+                                                    Dejar de seguir
+                                                </button>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button type="submit"
+                                                        class="btn btn-primary btn-sm"
+                                                        name="accion"
+                                                        value="seguir">
+                                                    Seguir
+                                                </button>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </form>
+                                </td>
+                            </c:if>
                         </tr>
                     </c:forEach>
                     </tbody>

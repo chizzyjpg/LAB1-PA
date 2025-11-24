@@ -1,22 +1,13 @@
 package BD;
 
-import Logica.Aerolinea;
-import Logica.Cliente;
-import Logica.DataAerolinea;
-import Logica.DataCliente;
-import Logica.DataRuta;
-import Logica.DataUsuario;
-import Logica.DataUsuarioAux;
-import Logica.DataVueloEspecifico;
-import Logica.JPAUtil;
-import Logica.ManejadorRuta;
-import Logica.Ruta;
-import Logica.Usuario;
-import Logica.DataUsuarioMuestraWeb;
+import Logica.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -528,39 +519,49 @@ public class UsuarioService {
         try {
             em.getTransaction().begin();
 
-            // Traigo todos los usuarios
+            // todos los usuarios
             List<Usuario> usuarios = em.createQuery(
                     "SELECT u FROM Usuario u ORDER BY LOWER(COALESCE(u.nickname, ''))",
                     Usuario.class
             ).getResultList();
 
-            // Traigo al logueado con sus seguidos cargados
-            Usuario logueado = em.createQuery(
-                            "SELECT u FROM Usuario u LEFT JOIN FETCH u.seguidos WHERE u.nickname = :nick",
-                            Usuario.class
-                    ).setParameter("nick", nickLogueado)
-                    .getResultStream().findFirst().orElse(null);
+            Set<String> seguidosNicks = new HashSet<>();
 
-            // Set de nicknames seguidos (para buscar rápido)
-            java.util.Set<String> seguidosNicks = new java.util.HashSet<>();
-            if (logueado != null && logueado.getSeguidos() != null) {
-                for (Usuario s : logueado.getSeguidos()) {
-                    seguidosNicks.add(s.getNickname());
+            // SOLO si hay logueado, cargo seguidos
+            if (nickLogueado != null && !nickLogueado.isBlank()) {
+                Usuario logueado = em.createQuery(
+                                "SELECT u FROM Usuario u LEFT JOIN FETCH u.seguidos WHERE u.nickname = :nick",
+                                Usuario.class
+                        ).setParameter("nick", nickLogueado)
+                        .getResultStream().findFirst().orElse(null);
+
+                if (logueado != null && logueado.getSeguidos() != null) {
+                    for (Usuario s : logueado.getSeguidos()) {
+                        seguidosNicks.add(s.getNickname());
+                    }
                 }
             }
 
             em.getTransaction().commit();
-
-            // 4) Mapeo seguro a DTO web
+            // mapear a DTO web
             return usuarios.stream()
-                    .filter(u -> !u.getNickname().equals(nickLogueado)) // opcional
-                    .map(u -> new DataUsuarioMuestraWeb(
-                            u.getNombre(),
-                            u.getNickname(),
-                            u.getEmail(),
-                            seguidosNicks.contains(u.getNickname()) // <-- boolean
-                    ))
-                    .collect(java.util.stream.Collectors.toList());
+                    .filter(u -> nickLogueado == null || !u.getNickname().equals(nickLogueado))
+                    .map(u -> {
+                        TipoUsuario tipo = null;
+                        if (u instanceof Cliente) {
+                            tipo = TipoUsuario.CLIENTE;
+                        } else if (u instanceof Aerolinea) {
+                            tipo = TipoUsuario.AEROLINEA;
+                        }
+                        return new DataUsuarioMuestraWeb(
+                                u.getNombre(),
+                                u.getNickname(),
+                                u.getEmail(),
+                                seguidosNicks.contains(u.getNickname()),
+                                tipo
+                        );
+                    })
+                    .collect(Collectors.toList());
 
         } catch (RuntimeException ex) {
             if (em.getTransaction().isActive()) em.getTransaction().rollback();

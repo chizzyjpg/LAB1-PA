@@ -1042,7 +1042,7 @@ public class Sistema implements ISistema {
     @Override
     public List<DataUsuarioMuestraWeb> listarUsuariosWeb(String nickLogueado) {
         if (nickLogueado == null || nickLogueado.isBlank()) {
-            return List.of();
+            return usuarioService.listarUsuariosWeb(null);
         }
 
         String key = nickLogueado.trim();
