@@ -33,6 +33,10 @@ public class ManejadorRuta {
     Ruta r = new Ruta(data.getNombre(), data.getDescripcion(), origen, destino, data.getHora(),
         data.getFechaAlta(), data.getCostoTurista(), data.getCostoEquipajeExtra(),
         data.getCostoEjecutivo(), categoria, data.getDescripcionCorta());
+    // Propagar también la URL de video (opcional) desde el DTO a la entidad
+    if (data.getVideoUrl() != null && !data.getVideoUrl().isBlank()) {
+      r.setVideoUrl(data.getVideoUrl());
+    }
     // Ya no se persiste aquí, solo se crea la entidad
     return r;
   }
@@ -56,9 +60,22 @@ public class ManejadorRuta {
       Aerolinea aerolinea = r.getAerolineas().iterator().next();
       nicknameAerolinea = aerolinea.getNickname();
     }
-    DataRuta dto = new DataRuta(r.getNombre(), r.getDescripcion(), origen, destino, r.getHora(),
-        r.getFechaAlta(), r.getCostoTurista(), r.getCostoEquipajeExtra(), r.getCostoEjecutivo(),
-        categoria, nicknameAerolinea, r.getEstado(), r.getDescripcionCorta());
+    DataRuta dto = new DataRuta(
+        r.getNombre(),
+        r.getDescripcion(),
+        origen,
+        destino,
+        r.getHora(),
+        r.getFechaAlta(),
+        r.getCostoTurista(),
+        r.getCostoEquipajeExtra(),
+        r.getCostoEjecutivo(),
+        categoria,
+        nicknameAerolinea,
+        r.getEstado(),
+        r.getDescripcionCorta(),
+        r.getVideoUrl()    // <-- nuevo campo propagado
+    );
     dto.setIdRuta(r.getIdRuta());
     return dto;
   }

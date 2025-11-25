@@ -439,7 +439,7 @@ public class RegistrarReservaVuelo extends JInternalFrame {
       for (int i = 0; i < m.getRowCount(); i++) {
         String nom = str(m.getValueAt(i, 0));
         String ape = str(m.getValueAt(i, 1));
-        out.add(new DataPasaje(nom, ape));
+        out.add(new DataPasaje(nom, ape, null));
       }
       return out;
     }

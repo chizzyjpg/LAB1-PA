@@ -92,6 +92,41 @@
               <% /* if (rutaSeleccionada.getImagen() != null && !rutaSeleccionada.getImagen().isBlank()) { */%>
                 <!--<img src="<%/*= rutaSeleccionada.getImagen()*/ %>" alt="Imagen de la ruta" style="max-width:300px;max-height:200px;">-->
               <% /*} */ %>
+
+              <%-- BLOQUE NUEVO: Video asociado a la ruta (si existe URL) --%>
+              <%
+                String videoUrl = null;
+                try {
+                    videoUrl = rutaSeleccionada.getVideoUrl();
+                } catch (Exception e) {
+                    videoUrl = null; // por si el stub aún no tiene el método, no romper la página
+                }
+                if (videoUrl != null) {
+                    videoUrl = videoUrl.trim();
+                }
+                if (videoUrl != null && !videoUrl.isEmpty()) {
+              %>
+                <div class="mt-3">
+                  <strong>Video asociado:</strong><br>
+                  <% if (videoUrl.contains("youtube.com") || videoUrl.contains("youtu.be")) { %>
+                    <div class="ratio ratio-16x9" style="max-width: 640px;">
+                      <iframe
+                        src="<%= videoUrl %>"
+                        title="Video de la ruta"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+                    </div>
+                  <% } else { %>
+                    <video class="w-100" style="max-width:640px;" controls>
+                      <source src="<%= videoUrl %>" type="video/mp4" />
+                      Tu navegador no soporta video HTML5.
+                    </video>
+                  <% } %>
+                </div>
+              <%
+                }
+              %>
             </div>
             <h3>Vuelos asociados</h3>
             <% if (vuelos != null && !vuelos.isEmpty()) { %>

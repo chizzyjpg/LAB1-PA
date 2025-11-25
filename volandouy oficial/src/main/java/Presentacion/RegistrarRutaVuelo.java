@@ -39,6 +39,7 @@ public class RegistrarRutaVuelo extends JInternalFrame {
   private JTextField textFieldTurista;
   private JTextField textFieldEjecutivo;
   private JTextField textFieldEquipajeExtra;
+  private JTextField textFieldVideoUrl; // nuevo campo para la URL del video asociado
 
   /**
    * Create the frame.
@@ -244,9 +245,9 @@ public class RegistrarRutaVuelo extends JInternalFrame {
         String Descripcion = textAreaDesc.getText().trim();
         String descCorta = textAreaDescCorta.getText().trim();
         String turista = textFieldTurista.getText().trim();
-        String ejecutivo = textFieldEjecutivo.getText().trim(); // hoy no lo usamos porque Ruta
-                                                                // tiene un solo costo base
+        String ejecutivo = textFieldEjecutivo.getText().trim();
         String costo = textFieldEquipajeExtra.getText().trim();
+        String videoUrl = textFieldVideoUrl.getText().trim(); // puede ser vacío (opcional)
         DataCiudad dataCiudadO = (DataCiudad) comboBoxCiudadOrigen.getSelectedItem();
         DataCiudad dataCiudadD = (DataCiudad) comboBoxCiudadDestino.getSelectedItem();
         Date fecha = fechaAlta.getDate();
@@ -333,9 +334,22 @@ public class RegistrarRutaVuelo extends JInternalFrame {
         int horaInt = cal.get(Calendar.HOUR_OF_DAY);
 
         try {
-          DataRuta datos = new DataRuta(nombre, Descripcion, dataCiudadO, dataCiudadD, horaInt,
-              fecha, costoTurista, costoEquipaje, costoEjecutivo, dataCat, aerolinea.getNickname(),
-              EstadoRuta.INGRESADA, descCorta);
+          DataRuta datos = new DataRuta(
+              nombre,
+              Descripcion,
+              dataCiudadO,
+              dataCiudadD,
+              horaInt,
+              fecha,
+              costoTurista,
+              costoEquipaje,
+              costoEjecutivo,
+              dataCat,
+              aerolinea.getNickname(),
+              EstadoRuta.INGRESADA,
+              descCorta,
+              videoUrl.isEmpty() ? null : videoUrl // nuevo parámetro videoUrl
+          );
           sistema.registrarRuta(datos);
 
           JOptionPane.showMessageDialog(RegistrarRutaVuelo.this,
@@ -348,6 +362,8 @@ public class RegistrarRutaVuelo extends JInternalFrame {
           textFieldEjecutivo.setText("");
           textFieldEquipajeExtra.setText("");
           textAreaDesc.setText("");
+          textAreaDescCorta.setText("");
+          textFieldVideoUrl.setText("");
           fechaAlta.setDate(new Date());
 
         } catch (IllegalArgumentException ex2) {

@@ -19,7 +19,7 @@ import jakarta.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "dataRuta")
-@XmlType(propOrder = { "idRuta", "nombre", "descripcion", "descripcionCorta", "ciudadOrigen", "ciudadDestino", "hora", "fechaAlta", "costoTurista", "costoEjecutivo", "costoEquipajeExtra", "categoria", "nicknameAerolinea", "estado" })
+@XmlType(propOrder = { "idRuta", "nombre", "descripcion", "descripcionCorta", "ciudadOrigen", "ciudadDestino", "hora", "fechaAlta", "costoTurista", "costoEjecutivo", "costoEquipajeExtra", "categoria", "nicknameAerolinea", "estado", "videoUrl" })
 public class DataRuta {
   private int idRuta;
   private String nombre;
@@ -35,6 +35,7 @@ public class DataRuta {
   private DataCategoria categoria;
   private String nicknameAerolinea;
   private EstadoRuta estado;
+  private String videoUrl; // nueva propiedad para la URL del video asociado
 
     public DataRuta() {
         // Constructor vacío requerido por JAXB
@@ -47,7 +48,7 @@ public class DataRuta {
   public DataRuta(String nombre, String descripcion, DataCiudad ciudadOrigen,
       DataCiudad ciudadDestino, int hora, Date fechaAlta, BigDecimal costoTurista,
       int costoEquipajeExtra, BigDecimal costoEjecutivo, DataCategoria categoria,
-      String nicknameAerolinea, EstadoRuta estado, String descripcionCorta) {
+      String nicknameAerolinea, EstadoRuta estado, String descripcionCorta, String videoUrl) {
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.ciudadOrigen = ciudadOrigen;
@@ -61,6 +62,7 @@ public class DataRuta {
     this.nicknameAerolinea = nicknameAerolinea;
     this.estado = estado;
     this.descripcionCorta = descripcionCorta;
+    this.videoUrl = videoUrl;
   }
 
   // Getters
@@ -120,9 +122,16 @@ public class DataRuta {
       return descripcionCorta != null ? descripcionCorta : "Sin descripción corta";
   }
 
+  public String getVideoUrl() {
+      return videoUrl;
+  }
 
     public void setIdRuta(int idRuta) {
     this.idRuta = idRuta;
+  }
+
+  public void setVideoUrl(String videoUrl) {
+      this.videoUrl = videoUrl;
   }
 
   @Override

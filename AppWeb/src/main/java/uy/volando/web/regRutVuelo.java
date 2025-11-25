@@ -89,6 +89,15 @@ public class regRutVuelo extends HttpServlet {
       String ciudadDestinoNombre = request.getParameter("ciudadDestino");
       String[] categoriasSeleccionadas = request.getParameterValues("categorias");
 
+      // NUEVO: leer URL de video opcional
+      String videoUrl = request.getParameter("videoUrl");
+      if (videoUrl != null) {
+          videoUrl = videoUrl.trim();
+          if (videoUrl.isEmpty()) {
+              videoUrl = null;
+          }
+      }
+
       java.util.Date fechaAlta = new java.util.Date();
 
       if (nombre == null || nombre.isBlank()
@@ -139,6 +148,8 @@ public class regRutVuelo extends HttpServlet {
       dataRuta.setCategoria(categoria);
       dataRuta.setNicknameAerolinea(nicknameAerolinea);
       dataRuta.setDescripcionCorta(descripcionCorta);
+      // NUEVO: enviar videoUrl al servidor central (puede ser null si no se ingresó)
+      dataRuta.setVideoUrl(videoUrl);
 
       try {
           // Llamada SOAP
