@@ -906,6 +906,20 @@ public class Sistema implements ISistema {
         System.out.println("[realizarCheckIn] Check-in realizado para reserva ID: " + idReserva);
         reservaService.actualizarReserva(reserva);
     }
+
+    @Override
+    public List<DataReserva> listarReservasConCheckin(String nicknameCliente) {
+        Cliente cliente = usuarioService.obtenerClientePorNickname(canonical(nicknameCliente));
+        if (cliente == null) {
+            throw new IllegalArgumentException("No existe un cliente con ese nickname");
+        }
+        List<Reserva> reservas = reservaService.listarReservasPorCliente(cliente);
+        List<Reserva> conCheckin = reservas.stream()
+                .filter(Reserva::isCheckInRealizado)
+                .collect(Collectors.toList());
+        return ManejadorReserva.toDatas(conCheckin);
+    }
+
   // ======================
   // CAMBIAR ESTADO RUTA
   // ======================

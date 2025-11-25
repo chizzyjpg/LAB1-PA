@@ -43,9 +43,10 @@ public class Pasaje {
    * Constructor con parámetros.
    * 
    */
-  public Pasaje(String nombre, String apellido) {
+  public Pasaje(String nombre, String apellido, String asientoAsignado) {
     this.nombre = nombre;
     this.apellido = apellido;
+    this.asientoAsignado = asientoAsignado;
   }
 
   public String getNombre() {
