@@ -1,34 +1,85 @@
 package uy.volando.web;
 
-import Logica.DataUsuario;
-import Logica.ISistema;
-import Logica.Sistema;
+import uy.volando.publicar.DataUsuario;
+import uy.volando.publicar.DataUsuarioMuestraWeb;
+import uy.volando.publicar.WebServices;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Servlet implementation class ListadoUsuarios.
- */
 @WebServlet("/listado-usuarios")
 public class ListadoUsuarios extends HttpServlet {
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-    ISistema sistema = (ISistema) getServletContext().getAttribute("sistema");
-    if (sistema == null) {
-      sistema = new Sistema();
-      getServletContext().setAttribute("sistema", sistema);
+    private WebServices port;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        this.port = (WebServices) getServletContext().getAttribute("volandoPort");
+        if (this.port == null) {
+            throw new ServletException("El cliente SOAP (WebServices) no fue inicializado por InicioServlet.");
+        }
     }
-    List<DataUsuario> usuarios = sistema.listarUsuarios();
-    request.setAttribute("usuarios", usuarios);
-    request.getRequestDispatcher("/WEB-INF/consulta/listadoUsuarios.jsp").forward(request,
-        response);
-  }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+        DataUsuario logueado = (session != null)
+                ? (DataUsuario) session.getAttribute("usuario_logueado")
+                : null;
+
+        boolean mostrarAccion = (logueado != null);
+        List<DataUsuarioMuestraWeb> usuarios;
+
+        if (mostrarAccion) {
+            String nickLogueado = logueado.getNickname();
+            usuarios = port.listarUsuariosWeb(nickLogueado).getItem();
+        } else {
+            // modo público: no hay seguidor, todos vienen con siguiendo=false
+            usuarios = port.listarUsuariosWeb("").getItem();
+        }
+
+        request.setAttribute("mostrarAccion", mostrarAccion);
+        request.setAttribute("usuarios", usuarios);
+        request.getRequestDispatcher("/WEB-INF/consulta/listadoUsuarios.jsp").forward(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false);
+        DataUsuario logueado = (session != null)
+                ? (DataUsuario) session.getAttribute("usuario_logueado")
+                : null;
+
+        if (logueado == null) {
+            response.sendRedirect(request.getContextPath() + "/home");
+            return;
+        }
+
+        String miNick = logueado.getNickname();
+        String nickObjetivo = request.getParameter("nickObjetivo");
+        String accion = request.getParameter("accion"); // "seguir" o "dejar"
+
+        if (nickObjetivo != null && !nickObjetivo.isBlank() && accion != null) {
+            if ("seguir".equals(accion)) {
+                port.seguirUsuario(miNick, nickObjetivo);
+            } else if ("dejar".equals(accion)) {
+                port.dejarDeSeguirUsuario(miNick, nickObjetivo);
+            }
+        }
+
+        response.sendRedirect(request.getContextPath() + "/listado-usuarios");
+    }
 }

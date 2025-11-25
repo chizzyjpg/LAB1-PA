@@ -18,7 +18,7 @@ public interface ISistema {
     DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo);
     DataReserva buscarReserva(String nickname, String nombre, String codigoVuelo, int idReserva);
     DataUsuario loguearUsuario(String nickname, String password); // null si no existe o password incorrecta
-	DataCliente actualizarPerfilCliente(PerfilClienteUpdate datos);
+	  DataCliente actualizarPerfilCliente(PerfilClienteUpdate datos);
     DataAerolinea actualizarPerfilAerolinea(PerfilAerolineaUpdate datos);
     DataReserva verDetalleReserva(int idReserva);
 
@@ -38,28 +38,29 @@ public interface ISistema {
     List<DataReserva> listarReservasPendientesCheckIn(String nicknameCliente);
     List<DataBusquedaItem> buscarRutasYPaquetes(String texto);
     List<DataReserva> listarReservasConCheckin(String nicknameCliente);
-
-    void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos); 
-    void registrarUsuario(DataUsuario data); // DataCliente o DataAerolinea
+    List<DataUsuarioMuestraWeb> listarUsuariosWeb(String nickLogueado);
+   
+    void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos);
+    void registrarUsuario(DataUsuario data);
     void modificarCliente(String nickname, DataCliente nuevosDatos);
     void modificarAerolinea(String nickname, DataAerolinea nuevosDatos);
     void registrarCategoria(DataCategoria Data);
     void registrarRuta(DataRuta datos);
-	void registrarCiudad(DataCiudad data);
-	void comprarPaquete(DataCompraPaquete compra);
-	void registrarPaquete(DataPaqueteAlta data);
-	void agregarRutaAPaquete(String nombrePaquete,String nicknameAerolinea,String nombreRuta, TipoAsiento tipo, int cantidad);
-	void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos);
+    void registrarCiudad(DataCiudad data);
+    void comprarPaquete(DataCompraPaquete compra);
+    void registrarPaquete(DataPaqueteAlta data);
+    void agregarRutaAPaquete(String nombrePaquete,String nicknameAerolinea,String nombreRuta, TipoAsiento tipo, int cantidad);
+    void registrarReserva(String nickname, String nombre, String codigoVuelo, DataReserva datos);
     void realizarCheckIn(int idReserva);
-
     void cambiarEstadoRuta(int idRuta, EstadoRuta nuevoEstado);
-	void cambiarPassword(String nickname, String pwdCurrent, String pwdNew);
-	void altaCliente(DataCliente cliente, byte[] avatar);
+    void cambiarPassword(String nickname, String pwdCurrent, String pwdNew);
+    void altaCliente(DataCliente cliente, byte[] avatar);
     void altaAerolinea(DataAerolinea aerolinea);
     void  registrarVisitaRuta(int codigoRuta);
     void finalizarRutaDeVuelo(String nicknameAerolinea, String nomRuta);
+    void seguirUsuario(String seguidorNick, String seguidoNick);
+    void dejarDeSeguirUsuario(String seguidorNick, String seguidoNick);
 
     byte[] obtenerAvatar(String nickname);
-	Ciudad buscarCiudad(String nombre, String pais);    
-
+    Ciudad buscarCiudad(String nombre, String pais);
 }
