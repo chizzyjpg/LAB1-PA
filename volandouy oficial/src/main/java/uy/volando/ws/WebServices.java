@@ -219,7 +219,7 @@ public class WebServices {
         // Construir lista de pasajes
         List<DataPasaje> pasajes = new java.util.ArrayList<>();
         for (int i = 0; i < nombresLista.length; i++) {
-            pasajes.add(new DataPasaje(nombresLista[i], apellidosLista[i]));
+            pasajes.add(new DataPasaje(nombresLista[i], apellidosLista[i], null));
         }
         datos.setPasajes(pasajes);
 
@@ -316,6 +316,12 @@ public class WebServices {
     @WebMethod
     public void realizarCheckIn(@WebParam(name = "idReserva") int idReserva) {
         sistema.realizarCheckIn(idReserva);
+    }
+
+    @WebMethod
+    public DataReserva[] listarReservasConCheckin(@WebParam(name = "nicknameCliente") String nicknameCliente) {
+        List<DataReserva> lista = sistema.listarReservasConCheckin(nicknameCliente);
+        return lista.toArray(new DataReserva[0]);
     }
     
     @WebMethod
