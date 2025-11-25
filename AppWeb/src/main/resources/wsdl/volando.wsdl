@@ -1,32 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://ws.volando.uy/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://ws.volando.uy/" name="VolandoWS">
+<definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://ws.volando.uy/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://ws.volando.uy/" name="VolandoWS">
     <types>
         <xsd:schema>
-            <xsd:import namespace="http://ws.volando.uy/" schemaLocation="http://localhost:9128/volando?xsd=1"/>
+            <xsd:import namespace="http://ws.volando.uy/" schemaLocation="volando.xsd1"/>
         </xsd:schema>
         <xsd:schema>
-            <xsd:import namespace="http://jaxb.dev.java.net/array" schemaLocation="http://localhost:9128/volando?xsd=2"/>
+            <xsd:import namespace="http://jaxb.dev.java.net/array" schemaLocation="volando.xsd2"/>
         </xsd:schema>
     </types>
-    <message name="listarPaquetes"/>
-    <message name="listarPaquetesResponse">
+    <message name="listarPaquetesDisponiblesParaCompra"/>
+    <message name="listarPaquetesDisponiblesParaCompraResponse">
         <part name="return" type="tns:dataPaqueteArray"/>
-    </message>
-    <message name="listarCategorias"/>
-    <message name="listarCategoriasResponse">
-        <part name="return" type="tns:dataCategoriaArray"/>
-    </message>
-    <message name="verInfoAerolinea">
-        <part name="arg0" type="xsd:string"/>
-    </message>
-    <message name="verInfoAerolineaResponse">
-        <part name="return" type="tns:dataAerolinea"/>
-    </message>
-    <message name="listarPorAerolinea">
-        <part name="nicknameAerolinea" type="xsd:string"/>
-    </message>
-    <message name="listarPorAerolineaResponse">
-        <part name="return" type="tns:dataRutaArray"/>
     </message>
     <message name="loguearUsuario">
         <part name="arg0" type="xsd:string"/>
@@ -35,40 +19,53 @@
     <message name="loguearUsuarioResponse">
         <part name="return" type="tns:dataUsuario"/>
     </message>
-    <message name="verPaquete">
-        <part name="nombrePaquete" type="xsd:string"/>
-    </message>
-    <message name="verPaqueteResponse">
-        <part name="return" type="tns:dataPaquete"/>
-    </message>
     <message name="verInfoCliente">
         <part name="arg0" type="xsd:string"/>
     </message>
     <message name="verInfoClienteResponse">
         <part name="return" type="tns:dataCliente"/>
     </message>
+    <message name="verInfoAerolinea">
+        <part name="arg0" type="xsd:string"/>
+    </message>
+    <message name="verInfoAerolineaResponse">
+        <part name="return" type="tns:dataAerolinea"/>
+    </message>
+    <message name="registrarVuelo">
+        <part name="nicknameAerolinea" type="xsd:string"/>
+        <part name="nombreRuta" type="xsd:string"/>
+        <part name="arg2" type="tns:dataVueloEspecifico"/>
+    </message>
+    <message name="registrarVueloResponse"/>
+    <message name="registrarRuta">
+        <part name="arg0" type="tns:dataRuta"/>
+    </message>
+    <message name="registrarRutaResponse"/>
     <message name="listarAerolineas"/>
     <message name="listarAerolineasResponse">
         <part name="return" type="tns:dataAerolineaArray"/>
     </message>
-    <message name="listarVuelos">
+    <message name="buscarVuelo">
+        <part name="nicknameAerolinea" type="xsd:string"/>
+        <part name="rutaSel" type="xsd:string"/>
+        <part name="vueloSel" type="xsd:string"/>
+    </message>
+    <message name="buscarVueloResponse">
+        <part name="return" type="tns:dataVueloEspecifico"/>
+    </message>
+    <message name="cambiarPassword">
         <part name="nickname" type="xsd:string"/>
-        <part name="nombre" type="xsd:string"/>
+        <part name="pwdCurrent" type="xsd:string"/>
+        <part name="pwdNew" type="xsd:string"/>
     </message>
-    <message name="listarVuelosResponse">
-        <part name="return" type="tns:dataVueloEspecificoArray"/>
+    <message name="cambiarPasswordResponse"/>
+    <message name="listarPaquetes"/>
+    <message name="listarPaquetesResponse">
+        <part name="return" type="tns:dataPaqueteArray"/>
     </message>
-    <message name="existeEmail">
-        <part name="email" type="xsd:string"/>
-    </message>
-    <message name="existeEmailResponse">
-        <part name="return" type="xsd:boolean"/>
-    </message>
-    <message name="existePaquete">
-        <part name="nomPaquete" type="xsd:string"/>
-    </message>
-    <message name="existePaqueteResponse">
-        <part name="return" type="xsd:boolean"/>
+    <message name="listarCategorias"/>
+    <message name="listarCategoriasResponse">
+        <part name="return" type="tns:dataCategoriaArray"/>
     </message>
     <message name="buscarReserva">
         <part name="nicknameAerolinea" type="xsd:string"/>
@@ -79,33 +76,12 @@
     <message name="buscarReservaResponse">
         <part name="return" type="tns:dataReserva"/>
     </message>
-    <message name="listarCiudades"/>
-    <message name="listarCiudadesResponse">
-        <part name="return" type="tns:dataCiudadArray"/>
-    </message>
-    <message name="altaAerolinea">
-        <part name="arg0" type="tns:dataAerolinea"/>
-    </message>
-    <message name="altaAerolineaResponse"/>
-    <message name="buscarVuelo">
+    <message name="listarPorAerolinea">
         <part name="nicknameAerolinea" type="xsd:string"/>
-        <part name="rutaSel" type="xsd:string"/>
-        <part name="vueloSel" type="xsd:string"/>
     </message>
-    <message name="buscarVueloResponse">
-        <part name="return" type="tns:dataVueloEspecifico"/>
+    <message name="listarPorAerolineaResponse">
+        <part name="return" type="tns:dataRutaArray"/>
     </message>
-    <message name="registrarVuelo">
-        <part name="nicknameAerolinea" type="xsd:string"/>
-        <part name="nombreRuta" type="xsd:string"/>
-        <part name="arg2" type="tns:dataVueloEspecifico"/>
-    </message>
-    <message name="registrarVueloResponse"/>
-    <message name="seguirUsuario">
-        <part name="arg0" type="xsd:string"/>
-        <part name="arg1" type="xsd:string"/>
-    </message>
-    <message name="seguirUsuarioResponse"/>
     <message name="registrarReserva">
         <part name="nicknameAerolinea" type="xsd:string"/>
         <part name="nomRuta" type="xsd:string"/>
@@ -119,42 +95,11 @@
         <part xmlns:ns2="http://jaxb.dev.java.net/array" name="apellidosLista" type="ns2:stringArray"/>
     </message>
     <message name="registrarReservaResponse"/>
-    <message name="registrarRuta">
-        <part name="arg0" type="tns:dataRuta"/>
-    </message>
-    <message name="registrarRutaResponse"/>
-    <message name="cambiarPassword">
-        <part name="nickname" type="xsd:string"/>
-        <part name="pwdCurrent" type="xsd:string"/>
-        <part name="pwdNew" type="xsd:string"/>
-    </message>
-    <message name="cambiarPasswordResponse"/>
-    <message name="verDetalleReserva">
-        <part name="idReserva" type="xsd:int"/>
-    </message>
-    <message name="verDetalleReservaResponse">
-        <part name="return" type="tns:dataReserva"/>
-    </message>
-    <message name="altaCliente">
-        <part name="arg0" type="tns:dataCliente"/>
-        <part name="arg1" type="xsd:base64Binary"/>
-    </message>
-    <message name="altaClienteResponse"/>
     <message name="obtenerAvatar">
         <part name="nickname" type="xsd:string"/>
     </message>
     <message name="obtenerAvatarResponse">
         <part name="return" type="xsd:base64Binary"/>
-    </message>
-    <message name="comprarPaquete">
-        <part name="arg0" type="tns:dataCompraPaquete"/>
-    </message>
-    <message name="comprarPaqueteResponse"/>
-    <message name="existeNickname">
-        <part name="nickname" type="xsd:string"/>
-    </message>
-    <message name="existeNicknameResponse">
-        <part name="return" type="xsd:boolean"/>
     </message>
     <message name="listarReservas">
         <part name="nicknameAerolinea" type="xsd:string"/>
@@ -164,37 +109,80 @@
     <message name="listarReservasResponse">
         <part name="return" type="tns:dataReservaArray"/>
     </message>
+    <message name="verPaquete">
+        <part name="nombrePaquete" type="xsd:string"/>
+    </message>
+    <message name="verPaqueteResponse">
+        <part name="return" type="tns:dataPaquete"/>
+    </message>
+    <message name="listarVuelos">
+        <part name="nickname" type="xsd:string"/>
+        <part name="nombre" type="xsd:string"/>
+    </message>
+    <message name="listarVuelosResponse">
+        <part name="return" type="tns:dataVueloEspecificoArray"/>
+    </message>
+    <message name="listarCiudades"/>
+    <message name="listarCiudadesResponse">
+        <part name="return" type="tns:dataCiudadArray"/>
+    </message>
+    <message name="verDetalleReserva">
+        <part name="idReserva" type="xsd:int"/>
+    </message>
+    <message name="verDetalleReservaResponse">
+        <part name="return" type="tns:dataReserva"/>
+    </message>
+    <message name="existeEmail">
+        <part name="email" type="xsd:string"/>
+    </message>
+    <message name="existeEmailResponse">
+        <part name="return" type="xsd:boolean"/>
+    </message>
+    <message name="existeNickname">
+        <part name="nickname" type="xsd:string"/>
+    </message>
+    <message name="existeNicknameResponse">
+        <part name="return" type="xsd:boolean"/>
+    </message>
+    <message name="altaAerolinea">
+        <part name="arg0" type="tns:dataAerolinea"/>
+    </message>
+    <message name="altaAerolineaResponse"/>
+    <message name="seguirUsuario">
+        <part name="arg0" type="xsd:string"/>
+        <part name="arg1" type="xsd:string"/>
+    </message>
+    <message name="seguirUsuarioResponse"/>
+    <message name="comprarPaquete">
+        <part name="arg0" type="tns:dataCompraPaquete"/>
+    </message>
+    <message name="comprarPaqueteResponse"/>
+    <message name="realizarCheckIn">
+        <part name="idReserva" type="xsd:int"/>
+    </message>
+    <message name="realizarCheckInResponse"/>
+    <message name="existePaquete">
+        <part name="nomPaquete" type="xsd:string"/>
+    </message>
+    <message name="existePaqueteResponse">
+        <part name="return" type="xsd:boolean"/>
+    </message>
     <message name="listarUsuariosWeb">
         <part name="arg0" type="xsd:string"/>
     </message>
     <message name="listarUsuariosWebResponse">
         <part name="return" type="tns:dataUsuarioMuestraWebArray"/>
     </message>
-    <message name="realizarCheckIn">
-        <part name="idReserva" type="xsd:int"/>
+    <message name="altaCliente">
+        <part name="arg0" type="tns:dataCliente"/>
+        <part name="arg1" type="xsd:base64Binary"/>
     </message>
-    <message name="realizarCheckInResponse"/>
-    <message name="listarPaquetesDisponiblesParaCompra"/>
-    <message name="listarPaquetesDisponiblesParaCompraResponse">
-        <part name="return" type="tns:dataPaqueteArray"/>
-    </message>
+    <message name="altaClienteResponse"/>
     <message name="ping">
         <part name="nombre" type="xsd:string"/>
     </message>
     <message name="pingResponse">
         <part name="return" type="xsd:string"/>
-    </message>
-    <message name="actualizarPerfilAerolinea">
-        <part name="nickSesion" type="xsd:string"/>
-        <part name="emailSesion" type="xsd:string"/>
-        <part name="nombre" type="xsd:string"/>
-        <part name="descripcion" type="xsd:string"/>
-        <part name="sitioWeb" type="xsd:string"/>
-        <part name="avatarBytes" type="xsd:base64Binary"/>
-        <part name="clearPhoto" type="xsd:boolean"/>
-    </message>
-    <message name="actualizarPerfilAerolineaResponse">
-        <part name="return" type="tns:dataAerolinea"/>
     </message>
     <message name="actualizarPerfilCliente">
         <part name="nickSesion" type="xsd:string"/>
@@ -218,21 +206,23 @@
     <message name="clienteYaComproPaqueteResponse">
         <part name="return" type="xsd:boolean"/>
     </message>
-    <message name="registrarVisitaRuta">
-        <part name="arg0" type="xsd:int"/>
+    <message name="actualizarPerfilAerolinea">
+        <part name="nickSesion" type="xsd:string"/>
+        <part name="emailSesion" type="xsd:string"/>
+        <part name="nombre" type="xsd:string"/>
+        <part name="descripcion" type="xsd:string"/>
+        <part name="sitioWeb" type="xsd:string"/>
+        <part name="avatarBytes" type="xsd:base64Binary"/>
+        <part name="clearPhoto" type="xsd:boolean"/>
     </message>
-    <message name="registrarVisitaRutaResponse"/>
+    <message name="actualizarPerfilAerolineaResponse">
+        <part name="return" type="tns:dataAerolinea"/>
+    </message>
     <message name="dejarDeSeguirUsuario">
         <part name="arg0" type="xsd:string"/>
         <part name="arg1" type="xsd:string"/>
     </message>
     <message name="dejarDeSeguirUsuarioResponse"/>
-    <message name="listarReservasConCheckin">
-        <part name="nicknameCliente" type="xsd:string"/>
-    </message>
-    <message name="listarReservasConCheckinResponse">
-        <part name="return" type="tns:dataReservaArray"/>
-    </message>
     <message name="listarReservasPendientesCheckIn">
         <part name="nicknameCliente" type="xsd:string"/>
     </message>
@@ -250,7 +240,47 @@
     <message name="buscarRutasYPaquetesResponse">
         <part name="return" type="tns:dataBusquedaItemArray"/>
     </message>
+    <message name="registrarVisitaRuta">
+        <part name="arg0" type="xsd:int"/>
+    </message>
+    <message name="registrarVisitaRutaResponse"/>
     <portType name="WebServices">
+        <operation name="listarPaquetesDisponiblesParaCompra">
+            <input wsam:Action="http://ws.volando.uy/WebServices/listarPaquetesDisponiblesParaCompraRequest" message="tns:listarPaquetesDisponiblesParaCompra"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/listarPaquetesDisponiblesParaCompraResponse" message="tns:listarPaquetesDisponiblesParaCompraResponse"/>
+        </operation>
+        <operation name="loguearUsuario" parameterOrder="arg0 arg1">
+            <input wsam:Action="http://ws.volando.uy/WebServices/loguearUsuarioRequest" message="tns:loguearUsuario"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/loguearUsuarioResponse" message="tns:loguearUsuarioResponse"/>
+        </operation>
+        <operation name="verInfoCliente">
+            <input wsam:Action="http://ws.volando.uy/WebServices/verInfoClienteRequest" message="tns:verInfoCliente"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/verInfoClienteResponse" message="tns:verInfoClienteResponse"/>
+        </operation>
+        <operation name="verInfoAerolinea">
+            <input wsam:Action="http://ws.volando.uy/WebServices/verInfoAerolineaRequest" message="tns:verInfoAerolinea"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/verInfoAerolineaResponse" message="tns:verInfoAerolineaResponse"/>
+        </operation>
+        <operation name="registrarVuelo" parameterOrder="nicknameAerolinea nombreRuta arg2">
+            <input wsam:Action="http://ws.volando.uy/WebServices/registrarVueloRequest" message="tns:registrarVuelo"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/registrarVueloResponse" message="tns:registrarVueloResponse"/>
+        </operation>
+        <operation name="registrarRuta">
+            <input wsam:Action="http://ws.volando.uy/WebServices/registrarRutaRequest" message="tns:registrarRuta"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/registrarRutaResponse" message="tns:registrarRutaResponse"/>
+        </operation>
+        <operation name="listarAerolineas">
+            <input wsam:Action="http://ws.volando.uy/WebServices/listarAerolineasRequest" message="tns:listarAerolineas"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/listarAerolineasResponse" message="tns:listarAerolineasResponse"/>
+        </operation>
+        <operation name="buscarVuelo" parameterOrder="nicknameAerolinea rutaSel vueloSel">
+            <input wsam:Action="http://ws.volando.uy/WebServices/buscarVueloRequest" message="tns:buscarVuelo"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/buscarVueloResponse" message="tns:buscarVueloResponse"/>
+        </operation>
+        <operation name="cambiarPassword" parameterOrder="nickname pwdCurrent pwdNew">
+            <input wsam:Action="http://ws.volando.uy/WebServices/cambiarPasswordRequest" message="tns:cambiarPassword"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/cambiarPasswordResponse" message="tns:cambiarPasswordResponse"/>
+        </operation>
         <operation name="listarPaquetes">
             <input wsam:Action="http://ws.volando.uy/WebServices/listarPaquetesRequest" message="tns:listarPaquetes"/>
             <output wsam:Action="http://ws.volando.uy/WebServices/listarPaquetesResponse" message="tns:listarPaquetesResponse"/>
@@ -259,121 +289,81 @@
             <input wsam:Action="http://ws.volando.uy/WebServices/listarCategoriasRequest" message="tns:listarCategorias"/>
             <output wsam:Action="http://ws.volando.uy/WebServices/listarCategoriasResponse" message="tns:listarCategoriasResponse"/>
         </operation>
-        <operation name="verInfoAerolinea">
-            <input wsam:Action="http://ws.volando.uy/WebServices/verInfoAerolineaRequest" message="tns:verInfoAerolinea"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/verInfoAerolineaResponse" message="tns:verInfoAerolineaResponse"/>
+        <operation name="buscarReserva" parameterOrder="nicknameAerolinea rutaSel vueloSel idReserva">
+            <input wsam:Action="http://ws.volando.uy/WebServices/buscarReservaRequest" message="tns:buscarReserva"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/buscarReservaResponse" message="tns:buscarReservaResponse"/>
         </operation>
         <operation name="listarPorAerolinea">
             <input wsam:Action="http://ws.volando.uy/WebServices/listarPorAerolineaRequest" message="tns:listarPorAerolinea"/>
             <output wsam:Action="http://ws.volando.uy/WebServices/listarPorAerolineaResponse" message="tns:listarPorAerolineaResponse"/>
         </operation>
-        <operation name="loguearUsuario" parameterOrder="arg0 arg1">
-            <input wsam:Action="http://ws.volando.uy/WebServices/loguearUsuarioRequest" message="tns:loguearUsuario"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/loguearUsuarioResponse" message="tns:loguearUsuarioResponse"/>
-        </operation>
-        <operation name="verPaquete">
-            <input wsam:Action="http://ws.volando.uy/WebServices/verPaqueteRequest" message="tns:verPaquete"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/verPaqueteResponse" message="tns:verPaqueteResponse"/>
-        </operation>
-        <operation name="verInfoCliente">
-            <input wsam:Action="http://ws.volando.uy/WebServices/verInfoClienteRequest" message="tns:verInfoCliente"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/verInfoClienteResponse" message="tns:verInfoClienteResponse"/>
-        </operation>
-        <operation name="listarAerolineas">
-            <input wsam:Action="http://ws.volando.uy/WebServices/listarAerolineasRequest" message="tns:listarAerolineas"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/listarAerolineasResponse" message="tns:listarAerolineasResponse"/>
-        </operation>
-        <operation name="listarVuelos" parameterOrder="nickname nombre">
-            <input wsam:Action="http://ws.volando.uy/WebServices/listarVuelosRequest" message="tns:listarVuelos"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/listarVuelosResponse" message="tns:listarVuelosResponse"/>
-        </operation>
-        <operation name="existeEmail">
-            <input wsam:Action="http://ws.volando.uy/WebServices/existeEmailRequest" message="tns:existeEmail"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/existeEmailResponse" message="tns:existeEmailResponse"/>
-        </operation>
-        <operation name="existePaquete">
-            <input wsam:Action="http://ws.volando.uy/WebServices/existePaqueteRequest" message="tns:existePaquete"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/existePaqueteResponse" message="tns:existePaqueteResponse"/>
-        </operation>
-        <operation name="buscarReserva" parameterOrder="nicknameAerolinea rutaSel vueloSel idReserva">
-            <input wsam:Action="http://ws.volando.uy/WebServices/buscarReservaRequest" message="tns:buscarReserva"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/buscarReservaResponse" message="tns:buscarReservaResponse"/>
-        </operation>
-        <operation name="listarCiudades">
-            <input wsam:Action="http://ws.volando.uy/WebServices/listarCiudadesRequest" message="tns:listarCiudades"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/listarCiudadesResponse" message="tns:listarCiudadesResponse"/>
-        </operation>
-        <operation name="altaAerolinea">
-            <input wsam:Action="http://ws.volando.uy/WebServices/altaAerolineaRequest" message="tns:altaAerolinea"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/altaAerolineaResponse" message="tns:altaAerolineaResponse"/>
-        </operation>
-        <operation name="buscarVuelo" parameterOrder="nicknameAerolinea rutaSel vueloSel">
-            <input wsam:Action="http://ws.volando.uy/WebServices/buscarVueloRequest" message="tns:buscarVuelo"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/buscarVueloResponse" message="tns:buscarVueloResponse"/>
-        </operation>
-        <operation name="registrarVuelo" parameterOrder="nicknameAerolinea nombreRuta arg2">
-            <input wsam:Action="http://ws.volando.uy/WebServices/registrarVueloRequest" message="tns:registrarVuelo"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/registrarVueloResponse" message="tns:registrarVueloResponse"/>
-        </operation>
-        <operation name="seguirUsuario" parameterOrder="arg0 arg1">
-            <input wsam:Action="http://ws.volando.uy/WebServices/seguirUsuarioRequest" message="tns:seguirUsuario"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/seguirUsuarioResponse" message="tns:seguirUsuarioResponse"/>
-        </operation>
         <operation name="registrarReserva" parameterOrder="nicknameAerolinea nomRuta codigoVuelo tipoAsiento equipaje cantEquipajeExtra costoTotal nickCliente nombresLista apellidosLista">
             <input wsam:Action="http://ws.volando.uy/WebServices/registrarReservaRequest" message="tns:registrarReserva"/>
             <output wsam:Action="http://ws.volando.uy/WebServices/registrarReservaResponse" message="tns:registrarReservaResponse"/>
-        </operation>
-        <operation name="registrarRuta">
-            <input wsam:Action="http://ws.volando.uy/WebServices/registrarRutaRequest" message="tns:registrarRuta"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/registrarRutaResponse" message="tns:registrarRutaResponse"/>
-        </operation>
-        <operation name="cambiarPassword" parameterOrder="nickname pwdCurrent pwdNew">
-            <input wsam:Action="http://ws.volando.uy/WebServices/cambiarPasswordRequest" message="tns:cambiarPassword"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/cambiarPasswordResponse" message="tns:cambiarPasswordResponse"/>
-        </operation>
-        <operation name="verDetalleReserva">
-            <input wsam:Action="http://ws.volando.uy/WebServices/verDetalleReservaRequest" message="tns:verDetalleReserva"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/verDetalleReservaResponse" message="tns:verDetalleReservaResponse"/>
-        </operation>
-        <operation name="altaCliente" parameterOrder="arg0 arg1">
-            <input wsam:Action="http://ws.volando.uy/WebServices/altaClienteRequest" message="tns:altaCliente"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/altaClienteResponse" message="tns:altaClienteResponse"/>
         </operation>
         <operation name="obtenerAvatar">
             <input wsam:Action="http://ws.volando.uy/WebServices/obtenerAvatarRequest" message="tns:obtenerAvatar"/>
             <output wsam:Action="http://ws.volando.uy/WebServices/obtenerAvatarResponse" message="tns:obtenerAvatarResponse"/>
         </operation>
-        <operation name="comprarPaquete">
-            <input wsam:Action="http://ws.volando.uy/WebServices/comprarPaqueteRequest" message="tns:comprarPaquete"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/comprarPaqueteResponse" message="tns:comprarPaqueteResponse"/>
+        <operation name="listarReservas" parameterOrder="nicknameAerolinea rutaSel vueloSel">
+            <input wsam:Action="http://ws.volando.uy/WebServices/listarReservasRequest" message="tns:listarReservas"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/listarReservasResponse" message="tns:listarReservasResponse"/>
+        </operation>
+        <operation name="verPaquete">
+            <input wsam:Action="http://ws.volando.uy/WebServices/verPaqueteRequest" message="tns:verPaquete"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/verPaqueteResponse" message="tns:verPaqueteResponse"/>
+        </operation>
+        <operation name="listarVuelos" parameterOrder="nickname nombre">
+            <input wsam:Action="http://ws.volando.uy/WebServices/listarVuelosRequest" message="tns:listarVuelos"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/listarVuelosResponse" message="tns:listarVuelosResponse"/>
+        </operation>
+        <operation name="listarCiudades">
+            <input wsam:Action="http://ws.volando.uy/WebServices/listarCiudadesRequest" message="tns:listarCiudades"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/listarCiudadesResponse" message="tns:listarCiudadesResponse"/>
+        </operation>
+        <operation name="verDetalleReserva">
+            <input wsam:Action="http://ws.volando.uy/WebServices/verDetalleReservaRequest" message="tns:verDetalleReserva"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/verDetalleReservaResponse" message="tns:verDetalleReservaResponse"/>
+        </operation>
+        <operation name="existeEmail">
+            <input wsam:Action="http://ws.volando.uy/WebServices/existeEmailRequest" message="tns:existeEmail"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/existeEmailResponse" message="tns:existeEmailResponse"/>
         </operation>
         <operation name="existeNickname">
             <input wsam:Action="http://ws.volando.uy/WebServices/existeNicknameRequest" message="tns:existeNickname"/>
             <output wsam:Action="http://ws.volando.uy/WebServices/existeNicknameResponse" message="tns:existeNicknameResponse"/>
         </operation>
-        <operation name="listarReservas" parameterOrder="nicknameAerolinea rutaSel vueloSel">
-            <input wsam:Action="http://ws.volando.uy/WebServices/listarReservasRequest" message="tns:listarReservas"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/listarReservasResponse" message="tns:listarReservasResponse"/>
+        <operation name="altaAerolinea">
+            <input wsam:Action="http://ws.volando.uy/WebServices/altaAerolineaRequest" message="tns:altaAerolinea"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/altaAerolineaResponse" message="tns:altaAerolineaResponse"/>
         </operation>
-        <operation name="listarUsuariosWeb">
-            <input wsam:Action="http://ws.volando.uy/WebServices/listarUsuariosWebRequest" message="tns:listarUsuariosWeb"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/listarUsuariosWebResponse" message="tns:listarUsuariosWebResponse"/>
+        <operation name="seguirUsuario" parameterOrder="arg0 arg1">
+            <input wsam:Action="http://ws.volando.uy/WebServices/seguirUsuarioRequest" message="tns:seguirUsuario"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/seguirUsuarioResponse" message="tns:seguirUsuarioResponse"/>
+        </operation>
+        <operation name="comprarPaquete">
+            <input wsam:Action="http://ws.volando.uy/WebServices/comprarPaqueteRequest" message="tns:comprarPaquete"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/comprarPaqueteResponse" message="tns:comprarPaqueteResponse"/>
         </operation>
         <operation name="realizarCheckIn">
             <input wsam:Action="http://ws.volando.uy/WebServices/realizarCheckInRequest" message="tns:realizarCheckIn"/>
             <output wsam:Action="http://ws.volando.uy/WebServices/realizarCheckInResponse" message="tns:realizarCheckInResponse"/>
         </operation>
-        <operation name="listarPaquetesDisponiblesParaCompra">
-            <input wsam:Action="http://ws.volando.uy/WebServices/listarPaquetesDisponiblesParaCompraRequest" message="tns:listarPaquetesDisponiblesParaCompra"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/listarPaquetesDisponiblesParaCompraResponse" message="tns:listarPaquetesDisponiblesParaCompraResponse"/>
+        <operation name="existePaquete">
+            <input wsam:Action="http://ws.volando.uy/WebServices/existePaqueteRequest" message="tns:existePaquete"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/existePaqueteResponse" message="tns:existePaqueteResponse"/>
+        </operation>
+        <operation name="listarUsuariosWeb">
+            <input wsam:Action="http://ws.volando.uy/WebServices/listarUsuariosWebRequest" message="tns:listarUsuariosWeb"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/listarUsuariosWebResponse" message="tns:listarUsuariosWebResponse"/>
+        </operation>
+        <operation name="altaCliente" parameterOrder="arg0 arg1">
+            <input wsam:Action="http://ws.volando.uy/WebServices/altaClienteRequest" message="tns:altaCliente"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/altaClienteResponse" message="tns:altaClienteResponse"/>
         </operation>
         <operation name="ping">
             <input wsam:Action="http://ws.volando.uy/WebServices/pingRequest" message="tns:ping"/>
             <output wsam:Action="http://ws.volando.uy/WebServices/pingResponse" message="tns:pingResponse"/>
-        </operation>
-        <operation name="actualizarPerfilAerolinea" parameterOrder="nickSesion emailSesion nombre descripcion sitioWeb avatarBytes clearPhoto">
-            <input wsam:Action="http://ws.volando.uy/WebServices/actualizarPerfilAerolineaRequest" message="tns:actualizarPerfilAerolinea"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/actualizarPerfilAerolineaResponse" message="tns:actualizarPerfilAerolineaResponse"/>
         </operation>
         <operation name="actualizarPerfilCliente" parameterOrder="nickSesion emailSesion nombre apellido nacionalidad tipoDocumento numDocumento fechaNac avatarBytes clearPhoto">
             <input wsam:Action="http://ws.volando.uy/WebServices/actualizarPerfilClienteRequest" message="tns:actualizarPerfilCliente"/>
@@ -383,17 +373,13 @@
             <input wsam:Action="http://ws.volando.uy/WebServices/clienteYaComproPaqueteRequest" message="tns:clienteYaComproPaquete"/>
             <output wsam:Action="http://ws.volando.uy/WebServices/clienteYaComproPaqueteResponse" message="tns:clienteYaComproPaqueteResponse"/>
         </operation>
-        <operation name="registrarVisitaRuta">
-            <input wsam:Action="http://ws.volando.uy/WebServices/registrarVisitaRutaRequest" message="tns:registrarVisitaRuta"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/registrarVisitaRutaResponse" message="tns:registrarVisitaRutaResponse"/>
+        <operation name="actualizarPerfilAerolinea" parameterOrder="nickSesion emailSesion nombre descripcion sitioWeb avatarBytes clearPhoto">
+            <input wsam:Action="http://ws.volando.uy/WebServices/actualizarPerfilAerolineaRequest" message="tns:actualizarPerfilAerolinea"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/actualizarPerfilAerolineaResponse" message="tns:actualizarPerfilAerolineaResponse"/>
         </operation>
         <operation name="dejarDeSeguirUsuario" parameterOrder="arg0 arg1">
             <input wsam:Action="http://ws.volando.uy/WebServices/dejarDeSeguirUsuarioRequest" message="tns:dejarDeSeguirUsuario"/>
             <output wsam:Action="http://ws.volando.uy/WebServices/dejarDeSeguirUsuarioResponse" message="tns:dejarDeSeguirUsuarioResponse"/>
-        </operation>
-        <operation name="listarReservasConCheckin">
-            <input wsam:Action="http://ws.volando.uy/WebServices/listarReservasConCheckinRequest" message="tns:listarReservasConCheckin"/>
-            <output wsam:Action="http://ws.volando.uy/WebServices/listarReservasConCheckinResponse" message="tns:listarReservasConCheckinResponse"/>
         </operation>
         <operation name="listarReservasPendientesCheckIn">
             <input wsam:Action="http://ws.volando.uy/WebServices/listarReservasPendientesCheckInRequest" message="tns:listarReservasPendientesCheckIn"/>
@@ -407,37 +393,14 @@
             <input wsam:Action="http://ws.volando.uy/WebServices/buscarRutasYPaquetesRequest" message="tns:buscarRutasYPaquetes"/>
             <output wsam:Action="http://ws.volando.uy/WebServices/buscarRutasYPaquetesResponse" message="tns:buscarRutasYPaquetesResponse"/>
         </operation>
+        <operation name="registrarVisitaRuta">
+            <input wsam:Action="http://ws.volando.uy/WebServices/registrarVisitaRutaRequest" message="tns:registrarVisitaRuta"/>
+            <output wsam:Action="http://ws.volando.uy/WebServices/registrarVisitaRutaResponse" message="tns:registrarVisitaRutaResponse"/>
+        </operation>
     </portType>
     <binding name="WebServicesPortBinding" type="tns:WebServices">
         <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc"/>
-        <operation name="listarPaquetes">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
-        <operation name="listarCategorias">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
-        <operation name="verInfoAerolinea">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
-        <operation name="listarPorAerolinea">
+        <operation name="listarPaquetesDisponiblesParaCompra">
             <soap:operation soapAction=""/>
             <input>
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
@@ -455,15 +418,6 @@
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
             </output>
         </operation>
-        <operation name="verPaquete">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
         <operation name="verInfoCliente">
             <soap:operation soapAction=""/>
             <input>
@@ -473,70 +427,7 @@
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
             </output>
         </operation>
-        <operation name="listarAerolineas">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
-        <operation name="listarVuelos">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
-        <operation name="existeEmail">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
-        <operation name="existePaquete">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
-        <operation name="buscarReserva">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
-        <operation name="listarCiudades">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
-        <operation name="altaAerolinea">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
-        <operation name="buscarVuelo">
+        <operation name="verInfoAerolinea">
             <soap:operation soapAction=""/>
             <input>
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
@@ -554,25 +445,25 @@
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
             </output>
         </operation>
-        <operation name="seguirUsuario">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
-        <operation name="registrarReserva">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
         <operation name="registrarRuta">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
+        <operation name="listarAerolineas">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
+        <operation name="buscarVuelo">
             <soap:operation soapAction=""/>
             <input>
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
@@ -590,7 +481,7 @@
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
             </output>
         </operation>
-        <operation name="verDetalleReserva">
+        <operation name="listarPaquetes">
             <soap:operation soapAction=""/>
             <input>
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
@@ -599,7 +490,34 @@
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
             </output>
         </operation>
-        <operation name="altaCliente">
+        <operation name="listarCategorias">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
+        <operation name="buscarReserva">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
+        <operation name="listarPorAerolinea">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
+        <operation name="registrarReserva">
             <soap:operation soapAction=""/>
             <input>
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
@@ -617,7 +535,52 @@
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
             </output>
         </operation>
-        <operation name="comprarPaquete">
+        <operation name="listarReservas">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
+        <operation name="verPaquete">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
+        <operation name="listarVuelos">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
+        <operation name="listarCiudades">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
+        <operation name="verDetalleReserva">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
+        <operation name="existeEmail">
             <soap:operation soapAction=""/>
             <input>
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
@@ -635,7 +598,7 @@
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
             </output>
         </operation>
-        <operation name="listarReservas">
+        <operation name="altaAerolinea">
             <soap:operation soapAction=""/>
             <input>
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
@@ -644,7 +607,16 @@
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
             </output>
         </operation>
-        <operation name="listarUsuariosWeb">
+        <operation name="seguirUsuario">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
+        <operation name="comprarPaquete">
             <soap:operation soapAction=""/>
             <input>
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
@@ -662,7 +634,25 @@
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
             </output>
         </operation>
-        <operation name="listarPaquetesDisponiblesParaCompra">
+        <operation name="existePaquete">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
+        <operation name="listarUsuariosWeb">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
+        <operation name="altaCliente">
             <soap:operation soapAction=""/>
             <input>
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
@@ -672,15 +662,6 @@
             </output>
         </operation>
         <operation name="ping">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
-        <operation name="actualizarPerfilAerolinea">
             <soap:operation soapAction=""/>
             <input>
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
@@ -707,7 +688,7 @@
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
             </output>
         </operation>
-        <operation name="registrarVisitaRuta">
+        <operation name="actualizarPerfilAerolinea">
             <soap:operation soapAction=""/>
             <input>
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
@@ -717,15 +698,6 @@
             </output>
         </operation>
         <operation name="dejarDeSeguirUsuario">
-            <soap:operation soapAction=""/>
-            <input>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </input>
-            <output>
-                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
-            </output>
-        </operation>
-        <operation name="listarReservasConCheckin">
             <soap:operation soapAction=""/>
             <input>
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
@@ -761,10 +733,19 @@
                 <soap:body use="literal" namespace="http://ws.volando.uy/"/>
             </output>
         </operation>
+        <operation name="registrarVisitaRuta">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://ws.volando.uy/"/>
+            </output>
+        </operation>
     </binding>
     <service name="VolandoWS">
         <port name="WebServicesPort" binding="tns:WebServicesPortBinding">
-            <soap:address location="http://localhost:9128/volando"/>
+            <soap:address location="http://192.168.1.7:9128/volando"/>
         </port>
     </service>
 </definitions>
