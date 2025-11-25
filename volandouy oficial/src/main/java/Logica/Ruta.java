@@ -74,6 +74,9 @@ public class Ruta {
     @Column(name = "visitas", nullable = true)
     private int visitas;
     
+    @Column(name = "videoUrl", nullable = true, length = 255)
+    private String videoUrl;
+
     protected Ruta() {}
 
     public Ruta(String n, String desc,
@@ -113,6 +116,7 @@ public class Ruta {
     public EstadoRuta getEstado() { return estado; }
     public String getDescripcionCorta() { return descripcionCorta; }
     public int getVisitas() { return visitas; }
+    public String getVideoUrl() { return videoUrl; }
 
     // setters
     public void setNombre(String n) { this.nombre = n; }
@@ -130,6 +134,7 @@ public class Ruta {
     public void setEstado(EstadoRuta estado) { this.estado = estado; }
     public void setDescripcionCorta(String descCorta) { this.descripcionCorta = descCorta; }
     public void setVisitas(int visitas) { this.visitas = visitas; }
+    public void setVideoUrl(String videoUrl) { this.videoUrl = videoUrl; }
 
     @Override public String toString() {
         return "Ruta [idRuta=" + idRuta +
