@@ -21,9 +21,10 @@ public class DataPasaje {
    * Constructor to initialize DataPasaje with given name and surname.
    *
    */
-  public DataPasaje(String nombre, String apellido) {
+  public DataPasaje(String nombre, String apellido, String asientoAsignado) {
     this.nombre = nombre;
     this.apellido = apellido;
+    this.asientoAsignado = asientoAsignado;
   }
 
   public String getNombre() {

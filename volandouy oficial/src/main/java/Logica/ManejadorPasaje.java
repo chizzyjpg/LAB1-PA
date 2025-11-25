@@ -18,7 +18,7 @@ public class ManejadorPasaje {
    */
   public static Pasaje toEntity(DataPasaje pas) {
     Objects.requireNonNull(pas, "Los datos no pueden ser nulos");
-    return new Pasaje(pas.getNombre(), pas.getApellido());
+    return new Pasaje(pas.getNombre(), pas.getApellido(), pas.getAsientoAsignado());
   }
 
   /**
@@ -26,7 +26,7 @@ public class ManejadorPasaje {
    */
   public static DataPasaje toData(Pasaje pas) {
     Objects.requireNonNull(pas, "El pasaje no puede ser nulo");
-    return new DataPasaje(pas.getNombre(), pas.getApellido());
+    return new DataPasaje(pas.getNombre(), pas.getApellido(), pas.getAsientoAsignado());
   }
 
   // HELLPERS

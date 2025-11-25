@@ -18,7 +18,7 @@ public interface ISistema {
     DataVueloEspecifico buscarVuelo(String nickname, String nombre, String codigoVuelo);
     DataReserva buscarReserva(String nickname, String nombre, String codigoVuelo, int idReserva);
     DataUsuario loguearUsuario(String nickname, String password); // null si no existe o password incorrecta
-	DataCliente actualizarPerfilCliente(PerfilClienteUpdate datos);
+	  DataCliente actualizarPerfilCliente(PerfilClienteUpdate datos);
     DataAerolinea actualizarPerfilAerolinea(PerfilAerolineaUpdate datos);
     DataReserva verDetalleReserva(int idReserva);
 
@@ -37,10 +37,11 @@ public interface ISistema {
     List<DataRutaMasVisitada> obtener5RutasMasVisitadas();
     List<DataReserva> listarReservasPendientesCheckIn(String nicknameCliente);
     List<DataBusquedaItem> buscarRutasYPaquetes(String texto);
+    List<DataReserva> listarReservasConCheckin(String nicknameCliente);
     List<DataUsuarioMuestraWeb> listarUsuariosWeb(String nickLogueado);
    
     void registrarVuelo(String nickname, String nombre, DataVueloEspecifico datos);
-    void registrarUsuario(DataUsuario data); // DataCliente o DataAerolinea
+    void registrarUsuario(DataUsuario data);
     void modificarCliente(String nickname, DataCliente nuevosDatos);
     void modificarAerolinea(String nickname, DataAerolinea nuevosDatos);
     void registrarCategoria(DataCategoria Data);
