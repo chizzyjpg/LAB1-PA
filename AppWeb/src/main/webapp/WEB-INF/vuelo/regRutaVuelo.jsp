@@ -117,6 +117,17 @@
                             <input type="url" class="form-control" id="imagen" name="imagen" placeholder="https://ejemplo.com/mi-imagen.jpg">
                         </div>
 
+                        <!-- NUEVO: URL de video opcional para la ruta -->
+                        <div class="mb-3">
+                            <label for="videoUrl" class="form-label">URL de video asociada (opcional)</label>
+                            <input type="url" class="form-control" id="videoUrl" name="videoUrl"
+                                   placeholder="https://www.youtube.com/embed/ID_DEL_VIDEO">
+                            <div class="form-text">
+                                Podés pegar una URL de YouTube en formato de "embed" (por ejemplo,
+                                <code>https://www.youtube.com/embed/c6-RSKqUbFU</code>) u otra URL de video válida.
+                            </div>
+                        </div>
+
                         <button type="submit" class="btn btn-primary">Registrar Ruta de Vuelo</button>
                         <a href="<%= request.getContextPath() %>/home" class="btn btn-secondary">Cancelar</a>
                     </form>

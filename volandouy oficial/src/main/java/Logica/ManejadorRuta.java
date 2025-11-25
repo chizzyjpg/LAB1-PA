@@ -33,6 +33,10 @@ public class ManejadorRuta {
     Ruta r = new Ruta(data.getNombre(), data.getDescripcion(), origen, destino, data.getHora(),
         data.getFechaAlta(), data.getCostoTurista(), data.getCostoEquipajeExtra(),
         data.getCostoEjecutivo(), categoria, data.getDescripcionCorta());
+    // Propagar también la URL de video (opcional) desde el DTO a la entidad
+    if (data.getVideoUrl() != null && !data.getVideoUrl().isBlank()) {
+      r.setVideoUrl(data.getVideoUrl());
+    }
     // Ya no se persiste aquí, solo se crea la entidad
     return r;
   }
