@@ -7,6 +7,8 @@ import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
 import jakarta.jws.soap.SOAPBinding.Style;
 import jakarta.xml.ws.Endpoint;
+import uy.volando.config.ServidorConfig;
+
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +34,21 @@ public class WebServices {
 
     @WebMethod(exclude = true)
     public void publicar() {
-        String url = "http://localhost:9128/volando";
+        String host = ServidorConfig.get("soap.host");
+        String port = ServidorConfig.get("soap.port");
+        String context = ServidorConfig.get("soap.context");
+
+        if (host == null || port == null || context == null) {
+            throw new RuntimeException("Faltan propiedades soap.host / soap.port / soap.context en servidor.properties");
+        }
+
+        // Asegura que context arranque con /
+        if (!context.startsWith("/")) {
+            context = "/" + context;
+        }
+
+        String url = "http://" + host + ":" + port + context;
+
         endpoint = Endpoint.publish(url, this);
 
         System.out.println("VolandoWS publicado en: " + url);
