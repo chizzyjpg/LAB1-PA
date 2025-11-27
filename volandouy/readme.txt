@@ -14,6 +14,6 @@ los .properties se deben editar segun la ip de la pc a correr
 
 
 
-IMPORTANTE: ServidorRun y WebRun deben tener carpeta jdk-17 dentro y WebRun además debe contener carpeta apache-tomcat-10.1.36 
+IMPORTANTE: ServidorRun y WebRun deben tener carpeta jdk-17 dentro y WebRun además debe contener carpeta apache-tomcat-10.1.36 con .WAR dentro
 
 
