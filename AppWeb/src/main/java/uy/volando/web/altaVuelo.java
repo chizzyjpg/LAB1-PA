@@ -184,7 +184,6 @@ public class altaVuelo extends HttpServlet {
       java.util.TimeZone.getDefault().getRawOffset() / (60 * 1000)
     );
     dataVuelo.setFechaAlta(xmlFechaAlta);
-    // Si necesitas setear la ruta, puedes buscarla y setearla:
     DataRuta rutaSeleccionada = rutas.stream().filter(r -> Integer.toString(r.getIdRuta()).equals(rutaId)).findFirst().orElse(null);
     if (rutaSeleccionada != null) {
       dataVuelo.setDruta(rutaSeleccionada);

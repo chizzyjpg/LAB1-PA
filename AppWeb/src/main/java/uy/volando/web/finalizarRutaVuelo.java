@@ -81,10 +81,6 @@ public class finalizarRutaVuelo extends HttpServlet {
             }
         }
         request.setAttribute("rutaSeleccionada", rutaSeleccionada);
-
-        // Aquí podrías obtener los vuelos asociados si tienes un método para eso
-        // request.setAttribute("vuelosAsociados", vuelosAsociados);
-
         request.getRequestDispatcher("/WEB-INF/vuelo/finRutaVuelo.jsp").forward(request, response);
     }
 
@@ -110,7 +106,6 @@ public class finalizarRutaVuelo extends HttpServlet {
 
         request.setAttribute("mensaje", mensaje);
         request.setAttribute("exito", exito);
-        // Puedes reenviar a una JSP de resultado o al perfil de la aerolínea
         request.getRequestDispatcher("/WEB-INF/home/iniciado.jsp").forward(request, response);
     }
 }

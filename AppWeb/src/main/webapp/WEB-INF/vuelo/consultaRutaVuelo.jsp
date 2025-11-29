@@ -93,7 +93,7 @@
                 <!--<img src="<%/*= rutaSeleccionada.getImagen()*/ %>" alt="Imagen de la ruta" style="max-width:300px;max-height:200px;">-->
               <% /*} */ %>
 
-              <%-- BLOQUE NUEVO: Video asociado a la ruta (si existe URL) --%>
+              <%-- Video asociado a la ruta (si existe URL) --%>
               <%
                 String videoUrl = null;
                 try {

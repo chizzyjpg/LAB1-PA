@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter({"/checkInReservaVuelo"}) //Cuando se haga hay que cambiar aca
+@WebFilter({"/checkInReservaVuelo"})
 public class MobileOnlyFilter implements Filter {
 
     @Override

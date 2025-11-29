@@ -190,11 +190,6 @@ public class reservaVuelo extends HttpServlet {
       doGet(request, response);
       return;
     }
-    // Construir lista de pasajes (solo si el WebService lo requiere)
-    // List<uy.volando.publicar.DataPasaje> pasajes = new java.util.ArrayList<>();
-    // for (int i = 0; i < cantidadPasajes; i++) {
-    //   pasajes.add(new uy.volando.publicar.DataPasaje());
-    // }
     uy.volando.publicar.TipoAsiento tipoAsiento = uy.volando.publicar.TipoAsiento.valueOf(tipoAsientoStr);
     String equipajeTipoStr = request.getParameter("equipajeTipo");
     uy.volando.publicar.Equipaje equipaje = uy.volando.publicar.Equipaje.BOLSO;
