@@ -1010,7 +1010,6 @@ public class Sistema implements ISistema {
     String pais = cliente.getNacionalidad();
     Date fechaNac = cliente.getFechaNac();
 
-    // Ajusta la construcción de PerfilClienteUpdate según el constructor disponible
     PerfilClienteUpdate perfil = new PerfilClienteUpdate(nickname, email, nombre, apellido, pais,
         documento, numeroDocumento, fechaNac, avatar, false);
     if (avatar == null) {

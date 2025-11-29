@@ -7,7 +7,7 @@
 </head>
 <body class="index-page">
     <jsp:include page="/WEB-INF/template/headerBasico.jsp" />
-  <!-- SecciÃ³n con fondo -->
+  <!-- Sección con fondo -->
   <main class="portada d-flex align-items-center py-5">
     <div class="container">
       <!-- bloque de botones centrado -->

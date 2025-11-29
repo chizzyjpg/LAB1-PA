@@ -98,7 +98,6 @@ public class consultaVuelo extends HttpServlet {
           });
 
       if (!rutaPertenece) {
-        // hacemos el flash error
         session.setAttribute("flash_error",
             "La aerolínea seleccionada no posee la ruta indicada. Vuelva a elegir la ruta.");
         resp.sendRedirect(
@@ -125,7 +124,6 @@ public class consultaVuelo extends HttpServlet {
       DataVueloEspecifico vuelo = port.buscarVuelo(nicknameAerolinea, nombreRuta, codigoVuelo);
 
       if (vuelo == null) {
-        // Vuelo no pertenece a esa aerolínea/ruta → flash + redirect dejando filtros
         session.setAttribute("flash_error",
             "No se encontró el vuelo para la aerolínea y ruta seleccionadas.");
         String qs = "fltAerolinea=" + nicknameAerolinea + "&fltRuta=" + nombreRuta;
@@ -196,7 +194,6 @@ public class consultaVuelo extends HttpServlet {
       return Collections.emptyList();
     }
     try {
-      // método más común generado por wsimport
       Method m = wrapper.getClass().getMethod("getItem");
       Object r = m.invoke(wrapper);
       if (r instanceof List) return (List<?>) r;

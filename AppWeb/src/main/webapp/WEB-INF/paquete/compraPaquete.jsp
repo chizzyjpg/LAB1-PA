@@ -81,7 +81,6 @@
                 </table>
               </form>
               
-              <!-- En el JSP, mostrar el mensaje si existe -->
               <% String mensaje = (String) request.getAttribute("mensaje"); %>
               <% if (mensaje != null) { %>
                 <div class="alert alert-info" role="alert">

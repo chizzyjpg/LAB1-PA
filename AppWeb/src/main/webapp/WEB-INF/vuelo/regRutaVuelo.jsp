@@ -117,7 +117,7 @@
                             <input type="url" class="form-control" id="imagen" name="imagen" placeholder="https://ejemplo.com/mi-imagen.jpg">
                         </div>
 
-                        <!-- NUEVO: URL de video opcional para la ruta -->
+                        <!-- URL de video opcional para la ruta -->
                         <div class="mb-3">
                             <label for="videoUrl" class="form-label">URL de video asociada (opcional)</label>
                             <input type="url" class="form-control" id="videoUrl" name="videoUrl"

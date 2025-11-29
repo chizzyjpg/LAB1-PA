@@ -159,7 +159,6 @@ public class compraPaquete extends HttpServlet {
         return;
 
       } catch (IllegalStateException e) {
-        // CAPTURAMOS LA EXCEPCIÓN QUE TE ESTÁ ROMPIENDO
         String msg = (e.getMessage() != null) ? e.getMessage()
             : "No hay cupos disponibles para este paquete.";
         session.setAttribute("flash_error", msg);
@@ -179,7 +178,6 @@ public class compraPaquete extends HttpServlet {
       }
 
     } catch (Throwable fatal) {
-      // Paracaídas final: nunca permitir que burbujee al contenedor
       session.setAttribute("flash_error", "No se pudo procesar la solicitud: "
           + (fatal.getMessage() != null ? fatal.getMessage() : "error inesperado"));
       response.sendRedirect(request.getContextPath() + "/compraPaquete");
